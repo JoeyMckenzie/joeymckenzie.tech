@@ -1,8 +1,12 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
+import { VFC } from 'react';
+import MainLayout from '../layouts/MainLayout';
 
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
-}
+const CustomApp: VFC<AppProps> = ({ Component, pageProps }) => (
+  <MainLayout>
+    <Component {...pageProps} />
+  </MainLayout>
+);
 
-export default MyApp;
+export default CustomApp;
