@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Index from './index';
+import Index from '@/pages/index';
 
 describe(Index.name, () => {
   it('should render a heading with text', async () => {

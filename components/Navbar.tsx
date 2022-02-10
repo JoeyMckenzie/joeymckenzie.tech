@@ -1,13 +1,14 @@
 import { Disclosure } from '@headlessui/react';
 import { BellIcon } from '@heroicons/react/outline';
 import { VFC } from 'react';
-import NavbarItem from './internal/NavbarItem';
-import ProfileImage from './internal/ProfileImage';
-import NavbarToggleButton from './internal/NavbarToggleButton';
-import { navigation } from './internal/navigation.constants';
-import { useDarkMode } from '@lib';
+import NavbarItem from './NavbarItem';
+import ProfileImage from './ProfileImage';
+import NavbarToggleButton from './NavbarToggleButton';
+import { navigation } from './navigation.constants';
+import { useDarkMode } from '@/lib/hooks/use-dark-mode.hook';
+import Image from 'next/image';
 
-export const Navbar: VFC = () => {
+const Navbar: VFC = () => {
   const { enabled, toggleDarkMode } = useDarkMode();
 
   return (
@@ -18,7 +19,9 @@ export const Navbar: VFC = () => {
             <div className="flex items-center justify-between h-16">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <img
+                  <Image
+                    width="40"
+                    height="40"
                     className="h-8 w-8"
                     src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
                     alt="Workflow"
@@ -65,3 +68,5 @@ export const Navbar: VFC = () => {
     </Disclosure>
   );
 };
+
+export default Navbar;

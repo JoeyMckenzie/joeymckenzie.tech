@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { FC } from 'react';
-import { classNames } from '@lib';
+import { classNames } from '@/lib/utilities/class-names';
 
 interface ActiveLinkProps {
   className: string;
@@ -11,7 +11,7 @@ interface ActiveLinkProps {
   href: string;
 }
 
-export const ActiveLink: FC<ActiveLinkProps> = ({
+const ActiveLink: FC<ActiveLinkProps> = ({
   children,
   className,
   activeClassName,
@@ -33,3 +33,5 @@ export const ActiveLink: FC<ActiveLinkProps> = ({
 ActiveLink.propTypes = {
   activeClassName: PropTypes.string.isRequired,
 };
+
+export default ActiveLink;

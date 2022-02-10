@@ -1,5 +1,5 @@
-import { Navbar } from '@components';
 import { FC } from 'react';
+import Navbar from '@/components/Navbar';
 
 const MainLayout: FC = ({ children }) => (
   <>

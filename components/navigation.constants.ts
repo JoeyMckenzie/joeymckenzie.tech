@@ -1,4 +1,4 @@
-import { NavigationItem } from '@types';
+import { NavigationItem } from '@/lib/types/navigation.types';
 
 export const userNavigation: NavigationItem[] = [
   { name: 'Your Profile', href: '#' },
