@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: nextjs_typescript_tailwind_template
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - '3000:3000'
