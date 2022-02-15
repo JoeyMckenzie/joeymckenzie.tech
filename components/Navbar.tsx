@@ -15,8 +15,8 @@ const Navbar: VFC = () => {
     <Disclosure as="nav" className="bg-gray-100 dark:bg-gray-800">
       {({ open }) => (
         <>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Image
@@ -39,7 +39,7 @@ const Navbar: VFC = () => {
                     ))}
                     <button
                       onClick={() => toggleDarkMode()}
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                      className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
                     >
                       {enabled ? 'Dark' : 'Light'}
                     </button>
@@ -50,7 +50,7 @@ const Navbar: VFC = () => {
                 <div className="ml-4 flex items-center md:ml-6">
                   <button
                     type="button"
-                    className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                    className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                   >
                     <span className="sr-only">View notifications</span>
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
