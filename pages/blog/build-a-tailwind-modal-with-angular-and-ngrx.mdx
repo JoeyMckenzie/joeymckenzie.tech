@@ -269,7 +269,7 @@ export const selectModalStatus = createSelector(
 
 Within our selector, we define a feature selector to reference the `layout` slice of our composite state, and then create a selector to grab the modal state node. With our selector in place let's go ahead and create a facilitator to help shroud our store inner workings from our components so that we can create a layer of abstraction between the technical details of our application and the view layer that users ultimate see.
 
-> This is known as the [_facade pattern_](https://en.wikipedia.org/wiki/Facade_pattern) in software development, and while it is worth keeping in the back of your mind, it's a bit outside our scope for now. Checkout my (shameless plug) post on [state management with Blazor](https://joeymckenzie.io/blog/fluxor-blazor-part-1) for a more in-depth discussion.
+> This is known as the [_facade pattern_](https://en.wikipedia.org/wiki/Facade_pattern) in software development, and while it is worth keeping in the back of your mind, it's a bit outside our scope for now. Checkout my (shameless plug) post on [state management with Blazor](https://joeymckenzie.tech/blog/fluxor-blazor-part-1) for a more in-depth discussion.
 
 Adding a state facade is entirely optional, and should not be taken as final truth - there are many reason to _not_ include this service as it does trade some complexity and boilerplate-ness for a bit of dependency inversion. You're more than welcome to facilitate your actions directly from your components as well.
 

@@ -19,7 +19,7 @@ const Logo: VFC = () => (
         />
       </svg>
       <p className="font-ubuntu text-stone-900 dark:text-stone-200">
-        joeymckenzie.io
+        joeymckenzie.tech
       </p>
     </a>
   </Link>

@@ -53,7 +53,7 @@ const BlogCard: VFC<{
             width={HEIGHT_WIDTH_PROFILE_IMAGE_SIZE}
             className="h-10 w-10 rounded-full"
             src={profileImage}
-            alt="Joey McKenzie software engineer joeymckenzie.io"
+            alt="Joey McKenzie software engineer joeymckenzie.tech"
           />
         </div>
         <div className="ml-3">
