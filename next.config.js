@@ -8,6 +8,15 @@ const nextConfig = {
     // Add your custom domains here
     domains: ['tailwindui.com', 'images.unsplash.com'],
   },
+  pageExtensions: ['ts', 'tsx', 'md', 'mdx'],
 };
 
-module.exports = nextConfig;
+const withMDX = require('@next/mdx')({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [],
+    rehypePlugins: [],
+  },
+})
+
+module.exports = withMDX(nextConfig)

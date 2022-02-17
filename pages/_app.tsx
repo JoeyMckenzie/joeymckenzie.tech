@@ -1,12 +1,15 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { VFC } from 'react';
-import MainLayout from '../layouts/MainLayout';
+import Navbar from '@/components/Navbar';
+import Footer from '@/components/Footer';
 
 const CustomApp: VFC<AppProps> = ({ Component, pageProps }) => (
-  <MainLayout>
+  <>
+    <Navbar />
     <Component {...pageProps} />
-  </MainLayout>
+    <Footer />
+  </>
 );
 
 export default CustomApp;

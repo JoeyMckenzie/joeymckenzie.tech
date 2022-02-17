@@ -13,9 +13,9 @@ class CustomDocument extends Document {
 
   render() {
     return (
-      <Html className="h-full bg-gray-100">
+      <Html lang="en-US" className="h-full">
         <Head />
-        <body className="h-full">
+        <body className="h-full bg-white dark:bg-stone-900">
           <Main />
           <NextScript />
         </body>
