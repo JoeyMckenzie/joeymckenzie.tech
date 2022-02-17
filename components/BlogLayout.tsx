@@ -16,10 +16,6 @@ const BlogLayout: FC = ({ children }) => {
   const [previousBlog, setPreviousBlog] = useState<FrontMatter>();
 
   useEffect(() => {
-    setTimeout(() => hljs.highlightAll(), 100);
-  }, []);
-
-  useEffect(() => {
     const currentFrontMatterIndex = frontMatters
       .sort(sortFrontMatters)
       .findIndex((fm: FrontMatter) => fm.slug === route.split('/')[2]);
@@ -40,6 +36,7 @@ const BlogLayout: FC = ({ children }) => {
     setCurrentBlogTitle(frontMatters[currentFrontMatterIndex].title);
     setNextBlog(nextFrontMatter);
     setPreviousBlog(previousFrontMatter);
+    hljs.highlightAll();
   }, [route, frontMatters, setNextBlog, setPreviousBlog, setCurrentBlogTitle]);
 
   return (
