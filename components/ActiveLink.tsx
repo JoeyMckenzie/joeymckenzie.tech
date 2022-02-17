@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import { FC } from 'react';
-import { classNames } from '@/lib/utilities/class-names';
+import { classNames } from '@/lib/utilities';
 
 interface ActiveLinkProps {
   className: string;
