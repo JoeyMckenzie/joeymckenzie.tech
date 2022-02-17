@@ -1,19 +1,9 @@
 import { useCallback, VFC } from 'react';
+import Link from 'next/link';
 
-const Logo: VFC = () => {
-  const scrollToTop = useCallback(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: 'smooth',
-    });
-  }, []);
-
-  return (
-    <div
-      className="flex cursor-pointer flex-row space-x-2"
-      onClick={() => scrollToTop()}
-    >
+const Logo: VFC = () => (
+  <Link href="/" passHref>
+    <a className="flex cursor-pointer flex-row space-x-2">
       <svg
         className="h-6 w-6 text-stone-900 dark:text-stone-200"
         fill="none"
@@ -31,8 +21,8 @@ const Logo: VFC = () => {
       <p className="font-ubuntu text-stone-900 dark:text-stone-200">
         joeymckenzie.io
       </p>
-    </div>
-  );
-};
+    </a>
+  </Link>
+);
 
 export default Logo;

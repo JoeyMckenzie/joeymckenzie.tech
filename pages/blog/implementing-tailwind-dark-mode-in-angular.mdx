@@ -1,18 +1,6 @@
----
-previewImageUrl: /assets/blog/tailwind-dark-mode/tailwind-dark-mode-meme.jpg
-previewImageAlt: Angular Tailwind dark mode blog preview image
-domains:
-  - Angular
-  - Tailwind
-title: Implementing dark mode in Angular with Tailwind
-subtitle: Because light mode is so 2018.
-authorImageUrl: /assets/profile_image.jfif
-authorImageAlt: Joey McKenzie Software Engineer
-authorName: Joey McKenzie
-publishDate: 2021-09-23
-published: true
-timeToRead: 5
----
+# Implementing dark mode in Angular with Tailwind
+
+![dark mode meme](/blog/tailwind-dark-mode/tailwind-dark-mode-meme.jpg)
 
 Admittedly, I'm a dark mode junkie - any app or website I stumble upon, the first thing I look for is the dark mode switch. Wanting to bring that experience to my own applications, I've recently began dark mode-ing all the things using [Tailwind](https://tailwindcss.com/docs/dark-mode) to dark mode-ify my Angular and React apps. In an effort to blog a bit more on my behalf in more bite size chunks, let's take a stab at setting up dark mode in an Angular application using Tailwind!
 
@@ -238,11 +226,11 @@ Our component code exposes a single method to interact with our dark mode servic
 #### theme-toggle.component.html
 
 ```html
-<div class="min-h-screen flex flex-col justify-center items-center gap-y-4">
+<div class="flex min-h-screen flex-col items-center justify-center gap-y-4">
   <button
     (click)="toggleDarkMode()"
     id="dark-mode-toggle"
-    class="bg-blue-500 dark:bg-blue-800 hover:bg-blue-700 dark:hover:bg-blue-900 text-white dark:text-blue-400 font-bold py-2 px-4 rounded"
+    class="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 dark:bg-blue-800 dark:text-blue-400 dark:hover:bg-blue-900"
   >
     Toggle
   </button>
@@ -279,10 +267,16 @@ One last change we'll make is in our `index.html` root markup file to apply back
 
 In our `body` tag, we add some background colors corresponding to which mode we're currently in. With everything strapped together, if we fire up our application and navigate to `localhost:4200`, we'll be able to see our masterpiece in action:
 
-[Tailwind dark mode toggle example](/assets/blog/tailwind-dark-mode/dark-mode-toggle.webm)
+[Tailwind dark mode toggle example](/blog/tailwind-dark-mode/dark-mode-toggle.webm)
 
 With dev tools open, you'll see the class list on the `html` tag update each time we click the button, as well as seeing the value updated in local storage. If we refresh the page as well, we'll keep our dark mode in tact if we have that option selected before reloading!
 
 As always, take a look at the [example code](https://github.com/JoeyMckenzie/joey-mckenzie-io-blog-samples/tree/main/apps/tailwind-dark-mode) for reference and let me know if you have any suggestions for a different implementation.
 
 Happy dark mode-ing, friends!
+
+import BlogLayout from '@/components/BlogLayout';
+
+export default ({children}) => <BlogLayout>{children}</BlogLayout
+
+>

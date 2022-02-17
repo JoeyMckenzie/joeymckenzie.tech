@@ -1,17 +1,6 @@
----
-previewImageUrl: https://imgs.xkcd.com/comics/code_quality.png
-previewImageAlt: Dapper and .NET Core
-domains: [Dapper, .NET Core]
-title: Clean architecture, Dapper, MediatR, and buzzword bingo (part 2)
-subtitle: Implement the unit of work and repository patterns with Dapper.
-authorImageUrl: /assets/profile_image.jfif
-authorImageAlt: Joey McKenzie Software Engineer
-authorName: Joey McKenzie
-publishDate: 2019-10-06
-published: true
-timeToRead: 10
-slug: net-core-dapper-and-crud-buzzword-bingo-part-2
----
+# Clean architecture, Dapper, MediatR, and buzzword bingo (part 2)
+
+![code quality meme](https://imgs.xkcd.com/comics/code_quality.png)
 
 _UPDATE: I've added cancellation token support to each of the database operations below, and encourage readers to checkout the `master` branch to see how things look now. The methods below we're slight altered to use a `CommandDefinition` that utilizes a `CancellationToken` passed down from the core business logic layer, and used in place of the regular string queries we've written below._
 
@@ -19,7 +8,7 @@ We finally made it... our domain layer is ready to roll, and it's now time to sp
 
 Before we jump into the code, let's take a step back and understand _why_ we separate our our data access layer (DAL) from the rest of our code.
 
-![Inward_Facing_Dependencies](/assets/blog/net-core-dapper-and-crud-series/part-2/inward_dependencies.png)
+![Inward_Facing_Dependencies](/blog/net-core-dapper-and-crud-series/part-2/inward_dependencies.png)
 
 The good ole fashioned dependency graph, made famous by Robert Martin a.k.a. Dr. Bob, lays out the foundation of domain driven design (DDD). For our relatively simple application, we focus on creating four distinct layers within our application code to ensure that the layers are ultimately, by some chain of dependency, dependent on the domain layer (effectively the 'D' in SOLID, [dependency inversion](https://en.wikipedia.org/wiki/Dependency_inversion_principle)). With our layers pointing inward toward our domain, we create _clear_ boundaries within our application that deal with separate concerns:
 
@@ -542,7 +531,7 @@ Okay... that's a lot of code, so let's break it down:
 
 Taking a step back let's take a look at our project structure so far:
 
-![Structure_So_far](/assets/blog/net-core-dapper-and-crud-series/part-2/structure_as_of.png)
+![Structure_So_far](/blog/net-core-dapper-and-crud-series/part-2/structure_as_of.png)
 
 With our `UnitOfWork` class implemented, let's finally crank out some of our repository operations. In our `BreweryRepository.cs` class, let's implement our `GetAllBreweries` query:
 
@@ -899,4 +888,6 @@ On a rainy day, I'll sit down and guide us through setting up Docker images for 
 
 In our next post, we'll create a simple test project that will help bulletproof our code within this layer, so that any change we decide to make in the future, we'll be able to safely validate that it's still doing its job. After that, we'll implement our business layer that will contain our core CQRS architecture with the help of libraries in MediatR and FluentValidation. Check out the source code [here](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-2-data-layer) to see where we're at so far. Until next time, amigos!
 
-&nbsp;
+import BlogLayout from '@/components/BlogLayout';
+
+export default ({ children }) => <BlogLayout>{children}</BlogLayout>;

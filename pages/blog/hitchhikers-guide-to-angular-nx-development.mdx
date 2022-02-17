@@ -1,666 +1,542 @@
-There's no denying that the [JAMstack](https://jamstack.org/) has taken the traditional web development world by storm and turned our previous tried and true development models on their heads. The JAMstack is not _new_, per se, but has become an increasingly popular approach to how we write and deploy web applications in the modern developer landscape. With frameworks like Next.js, Nuxt, Gatsby, Hugo, and many others, we, as developers, have been given the tools to development entirely "serverless" applications that run as static web apps in the browser.
+# Hitchhiker's guide to Angular development with Nx
 
-> I use the term "serverless" with big air quotes - you're still running on someones server, and your choice of hosting provider will more than likely dictate just how "serverless" you can be
+![Nx meme](/blog/hitchhikers-guide-to-nx/nx-meme.jpg)
 
-As Angular developers, we love our framework and everything it provides. Unfortunately, turning you Angular application into a static web app is not as simple as one may like. While [Angular Universal](https://angular.io/guide/universal) does give us an officially supported devtool to turn our Angular apps into statically rendered pages, I've found it a bit on the configure-y side and not as simple to use as I'd like compared to other frameworks like Next.js.
+As developers, we love reusability: components, modules, CSS, code snippets,
+libraries, you name it... if it can be made generic, one can safely bet that
+a friendly developer will at some point attempt a Herculean effort to do so. Enter
+the monorepo - a development style aimed at encouraging reusability, common versioning, and
+improved developer experience when working on large teams. While there are quite a few benefits
+of working within a single repository for multiple projects, those aforementioned are just a _few_ of the many perks.
+As I continue to veer off the .NET blogging path for a bit, I thought it would
+fun to write a bit about my favorite development tool lately in the JS/TS realm, [Nx](https://nx.dev/).
 
-What I'd wished I found earlier before going down my Angular JAMstack journey is [Scully](https://scully.io/), the Angular static site generator I never knew I needed and JAMstack tool that, quite frankly, is just plain fun to use.
+## What is Nx?
 
-## JAMstack?
+Nx is a tool developed by [Nrwl](https://nrwl.io/) to empower development promoting the reuse of code for applications all developed within the same repository or workspace.
+Using Nx, we can create independent applications all with their own separate lines of business, project domains, CI/CD processes, etc. all while developing common
+dependencies for those applications to consume all within the same repository. I won't cover in-depth what
+exactly a monorepo is and why you should consider using the development paradigm on your team, as there
+are a plethora of articles explaining their existence by developers much, _much_ smarter than myself.
 
-Yep, the JAMstack: **J**avaScript, **A**PIs, and **M**arkup. There's a thriving [community](https://jamstack.org/) of developers embracing the JAMstack, so defer to them for the nitty gritty details. The JAMstack follows a general artchitecture:
+## Monorepos at a glance
 
-- **M**arkup is pre-rendered at build time and served as static HTML and CSS
-- **J**avaScript still provides all its native interactivity with the browser, while not bogging down the initial rendering of our apps with retrieving JS bundles
-- **A**PIs that provide data, processing, and whatever else we need from a backend server
+When developing within a monorepo, we can independently write entirely separate applications that deal with separate
+concerns while developing their common dependencies at the same time, with the payoff being reusability of shared components and modules
+as far as the eye can see.
 
-In essence, JAMstack principles align to provide fast, reliable, scalable, and performant web applications for the modern browser.
+Take, for example, a common business application for your organization's users that may have two sides of the same shared coin -
+a user facing [insert your org's line of business] application, with an org internal admin-based application
+to help manage users with what the application may be dealing with.
 
-What this means in practice when you write framework code for say, Next.js, we write our normal React code we'd normally write, with pages being rending in a static context - every element on the page is inspect-able in the browser, which means much more easily indexable by search engines.
+In the case of the almighty todo-based app, a user facing todo application may be deployed out to the DMZ allowing users to add, update, and manage their todo items.
+Then the fateful day comes where upper management decides they would like an admin tool built for the company's
+business analysts to assist with users' todos, allowing for reporting on certain types of todos, managing a user's todo
+should it require a little assistance, etc.
 
-## What is Scully?
+From an architectural standpoint, while it may be tempting to develop such functionality into the same user facing application with some sort of heightened privilege given to certain users to access
+the admin functionality, one might argue that such functionality is an entirely separate concern in comparison to what our existing users of our todo application expect.
+So we make the decision to rip out common code, components, modules, etc. and put them in a separate shared repository that both the todos app and admin todos app pull in
+as a dependency into their, again, separately maintained projects. Three projects, three separate repositories, three individual build/deployment pipelines, and the list goes on.
 
-Scully is a tool/framework developed by community members for Angular that turns your Angular application into a statically rendered website, with fully indexable HTML allowing for all the SEO optimization your heart desires while still delivering on the development workflow we Angular developers love about the framework. While I claim to be no Scully expert, I've built a few side project client sites using Scully, while having re-written this exact blog you're reading from Next to Scully.
+As much fun as it sounds managing and maintaining what are essentially three separate projects, there's a lot of work being done in our previous scenario. Wouldn't it be great
+to simply development all of our code in the same place? Enter the monorepo.
 
-Scully works on the premise of analyzing your application's routing and compiling a separate build artifact containing all scanned routes as individual `index.html` pages. While there's a lot more that goes on under the hood and a bit out of my knowledge realm, Scully effectively allows us to turn our Angular SPAs into fully static sites that load quickly to the browser, vastly improve SEO, allows improved search engine indexing, and the list goes on.
+## Nx at a glance
 
-The Scully team has great documentation on using the tool, alongside a plethora of build plugins, both from Scully and the community, allowing you to tap into Scully different points in the build process to customize the generated static files to your need.
+While Nx may seem to be well suited for the JS/TS world, it is a language agnostic toolkit with lots of [community plugins](https://nx.dev/community) for varying
+languages, frameworks, and ecosystems. I like to think of Nx as a metaframework, or a framework to help manage your framework specific libraries and applications with
+well-defined conventions, all while bringing modern tools we developers love baked into your workspace (Jest, ESLint, Storybook, etc.). Again, while Nx is itself an entire
+realm of knowledge one can easily spend an entire day reading about, for our purposes of this article, we'll only touch on a few of the many
+tools Nx gives us while developing our applications all within the same repository.
 
-## Hosting with Netlify
+To keep things simple, let's use our previous example of building out a todos application using Angular to see how we might
+cleanly architect such an application. Our game plan will be something like:
 
-With a Scully generating an entirely static site version of our application, it becomes trivial to host such files on any static site hosting service. While there's a lot of great services out there, I prefer Netlify as it allows us to tap into [Netlify Functions](https://functions.netlify.com/), serving as the `A` in JAMstack and giving us the ability to build serverless functions that our static Angular applications can call into, performing any work you'd normally do on the server. Using Netlify, not _only_ are we able to host our Angular apps as fully static sites, but we can also build out a mesh of serverless functions that act as a backend-lite for any of our API-like needs! Who said you can't have your cake and eat it too?
+- One todo application, serving as nothing more than a glorified dependency injection container/puppeteer for the libraries it depends on
+- Separate libraries that each have a single concern - state management, UI, and utilities
 
-## Getting started with Scully
-
-This all sounds great, but let's jump into some code to see how we can make our Angular JAMstack dream a reality. Let's kick things off by creating a new Angular with routing:
+While it might be tempting to throw everything into our single todo application in place of separate libraries,
+we should make it a point to keep our applications as simple as possible, offloading most of our dependencies into scoped
+libraries and modules each with a designated purpose. What does this mean in practice? Let's look at an example architecture
+we'll emulate while developing our applications within an Nx monorepo:
 
 ```bash
-ng new scully-netlify-angular-example --routing
+\apps
+  \todos
+\libs
+  \todos
+    \ui
+    \features
+    \services
 ```
 
-Scully utilizes the Angular router to crawl all of our application routes, allowing it to create individual servable HTML files by reading our router configuration. With our code scaffolding in place, let's add some simple components and a few pages:
+We're effectively building a single entry point for our users into our codebase - our todos app. Our todos app, in terms of an Angular project, will exist as nothing more than the container for dependencies, assets, and environment specific settings. By offloading UI components, services,
+core business logic and the like, we build in contextual boundaries to our todos application in the form
+of dependent modules that each deal with their individual concerns, while exposing only the pieces that are
+required through their public API. In plain English, all this means is that the primary todo application
+does not concern itself with how its dependencies are implemented - only that they _are_ implemented
+in some form.
+
+From an Angular code perspective, this means our todos application will look, at its core, like this:
 
 ```bash
-cd scully-netlify-angular-example
-ng g c components/home --skip-tests
-ng g c components/ping --skip-tests
-ng g c components/data --skip-tests
+\todos
+  \src
+    \app
+      app.component.html
+      app.component.ts
+      app.module.ts
 ```
 
-We're skipping testing for the purposes of this post. With our components in place, let's add them to our `app-routing.module.ts`:
+About as bare bones as an Angular project can get, our todos app serves again as nothing more than a coordinator of injected services, dependencies, and modules. This means no `\components`, `\services`, `\state` folders, or any other core logic that is required for our app to run.
+
+With our precursor to monorepos with Nx out of the way, let's jump into some code!
+
+## Getting started
+
+to kick things off, let's create our Nx workspace, preset to Angular:
+
+```bash
+npx create-nx-workspace@latest exploring-nx --preset=angular
+```
+
+> As of this writing, opting for the latest workspace generator will use Nx 13 alongside Angular 13
+
+Nx will kick off, creating our workspace and prompting for a few inputs from us on the command line.
+Once the process completes, let's go ahead and take a look at what Nx generates for us:
+
+- An `apps` directory containing our applications that will ultimately be the interface for our users into our code
+- A `libs` directory that will eventually contain all of our independent library code each dealing with a specific concern
+- A `tools` directory serving as the home base for custom in-house development scripts and custom workspace generators
+- A bunch of config files that assist in wiring up apps, libs, devtools, and the like (don't worry too much about these for now)
+
+For our purpose, we'll only be concerned with our todos app and the libraries it depends on. Nx provides
+some modern developer tooling in ESLint and Prettier to help keep our codebase properly linted and formatted, along with
+swapping out Karma for Jest and attaching an e2e integration project to our todos app using Cypress. All that out
+of the box... pretty cool, huh?
+
+Our current workspace structure should look something like the following:
+
+```bash
+\apps
+  \todos
+  \todos-e2e
+\libs
+\tools
+```
+
+For now, we'll only be working in the `apps` and `libs` directory to keep things simple.
+To start scaffolding out our libraries that will ultimately power our todos app, let's create a directory
+in our `libs` folder called `shared`. I find it conventionally easiest to namespace
+libraries similar to the apps they serve - in this case, we would have created a `todos` folder under our
+`libs` folder, but for reasons we'll see in the next post (_foreshadowing intensifies_), we'll put this
+under our common namespace so we can access all of the todos code from other applications as well.
+
+While we _could_ just start dropping libraries directly into the `libs` directory, I've found that as the Nx apps I work on begin to scale, it's often helpful to namespace your libraries in
+accordance to which applications they serve. In our case, we only have one `todos` app, but
+as we begin to add to our workspace, our namespaced `libs` will shine, neatly organizing our
+code in a sane manner.
+
+## Generating libraries
+
+Now, to generate an Nx library specific to Angular, Nx provides an amazing CLI to assist
+in scaffolding our apps and libs. I often turn to the official Nx VS Code plugin, [Nx Console](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console),
+to help facilitate scaffolding my projects as it provides an awesome interface to see all of the
+available options to us while building out our code.
+
+Let's take a minute to discuss our `libs` strategy to help us keep things organized within our `shared` library:
+
+- We'll create a `features` folder that will contain our state management code
+- Next we'll add a `services` library that will _service_ as our primary data fetching module
+- Finally, we'll create a `ui` folder that will container two sub-libraries in `pages` and `components` (more on this separation later)
+
+I use the terms library and folder in the above list _not_ interchangeably - I like to further refine
+my workspace namespaces by including nested folders inside my `libs` directories where it makes sense.
+For our case, we'll have multiple features as we'll see later, so let's create a space for all individual
+domains we'll be working with.
+
+To kick things off, let's generate a couple of libraries to see what this looks like in action:
+
+```bash
+# To generate our shared todos state management library
+nx g @nrwl/angular:library todos --directory shared/features
+
+# To generate our shared services library
+nx g @nrwl/angular:library services --directory shared
+
+# To generate our shared ui libraries
+nx g @nrwl/angular:library components --directory shared/ui
+nx g @nrwl/angular:library pages --directory shared/ui
+```
+
+With each containing the following, respectively:
+
+- _features_: will house our state management code utilizing NgRx
+- _services_: our HTTP layer, will be in charge of calling out to our API to fetch data
+- _components_: our home for dumb components, or simple Angular components that solely take in `@Input()` to spit out on the page
+- _pages_: Angular components that compose our smaller, dumb components feeding them the data they'll need to generate their markup
+
+## Architectural boundaries made easy
+
+With our libraries in place, let's run through what our chain of dependencies will look like. Our main todos application will, once again, act as the orchestrator binding our libraries together in order to access code throughout our workspace. The added
+benefit of offloading any and all complex logic out of our main apps and into libs is the ability to work independently in areas
+of code that do not need to be affected by changes from other areas. In plain English, we put all of our app code in libs and make our
+apps as thin as possible from a logic point of view.
+
+For starters, our todos app will take a dependency on the `pages` library, as it contains the wrapper components that aggregate
+our smaller, dumb components passing in the data required for those UI components to render things on the page. This means
+our `pages` library will take a dependency on our `components` lib and the todos state management library to facilitate dispatching
+actions to retrieve data that our UI components need. From a code perspective, let's import the required modules into their respective places.
+
+First, in `app.module.ts` in the todos app, let's import the `pages` module:
+
+#### app.module.ts
+
+```ts
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { ENVIRONMENT } from '@exploring-nx/shared/features/settings';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { AppRoutingModule } from './app-routing.module';
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+    }),
+  ],
+  bootstrap: [AppComponent],
+  providers: [
+    {
+      provide: ENVIRONMENT,
+      useValue: environment,
+    },
+  ],
+})
+export class AppModule {}
+```
+
+I've added a the NgRx require modules and an `AppRoutingModule`, with contents being:
 
 #### app-routing.module.ts
 
 ```ts
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { DataComponent, HomeComponent, PingComponent } from '@components';
-
-const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-  },
-  {
-    path: 'ping',
-    component: PingComponent,
-  },
-  {
-    path: 'data',
-    component: DataComponent,
-  },
-];
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot([
+      {
+        path: '',
+        loadChildren: () =>
+          import('@exploring-nx/shared/ui/pages').then(
+            (m) => m.SharedUiPagesModule
+          ),
+      },
+    ]),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
 ```
 
-With routes in place, let's add, let's implement a few few services that will help facilitate talking to our Netlify functions (more on those in a bit). Let's implement two services: one for the `PingComponent` that will consume a `PingService` to _ping_ the server, and one for `DataComponent` to offload the responsibility of sending and receiving data from the server.
+Nothing too out of the ordinary here, just doing our normal lazy module loading utilizing the `pages` library. Things to note in `app.module.ts` is the `environment` provider, as we look under the covers is nothing more than just a shared provider
+used to import environment settings specific to our todos application and having them available to our downstream libraries (think sharing whatever is in `environment.ts` to services, components, etc.).
 
-```bash
-ng g s services/ping --skip-tests
-ng g s services/data --skip-tests
-```
+For our `SharedUiPagesModule`, let's look at the module file to see what imports we'll use:
 
-Since we'll be utilizing a bit with `Observable`s, let's implement a service to clean up our streams once a component is destroyed:
-
-```bash
-ng g s services/unsubscribe --skip-tess
-```
-
-While we're at it, let's make a quick service to help us with our SEO to set page titles, update `<meta>`s, etc.
-
-```bash
-ng g s services/document --skip-tests
-```
-
-With our services in place and having no further dependencies (outside the standard Angular library), let's implement their code. First, our `UnsubscribeService`:
-
-#### unsubscribe.service.ts
+#### shared-ui-pages.module.ts
 
 ```ts
-import { Injectable, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { SharedFeaturesTodosModule } from '@exploring-nx/shared/features/todos';
+import { SharedUiComponentsModule } from '@exploring-nx/shared/ui/components';
 
-@Injectable()
-export class UnsubscribeService extends Subject<void> implements OnDestroy {
-  ngOnDestroy(): void {
-    this.next();
-    this.complete();
-  }
-}
-```
+import { TodosComponent } from './todos/todos.component';
 
-As we can see, our `UnsubscribeService` is no more than a glorified injectable `Subject` that emits nothing and simply closes itself on service destruction. This will be helpful to close connections to `Observable`s we're `.subscribe()`ing to within our components. Next, let's put our `PingService` code in place:
-
-#### ping.service.ts
-
-```ts
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { ServerResponse } from 'types';
-import { catchError, delay, map } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { environment } from '@environment';
-
-@Injectable({
-  providedIn: 'root',
-})
-export class PingService {
-  constructor(private http: HttpClient) {}
-
-  pingServer() {
-    const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`;
-
-    return this.http.get<ServerResponse>(`${baseUrl}/ping`).pipe(
-      map((response) => response.message),
-      delay(1000),
-      catchError((error) => {
-        console.log(error);
-        return of('Whoops... an error occurred :(');
-      })
-    );
-  }
-}
-```
-
-next, our `DataService`:
-
-#### data.service.ts
-
-```ts
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from '@environment';
-import { EMPTY } from 'rxjs';
-import { catchError, delay, map } from 'rxjs/operators';
-import { ServerResponse } from 'types';
-
-@Injectable({
-  providedIn: 'root',
-})
-export class DataService {
-  constructor(private http: HttpClient) {}
-
-  sendDataToServer(name: string) {
-    const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`;
-
-    return this.http
-      .post<ServerResponse>(`${baseUrl}/data`, {
-        name,
-      })
-      .pipe(
-        delay(1000),
-        map((response) => response.message),
-        catchError((error) => {
-          console.log(error);
-          return EMPTY;
-        })
-      );
-  }
-}
-```
-
-and finally,
-
-#### document.service.ts
-
-```ts
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import { Meta, MetaDefinition } from '@angular/platform-browser';
-
-@Injectable({
-  providedIn: 'root',
-})
-export class DocumentService {
-  private readonly rootTitle = 'Scully, Angular, and Netlify';
-
-  constructor(
-    @Inject(DOCUMENT) private readonly document: Document,
-    private meta: Meta
-  ) {}
-
-  resetTitle(): void {
-    this.document.title = this.rootTitle;
-    this.meta.updateTag({
-      name: 'title',
-      content: this.rootTitle,
-    });
-  }
-
-  updateTitle(pageTitle: string): void {
-    this.document.title = `${this.rootTitle} - ${pageTitle}`;
-    this.meta.updateTag({
-      name: 'title',
-      content: pageTitle,
-    });
-  }
-
-  setMetaTags(tags: MetaDefinition[]) {
-    tags.map((t) => {
-      const existingTag = this.meta.getTag(t.id ?? '');
-      if (!existingTag) {
-        this.meta.addTag(t);
-      }
-    });
-  }
-}
-```
-
-These services will be responsible for sending HTTP requests to our serverless functions. Let's add some markup to our components:
-
-#### ping.component.ts
-
-```ts
-import { Component, OnInit } from '@angular/core';
-import { DocumentService, PingService, UnsubscribeService } from '@services';
-import { takeUntil } from 'rxjs/operators';
-
-@Component({
-  selector: 'app-ping',
-  templateUrl: './ping.component.html',
-})
-export class PingComponent implements OnInit {
-  message = 'pinging the server...';
-
-  constructor(
-    private documentService: DocumentService,
-    private pingService: PingService,
-    private unsubscribe$: UnsubscribeService
-  ) {}
-
-  ngOnInit(): void {
-    this.documentService.updateTitle('ping');
-    this.documentService.setMetaTags([
+@NgModule({
+  imports: [
+    CommonModule,
+    SharedFeaturesTodosModule,
+    SharedUiComponentsModule,
+    RouterModule.forChild([
       {
-        name: 'author',
-        content: 'Joey McKenzie',
+        path: '',
+        component: TodosComponent,
       },
-    ]);
-
-    this.pingService
-      .pingServer()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (message) => (this.message = `response from server: ${message}`)
-      );
-  }
-}
+    ]),
+  ],
+  declarations: [TodosComponent],
+})
+export class SharedUiPagesModule {}
 ```
 
-and the markup:
+We see that our `pages` library takes on two additional dependencies in `SharedFeaturesTodosModule`, our state management library for todos, and
+`SharedUiComponentsModule`. Now for my favorite about Nx, and a little surprise for whiteboard meeting guys like myself, go ahead and run the following:
 
-#### ping.component.html
-
-```html
-<p>{{ message }}</p>
+```bash
+nx dep-graph
 ```
 
-`PingComponent` uses `PingService` to _ping_ the server for a response, then display said response in our browser. Next, `data.component.ts`:
+...and in your browser window you should the following (after clicking a few checkboxes):
 
-#### data.component.ts
+![dep graph](/blog/hitchhikers-guide-to-nx/todos_dep_graph.png)
+
+Behold, the almighty dependency graph in all of its glory! Using Nx, not only
+do we get a conventionalized approach to mono-repository development,
+we get dep graphs! Dependency graphs allow us to _visually_ see the linking between libraries
+and their consuming applications, helping us to make more informed decisions about
+where things should be, and which areas are responsible for their respective domain.
+
+From our dep graph above, we see that our todos app, the ultimate entry point into
+the heart of our application, has a single dependency on our `pages` library, which itself
+wires together the lower level details that our higher level policies do not necessarily need
+to know the inner workings of. In essence, we've done nothing more than implement simple ports
+and adapters.
+
+## Implementing state
+
+Okay, I promise that _now_ we'll actually write some code. As I previously mentioned,
+I'll be using [NgRx](https://ngrx.io/) to facilitate my application state. Now we could also using nothing more than simple services-over-`Observables`, and you're more than welcome to. I love NgRx and the, again, convention it brings to Angular state management, and simply just a preference.
+
+There are great resources and plenty of articles on NgRx, and I'll defer to those interested in learning
+NgRx in depth to them. For those familiar with flux/redux-like development, let's create the following in a
+`+state` folder nesting in our `shared/features/todos` project underneath the `src/lib` subdirectory (subdirectory-ception):
+
+- `todos.reducer.ts`: your typical reducer function that defines our state and which mutations it can take on to form new state
+- `todos.actions.ts`: all of the dispatch-able operations that can affect which shape our state takes
+- `todos.selectors.ts`: slices of (memoized) state to reference across components
+- `todos.effects.ts`: tasks performed when certain actions are `dispatch()`ed, also known as side effects
+- `todos.facade.ts`: an encapsulating service to be used from higher level modules, serving as the API into our state (more or less)
+
+To keep this post in a readable _state_ <sub>no pun intended</sub>, I'll leave the gorey details for the reader to explore [here](https://github.com/JoeyMckenzie/exploring-nx/tree/main/libs/shared/features/todos/src/lib/%2Bstate).
+We'll save a more in-depth post on NgRx for a rainy day.
+
+> Nx provides NgRx state generators that come with NgRx Entity bolted in, but for our simple use case, we'll manually create our state files
+
+## Utilizing todos state
+
+With our state in place, we're ready to wire everything up to our todos application and finally spit some todo items out on the screen. In the name of keeping everything simple, we'll put our component logic in a single `todos` component that we'll house within our shared `pages` library to open ourselves up for reusability later on. Using Nx, let's generate a component:
+
+```bash
+nx g @nrwl/angular:component todos --project shared-ui-pages
+```
+
+Using Nx, we can generate Angular components in a manner similar to the Angular CLI, with the added benefit of targeting component generation for specified apps and libraries. In our `todos.component.ts`, let's utilize our todos state logic to start loading in todos:
+
+#### todos.component.ts
 
 ```ts
 import { Component, OnInit } from '@angular/core';
-import { DocumentService, DataService, UnsubscribeService } from '@services';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { SettingsFacade } from '@exploring-nx/shared/features/settings';
+import { TodosFacade } from '@exploring-nx/shared/features/todos';
 
 @Component({
-  selector: 'app-data',
-  templateUrl: './data.component.html',
+  selector: 'exploring-nx-todos',
+  templateUrl: './todos.component.html',
 })
-export class DataComponent implements OnInit {
-  loading = false;
-  response?: string;
+export class TodosComponent implements OnInit {
+  loading$ = this.todosFacade.loading$;
+  todos$ = this.todosFacade.availableTodos$;
 
   constructor(
-    private documentService: DocumentService,
-    private dataService: DataService,
-    private unsubscribe$: UnsubscribeService
+    private todosFacade: TodosFacade,
+    private settingsFacade: SettingsFacade
   ) {}
 
-  ngOnInit(): void {
-    this.documentService.updateTitle('data');
+  ngOnInit() {
+    this.settingsFacade.loadSettings();
   }
 
-  loadData() {
-    this.loading = true;
-
-    this.dataService
-      .sendDataToServer('Joey')
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        finalize(() => (this.loading = false))
-      )
-      .subscribe((response) => (this.response = response));
+  onLoadClicked() {
+    this.todosFacade.loadTodos();
   }
 }
 ```
 
-I'm using alias imports in `@environment`, `@services`, and `@components` to make my import paths look tolerable. We do so by adding a `paths` node to `compilerOptions`:
+Since we've already wired up our state module as a dependency to the `pages` library (see `shared-ui-pages.module.ts`), we shouldn't have any errors during runtime. With our code behind done, let's add some markup:
 
-#### tsconfig.json
+#### todos.component.html
 
-```ts
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
-{
-  // ...other options,
-  "compilerOptions": {
-    // ...some more options,
-    "paths": {
-      "@components": ["src/app/components/index.ts"],
-      "@services": ["src/app/services/index.ts"],
-      "@environment": ["src/environments/environment.ts"]
-    }
-  },
-}
+```html
+<div class="flex min-h-screen flex-col items-center justify-center">
+  <p class="pb-4">Loading: {{ loading$ | async }}</p>
+  <button
+    type="button"
+    (click)="onLoadClicked()"
+    class="inline-flex items-center rounded-md bg-indigo-600 px-6 py-3 text-white hover:bg-indigo-700"
+  >
+    Load todos
+  </button>
+
+  <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <div
+        class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg"
+      >
+        <exploring-nx-todos-list
+          [todos]="(todos$ | async) ?? []"
+        ></exploring-nx-todos-list>
+      </div>
+    </div>
+  </div>
+</div>
 ```
 
-Where each `index.ts` file `exports` out either services or components in their relative directories and exports our application environment configuration.
+Our `todos` page component takes on the responsibility of loading in todos once a user has clicked the Tailwind-styled button. We also have another feature responsible for dealing with application-wide settings (think environment names, base URLs, dark mode enabled, etc.). I'll again spare the reader and leave a link to the implementation [here](https://github.com/JoeyMckenzie/exploring-nx/tree/main/libs/shared/features/settings/src/lib/%2Bstate). The settings library is yet another NgRx-based state lib that serves as nothing more than an additional state slice as we'll see in our Redux Devtools when the application is running.
 
-With that out of the way, let's wire up our components in the `HomeComponent` and add some links to navigate between pages:
+We'll add a few more components to keep things bite size and avoid component bloat:
 
-#### home.component.ts
+```bash
+# Generates a wrapper component that will consume todos into a table
+nx g @nrwl/angular:component todos-list --project shared-ui-pages
+
+# Generates a component that will take in todo items output on the wrapping table component
+nx g @nrwl/angular:component todos-list-item --project shared-ui-pages
+```
+
+In our `todos-list` component, let's add the following:
+
+#### todos.component.ts
 
 ```ts
-import { Component, OnInit } from '@angular/core';
-import { DocumentService } from '../../services/document.service';
+import { Component, HostBinding, Input } from '@angular/core';
+import { Todo } from '@exploring-nx/shared/models';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
+  selector: 'exploring-nx-todos-list',
+  templateUrl: './todos-list.component.html',
 })
-export class HomeComponent implements OnInit {
-  constructor(private documentService: DocumentService) {}
-
-  ngOnInit(): void {
-    this.documentService.resetTitle();
-  }
+export class TodosListComponent {
+  @HostBinding('class') class = 'pt-6 flex flex-col';
+  @Input() todos: Todo[] = [];
 }
 ```
 
-and with markup,
+Next, the markup:
 
-#### home.component.html
+#### todos-list.component-html
 
 ```html
-<div class="flex flex-row space-x-4">
-  <a routerLink="/ping">
-    <button
-      type="button"
-      class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
-    >
-      Ping
-    </button>
-  </a>
-  <a routerLink="/data">
-    <button
-      type="button"
-      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
-    >
-      Data
-    </button>
-  </a>
-</div>
+<table class="min-w-full divide-y divide-gray-200">
+  <thead class="bg-gray-50">
+    <tr>
+      <th
+        scope="col"
+        class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+      >
+        ID
+      </th>
+      <th
+        scope="col"
+        class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+      >
+        Title
+      </th>
+      <th
+        scope="col"
+        class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+      >
+        User ID
+      </th>
+      <th
+        scope="col"
+        class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+      >
+        Completed
+      </th>
+      <th scope="col" class="relative px-6 py-3">
+        <span class="sr-only">Edit</span>
+      </th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-gray-200 bg-white">
+    <tr
+      *ngFor="let todo of todos"
+      exploring-nx-todos-list-item
+      [todo]="todo"
+    ></tr>
+  </tbody>
+</table>
 ```
 
-While we're at it, let's go ahead and update `app.component.html` with some routing:
+As we mentioned earlier, `pages` wire together `components` which we treat as simple consumers of data - nothing more, nothing less. With our todos page component responsible for initiating the loading of todos in state, our consuming components take the todos as `Input()`s and render markup to display the data on the page. Keeping this separation allows us to more easily test our components in isolation from page components, as they are solely pure components in the sense of taking in information, and spitting out HTML on the other side. Our unit tests can be as simple as testing with different inputs to see how our output is effected, with no service dependency mocking overhead!
 
-#### app.component.html
+Now for our `todo-list-item` component:
+
+#### todos-list-item.component.ts
+
+```ts
+import { Component, Input } from '@angular/core';
+import { Todo } from '@exploring-nx/shared/models';
+
+@Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
+  selector: '[exploring-nx-todos-list-item]',
+  templateUrl: './todos-list-item.component.html',
+})
+export class TodosListItemComponent {
+  @Input() todo?: Todo;
+}
+```
+
+And the markup:
+
+#### todos-list-item.component.html
 
 ```html
-<router-outlet></router-outlet>
-<div class="pt-12 flex flex-row justify-center">
-  <a routerLink="/">
-    <button
-      type="button"
-      class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-700"
-    >
-      Home
-    </button>
-  </a>
-</div>
+<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
+  {{ todo?.id }}
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+  {{ todo?.title }}
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+  {{ todo?.userId }}
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-gray-500">
+  <input
+    type="checkbox"
+    [defaultChecked]="todo?.completed"
+    class="h-4 w-4 rounded text-indigo-600"
+  />
+</td>
 ```
 
-I'm using Tailwind out of habit, and not required for the purposes of this example by any means. Let's kick off our dev server and we should see after navigating to `localhost:4200` a page in our browser with three buttons: ping, data, and home.
+One thing to note with our component structure here is that we're using a `@HostBinding()` in the wrapper component to tell Angular what class the parent container element should have, and our `todos-list-item` similarly uses a component selector to allow us to generate `<tr>` tags without containing elements generated by Angular. This is all done in the name of HTML styling semantics for Tailwind to style our components correctly and is entirely optional, as certain browser specs designate `<table>`s to have an expected structure (`<tr>`s expect `<td>`s as the only child element, for instance).
 
-![Home page](/assets/blog/jamstack-angular-apps-with-scully/home_page.png)
+## Running apps locally
 
-With devtools open, if we click the ping button that routes us to the page with our `PingComponent`, we get an error due to a failed HTTP request to `http://localhost:9999/.netlify/functions/ping`, and the same happens when we click the data button to navigate to the page with our `DataComponent` and click the `Load data` button. Our services are correctly calling out to our serverless functions, but there's one problem: we don't have any functions!
-
-## Going serverless with Netlify Functions
-
-If you're familiar with static site hosting services, [Netlify](https://www.netlify.com/) is another one of those with much, much more to offer than simple site hosting. One of my favorite features of Netlify is [Netlify Functions](https://functions.netlify.com/) - Netlify's version of serverless functions that utilize AWS lambda functions behind the scene to provide an easy way to integrate backend functionality with our statically served web apps. I've found serverless functions helpful in quite a few different ways:
-
-- Sending out emails using email API services
-- Integrating with third-party APIs to do some processing for frontend requests
-- Serving simple data to be consumed from the frontend
-- Heck, even persisting to database based on requests from our frontend applications
-
-Our serverless functions will _serve_, more or less, as an API-lite for our static served Angular Scully application that will be hosted in Netlify, allowing us to connect our outgoing HTTP calls from the frontend to the backend functions listening for requests. Functions work on the premise of running code at a specified endpoint that receive HTTP events (methods, headers, request body, etc.) and the context of the HTTP request (metadata about the function itself). There's a lot we can customize around the way our functions are detected, served, and ran, but we'll utilize all the defaults for now.
-
-To get started writing functions, let's go ahead and install the Netlify Functions package and the Netlify CLI to help us write and serve our functions:
+Now that we've cranked out all the necessary code to run our application, let's go ahead and spin it up so we can see what loading todos in action looks like. From your favorite command line, go ahead and run the following to boot up the Angular server for our todos app:
 
 ```bash
-npm install @netlify/functions
-npm install --save-dev netlify-cli # -g if you'd like to install globally
+nx serve todos
 ```
 
-Using the CLI, let's add an npm script in our `package.json` we can run to start our function server that will detect any code changes we apply while writing our functions, recompile them, and serve them up for our frontend to call into:
+and we should see the typical output that is displayed when running a similar `ng serve` command in a single project Angular workspace. Once our application is finished building and served for the browser, go ahead and navigate to `localhost:4200` with your Redux Devtools open in the dev console. Live action demo:
 
-```json
-{
-  // ...other stuff
-  "scripts": {
-    // ...other scripts
-    "functions:serve": "netlify functions:serve"
-  }
-}
-```
+[Exploring Nx with todos](/blog/hitchhikers-guide-to-nx/exploring_nx_todos.webm)
 
-If we run:
+We've got ourselves a working todo application built with Nx and composable shared libraries! Since we've built out our todos libraries in common form, _any_ application we wish to write in the future has access to all of the code that powers our todos app - no code duplication required, and two entirely separate/independent applications coexisting in the same workspace. Pretty cool, huh?
 
-```bash
-npm run functions:serve
-```
+In a later post, we'll explore adding multiple types of applications to an Nx repository reusing our todos code that we've written so far. Until next time, friends!
 
-we should see a message in our console along the lines of ready to serve, but no functions available. Since we've haven't provided any customized configuration for our functions, the CLI assumes your functions exist under a `/netlify/functions` folder at the root of your project. Let's implement a `/ping` GET endpoint using TypeScript that will tap into the functionality provided by the `@netlify/functions` package to start listening for requests:
+import BlogLayout from '@/components/BlogLayout';
 
-#### netlify/functions/ping.ts
+export default ({children}) => <BlogLayout>{children}</BlogLayout
 
-```ts
-import { Handler } from '@netlify/functions';
-import {
-  getErrorResponse,
-  getHeaders,
-  HttpStatus,
-  isWhitelistedDomain,
-} from '../lib';
-import { ServerResponse } from 'types';
-
-const handler: Handler = async (event) => {
-  const origin = event.headers.origin ?? '';
-
-  if (!isWhitelistedDomain(origin)) {
-    return getErrorResponse(HttpStatus.Forbidden);
-  }
-
-  if (event.httpMethod.toLowerCase() !== 'get') {
-    return getErrorResponse(HttpStatus.MethodNotAllowed);
-  }
-
-  const response: ServerResponse = {
-    success: true,
-    message: 'pong',
-  };
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify(response),
-    headers: getHeaders(origin),
-  };
-};
-
-export { handler };
-```
-
-I've added some common code that I'll be sharing between functions and have moved that to a `lib` folder with a single `index.ts` file:
-
-#### netlify/lib/index.ts
-
-```ts
-import { Response } from '@netlify/functions/dist/function/response';
-import { ServerResponse } from 'types';
-
-enum HttpStatus {
-  Forbidden = '403',
-  MethodNotAllowed = '405',
-  InternalServerError = '500',
-}
-
-const WHITELIST_DOMAINS = [
-  '', // Postman doesn't send request from an origin, allow it through (DON'T DO THIS IN PRODUCTION)
-  'http://localhost:4200', // Whitelist our Angular dev serve for local development
-  'http://localhost:1668', // Whitelist our Scully server for local Scully development
-  'https://asdfasdf.netlify.app', // Whitelist our production server deployed to Netlify
-];
-
-function getHeaders(origin: string): { [key: string]: string } {
-  return {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Headers': '*',
-  };
-}
-
-function isNullOrUndefined(
-  objectToValidate?: unknown | null | undefined
-): boolean {
-  return objectToValidate === null || objectToValidate === undefined;
-}
-
-function isWhitelistedDomain(origin: string): boolean {
-  const existingDomain = WHITELIST_DOMAINS.find((d) => d === origin);
-  return !isNullOrUndefined(existingDomain);
-}
-
-function getErrorResponse(statusCode: HttpStatus): Response {
-  let message: string;
-
-  switch (statusCode) {
-    case HttpStatus.Forbidden:
-      message = 'That method is not allowed for this endpoint.';
-      break;
-    case HttpStatus.MethodNotAllowed:
-      message = 'Domain is forbidden from accessing.';
-      break;
-    default:
-      message = 'An invalid request was made, please try again.';
-  }
-
-  return {
-    statusCode: +statusCode,
-    body: JSON.stringify({
-      success: false,
-      message,
-    } as ServerResponse),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
-}
-
-export { getErrorResponse, getHeaders, isWhitelistedDomain, HttpStatus };
-```
-
-Nothing too complicated, just a few simple helpers to facilitate validating allowed origins for CORS, some common response generators, and a method to grab some default headers for each response. I've also reused the `ServerResponse` type under the `types.ts` file at the root of our project:
-
-```ts
-export type ServerResponse = {
-  message: string;
-  success: boolean;
-};
-```
-
-Since our project is effectively just a big TypeScript solution (Angular frontend, TS-based serverless functions), we can import any `.ts` files into our serverless functions, given it runs in the correct context. I wouldn't want to reference any `@angular/*` imports, for obvious reasons. With our `ServerResponse` in place, we've created a common statically typed-model between the front and backend of project!
-
-As you might have guessed, the names and pathing of our function `.ts` files _does_ matter in our case. There's a few simple rules to adhere to when creating function endpoints
-
-- `netlify/functions/ping.ts` would receive HTTP request matching the route `/.netlify/functions/ping`
-- `netlify/functions/ping/index.ts` would _also_ receive HTTP request matching the route `/.netlify/functions/ping`
-- `netlify/functions/ping/ping.ts` would, again, _also_ receive HTTP request matching the route `/.netlify/functions/ping`
-
-Now that we have our first function in place, let's go ahead and start out function server,
-
-```bash
-npm run functions:serve
-```
-
-and in the terminal, we should see a message like the following:
-
-```bash
-> scully-netlify-angular-example@0.0.0 netlify:serve
-> netlify functions:serve
-
-◈ Ignored general context env var: LANG (defined in process)
-◈ Loaded function ping.
-◈ Functions server is listening on 9999
-```
-
-To test out our functions are working correctly, let's startup Postman and send a request to `http://localhost:9999/.netlify/functions/ping` and see what we get:
-
-![Postman ping response](/assets/blog/jamstack-angular-apps-with-scully/postman_ping.png)
-
-We've got a response! Now that our GET endpoint is working, let's add a POST endpoint that will receive requests with data in the body and return data based on it:
-
-#### netlify/functions/data/index.ts
-
-```ts
-import { Handler } from '@netlify/functions';
-import {
-  getErrorResponse,
-  getHeaders,
-  HttpStatus,
-  isWhitelistedDomain,
-} from '../../lib';
-import { ServerResponse } from 'types';
-
-const handler: Handler = async (event) => {
-  const origin = event.headers.origin ?? '';
-
-  if (!isWhitelistedDomain(origin)) {
-    return getErrorResponse(HttpStatus.Forbidden);
-  }
-
-  const method = event.httpMethod.toLowerCase();
-
-  if (method !== 'options' && method !== 'post') {
-    return getErrorResponse(HttpStatus.MethodNotAllowed);
-  }
-
-  /**
-   * Because we have a more complex request (JSON being sent over the wire),
-   * an options call is made by the browser to check with our function
-   * that it's okay to receive requests in the current context.
-   */
-  if (method === 'options') {
-    return {
-      statusCode: 200,
-      headers: getHeaders(origin),
-    };
-  }
-
-  if (event.body) {
-    const requestBody: { name: string } = JSON.parse(event.body);
-
-    const response: ServerResponse = {
-      success: true,
-      message: `Hello ${requestBody.name}!`,
-    };
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify(response),
-      headers: getHeaders(origin),
-    };
-  }
-
-  return getErrorResponse(HttpStatus.InternalServerError);
-};
-
-export { handler };
-```
-
-Utilizing our helper methods again, since this is a POST request with more complex request headers (as we can inspect in the network tab attached for us using `HttpClient`), our browser will make a pre-flight OPTIONS call to our function endpoint to essentially ask the question, "hey, this client application wants to make a request to you, is that cool?". We kick out any requests that are not POSTs or OPTIONs (again, normal HTTP framework code would take care of this for you, but we're running a bare bones server here) and accept the POST request body, returning the value of the `name` attribute given to us in a simple greeting. By adding this function with our server still running, Netlify recognizes a new function was added, and then compiles the output and serves it up under the `/.netlify/functions/data` endpoint. Let's give it a try with Postman:
-
-![Postman data response](/assets/blog/jamstack-angular-apps-with-scully/postman_data.png)
-
-Nice! Now with our functions fully operational and our server running, let's start our Angular server (if it wasn't already running), and watch the magic happen:
-
-[Angular Netlify functions](/assets/blog/jamstack-angular-apps-with-scully/scully-jamstack-running.webm)
-
-We've got ourselves a working solution! So far we've spun up our Angular application that calls into our serverless functions, but we're missing one final piece to _truly_ be considered JAMstack: Scully.
+>

@@ -1,18 +1,6 @@
----
-previewImageUrl: /assets/blog/blazor-basics-series/javascript_meme.png
-previewImageAlt: 'Blazor .NET'
-domains:
-  - Blazor
-title: 'Blazor basics - calling external APIs with typed HTTP clients'
-subtitle: "Move over Javascript, there's a new sheriff in town (not really, we still love you, JS)."
-authorImageUrl: /assets/profile_image.jfif
-authorImageAlt: 'Joey McKenzie Software Engineer'
-authorName: 'Joey McKenzie'
-publishDate: 2020-04-24
-timeToRead: 5
-published: true
-slug: blazor-basics-calling-external-apis
----
+# Blazor basics - calling external APIs with typed HTTP clients
+
+![blazor basics](/blog/blazor-basics-series/javascript_meme.png)
 
 Two truths and a lie: Nickelback is good, pineapples don't belong on pizza, and JavaScript is bad.
 
@@ -34,7 +22,7 @@ Working on the modern web nowadays, for the most part, requires knowledge in som
 
 Quite often in the modern world, our browser will make HTTP requests to some backend API, or service, requesting some form of data, or data to be processes attached on the request, and depending on the backend service's knowledge of the client requesting this data and/or data processing, the service will respond back to the request in question with the data, or knowledge that the data was processed: In its simplest form:
 
-![Browser_server_model](/assets/blog/blazor-basics-series/http_request_flow.png)
+![Browser_server_model](/blog/blazor-basics-series/http_request_flow.png)
 
 From the browsers perspective, a user lands on a page that will make an HTTP request to some backend service to retrieve some data to display on said page. In a more typical scenario exampling a GET call, the browser (more so, the HTTP requesting service implementation within our SPA) will initially make an OPTIONS request to the backend server, telling the server "hey, I'm a browser client from this origin, is it cool if I have some data?" Depending on the server's cross-origin resource sharing policy (referred to as CORS), it'll respond with a status 200, signalling "yeah dude, absolutely!"
 
@@ -46,17 +34,17 @@ With the semantics out of the way, let's fire up a new Blazor project and see wh
 
 I'll be using Visual Studio 2019 for this demo, but feel free to use your IDE/editor of choice. Let's start by creating a new project, either from the command line with `dotnet new blazorwasm`, or `File > New Project` from VS. If you don't have the latest template installed, you can find it [here](https://docs.microsoft.com/en-us/aspnet/core/blazor/get-started?view=aspnetcore-3.1&tabs=visual-studio).
 
-![File_new_project](/assets/blog/blazor-basics-series/file_new_project.png)
+![File_new_project](/blog/blazor-basics-series/file_new_project.png)
 
 Select `Blazor App` from the dialog that appears, and we'll setup our project metadata.
 
-![project_name](/assets/blog/blazor-basics-series/project_name.png)
+![project_name](/blog/blazor-basics-series/project_name.png)
 
 Punch in whatever name for the project you'd like, and optionally, check the option to place the solution within the project folder. For our simple demo, we won't be adding any additional projects, so placing the solution within the project directory is perfectly fine. However, in a real world application, we'd most likely have tens of hundreds (yep, you heard me right) of projects in a single solution and would better be suited to having the solution file higher up in the directory hierarchy.
 
 Hit Create, and we'll select a Blazor WebAssembly App project hosting model. For now, we'll leave the ASP.NET Core hosted checkbox unchecked for the aforementioned reasons.
 
-![blazor_hosting_model](/assets/blog/blazor-basics-series/blazor_hosting_model.png)
+![blazor_hosting_model](/blog/blazor-basics-series/blazor_hosting_model.png)
 
 Once the code gen has completed, go ahead and open up your solution explorer in VS, VS Code, or Rider and let's take a look at what Microsoft has bootstrapped for us.
 
@@ -314,11 +302,11 @@ Note that in `GitHubProjects.razor`, we've also added an `@using ExternalApisWit
 
 With everything looking good so far, let's fire up our application and take a look at what we've got so far. Using your IDE, or a terminal with `dotnet watch run`, let's kick off our Blazor application:
 
-![landing_page](/assets/blog/blazor-basics-series/initial_landing_page.png)
+![landing_page](/blog/blazor-basics-series/initial_landing_page.png)
 
 Now, if we navigate to `https://localhost:5001/projects`, we'll see our newly added page:
 
-![projects_page](/assets/blog/blazor-basics-series/projects_page.png)
+![projects_page](/blog/blazor-basics-series/projects_page.png)
 
 We don't want users to have to manually navigate to the projects page by typing in the URL, so let's go ahead and update `NavMenu.razor` with another menu item that will route users to `/projects`:
 
@@ -344,11 +332,11 @@ We don't want users to have to manually navigate to the projects page by typing 
 
 All we've done is add another `<li>` tag including a `NavLink` to our projects page. Save the project and restart your server, or if you're running `dotnet watch run` through the terminal/PowerShell, go ahead and refresh the page:
 
-![projects_page_with_nav](/assets/blog/blazor-basics-series/projects_page_with_nav.png)
+![projects_page_with_nav](/blog/blazor-basics-series/projects_page_with_nav.png)
 
 Nice! Now we can easily navigate through the different pages of our application through the nav links on the side menu. Remember that we included a few `Console.WriteLine()` calls in our `OnInitialized` and `OnRowClick` methods; open up your browser's developer tools and navigate to the console. Once there, go ahead and refresh the page, then click on each row:
 
-![event_handlers_in_action](/assets/blog/blazor-basics-series/event_handlers_in_action.png)
+![event_handlers_in_action](/blog/blazor-basics-series/event_handlers_in_action.png)
 
 Using `Console.WriteLine()`, we're able to perform JavaScript interop with `console.log()` to write to the browser console using C# - if your mind hasn't shattered yet, I'd suggest watching [this](https://www.youtube.com/watch?v=Khn7sDUSEJM) presentation by Steve Sanderson on some of the features of Blazor that dwarf our simple use case here. Continuing with stubbing out our UI, let's add some markup for rendering the commits table for `GitHubProjects.razor`:
 
@@ -544,11 +532,11 @@ Inside our markup:
 
 Once again, if you're using the `watch` argument from the command, go ahead and save while refreshing the page:
 
-![updated_projects_on_load](/assets/blog/blazor-basics-series/updated_projects_on_load.png)
+![updated_projects_on_load](/blog/blazor-basics-series/updated_projects_on_load.png)
 
 Go ahead and click a row from the projects table, and we should now be seeing the loading spinner flash for just a few quick moments, then disappear with our commits table loaded for our selected repository - and we have _yet_ to write a single line of JavaScript ourselves!
 
-![first_project](/assets/blog/blazor-basics-series/first_project_after_load.png)
+![first_project](/blog/blazor-basics-series/first_project_after_load.png)
 
 ### Creating Application Services
 
@@ -976,11 +964,11 @@ else
 
 If we run this application now in all of its glory and navigate to the projects page, we see the first 10 repositories now being loaded, and we can verify our API calls by filtering on XHR from the dev tools console:
 
-![initial_repos_load](/assets/blog/blazor-basics-series/initial_repos_load.png)
+![initial_repos_load](/blog/blazor-basics-series/initial_repos_load.png)
 
 Now, if we click on a table row, low and behold, the commit information for that repository loads, and we can again verify the network call from the dev tools console:
 
-![commits_response](/assets/blog/blazor-basics-series/commits_response.png)
+![commits_response](/blog/blazor-basics-series/commits_response.png)
 
 And that folks, is our fully (read: semi) functional, external API calling Blazor application in its entirety. I want to iterate one more time, that we did not write a **single line** of JavaScript ourselves, and we've written a basic single page application that has the ability to call a live API and dynamically retrieve and load data in response to a user's action. While it may seem like a dream, let's take a minute to discuss how we might improve this solution, and possibly leave the implementation details as an exercise for you, the reader!
 
@@ -1006,4 +994,8 @@ While I love Bootstrap, it's also caused _a lot_ of eerily similarly looking sit
 
 Blazor allows us simple .NET developers an alternative to frontend development, sparring us from JavaScript with the help of WebAssembly. As a personal aside, I'm embracing Blazor with open arms. If you've ever had to development with a modern JS framework, you're no stranger to the quirks and headaches that JavaScript, as well as NPM, can cause. With Blazor, there's finally an escape from `node_modules` directories containing every dependency in the observable universe, `==` type coercion (seriously, STOP using `==` - it's 2020 guys, not 1997), and the insanity of NPM ([my favorite package](https://www.npmjs.com/package/is-even) for reference). In future posts, we'll explore Blazor in greater detail, cool libraries, and maybe some JS interop along the way. For now, happy coding!
 
-&nbsp;
+import BlogLayout from '@/components/BlogLayout';
+
+export default ({children}) => <BlogLayout>{children}</BlogLayout
+
+>

@@ -7,8 +7,8 @@ import {
 } from 'react';
 import blogs from '@/public/frontmatters.json';
 import BlogCard from '@/components/BlogCard';
-import { classNames } from '@/lib/utilities/class-names';
-import { PILL_COLORS } from '@/lib/utilities/constants';
+import { PILL_COLORS } from '@/lib/constants';
+import { classNames, sortFrontMatters } from '@/lib/utilities';
 import { FrontMatter } from '@/lib/types';
 
 const BlogContainer: VFC = () => {
@@ -39,19 +39,6 @@ const BlogContainer: VFC = () => {
     },
     [frontMatters, domains, setFilteredFrontMatters, setSearchText, setDomains]
   );
-
-  const sortFrontMatters = (previous: FrontMatter, current: FrontMatter) => {
-    const previousDate = new Date(previous.datetime);
-    const currentDate = new Date(current.datetime);
-
-    if (currentDate > previousDate) {
-      return 1;
-    } else if (currentDate < previousDate) {
-      return -1;
-    }
-
-    return 0;
-  };
 
   useEffect(() => {
     setFilteredFrontMatters(
@@ -140,13 +127,15 @@ const BlogContainer: VFC = () => {
         </div>
 
         <div className="mt-12 grid gap-16 pt-6 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12">
-          {filteredFrontMatters.sort(sortFrontMatters).map((frontMatter) => (
-            <BlogCard
-              key={frontMatter.title}
-              post={frontMatter}
-              onDomainAdded={onDomainAdded}
-            />
-          ))}
+          {filteredFrontMatters
+            .sort(sortFrontMatters)
+            .map((frontMatter: FrontMatter) => (
+              <BlogCard
+                key={frontMatter.title}
+                post={frontMatter}
+                onDomainAdded={onDomainAdded}
+              />
+            ))}
         </div>
       </div>
     </div>

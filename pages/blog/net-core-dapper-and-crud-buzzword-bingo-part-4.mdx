@@ -1,17 +1,6 @@
----
-previewImageUrl: /assets/blog/net-core-dapper-and-crud-series/part-4/use-automapper-meme.jpeg
-previewImageAlt: Dapper and .NET Core
-domains: [Dapper, .NET Core]
-title: Clean architecture, Dapper, MediatR, and buzzword bingo (part 4)
-subtitle: Write encapsulated business logic with the help of MediatR and the CQRS pattern.
-authorImageUrl: /assets/profile_image.jfif
-authorImageAlt: Joey McKenzie Software Engineer
-authorName: Joey McKenzie
-publishDate: 2020-02-02
-published: true
-timeToRead: 10
-slug: net-core-dapper-and-crud-buzzword-bingo-part-4
----
+# Clean architecture, Dapper, MediatR, and buzzword bingo (part 4)
+
+![automapper meme](/blog/net-core-dapper-and-crud-series/part-4/use-automapper-meme.jpeg)
 
 The wait is finally over (sort of). As we recover from the scrupulous amount of Christmas cookies we consumed during our annual holiday bulking season (at least what I tell myself), I figured it's time to jump into the bulk of our fictional brewery app, Dappery. So far, we've:
 
@@ -911,3 +900,7 @@ In an effort to not bore you guys _too much_, I'll snap the chalk line for this 
 At the end of the day, no matter how we implement the core application layer, it will still have just one responsibility - encompass all the business logic. We've seen that using MediatR, FluentValidation, and a few simple mappers, we can build a flexible, modular business logic layer that is easy to extend and modify to fit our business needs and requirements. In our next post, we'll _finally_ finish up our application by slapping an API layer on top of all the code we've written thus far and see if this thing actually works.
 
 And with that... I think it's time for a beer. Cheers everyone!
+
+import BlogLayout from '@/components/BlogLayout';
+
+export default ({ children }) => <BlogLayout>{children}</BlogLayout>;

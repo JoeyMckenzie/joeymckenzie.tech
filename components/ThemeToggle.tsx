@@ -1,6 +1,6 @@
 import { VFC } from 'react';
 import { Switch } from '@headlessui/react';
-import { classNames } from '@/lib/utilities/class-names';
+import { classNames } from '@/lib/utilities';
 import { useDarkMode } from '@/lib/hooks/use-dark-mode.hook';
 
 const ThemeToggle: VFC = () => {

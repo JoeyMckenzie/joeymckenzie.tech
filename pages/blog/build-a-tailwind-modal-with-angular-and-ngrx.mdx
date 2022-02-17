@@ -1,20 +1,6 @@
----
-previewImageUrl: /assets/blog/tailwind-ngrx-modal/off_the_shelf_modal.jpg
-previewImageAlt: 'Off the shelf modal meme'
-domains:
-  - Angular
-  - NgRx
-  - Tailwind
-title: 'Build a Tailwind modal with Angular and NgRx'
-subtitle: "Out-of-the-box modals are nice, but often times inflexible and can bring a lot of unnecessary code into a project for something as simple as displaying a message. Let's use Tailwind to build our very own state-based modal instead!"
-authorImageUrl: /assets/profile_image.jfif
-authorImageAlt: 'Joey McKenzie Software Engineer'
-authorName: 'Joey McKenzie'
-publishDate: 2021-04-27
-published: true
-timeToRead: 10
-slug: build-a-tailwind-modal-with-ngrx
----
+# Build a Tailwind modal with Angular and NgRx
+
+![tailwind meme](/blog/tailwind-ngrx-modal/off_the_shelf_modal.jpg)
 
 Coming off a blogging hiatus, I'm finally making my triumphant return. If you've been following my writing up until now, you'll know that I'm primarily a .NET dude. Lately, I've been wanting to get back to my roots with Angular and see what I could build with everyone's new favorite CSS framework on the block, [Tailwind](https://tailwindcss.com/). I'm going to be dialing back the length in content in place of smaller, bit-sized chunks in an effort to get back to helping the general developer population with the lessons I've learned and things that I think are fire (as the kids say) in the community. With that out of the way, let's dive in!
 
@@ -105,13 +91,13 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
 ```html
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div
-  class="fixed z-10 inset-0 overflow-y-auto"
+  class="fixed inset-0 z-10 overflow-y-auto"
   aria-labelledby="modal-title"
   role="dialog"
   aria-modal="true"
 >
   <div
-    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    class="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0"
   >
     <!--
       Background overlay, show/hide based on modal state.
@@ -130,7 +116,7 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
 
     <!-- This element is to trick the browser into centering the modal contents. -->
     <span
-      class="hidden sm:inline-block sm:align-middle sm:h-screen"
+      class="hidden sm:inline-block sm:h-screen sm:align-middle"
       aria-hidden="true"
       >&#8203;</span
     >
@@ -146,12 +132,12 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
         To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     -->
     <div
-      class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+      class="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
     >
       <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
         <div class="sm:flex sm:items-start">
           <div
-            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+            class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
           >
             <!-- Heroicon name: outline/exclamation -->
             <svg
@@ -172,7 +158,7 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
           </div>
           <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
             <h3
-              class="text-lg leading-6 font-medium text-gray-900"
+              class="text-lg font-medium leading-6 text-gray-900"
               id="modal-title"
             >
               Deactivate account
@@ -186,16 +172,16 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
           </div>
         </div>
       </div>
-      <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+      <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
         <button
           type="button"
-          class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+          class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
         >
           Deactivate
         </button>
         <button
           type="button"
-          class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+          class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
         >
           Cancel
         </button>
@@ -370,13 +356,13 @@ Let's add each of the tags to our markup so that it resembles the following:
 <div
   @modalContainer
   *ngIf="(modalState$ | async) === true"
-  class="fixed z-10 inset-0 overflow-y-auto"
+  class="fixed inset-0 z-10 overflow-y-auto"
   aria-labelledby="modal-title"
   role="dialog"
   aria-modal="true"
 >
   <div
-    class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    class="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0"
   >
     <!--
       Background overlay, show/hide based on modal state.
@@ -397,7 +383,7 @@ Let's add each of the tags to our markup so that it resembles the following:
 
     <!-- This element is to trick the browser into centering the modal contents. -->
     <span
-      class="hidden sm:inline-block sm:align-middle sm:h-screen"
+      class="hidden sm:inline-block sm:h-screen sm:align-middle"
       aria-hidden="true"
       >&#8203;</span
     >
@@ -414,12 +400,12 @@ Let's add each of the tags to our markup so that it resembles the following:
     -->
     <div
       @modalContent
-      class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+      class="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
     >
       <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
         <div class="sm:flex sm:items-start">
           <div
-            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+            class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
           >
             <!-- Heroicon name: outline/exclamation -->
             <svg
@@ -440,7 +426,7 @@ Let's add each of the tags to our markup so that it resembles the following:
           </div>
           <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
             <h3
-              class="text-lg leading-6 font-medium text-gray-900"
+              class="text-lg font-medium leading-6 text-gray-900"
               id="modal-title"
             >
               Deactivate account
@@ -454,18 +440,18 @@ Let's add each of the tags to our markup so that it resembles the following:
           </div>
         </div>
       </div>
-      <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+      <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
         <button
           (click)="onClose()"
           type="button"
-          class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+          class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
         >
           Deactivate
         </button>
         <button
           (click)="onClose()"
           type="button"
-          class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+          class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
         >
           Cancel
         </button>
@@ -628,7 +614,7 @@ With all of our modal details in place, let's finally add the component to our `
 
 With everything wired up, let's go ahead and punch in a `ng serve` in the terminal of your choice and navigate to `localhost:4200`. Clicking on either of the buttons now closes the modal, and if we take a look at our Redux DevTools in the console, we can see the actions being dispatched:
 
-[Our full Ngrx-based Tailwind modal](/assets/blog/tailwind-ngrx-modal/screen_grab.webm)
+[Our full Ngrx-based Tailwind modal](/blog/tailwind-ngrx-modal/screen_grab.webm)
 
 You'll see in the above screencast I interact with the modal in a few ways:
 
@@ -641,3 +627,7 @@ While I've begun to shift to state-based layout UI/UX, there _are_ some limitati
 In the end, I love Tailwind and the sanity (at the cost of complexity) that NgRx brings to my Angular applications and will continue to move forward offloading common UI interactions into layout state slices.
 
 Until next time, friends!
+
+import BlogLayout from '@/components/BlogLayout';
+
+export default ({ children }) => <BlogLayout>{children}</BlogLayout>;

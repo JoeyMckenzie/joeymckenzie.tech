@@ -3,11 +3,7 @@
     {
       "title": "Hitchhiker's guide to Angular development with Nx",
       "description": "The answer is simple... 42 (projects in the same monorepo).",
-      "domains": [
-        "Angular",
-        "Nx",
-        "NgRx"
-      ],
+      "domains": ["Angular", "Nx", "NgRx"],
       "date": "Nov 11, 2021",
       "datetime": "2021-11-11",
       "readingTime": "10 min",
@@ -16,9 +12,7 @@
     {
       "title": "Blazor basics - calling external APIs with typed HTTP clients",
       "description": "Move over Javascript, there's a new sheriff in town (not really, we still love you, JS).",
-      "domains": [
-        "Blazor"
-      ],
+      "domains": ["Blazor"],
       "date": "Apr, 24 2020",
       "datetime": "2020-04-24",
       "readingTime": "5 min",
@@ -27,11 +21,7 @@
     {
       "title": "Build a Tailwind modal with Angular and NgRx",
       "description": "Out-of-the-box modals are nice, but often times inflexible and can bring a lot of unnecessary code into a project for something as simple as displaying a message. Let's use Tailwind to build our very own state-based modal instead!",
-      "domains": [
-        "Angular",
-        "NgRx",
-        "Tailwind"
-      ],
+      "domains": ["Angular", "NgRx", "Tailwind"],
       "date": "Apr, 27 2021",
       "datetime": "2021-04-27",
       "readingTime": "10 min",
@@ -40,9 +30,7 @@
     {
       "title": "Nullable reference types and designing with intent",
       "description": "Null reference exceptions can be a thing of the path, but with great power comes great responsibility.",
-      "domains": [
-        "C#"
-      ],
+      "domains": ["C#"],
       "date": "Nov,05 2019",
       "datetime": "2019-11-05",
       "readingTime": "10 min",
@@ -51,34 +39,25 @@
     {
       "title": "State Management with Blazor using Fluxor (Part 1)",
       "description": "Manage state in your Blazor applications using the tried-and-true flux pattern with Fluxor.",
-      "domains": [
-        "Blazor",
-        "Fluxor"
-      ],
+      "domains": ["Blazor", "Fluxor"],
       "date": "Jun 26, 2020",
       "datetime": "2020-06-26",
       "readingTime": "15 min",
-      "slug": "fluxor-blazor-part-1"
+      "slug": "state-management-with-fluxor-blazor-part-1"
     },
     {
       "title": "State Management with Blazor using Fluxor (Part 2)",
       "description": "Use Fluxor to encapsulate the business logic of our Blazor apps and build clean view components.",
-      "domains": [
-        "Blazor",
-        "Fluxor"
-      ],
+      "domains": ["Blazor", "Fluxor"],
       "date": "Jul 26, 2020",
       "datetime": "2020-07-26",
       "readingTime": "15 min",
-      "slug": "fluxor-blazor-part-2"
+      "slug": "state-management-with-fluxor-blazor-part-2"
     },
     {
       "title": "Implementing dark mode in Angular with Tailwind",
       "description": "Because light mode is so 2018.",
-      "domains": [
-        "Angular",
-        "Tailwind"
-      ],
+      "domains": ["Angular", "Tailwind"],
       "date": "Sep 23, 2021",
       "datetime": "2021-09-23",
       "readingTime": "5 min",
@@ -87,11 +66,7 @@
     {
       "title": "JAMstack Angular apps with Scully and Netlify",
       "description": "Write, build, and deploy Angular applications as fully SEO-optimized static sites with Netlify and Netlify Functions!",
-      "domains": [
-        "Angular",
-        "Scully",
-        "Netlify"
-      ],
+      "domains": ["Angular", "Scully", "Netlify"],
       "date": "Feb 12, 2022",
       "datetime": "2022-02-12",
       "readingTime": "15 min",
@@ -100,22 +75,25 @@
     {
       "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 1)",
       "description": "Build an API using Dapper, MediatR, and clean architecture principles with the help of beer.",
-      "domains": [
-        "Dapper",
-        ".NET"
-      ],
+      "domains": ["Dapper", ".NET"],
       "date": "Oct 04, 2019",
       "datetime": "2019-10-04",
       "readingTime": "10 min",
       "slug": "net-core-dapper-and-crud-buzzword-bingo"
     },
     {
+      "title": "Decoupling controllers with ApiEndpoints",
+      "description": "No one likes monolithic controllers, and with ApiEndpoints, API design just got a whole lot easier.",
+      "domains": ["ASP.NET"],
+      "date": "Sep 23, 2020",
+      "datetime": "2020-09-23",
+      "readingTime": "12 min",
+      "slug": "decoupling-controllers-with-api-endpoints"
+    },
+    {
       "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 2)",
       "description": "Implement the unit of work and repository patterns with Dapper.",
-      "domains": [
-        "Dapper",
-        ".NET"
-      ],
+      "domains": ["Dapper", ".NET"],
       "date": "Oct 06, 2019",
       "datetime": "2019-10-06",
       "readingTime": "10 min",
@@ -124,22 +102,16 @@
     {
       "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 3)",
       "description": "Testing code with xUnit, Dapper, and Shouldly.",
-      "domains": [
-        "Dapper",
-        ".NET"
-      ],
+      "domains": ["Dapper", ".NET"],
       "date": "Nov 19, 2019",
       "datetime": "2019-11-19",
       "readingTime": "10 min",
-      "slug": "net-core-dapper-and-crud-buzzword-bingo-par-3"
+      "slug": "net-core-dapper-and-crud-buzzword-bingo-part-3"
     },
     {
       "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 4)",
       "description": "Write encapsulated business logic with the help of MediatR and the CQRS pattern.",
-      "domains": [
-        "Dapper",
-        ".NET"
-      ],
+      "domains": ["Dapper", ".NET"],
       "date": "Feb 02, 2020",
       "datetime": "2020-02-02",
       "readingTime": "10 min",
@@ -148,10 +120,7 @@
     {
       "title": ".NET Core Service lifetimes in a nutshell",
       "description": "Learn to register your lifetimes accordingly with .NET Core's built-in dependency injection and IoC container.",
-      "domains": [
-        "Dapper",
-        ".NET"
-      ],
+      "domains": ["Dapper", ".NET"],
       "date": "Sep 23, 2020",
       "datetime": "2020-09-23",
       "readingTime": "8 min",

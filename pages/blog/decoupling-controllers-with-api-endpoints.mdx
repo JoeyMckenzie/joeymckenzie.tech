@@ -1,17 +1,6 @@
----
-previewImageUrl: /assets/blog/decoupling-controllers-with-api-endpoints/friends-business-logic.jpg
-previewImageAlt: Decoupling controllers title image
-domains: [ASP.NET Core]
-title: Decoupling controllers with ApiEndpoints
-subtitle: No one likes monolithic controllers, and with ApiEndpoints, API design just got a whole lot easier.
-authorImageUrl: /assets/profile_image.jfif
-authorImageAlt: Joey McKenzie Software Engineer
-authorName: Joey McKenzie
-publishDate: 2020-09-23
-published: true
-timeToRead: 12
-slug: decoupling-controllers-with-api-endpoints
----
+# Decoupling controllers with ApiEndpoints
+
+![controller memes](/blog/decoupling-controllers-with-api-endpoints/friends-business-logic.jpg)
 
 Admittedly, or not, we've all worked on projects during our careers that took the above meme's approach of "just put it in the controller and we'll figure it out later". Unfortunately for some, this is a way of life due to project budget constraints, unrealistic product deadlines, and more senior developers refusing to change their ways because it "works." It's like how the old saying goes, you can't teach an old programmer to decouple independent concerns.
 
@@ -155,7 +144,7 @@ As I'm sure the fine folks reading this article would love for me to continue ai
 
 Once we've got a project ready to roll, let's open up our solution and do a bit of immediate refactoring. Let's start by adding a package reference to `Ardalis.ApiEndpoints`:
 
-![Business_logic](/assets/blog/decoupling-controllers-with-api-endpoints/api-endpoints-nuget.png)
+![Business_logic](/blog/decoupling-controllers-with-api-endpoints/api-endpoints-nuget.png)
 
 Once our package has been added, let's create a `Features` folder at the root of our project, and immediately beneath that, a `Weather` directory.
 Let's go ahead and create two more directories beneath our `Weather` folder to house our concerns that have to deal with everything related to weather in `Models` and `Endpoints`. By creating feature slices within our application, we can group things by concern rather than by layer so that every feature request coming in from the business will be easily contained within its corresponding domain. Let's start by offering up an endpoint to retrieve a weather forecast, akin to the already existing method within the `WeatherController.cs` file underneath the `Controllers` folder. Go ahead and add a new file underneath our `Endpoints` folder called `GetWeatherForecasts.cs`, where we'll place the action method's code from the `WeatherController`'s `Get()` method:
@@ -244,3 +233,9 @@ Let's spin up our application now using `F5`, or hitting a `dotnet run` in the t
 ```
 
 Thanks to the `rng` we've built into our forecast generator, your response will look a bit different than mine, but let's not gloss over the fact that we've just performed a complete request/response cycle within our API without using a controller!
+
+import BlogLayout from '@/components/BlogLayout';
+
+export default ({children}) => <BlogLayout>{children}</BlogLayout
+
+>

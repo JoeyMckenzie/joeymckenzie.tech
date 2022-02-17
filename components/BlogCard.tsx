@@ -1,10 +1,10 @@
 import { VFC } from 'react';
-import { classNames } from '@/lib/utilities/class-names';
+import { classNames } from '@/lib/utilities';
 import { FrontMatter } from '@/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import profileImage from '@/public/portfolio_pic.jpg';
-import { PILL_COLORS } from '@/lib/utilities/constants';
+import { PILL_COLORS } from '@/lib/constants';
 
 const HEIGHT_WIDTH_PROFILE_IMAGE_SIZE = 40;
 

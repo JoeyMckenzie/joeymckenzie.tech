@@ -1,19 +1,6 @@
----
-previewImageUrl: /assets/blog/jamstack-angular-apps-with-scully/angular-scully-netlify-meme.jpg
-previewImageAlt: Scully Angular JAMstack meme
-domains:
-  - Angular
-  - Scully
-  - Netlify
-title: JAMstack Angular apps with Scully and Netlify
-subtitle: Write, build, and deploy Angular applications as fully SEO-optimized static sites with Netlify and Netlify Functions!
-authorImageUrl: /assets/profile_image.jfif
-authorImageAlt: Joey McKenzie Software Engineer
-authorName: Joey McKenzie
-publishDate: 2021-12-07
-published: true
-timeToRead: 15
----
+# JAMstack Angular apps with Scully and Netlify
+
+![Nx meme](/blog/jamstack-angular-apps-with-scully/angular-scully-netlify-meme.jpg)
 
 There's no denying that the [JAMstack](https://jamstack.org/) has taken the traditional web development world by storm and turned our previous tried and true development models on their heads. The JAMstack is not _new_, per se, but has become an increasingly popular approach to how we write and deploy web applications in the modern developer landscape. With frameworks like Next.js, Nuxt, Gatsby, Hugo, and many others, we, as developers, have been given the tools to development entirely "serverless" applications that run as static web apps in the browser.
 
@@ -389,7 +376,7 @@ and with markup,
   <a routerLink="/ping">
     <button
       type="button"
-      class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+      class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
     >
       Ping
     </button>
@@ -397,7 +384,7 @@ and with markup,
   <a routerLink="/data">
     <button
       type="button"
-      class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700"
+      class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
     >
       Data
     </button>
@@ -411,11 +398,11 @@ While we're at it, let's go ahead and update `app.component.html` with some rout
 
 ```html
 <router-outlet></router-outlet>
-<div class="pt-12 flex flex-row justify-center">
+<div class="flex flex-row justify-center pt-12">
   <a routerLink="/">
     <button
       type="button"
-      class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-700"
+      class="inline-flex items-center rounded-md border border-transparent bg-red-500 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
     >
       Home
     </button>
@@ -425,7 +412,7 @@ While we're at it, let's go ahead and update `app.component.html` with some rout
 
 I'm using Tailwind out of habit, and not required for the purposes of this example by any means. Let's kick off our dev server and we should see after navigating to `localhost:4200` a page in our browser with three buttons: ping, data, and home.
 
-![Home page](/assets/blog/jamstack-angular-apps-with-scully/home_page.png)
+![Home page](/blog/jamstack-angular-apps-with-scully/home_page.png)
 
 With devtools open, if we click the ping button that routes us to the page with our `PingComponent`, we get an error due to a failed HTTP request to `http://localhost:9999/.netlify/functions/ping`, and the same happens when we click the data button to navigate to the page with our `DataComponent` and click the `Load data` button. Our services are correctly calling out to our serverless functions, but there's one problem: we don't have any functions!
 
@@ -610,7 +597,7 @@ and in the terminal, we should see a message like the following:
 
 To test out our functions are working correctly, let's startup Postman and send a request to `http://localhost:9999/.netlify/functions/ping` and see what we get:
 
-![Postman ping response](/assets/blog/jamstack-angular-apps-with-scully/postman_ping.png)
+![Postman ping response](/blog/jamstack-angular-apps-with-scully/postman_ping.png)
 
 We've got a response! Now that our GET endpoint is working, let's add a POST endpoint that will receive requests with data in the body and return data based on it:
 
@@ -674,10 +661,14 @@ export { handler };
 
 Utilizing our helper methods again, since this is a POST request with more complex request headers (as we can inspect in the network tab attached for us using `HttpClient`), our browser will make a pre-flight OPTIONS call to our function endpoint to essentially ask the question, "hey, this client application wants to make a request to you, is that cool?". We kick out any requests that are not POSTs or OPTIONs (again, normal HTTP framework code would take care of this for you, but we're running a bare bones server here) and accept the POST request body, returning the value of the `name` attribute given to us in a simple greeting. By adding this function with our server still running, Netlify recognizes a new function was added, and then compiles the output and serves it up under the `/.netlify/functions/data` endpoint. Let's give it a try with Postman:
 
-![Postman data response](/assets/blog/jamstack-angular-apps-with-scully/postman_data.png)
+![Postman data response](/blog/jamstack-angular-apps-with-scully/postman_data.png)
 
 Nice! Now with our functions fully operational and our server running, let's start our Angular server (if it wasn't already running), and watch the magic happen:
 
-[Angular Netlify functions](/assets/blog/jamstack-angular-apps-with-scully/scully-jamstack-running.webm)
+[Angular Netlify functions](/blog/jamstack-angular-apps-with-scully/scully-jamstack-running.webm)
 
 We've got ourselves a working solution! So far we've spun up our Angular application that calls into our serverless functions, but we're missing one final piece to _truly_ be considered JAMstack: Scully.
+
+import BlogLayout from '@/components/BlogLayout';
+
+export default ({ children }) => <BlogLayout>{children}</BlogLayout>;
