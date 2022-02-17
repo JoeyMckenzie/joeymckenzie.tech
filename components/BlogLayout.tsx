@@ -11,3 +11,5 @@ const BlogLayout: FC = ({ children }) => (
     </div>
   </div>
 );
+
+export default BlogLayout;
