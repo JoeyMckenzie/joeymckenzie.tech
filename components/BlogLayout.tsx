@@ -47,7 +47,7 @@ const BlogLayout: FC = ({ children }) => {
       <div className="relative my-24 overflow-hidden">
         <div className="relative px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-prose text-lg">
-            <div className="prose prose-lg prose-stone mx-auto mt-6 text-gray-500 prose-h1:text-center prose-img:mx-auto prose-img:rounded-sm prose-img:object-center dark:prose-invert dark:text-gray-300">
+            <div className="prose prose-stone mx-auto mt-6 text-gray-600 prose-h1:text-center prose-img:mx-auto prose-img:rounded-sm prose-img:object-center dark:prose-invert dark:text-gray-300">
               {children}
             </div>
             <div className="mx-auto flex max-w-4xl flex-row items-center justify-between px-4 pt-6">
