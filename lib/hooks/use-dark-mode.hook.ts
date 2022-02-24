@@ -29,7 +29,7 @@ export function useDarkMode(darkModeState = false) {
     }
 
     setHtmlClassList(classList);
-  }, []);
+  }, [setDarkModeEnabled]);
 
   /**
    * On toggle, update the local storage preference
@@ -45,7 +45,7 @@ export function useDarkMode(darkModeState = false) {
   }, [darkModeEnabled, htmlClassList]);
 
   return {
-    enabled: darkModeEnabled === true,
+    enabled: darkModeEnabled,
     toggleDarkMode: () => setDarkModeEnabled(!darkModeEnabled),
   };
 }

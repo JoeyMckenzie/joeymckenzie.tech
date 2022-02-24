@@ -1,7 +1,6 @@
 import { VFC } from 'react';
 import Logo from '@/components/Logo';
-import { SiNextdotjs } from 'react-icons/si';
-import { SiTwitch } from 'react-icons/si';
+import { SiTwitch, SiNextdotjs, SiVercel } from 'react-icons/si';
 
 const Footer: VFC = () => (
   <footer>
@@ -88,6 +87,14 @@ const Footer: VFC = () => (
           className="transform transition duration-150 ease-in-out hover:scale-110"
         >
           <SiNextdotjs className="h-6 w-6 dark:text-stone-300" />
+        </a>
+        <a
+          href="https://vercel.com"
+          rel="noreferrer noopener"
+          target="_blank"
+          className="transform transition duration-150 ease-in-out hover:scale-110"
+        >
+          <SiVercel className="h-6 w-6 dark:text-stone-300" />
         </a>
       </div>
     </div>

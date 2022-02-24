@@ -73,6 +73,15 @@
       "slug": "net-core-dapper-and-crud-buzzword-bingo"
     },
     {
+      "title": "JAMstack Angular apps with Scully and Netlify",
+      "description": "Write, build, and deploy Angular applications as fully SEO-optimized static sites with Netlify and Netlify Functions!",
+      "domains": ["Angular", "Scully", "Netlify"],
+      "date": "Feb 22, 2022",
+      "datetime": "2022-02-22",
+      "readingTime": "15 min",
+      "slug": "jamstack-angular-apps-with-scully-and-netlify"
+    },
+    {
       "title": "Decoupling controllers with ApiEndpoints",
       "description": "No one likes monolithic controllers, and with ApiEndpoints, API design just got a whole lot easier.",
       "domains": ["ASP.NET"],
