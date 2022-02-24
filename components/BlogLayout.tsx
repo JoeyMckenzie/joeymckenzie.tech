@@ -22,6 +22,7 @@ const BlogLayout: FC = ({ children }) => {
     <>
       <Head>
         <title>joeymckenzie.tech &middot; {blogTitle}</title>
+        <meta title={blogTitle} />
       </Head>
       <div className="relative my-24 overflow-hidden">
         <div className="relative px-4 sm:px-6 lg:px-8">
