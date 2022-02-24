@@ -26,6 +26,12 @@ const snippets: CodeSnippet[] = [
       'A simple utility to concatenate conditional classes for Tailwind-based React apps',
     link: '/snippets/react-tailwind-classnames',
   },
+  {
+    title: 'Angular unsubscribe$ service',
+    description:
+      'A simple utility service to assist with closing observable streams within components',
+    link: '/snippets/angular-unsubscribe-service',
+  },
 ];
 
 const CodeSnippets: VFC = () => {

@@ -11,7 +11,7 @@ const CodeSnippetCard: VFC<CodeSnippetCardProps> = ({ title, description }) => (
     <div className="flow-root rounded-lg bg-gray-50 px-6 pb-8 dark:bg-stone-800">
       <div className="-mt-6">
         <div>
-          <span className="inline-flex items-center justify-center rounded-md bg-teal-800 p-3 shadow-lg dark:bg-stone-700">
+          <span className="inline-flex items-center justify-center rounded-md bg-gray-800 p-3 shadow-lg dark:bg-stone-700">
             <CodeIcon className="h-6 w-6 text-white" />
           </span>
         </div>

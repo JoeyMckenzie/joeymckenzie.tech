@@ -1,7 +1,7 @@
 import { VFC } from 'react';
 
 const BlogHeader: VFC = () => (
-  <div>
+  <div className="text-center">
     <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200 sm:text-4xl">
       Blog
     </h2>

@@ -44,7 +44,7 @@ const BlogSearchInput: VFC = () => {
         type="text"
         name="blog-search"
         id="blog-search"
-        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:focus:border-stone-700 dark:focus:ring-stone-700 sm:text-sm"
+        className="block w-full rounded-md border-gray-300 shadow-sm focus:border-gray-900 focus:ring-gray-900 dark:focus:border-stone-700 dark:focus:ring-stone-700 sm:text-sm"
         placeholder="Looking for a blog?"
         value={searchText}
         onChange={onSearch}

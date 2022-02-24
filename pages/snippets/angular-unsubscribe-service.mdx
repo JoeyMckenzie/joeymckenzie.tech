@@ -1,0 +1,50 @@
+# Angular `unsubscribe$` utility
+
+```ts
+import { Injectable, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+
+@Injectable()
+export class UnsubscribeService extends Subject<void> implements OnDestroy {
+  ngOnDestroy(): void {
+    this.next();
+    this.complete();
+  }
+}
+```
+
+With usage:
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { ExampleService, UnsubscribeService } from '@services';
+import { takeUntil } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-example',
+  templateUrl: './example.component.html',
+})
+export class ExampleComponent implements OnInit {
+  constructor(
+    private unsubscribe$: UnsubscribeService,
+    private exampleService: ExampleService
+  ) {}
+
+  ngOnInit(): void {
+    this.exampleService
+      .getData()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((data) => console.log(data));
+  }
+}
+```
+
+export const meta = {
+  title: 'Angular unsubscribe$ service',
+};
+
+import CodeSnippetLayout from '@/layouts/CodeSnippetLayout';
+
+export default ({ children }) => (
+  <CodeSnippetLayout meta={meta}>{children}</CodeSnippetLayout>
+);
