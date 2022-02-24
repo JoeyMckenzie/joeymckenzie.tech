@@ -18,6 +18,7 @@ const Index: NextPage = () => {
     <>
       <Head>
         <title>joeymckenzie.tech</title>
+        <meta title="joeymckenzie.tech" />
       </Head>
       <Hero />
       <BlogContainer />
