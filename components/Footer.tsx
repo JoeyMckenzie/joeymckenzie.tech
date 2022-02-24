@@ -80,22 +80,24 @@ const Footer: VFC = () => (
       <div className="mt-8 flex flex-col items-center justify-center gap-x-2 gap-y-2 sm:flex-row sm:gap-y-0 md:order-1 md:mt-0">
         <Logo />
         <p className="text-center text-base text-gray-400">powered by</p>
-        <a
-          href="https://nextjs.org"
-          rel="noreferrer noopener"
-          target="_blank"
-          className="transform transition duration-150 ease-in-out hover:scale-110"
-        >
-          <SiNextdotjs className="h-6 w-6 dark:text-stone-300" />
-        </a>
-        <a
-          href="https://vercel.com"
-          rel="noreferrer noopener"
-          target="_blank"
-          className="transform transition duration-150 ease-in-out hover:scale-110"
-        >
-          <SiVercel className="h-6 w-6 dark:text-stone-300" />
-        </a>
+        <div className="flex flex-row space-x-2">
+          <a
+            href="https://nextjs.org"
+            rel="noreferrer noopener"
+            target="_blank"
+            className="transform transition duration-150 ease-in-out hover:scale-110"
+          >
+            <SiNextdotjs className="h-6 w-6 dark:text-stone-300" />
+          </a>
+          <a
+            href="https://vercel.com"
+            rel="noreferrer noopener"
+            target="_blank"
+            className="transform transition duration-150 ease-in-out hover:scale-110"
+          >
+            <SiVercel className="h-6 w-6 dark:text-stone-300" />
+          </a>
+        </div>
       </div>
     </div>
   </footer>
