@@ -4,19 +4,28 @@ import { useRouter } from 'next/router';
 import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
 import Head from 'next/head';
 
-const BlogLayout: FC = ({ children }) => {
+interface BlogLayoutMeta {
+  title: string;
+}
+
+const BlogLayout: FC<{ meta?: BlogLayoutMeta }> = ({ children, meta }) => {
   const { route } = useRouter();
   const { frontMatters } = useContext(BlogSearchContext);
   const [blogTitle, setBlogTitle] = useState('');
 
   useEffect(() => {
     hljs.highlightAll();
-    const slug = route.split('/')[2];
-    const frontMatter = frontMatters.find((fm) => fm.slug === slug);
-    if (frontMatter) {
-      setBlogTitle(frontMatter.title);
+
+    if (meta?.title) {
+      setBlogTitle(meta?.title);
+    } else {
+      const slug = route.split('/')[2];
+      const frontMatter = frontMatters.find((fm) => fm.slug === slug);
+      if (frontMatter) {
+        setBlogTitle(frontMatter.title);
+      }
     }
-  }, [route, frontMatters, setBlogTitle]);
+  }, [meta, route, frontMatters, setBlogTitle]);
 
   return (
     <>

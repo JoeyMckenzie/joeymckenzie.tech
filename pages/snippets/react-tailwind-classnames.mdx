@@ -1,0 +1,30 @@
+# `classNames` React Tailwind utility
+
+```ts
+export function classNames(...classes: string[]): string {
+  return classes.filter(Boolean).join(' ');
+}
+```
+
+With usage:
+
+```html
+<span
+  className={classNames(
+    withConditiionalClass ? 'conditional-class' : 'default-class',
+    'inline-flex cursor-pointer items-center px-3text-sm'
+  )}
+>
+  My content
+</span>
+```
+
+export const meta = {
+  title: 'classNames React Tailwind utility',
+};
+
+import BlogLayout from '@/components/BlogLayout';
+
+export default ({ children }) => (
+  <BlogLayout meta={meta}>{children}</BlogLayout>
+);
