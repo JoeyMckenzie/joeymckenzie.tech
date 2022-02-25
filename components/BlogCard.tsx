@@ -11,7 +11,7 @@ const HEIGHT_WIDTH_PROFILE_IMAGE_SIZE = 40;
 const BlogCard: VFC<{
   post: FrontMatter;
 }> = ({ post }) => {
-  const { filteredDomains, setSearchText, setFilteredDomains } =
+  const { filteredDomains, setSearchText, setFilteredDomains, previewMode } =
     useContext(BlogSearchContext);
   const { title, description, datetime, date, domains, readingTime, slug } =
     post;
@@ -20,12 +20,16 @@ const BlogCard: VFC<{
 
   const addDomain = useCallback(
     (domain: string) => {
+      if (previewMode) {
+        return;
+      }
+
       setSearchText('');
       if (!filteredDomains.find((d) => d === domain)) {
         setFilteredDomains([...filteredDomains, domain]);
       }
     },
-    [filteredDomains, setFilteredDomains, setSearchText]
+    [previewMode, filteredDomains, setFilteredDomains, setSearchText]
   );
 
   return (
