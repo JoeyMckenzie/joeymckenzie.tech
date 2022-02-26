@@ -7,6 +7,7 @@ import frontMatters from '@/public/frontmatters.json';
 import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
 import CodeSnippets from '@/components/CodeSnippets';
 import BlogPreviewContainer from '@/components/BlogPreviewContainer';
+import ContactForm from '@/components/ContactForm';
 
 const Index: NextPage = () => {
   const { setFrontMatters } = useContext(BlogSearchContext);
@@ -25,6 +26,7 @@ const Index: NextPage = () => {
       <Hero />
       <CodeSnippets />
       <BlogPreviewContainer />
+      <ContactForm />
     </>
   );
 };

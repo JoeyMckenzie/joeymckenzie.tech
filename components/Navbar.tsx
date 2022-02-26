@@ -1,7 +1,6 @@
 import { VFC } from 'react';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
-import ActiveLink from '@/components/ActiveLink';
 
 const Navbar: VFC = () => (
   <nav className="fixed top-0 z-10 w-full bg-opacity-50 shadow backdrop-blur backdrop-filter">
