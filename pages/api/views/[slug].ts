@@ -10,7 +10,7 @@ export default async function handler(
   try {
     const slug = request.query.slug.toString();
 
-    if (!WHITELIST_DOMAINS.find((d) => d === request.headers.host ?? '')) {
+    if (!WHITELIST_DOMAINS.find((d) => d === request.headers.referer ?? '')) {
       return response.status(401).json({
         message: 'Origin is not allowed.',
       });

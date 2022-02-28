@@ -2,7 +2,7 @@ import { FrontMatter } from '@/lib/types';
 import { NextApiResponse } from 'next';
 
 export const WHITELIST_DOMAINS = [
-  'https://joeymckenzie.tech/',
+  'https://www.joeymckenzie.tech/',
   'localhost:3000',
 ];
 
