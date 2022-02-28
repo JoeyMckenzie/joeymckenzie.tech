@@ -3,6 +3,7 @@ import hljs from 'highlight.js';
 import { useRouter } from 'next/router';
 import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
 import Head from 'next/head';
+import { upsertViewCount } from '@/lib/utilities';
 
 const BlogLayout: FC = ({ children }) => {
   const { route } = useRouter();
@@ -11,11 +12,15 @@ const BlogLayout: FC = ({ children }) => {
 
   useEffect(() => {
     hljs.highlightAll();
+
     const slug = route.split('/')[2];
     const frontMatter = frontMatters.find((fm) => fm.slug === slug);
+
     if (frontMatter) {
       setBlogTitle(frontMatter.title);
     }
+
+    upsertViewCount(slug);
   }, [route, frontMatters, setBlogTitle]);
 
   return (

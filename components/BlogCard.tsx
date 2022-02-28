@@ -1,22 +1,38 @@
-import { useCallback, useContext, VFC } from 'react';
+import { useCallback, useContext, useEffect, useState, VFC } from 'react';
 import { FrontMatter } from '@/lib/types';
 import { classNames } from '@/lib/utilities';
 import { PILL_COLORS } from '@/lib/constants';
 import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
 import Link from 'next/link';
 import Image from 'next/image';
+import blogs from '@/public/frontmatters.json';
 
 const HEIGHT_WIDTH_PROFILE_IMAGE_SIZE = 40;
 
 const BlogCard: VFC<{
   post: FrontMatter;
 }> = ({ post }) => {
+  const [views, setViews] = useState(0);
+
   const { filteredDomains, setSearchText, setFilteredDomains, previewMode } =
     useContext(BlogSearchContext);
   const { title, description, datetime, date, domains, readingTime, slug } =
     post;
 
+  useEffect(() => {
+    fetch(`/api/views/${slug}`)
+      .then((response) => response.json())
+      .then((views: { total: string }) => {
+        setViews(isNaN(+views.total) ? 0 : +views.total);
+      })
+      .catch((error) => setViews(0));
+  }, [slug, setViews]);
+
   const blogLink = `/blog/${slug}`;
+  const getViews = () => {
+    const views = 42069;
+    return views.toLocaleString('en-US');
+  };
 
   const addDomain = useCallback(
     (domain: string) => {
@@ -79,6 +95,8 @@ const BlogCard: VFC<{
             <time dateTime={datetime}>{date}</time>
             <span aria-hidden="true">&middot;</span>
             <span>{readingTime} read</span>
+            <span aria-hidden="true">&middot;</span>
+            <span>{views} total views</span>
           </div>
         </div>
       </div>

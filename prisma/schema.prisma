@@ -1,0 +1,23 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model Views {
+  slug     String         @id @db.VarChar(128)
+  count    BigInt         @default(1)
+  pageType views_pageType
+
+  @@map("views")
+}
+
+enum views_pageType {
+  BLOG
+  CODE_SNIPPET
+}

@@ -6,4 +6,5 @@ export interface FrontMatter {
   date: string;
   datetime: string;
   readingTime: string;
+  viewCount?: number;
 }
