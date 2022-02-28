@@ -4,7 +4,10 @@ import { NextApiResponse } from 'next';
 export const WHITELIST_DOMAINS = [
   'https://www.joeymckenzie.tech/',
   'https://joeymckenzie.tech/',
+  'https://www.joeymckenzie.io/',
+  'https://joeymckenzie.io/',
   'localhost:3000',
+  'http://localhost:3000/',
 ];
 
 export function sortFrontMatters(previous: FrontMatter, current: FrontMatter) {
