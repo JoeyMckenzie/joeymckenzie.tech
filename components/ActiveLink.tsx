@@ -5,7 +5,7 @@ import { FC, useEffect } from 'react';
 import { classNames } from '@/lib/utilities';
 
 interface ActiveLinkProps {
-  className: string;
+  className?: string;
   activeClassName: string;
   defaultClassName: string;
   href: string;
@@ -25,7 +25,9 @@ const ActiveLink: FC<ActiveLinkProps> = ({
 
   return (
     <Link href={href} passHref>
-      <a className={classNames(activeClass(href), className)}>{children}</a>
+      <a className={classNames(activeClass(href), className ?? '')}>
+        {children}
+      </a>
     </Link>
   );
 };

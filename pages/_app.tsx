@@ -2,11 +2,11 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { VFC } from 'react';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import BlogSearchContextProvider from '@/lib/contexts/blog-search.context';
 import AlertContextProvider from '@/lib/contexts/alert.context';
 import Modal from '@/components/Modal';
 import Notification from '@/components/Notification';
+import FooterWithLinks from '@/components/FooterWithLinks';
 
 const CustomApp: VFC<AppProps> = ({ Component, pageProps }) => (
   <BlogSearchContextProvider>
@@ -15,7 +15,7 @@ const CustomApp: VFC<AppProps> = ({ Component, pageProps }) => (
       <Notification />
       <Navbar />
       <Component {...pageProps} />
-      <Footer />
+      <FooterWithLinks />
     </AlertContextProvider>
   </BlogSearchContextProvider>
 );

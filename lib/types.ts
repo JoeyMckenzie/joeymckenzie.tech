@@ -8,3 +8,8 @@ export interface FrontMatter {
   readingTime: string;
   viewCount?: number;
 }
+
+export interface NavigationLink {
+  href: string;
+  name: string;
+}

@@ -1,3 +1,5 @@
+import { NavigationLink } from '@/lib/types';
+
 export const PILL_COLORS = [
   {
     pill: 'bg-blue-100 text-blue-800',
@@ -18,5 +20,20 @@ export const PILL_COLORS = [
     pill: 'bg-red-100 text-red-800',
     closeButton:
       'text-red-400 hover:bg-red-200 hover:text-red-500 focus:bg-red-500',
+  },
+];
+
+export const navigationLinks: NavigationLink[] = [
+  {
+    href: '/',
+    name: 'Home',
+  },
+  {
+    href: '/about',
+    name: 'About',
+  },
+  {
+    href: '/blog',
+    name: 'Blog',
   },
 ];
