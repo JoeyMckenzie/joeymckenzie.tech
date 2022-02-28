@@ -1,7 +1,10 @@
 import { FrontMatter } from '@/lib/types';
 import { NextApiResponse } from 'next';
 
-export const WHITELIST_DOMAINS = ['joeymckenzie.tech', 'localhost:3000'];
+export const WHITELIST_DOMAINS = [
+  'https://joeymckenzie.tech/',
+  'localhost:3000',
+];
 
 export function sortFrontMatters(previous: FrontMatter, current: FrontMatter) {
   const previousDate = new Date(previous.datetime);
