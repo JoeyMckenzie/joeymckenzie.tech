@@ -3,6 +3,7 @@ import { NextApiResponse } from 'next';
 
 export const WHITELIST_DOMAINS = [
   'https://www.joeymckenzie.tech/',
+  'https://joeymckenzie.tech/',
   'localhost:3000',
 ];
 
