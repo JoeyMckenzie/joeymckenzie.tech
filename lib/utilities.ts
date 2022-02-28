@@ -1,5 +1,7 @@
 import { FrontMatter } from '@/lib/types';
-import { NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
+import MiddlewarePlugin from 'next/dist/build/webpack/plugins/middleware-plugin';
+import { NextMiddlewareResult } from 'next/dist/server/web/types';
 
 export const WHITELIST_DOMAINS = [
   'https://www.joeymckenzie.tech/',

@@ -12,11 +12,11 @@ export default async function handler(
   response: NextApiResponse
 ) {
   try {
-    if (!WHITELIST_DOMAINS.find((d) => d === request.headers.referer ?? '')) {
-      return response.status(401).json({
-        message: 'Origin not allowed.',
-      });
-    }
+    // if (!WHITELIST_DOMAINS.find((d) => d === request.headers.referer ?? '')) {
+    //   return response.status(401).json({
+    //     message: 'Origin not allowed.',
+    //   });
+    // }
 
     if (request.method !== 'GET') {
       return methodNotAllowed(response);
