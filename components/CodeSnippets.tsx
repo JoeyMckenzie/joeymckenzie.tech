@@ -32,11 +32,22 @@ const snippets: CodeSnippet[] = [
       'A simple utility service to assist with closing observable streams within components',
     link: '/snippets/angular-unsubscribe-service',
   },
+  {
+    title: 'Fluent Validation/MediatR validator pipeline',
+    description:
+      'MediatR Pipeline behavior to assist in validating incoming requests with Fluent Validation',
+    link: '/snippets/mediatr-request-validation',
+  },
+  {
+    title: 'Go Atlas DDL schema file merging',
+    description: 'File merging utility for partial schema definition files',
+    link: '/snippets/go-atlas-ddl-file-merge',
+  },
 ];
 
 const CodeSnippets: VFC = () => {
   return (
-    <div className="relative">
+    <div className="relative pb-16 lg:pb-24">
       <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
         <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200 sm:text-4xl">
           Code snippets

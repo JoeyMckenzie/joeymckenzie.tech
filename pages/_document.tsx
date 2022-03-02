@@ -5,10 +5,11 @@ import Document, {
   NextScript,
   DocumentContext,
 } from 'next/document';
+import { firstValueFrom, from } from 'rxjs';
 
 class CustomDocument extends Document {
-  static async getInitialProps(context: DocumentContext) {
-    return await Document.getInitialProps(context);
+  static getInitialProps(context: DocumentContext) {
+    return firstValueFrom(from(Document.getInitialProps(context)));
   }
 
   render() {

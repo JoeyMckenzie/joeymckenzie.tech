@@ -11,9 +11,6 @@ const BlogPreviewContainer: VFC = () => {
         <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200 sm:text-4xl">
           Latest from the blog
         </h2>
-        <p className="mt-3 text-gray-500 dark:text-gray-400 sm:mt-4">
-          Hot off the press and ready to break your production environment.
-        </p>
       </div>
       <BlogCardsContainer previewMode={true} />
       <div className="pt-12">

@@ -23,7 +23,7 @@ const BlogCardsContainer: VFC<{ previewMode: boolean }> = ({
         ));
 
   return (
-    <div className="mt-12 grid gap-16 pt-6 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12">
+    <div className="grid gap-16 pt-6 lg:grid-cols-3 lg:gap-x-5 lg:gap-y-12">
       {frontMattersToDisplay}
     </div>
   );

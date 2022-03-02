@@ -1,38 +1,30 @@
-import { useCallback, useContext, useEffect, useState, VFC } from 'react';
-import { FrontMatter } from '@/lib/types';
+import { useCallback, useContext, useEffect, VFC } from 'react';
+import { FrontMatter, ViewsApiResponse } from '@/lib/types';
 import { classNames } from '@/lib/utilities';
 import { PILL_COLORS } from '@/lib/constants';
 import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
 import Link from 'next/link';
 import Image from 'next/image';
-import blogs from '@/public/frontmatters.json';
+import profileImage from '@/public/portfolio_pic.jpg';
+import useSWR from 'swr';
+import { addViewToBlog, getBlogViews } from '@/lib/services/views.service';
 
 const HEIGHT_WIDTH_PROFILE_IMAGE_SIZE = 40;
 
 const BlogCard: VFC<{
   post: FrontMatter;
 }> = ({ post }) => {
-  const [views, setViews] = useState(0);
+  const { title, description, datetime, date, domains, readingTime, slug } =
+    post;
+  const apiLink = `/api/views/${slug}`;
+  const blogLink = `/blog/${slug}`;
+
+  const { data: blogViews } = useSWR<number>(apiLink, getBlogViews, {
+    revalidateIfStale: false,
+  });
 
   const { filteredDomains, setSearchText, setFilteredDomains, previewMode } =
     useContext(BlogSearchContext);
-  const { title, description, datetime, date, domains, readingTime, slug } =
-    post;
-
-  useEffect(() => {
-    fetch(`/api/views/${slug}`)
-      .then((response) => response.json())
-      .then((views: { total: string }) => {
-        setViews(isNaN(+views.total) ? 0 : +views.total);
-      })
-      .catch((error) => setViews(0));
-  }, [slug, setViews]);
-
-  const blogLink = `/blog/${slug}`;
-  const getViews = () => {
-    const views = 42069;
-    return views.toLocaleString('en-US');
-  };
 
   const addDomain = useCallback(
     (domain: string) => {
@@ -47,6 +39,12 @@ const BlogCard: VFC<{
     },
     [previewMode, filteredDomains, setFilteredDomains, setSearchText]
   );
+
+  const addBlogView = useCallback(async () => {
+    if (process.env.NODE_ENV === 'production') {
+      await addViewToBlog(apiLink, blogViews ?? 0);
+    }
+  }, [apiLink, blogViews]);
 
   return (
     <div>
@@ -67,7 +65,7 @@ const BlogCard: VFC<{
         </div>
       </div>
       <Link href={blogLink} passHref>
-        <a className="mt-4 block">
+        <a onClick={addBlogView} className="mt-4 block">
           <p className="text-xl font-semibold text-gray-900 dark:text-gray-300">
             {title}
           </p>
@@ -82,8 +80,8 @@ const BlogCard: VFC<{
           <Image
             height={HEIGHT_WIDTH_PROFILE_IMAGE_SIZE}
             width={HEIGHT_WIDTH_PROFILE_IMAGE_SIZE}
-            className="h-10 w-10 rounded-full"
-            src="/portfolio_pic.jpg"
+            className="rounded-full"
+            src={profileImage}
             alt="Joey McKenzie software engineer joeymckenzie.tech"
           />
         </div>
@@ -96,7 +94,7 @@ const BlogCard: VFC<{
             <span aria-hidden="true">&middot;</span>
             <span>{readingTime} read</span>
             <span aria-hidden="true">&middot;</span>
-            <span>{views} total views</span>
+            <span>{blogViews} total views</span>
           </div>
         </div>
       </div>

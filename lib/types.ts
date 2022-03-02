@@ -13,3 +13,7 @@ export interface NavigationLink {
   href: string;
   name: string;
 }
+
+export interface ViewsApiResponse {
+  total: string;
+}

@@ -1,0 +1,89 @@
+# Fluent Validation/MediatR validator pipeline
+
+```csharp
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.Logging;
+
+namespace MediatR.Example
+{
+    /// <summary>
+    /// Creates a pipeline validator to validate each request coming into the application layer.
+    /// </summary>
+    /// <typeparam name="TRequest">Request handler command or query.</typeparam>
+    /// <typeparam name="TResponse">Excepted view model response from the associated handler.</typeparam>
+    public class RequestValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : notnull
+    {
+        private readonly IEnumerable<IValidator<TRequest>> _validators;
+        private readonly ILogger<TRequest> _logger;
+
+        public RequestValidationBehavior(IEnumerable<IValidator<TRequest>> validators, ILogger<TRequest> logger)
+        {
+            _validators = validators;
+            _logger = logger;
+        }
+
+        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        {
+            var context = new ValidationContext(request);
+
+            var failures = _validators
+                .Select(v => v.Validate(context))
+                .SelectMany(result => result.Errors)
+                .Where(f => f is not null)
+                .ToList();
+
+            if (failures.Count > 0)
+            {
+                _logger.LogInformation($"Validation failure for request [{request}]");
+                var validationErrors = new ApplicationValidationErrors();
+
+                foreach (var validationFailure in failures.Select(failure => new ApplicationValidationError(failure.PropertyName, failure.ErrorMessage)))
+                {
+                    validationErrors.Errors.Add(validationFailure);
+                }
+
+                // Attach the validation errors to your custom error wrapper to pass on to subsequent requests
+                // for more refined error handling within your downstream service handlers
+                request.ValidationErrors = validationErrors;
+
+                // Or more simply, throw the FV validation exception
+                // throw new ValidationException(failures);
+            }
+
+            return await next.Invoke();
+        }
+    }
+}
+```
+
+With DI container registration in `Startup.cs`:
+
+```cs
+// This method gets called by the runtime. Use this method to add services to the container.
+public void ConfigureServices(IServiceCollection services)
+{
+    // Register MediatR handlers and request validators
+    var executingAssembly = Assembly.GetExecutingAssembly();
+    services.AddMediatR(executingAssembly);
+    services.AddValidatorsFromAssembly(executingAssembly);
+
+    // Add the MediatR validation pipeline
+    services.TryAddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+}
+```
+
+export const meta = {
+  title: 'Fluent Validation/MediatR validator pipeline',
+};
+
+import CodeSnippetLayout from '@/layouts/CodeSnippetLayout';
+
+export default ({ children }) => (
+  <CodeSnippetLayout meta={meta}>{children}</CodeSnippetLayout>
+);
