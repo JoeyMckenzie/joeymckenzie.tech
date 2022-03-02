@@ -93,8 +93,12 @@ const BlogCard: VFC<{
             <time dateTime={datetime}>{date}</time>
             <span aria-hidden="true">&middot;</span>
             <span>{readingTime} read</span>
-            <span aria-hidden="true">&middot;</span>
-            <span>{blogViews} total views</span>
+            {blogViews && blogViews > 0 ? (
+              <>
+                <span aria-hidden="true">&middot;</span>
+                <span>{blogViews} total views</span>
+              </>
+            ) : null}
           </div>
         </div>
       </div>
