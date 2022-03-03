@@ -15,9 +15,10 @@ import { mutate } from 'swr';
 
 export function getBlogViews(key: string) {
   return firstValueFrom(
-    fromFetch(key).pipe(
-      exhaustMap((response) => from(response.json())),
-      map((data: ViewsApiResponse) => (isNaN(+data.total) ? 0 : +data.total)),
+    fromFetch<ViewsApiResponse>(key, {
+      selector: (response) => response.json(),
+    }).pipe(
+      map((data) => (isNaN(+data.total) ? 0 : +data.total)),
       catchError((error) => {
         console.error(error);
         return of(0);
