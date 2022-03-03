@@ -16,7 +16,10 @@ const Index: NextPage = () => {
   const { setFrontMatters } = useContext(BlogSearchContext);
   const { data: githubMetas } = useSWR<GitHubMeta[]>(
     'githubMetas',
-    getProjectRepos
+    getProjectRepos,
+    {
+      revalidateIfStale: false,
+    }
   );
 
   useEffect(
