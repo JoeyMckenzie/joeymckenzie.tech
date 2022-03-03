@@ -23,7 +23,7 @@ export const PILL_COLORS = [
   },
 ];
 
-export const navigationLinks: NavigationLink[] = [
+export const NAVIGATION_LINKS: NavigationLink[] = [
   {
     href: '/',
     name: 'Home',

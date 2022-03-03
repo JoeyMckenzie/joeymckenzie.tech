@@ -7,34 +7,32 @@ export default function post(
   response: NextApiResponse,
   slug: string
 ) {
-  return firstValueFrom(
-    from(
-      prisma.views.upsert({
-        where: { slug },
-        create: {
-          slug,
-          pageType: 'BLOG',
+  return from(
+    prisma.views.upsert({
+      where: { slug },
+      create: {
+        slug,
+        pageType: 'BLOG',
+      },
+      update: {
+        count: {
+          increment: 1,
         },
-        update: {
-          count: {
-            increment: 1,
-          },
-        },
+      },
+    })
+  ).pipe(
+    map((newOrUpdatedViews) =>
+      response.status(200).json({
+        total: newOrUpdatedViews.count.toString(),
       })
-    ).pipe(
-      map((newOrUpdatedViews) =>
-        response.status(200).json({
-          total: newOrUpdatedViews.count.toString(),
+    ),
+    catchError((error) => {
+      console.error(error);
+      return of(
+        response.status(500).json({
+          message: error.toString(),
         })
-      ),
-      catchError((error) => {
-        console.error(error);
-        return of(
-          response.status(500).json({
-            message: error.toString(),
-          })
-        );
-      })
-    )
+      );
+    })
   );
 }

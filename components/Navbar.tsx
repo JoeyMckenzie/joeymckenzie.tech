@@ -2,7 +2,7 @@ import { VFC } from 'react';
 import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import ActiveLink from '@/components/ActiveLink';
-import { navigationLinks } from '@/lib/constants';
+import { NAVIGATION_LINKS } from '@/lib/constants';
 
 const Navbar: VFC = () => (
   <nav className="fixed top-0 z-10 w-full bg-opacity-50 shadow backdrop-blur backdrop-filter">
@@ -14,7 +14,7 @@ const Navbar: VFC = () => (
           </div>
         </div>
         <div className="-ml-16 hidden flex-row items-center space-x-4 font-ubuntu sm:flex">
-          {navigationLinks.map((link) => (
+          {NAVIGATION_LINKS.map((link) => (
             <ActiveLink
               key={link.href}
               activeClassName="text-gray-900 dark:text-gray-200"

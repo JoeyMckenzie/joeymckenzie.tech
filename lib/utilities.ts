@@ -1,5 +1,6 @@
 import { FrontMatter } from '@/lib/types/shared.types';
 import { NextApiResponse } from 'next';
+import { PILL_COLORS } from '@/lib/constants';
 
 export const WHITELIST_DOMAINS = [
   'https://www.joeymckenzie.tech/',
@@ -41,4 +42,9 @@ export function methodNotAllowed(response: NextApiResponse) {
   return response.status(405).json({
     message: 'HTTP Method is not allowed.',
   });
+}
+
+export function getRandomPillColor() {
+  const randomIndex = Math.floor(Math.random() * PILL_COLORS.length);
+  return PILL_COLORS[randomIndex];
 }

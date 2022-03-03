@@ -1,41 +1,4 @@
-export interface Owner {
-  login: string;
-  id: number;
-  node_id: string;
-  avatar_url: string;
-  gravatar_id: string;
-  url: string;
-  html_url: string;
-  followers_url: string;
-  following_url: string;
-  gists_url: string;
-  starred_url: string;
-  subscriptions_url: string;
-  organizations_url: string;
-  repos_url: string;
-  events_url: string;
-  received_events_url: string;
-  type: string;
-  site_admin: boolean;
-}
-
-export interface License {
-  key: string;
-  name: string;
-  spdx_id: string;
-  url: string;
-  node_id: string;
-}
-
-export interface Permissions {
-  admin: boolean;
-  maintain: boolean;
-  push: boolean;
-  triage: boolean;
-  pull: boolean;
-}
-
-export interface GitHubApiResponse {
+export interface GitHubReposApiResponse {
   id: number;
   node_id: string;
   name: string;
@@ -89,7 +52,7 @@ export interface GitHubApiResponse {
   ssh_url: string;
   clone_url: string;
   svn_url: string;
-  homepage?: any;
+  homepage: string;
   size: number;
   stargazers_count: number;
   watchers_count: number;
@@ -100,7 +63,7 @@ export interface GitHubApiResponse {
   has_wiki: boolean;
   has_pages: boolean;
   forks_count: number;
-  mirror_url?: any;
+  mirror_url: null;
   archived: boolean;
   disabled: boolean;
   open_issues_count: number;
@@ -113,5 +76,62 @@ export interface GitHubApiResponse {
   open_issues: number;
   watchers: number;
   default_branch: string;
-  permissions: Permissions;
+  permissions?: Permissions;
+  temp_clone_token?: string;
+  allow_squash_merge?: boolean;
+  allow_merge_commit?: boolean;
+  allow_rebase_merge?: boolean;
+  allow_auto_merge?: boolean;
+  delete_branch_on_merge?: boolean;
+  allow_update_branch?: boolean;
+  network_count?: number;
+  subscribers_count?: number;
+}
+
+export interface License {
+  key: string;
+  name: string;
+  spdx_id: string;
+  url: string;
+  node_id: string;
+}
+
+export interface Owner {
+  login: string;
+  id: number;
+  node_id: string;
+  avatar_url: string;
+  gravatar_id: string;
+  url: string;
+  html_url: string;
+  followers_url: string;
+  following_url: string;
+  gists_url: string;
+  starred_url: string;
+  subscriptions_url: string;
+  organizations_url: string;
+  repos_url: string;
+  events_url: string;
+  received_events_url: string;
+  type: string;
+  site_admin: boolean;
+}
+
+export interface Permissions {
+  admin: boolean;
+  maintain: boolean;
+  push: boolean;
+  triage: boolean;
+  pull: boolean;
+}
+
+export interface GitHubMeta {
+  name: string;
+  description: string;
+  url: string;
+  stars: number;
+  language: string;
+  openIssues: number;
+  forks: number;
+  issuesLink: string;
 }

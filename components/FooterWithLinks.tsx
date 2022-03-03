@@ -1,4 +1,4 @@
-import { navigationLinks } from '@/lib/constants';
+import { NAVIGATION_LINKS } from '@/lib/constants';
 import { NavigationLink } from '@/lib/types/shared.types';
 import { SVGProps, VFC } from 'react';
 import ActiveLink from '@/components/ActiveLink';
@@ -17,7 +17,7 @@ interface NavigationMeta {
 }
 
 const navigation: NavigationMeta = {
-  main: navigationLinks,
+  main: NAVIGATION_LINKS,
   social: [
     {
       name: 'Resume',
