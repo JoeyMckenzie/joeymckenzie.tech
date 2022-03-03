@@ -1,8 +1,4 @@
-import type {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-  NextPage,
-} from 'next';
+import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useContext, useEffect } from 'react';
 import frontMatters from '@/public/frontmatters.json';
@@ -11,24 +7,17 @@ import CodeSnippets from '@/components/CodeSnippets';
 import BlogPreviewContainer from '@/components/BlogPreviewContainer';
 import ContactForm from '@/components/ContactForm';
 import Intro from '@/components/Intro';
-import { firstValueFrom } from 'rxjs';
 import { getProjectRepos } from '@/lib/services/github.service';
 import GitHubProjects from '@/components/GitHubProjects';
+import useSWR from 'swr';
+import { GitHubMeta } from '@/lib/types/github.types';
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const githubApiResponse = await firstValueFrom(getProjectRepos());
-
-  return {
-    props: {
-      githubMetas: githubApiResponse ?? [],
-    },
-  };
-};
-
-const Index: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ githubMetas }) => {
+const Index: NextPage = () => {
   const { setFrontMatters } = useContext(BlogSearchContext);
+  const { data: githubMetas } = useSWR<GitHubMeta[]>(
+    'githubMetas',
+    getProjectRepos
+  );
 
   useEffect(
     () => setFrontMatters(frontMatters.frontMatters),
@@ -43,7 +32,7 @@ const Index: NextPage<
       </Head>
       <Intro />
       <BlogPreviewContainer />
-      <GitHubProjects metas={githubMetas} />
+      {githubMetas && <GitHubProjects metas={githubMetas} />}
       <CodeSnippets />
       <ContactForm />
     </>

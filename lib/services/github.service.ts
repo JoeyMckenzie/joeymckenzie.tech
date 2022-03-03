@@ -1,5 +1,5 @@
 import { fromFetch } from 'rxjs/fetch';
-import { catchError, EMPTY, exhaustMap, filter, forkJoin, map } from 'rxjs';
+import { catchError, EMPTY, filter, firstValueFrom, forkJoin, map } from 'rxjs';
 import { GitHubMeta, GitHubReposApiResponse } from '@/lib/types/github.types';
 
 const API_BASE_URL = 'https://api.github.com/repos/joeymckenzie';
@@ -14,15 +14,18 @@ const PROJECT_REPOS = [
 
 export function getProjectRepos() {
   const repoRequests = PROJECT_REPOS.map((repo) =>
-    fromFetch(`${API_BASE_URL}/${repo}`, {
+    fromFetch<GitHubReposApiResponse>(`${API_BASE_URL}/${repo}`, {
       method: 'GET',
       headers: {
-        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+        Authorization: `token ${process.env.NEXT_PUBLIC_GITHUB_ACCESS_TOKEN}`,
         Accept: 'application/vnd.github.v3+json',
       },
+      selector: (response) => response.json(),
     }).pipe(
-      exhaustMap((response) => response.json()),
-      map((data) => data as GitHubReposApiResponse),
+      catchError((error) => {
+        console.error(error);
+        return EMPTY;
+      }),
       filter((repo) => !!repo),
       map(
         (repo) =>
@@ -36,13 +39,9 @@ export function getProjectRepos() {
             forks: repo.forks,
             issuesLink: `https://github.com/JoeyMckenzie/${repo.name}/issues/new`,
           } as GitHubMeta)
-      ),
-      catchError((error) => {
-        console.error(error);
-        return EMPTY;
-      })
+      )
     )
   );
 
-  return forkJoin(repoRequests);
+  return firstValueFrom(forkJoin(repoRequests));
 }
