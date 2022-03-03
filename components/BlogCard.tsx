@@ -1,5 +1,5 @@
 import { useCallback, useContext, useEffect, VFC } from 'react';
-import { FrontMatter, ViewsApiResponse } from '@/lib/types';
+import { FrontMatter, ViewsApiResponse } from '@/lib/types/shared.types';
 import { classNames } from '@/lib/utilities';
 import { PILL_COLORS } from '@/lib/constants';
 import { BlogSearchContext } from '@/lib/contexts/blog-search.context';

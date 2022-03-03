@@ -1,6 +1,6 @@
 import { useContext, VFC } from 'react';
 import { sortFrontMatters } from '@/lib/utilities';
-import { FrontMatter } from '@/lib/types';
+import { FrontMatter } from '@/lib/types/shared.types';
 import BlogCard from '@/components/BlogCard';
 import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
 

@@ -1,4 +1,4 @@
-import { NavigationLink } from '@/lib/types';
+import { NavigationLink } from '@/lib/types/shared.types';
 
 export const PILL_COLORS = [
   {

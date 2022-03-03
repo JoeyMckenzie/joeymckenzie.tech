@@ -1,11 +1,20 @@
 import { VFC } from 'react';
 import CodeSnippetCard from '@/components/CodeSnippetCard';
 import Link from 'next/link';
+import {
+  SiTypescript,
+  SiAngular,
+  SiReact,
+  SiDotnet,
+  SiCsharp,
+  SiGoland,
+} from 'react-icons/si';
 
 interface CodeSnippet {
   description: string;
   link: string;
   title: string;
+  icons: JSX.Element[];
 }
 
 const snippets: CodeSnippet[] = [
@@ -14,34 +23,52 @@ const snippets: CodeSnippet[] = [
     description:
       'Custom React hook to utilize Tailwind dark mode document binding',
     link: '/snippets/use-tailwind-dark-mode',
+    icons: [
+      <SiTypescript key={0} className="h-6 w-6 text-white" />,
+      <SiReact key={1} className="h-6 w-6 text-white" />,
+    ],
   },
   {
     title: 'Typed next.js ActiveLink component',
     description: 'A wrapping component around next.js Link using TypeScript',
     link: '/snippets/nextjs-typescript-active-link',
+    icons: [
+      <SiTypescript key={0} className="h-6 w-6 text-white" />,
+      <SiReact key={1} className="h-6 w-6 text-white" />,
+    ],
   },
   {
     title: 'Tailwind classNames React utility',
     description:
       'A simple utility to concatenate conditional classes for Tailwind-based React apps',
     link: '/snippets/react-tailwind-classnames',
+    icons: [
+      <SiTypescript key={0} className="h-6 w-6 text-white" />,
+      <SiReact key={1} className="h-6 w-6 text-white" />,
+    ],
   },
   {
     title: 'Angular unsubscribe$ service',
     description:
       'A simple utility service to assist with closing observable streams within components',
     link: '/snippets/angular-unsubscribe-service',
+    icons: [<SiAngular key={1} className="h-6 w-6 text-white" />],
   },
   {
     title: 'Fluent Validation/MediatR validator pipeline',
     description:
       'MediatR Pipeline behavior to assist in validating incoming requests with Fluent Validation',
     link: '/snippets/mediatr-request-validation',
+    icons: [
+      <SiCsharp key={0} className="h-6 w-6 text-white" />,
+      <SiDotnet key={1} className="h-6 w-6 text-white" />,
+    ],
   },
   {
     title: 'Go Atlas DDL schema file merging',
     description: 'File merging utility for partial schema definition files',
     link: '/snippets/go-atlas-ddl-file-merge',
+    icons: [<SiGoland key={1} className="h-6 w-6 text-white" />],
   },
 ];
 
@@ -59,10 +86,14 @@ const CodeSnippets: VFC = () => {
         </p>
         <div className="mt-12">
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {snippets.map(({ title, description, link }, index) => (
+            {snippets.map(({ title, description, link, icons }, index) => (
               <Link href={link} key={index} passHref>
                 <a>
-                  <CodeSnippetCard title={title} description={description} />
+                  <CodeSnippetCard
+                    title={title}
+                    description={description}
+                    icons={icons}
+                  />
                 </a>
               </Link>
             ))}

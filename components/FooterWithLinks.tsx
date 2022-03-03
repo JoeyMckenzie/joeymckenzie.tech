@@ -1,5 +1,5 @@
 import { navigationLinks } from '@/lib/constants';
-import { NavigationLink } from '@/lib/types';
+import { NavigationLink } from '@/lib/types/shared.types';
 import { SVGProps, VFC } from 'react';
 import ActiveLink from '@/components/ActiveLink';
 import Logo from '@/components/Logo';

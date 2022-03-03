@@ -1,4 +1,4 @@
-import { ViewsApiResponse } from '@/lib/types';
+import { ViewsApiResponse } from '@/lib/types/shared.types';
 import {
   catchError,
   EMPTY,

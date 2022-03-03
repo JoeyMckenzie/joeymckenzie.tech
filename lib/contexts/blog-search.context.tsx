@@ -6,7 +6,7 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { FrontMatter } from '@/lib/types';
+import { FrontMatter } from '@/lib/types/shared.types';
 import blogs from '@/public/frontmatters.json';
 import { useRouter } from 'next/router';
 
