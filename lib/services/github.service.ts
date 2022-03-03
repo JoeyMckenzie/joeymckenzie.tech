@@ -1,8 +1,7 @@
 import { fromFetch } from 'rxjs/fetch';
-import { catchError, EMPTY, filter, forkJoin, map, timeout } from 'rxjs';
+import { catchError, EMPTY, exhaustMap, filter, forkJoin, map } from 'rxjs';
 import { GitHubMeta, GitHubReposApiResponse } from '@/lib/types/github.types';
 
-const TIMEOUT = 5000;
 const API_BASE_URL = 'https://api.github.com/repos/joeymckenzie';
 const PROJECT_REPOS = [
   'BlazorConduit',
@@ -15,7 +14,15 @@ const PROJECT_REPOS = [
 
 export function getProjectRepos() {
   const repoRequests = PROJECT_REPOS.map((repo) =>
-    getRepo(repo).pipe(
+    fromFetch(`${API_BASE_URL}/${repo}`, {
+      method: 'GET',
+      headers: {
+        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+        Accept: 'application/vnd.github.v3+json',
+      },
+    }).pipe(
+      exhaustMap((response) => response.json()),
+      map((data) => data as GitHubReposApiResponse),
       filter((repo) => !!repo),
       map(
         (repo) =>
@@ -29,25 +36,13 @@ export function getProjectRepos() {
             forks: repo.forks,
             issuesLink: `https://github.com/JoeyMckenzie/${repo.name}/issues/new`,
           } as GitHubMeta)
-      )
+      ),
+      catchError((error) => {
+        console.error(error);
+        return EMPTY;
+      })
     )
   );
 
   return forkJoin(repoRequests);
-}
-
-export function getRepo(name: string) {
-  return fromFetch<GitHubReposApiResponse>(`${API_BASE_URL}/${name}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
-      Accept: 'application/vnd.github.v3+json',
-    },
-    selector: (response) => response.json(),
-  }).pipe(
-    catchError((error) => {
-      console.error(error);
-      return EMPTY;
-    })
-  );
 }
