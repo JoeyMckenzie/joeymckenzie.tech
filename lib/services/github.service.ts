@@ -45,7 +45,6 @@ export function getRepo(name: string) {
     },
     selector: (response) => response.json(),
   }).pipe(
-    timeout(TIMEOUT),
     catchError((error) => {
       console.error(error);
       return EMPTY;
