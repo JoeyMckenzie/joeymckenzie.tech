@@ -1,4 +1,8 @@
-import type { NextPage } from 'next';
+import type {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  NextPage,
+} from 'next';
 import Head from 'next/head';
 import { useContext, useEffect } from 'react';
 import frontMatters from '@/public/frontmatters.json';
@@ -9,18 +13,20 @@ import ContactForm from '@/components/ContactForm';
 import Intro from '@/components/Intro';
 import { getProjectRepos } from '@/lib/services/github.service';
 import GitHubProjects from '@/components/GitHubProjects';
-import useSWR from 'swr';
 import { GitHubMeta } from '@/lib/types/github.types';
 
-const Index: NextPage = () => {
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    props: {
+      githubMetas: await getProjectRepos(),
+    } as { githubMetas: GitHubMeta[] },
+  };
+};
+
+const Index: NextPage<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = ({ githubMetas }) => {
   const { setFrontMatters } = useContext(BlogSearchContext);
-  const { data: githubMetas } = useSWR<GitHubMeta[]>(
-    'githubMetas',
-    getProjectRepos,
-    {
-      revalidateIfStale: false,
-    }
-  );
 
   useEffect(
     () => setFrontMatters(frontMatters.frontMatters),

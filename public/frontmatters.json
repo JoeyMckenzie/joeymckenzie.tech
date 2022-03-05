@@ -1,6 +1,15 @@
 {
   "frontMatters": [
     {
+      "title": "React data fetching with RxJS",
+      "description": "Use RxJS to implement simple data fetching, making ALL THE THINGS reactive!",
+      "domains": ["React", "RxJS"],
+      "date": "Mar 3, 2022",
+      "datetime": "2022-03-03",
+      "readingTime": "8 min",
+      "slug": "react-data-fetching-with-rxjs"
+    },
+    {
       "title": "Hitchhiker's guide to Angular development with Nx",
       "description": "The answer is simple... 42 (projects in the same monorepo).",
       "domains": ["Angular", "Nx", "NgRx"],

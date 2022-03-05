@@ -4,11 +4,8 @@ FROM node:16-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install
-
-# If using npm with a `package-lock.json` comment out above and use below instead
-# COPY package.json package-lock.json ./
-# RUN npm ci
+COPY ./prisma ./prisma
+RUN npm ci
 
 # Rebuild the source code only when needed
 FROM node:16-alpine AS builder

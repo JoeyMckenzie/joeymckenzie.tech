@@ -2,10 +2,12 @@ version: '3.8'
 
 services:
   web:
-    container_name: nextjs_typescript_tailwind_template
+    container_name: joeymckenzie_tech
     build:
       context: .
       dockerfile: Dockerfile
+    env_file:
+      - .env
     restart: always
     ports:
       - '3000:3000'
