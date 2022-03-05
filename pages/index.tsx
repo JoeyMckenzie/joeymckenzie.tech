@@ -13,20 +13,18 @@ import ContactForm from '@/components/ContactForm';
 import Intro from '@/components/Intro';
 import { getProjectRepos } from '@/lib/services/github.service';
 import GitHubProjects from '@/components/GitHubProjects';
+import useSWR from 'swr';
 import { GitHubMeta } from '@/lib/types/github.types';
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  return {
-    props: {
-      githubMetas: await getProjectRepos(),
-    } as { githubMetas: GitHubMeta[] },
-  };
-};
-
-const Index: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ githubMetas }) => {
+const Index: NextPage = () => {
   const { setFrontMatters } = useContext(BlogSearchContext);
+  const { data: githubMetas } = useSWR<GitHubMeta[]>(
+    'githubMetas',
+    getProjectRepos,
+    {
+      revalidateIfStale: false,
+    }
+  );
 
   useEffect(
     () => setFrontMatters(frontMatters.frontMatters),
