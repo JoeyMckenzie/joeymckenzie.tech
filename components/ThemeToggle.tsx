@@ -1,15 +1,19 @@
-import { VFC } from 'react';
+import { useEffect, useState, VFC } from 'react';
 import { Switch } from '@headlessui/react';
 import { classNames } from '@/lib/utilities';
-import { useDarkMode } from '@/lib/hooks/use-dark-mode.hook';
+import { useTheme } from 'next-themes';
 
 const ThemeToggle: VFC = () => {
-  const { enabled, toggleDarkMode } = useDarkMode();
+  const { theme, setTheme } = useTheme();
+  const [enabled, setEnabled] = useState(false);
+  const toggleDarkMode = () => setTheme(enabled ? 'light' : 'dark');
+
+  useEffect(() => setEnabled(theme === 'dark'), [theme]);
 
   return (
     <Switch
       checked={enabled}
-      onChange={() => toggleDarkMode()}
+      onChange={toggleDarkMode}
       className={classNames(
         enabled ? 'bg-stone-600' : 'bg-gray-200',
         'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-stone-500 focus:ring-offset-2'

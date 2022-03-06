@@ -7,17 +7,34 @@ import AlertContextProvider from '@/lib/contexts/alert.context';
 import Modal from '@/components/Modal';
 import Notification from '@/components/Notification';
 import FooterWithLinks from '@/components/FooterWithLinks';
+import { ThemeProvider } from 'next-themes';
+import { DefaultSeo } from 'next-seo';
 
 const CustomApp: VFC<AppProps> = ({ Component, pageProps }) => (
-  <BlogSearchContextProvider>
-    <AlertContextProvider>
-      <Modal />
-      <Notification />
-      <Navbar />
-      <Component {...pageProps} />
-      <FooterWithLinks />
-    </AlertContextProvider>
-  </BlogSearchContextProvider>
+  <ThemeProvider attribute="class">
+    <DefaultSeo
+      openGraph={{
+        type: 'website',
+        locale: 'en_US',
+        url: 'https://joeymckenzie.tech/',
+        site_name: 'joeymckenzie.tech',
+      }}
+      twitter={{
+        handle: '@_joeyMcKenzie',
+        site: 'https://twitter.com/_joeyMcKenzie',
+        cardType: 'summary_large_image',
+      }}
+    />
+    <BlogSearchContextProvider>
+      <AlertContextProvider>
+        <Modal />
+        <Notification />
+        <Navbar />
+        <Component {...pageProps} />
+        <FooterWithLinks />
+      </AlertContextProvider>
+    </BlogSearchContextProvider>
+  </ThemeProvider>
 );
 
 export default CustomApp;

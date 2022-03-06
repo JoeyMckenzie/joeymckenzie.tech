@@ -3,6 +3,7 @@ import hljs from 'highlight.js';
 import { useRouter } from 'next/router';
 import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
 import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 
 const BlogLayout: FC = ({ children }) => {
   const { route } = useRouter();
@@ -22,10 +23,10 @@ const BlogLayout: FC = ({ children }) => {
 
   return (
     <>
-      <Head>
-        <title>joeymckenzie.tech &middot; {blogTitle}</title>
-        <meta title={blogTitle} />
-      </Head>
+      <NextSeo
+        title={`joeymckenzie.tech -  ${blogTitle}`}
+        description={blogTitle}
+      />
       <div className="relative my-24 overflow-hidden">
         <div className="relative px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-prose text-lg">

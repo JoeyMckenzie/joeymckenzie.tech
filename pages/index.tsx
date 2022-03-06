@@ -1,9 +1,4 @@
-import type {
-  GetServerSideProps,
-  InferGetServerSidePropsType,
-  NextPage,
-} from 'next';
-import Head from 'next/head';
+import type { NextPage } from 'next';
 import { useContext, useEffect } from 'react';
 import frontMatters from '@/public/frontmatters.json';
 import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
@@ -15,6 +10,7 @@ import { getProjectRepos } from '@/lib/services/github.service';
 import GitHubProjects from '@/components/GitHubProjects';
 import useSWR from 'swr';
 import { GitHubMeta } from '@/lib/types/github.types';
+import { NextSeo } from 'next-seo';
 
 const Index: NextPage = () => {
   const { setFrontMatters } = useContext(BlogSearchContext);
@@ -33,10 +29,10 @@ const Index: NextPage = () => {
 
   return (
     <>
-      <Head>
-        <title>joeymckenzie.tech</title>
-        <meta title="joeymckenzie.tech" />
-      </Head>
+      <NextSeo
+        title="joeymckenzie.tech"
+        description="Personal portfolio and blog for Joey McKenzie software engineer"
+      />
       <Intro />
       <BlogPreviewContainer />
       {githubMetas && <GitHubProjects metas={githubMetas} />}
