@@ -8,7 +8,7 @@ const ThemeToggle: VFC = () => {
   const [enabled, setEnabled] = useState(false);
   const toggleDarkMode = () => setTheme(enabled ? 'light' : 'dark');
 
-  useEffect(() => setEnabled(theme === 'dark'), [theme]);
+  useEffect(() => setEnabled(theme === 'dark'), [setEnabled, theme]);
 
   return (
     <Switch
