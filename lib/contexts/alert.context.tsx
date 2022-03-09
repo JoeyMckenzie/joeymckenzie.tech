@@ -1,18 +1,11 @@
-import {
-  createContext,
-  Dispatch,
-  FC,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, FC, useContext, useEffect, useState } from 'react';
+import { ContextDispatch } from '../types/shared.types';
 
 interface AlertContextState {
   openModal: boolean;
   openNotification: boolean;
-  setOpenModal: Dispatch<SetStateAction<boolean>>;
-  setOpenNotification: Dispatch<SetStateAction<boolean>>;
+  setOpenModal: ContextDispatch<boolean>;
+  setOpenNotification: ContextDispatch<boolean>;
 }
 
 export const AlertContext = createContext<AlertContextState>({

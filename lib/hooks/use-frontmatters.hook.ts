@@ -1,10 +1,7 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import frontMatters from '@/public/frontmatters.json';
 import useSWR from 'swr';
-import {
-  BlogSearchContext,
-  useBlogSearchContext,
-} from '../contexts/blog-search.context';
+import { useBlogSearchContext } from '../contexts/blog-search.context';
 import { getProjectRepos } from '../services/github.service';
 import { GitHubMeta } from '../types/github.types';
 

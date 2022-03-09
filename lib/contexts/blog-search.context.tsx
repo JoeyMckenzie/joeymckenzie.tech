@@ -1,13 +1,5 @@
-import {
-  createContext,
-  Dispatch,
-  FC,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { FrontMatter } from '@/lib/types/shared.types';
+import { createContext, FC, useContext, useEffect, useState } from 'react';
+import { ContextDispatch, FrontMatter } from '@/lib/types/shared.types';
 import blogs from '@/public/frontmatters.json';
 import { useRouter } from 'next/router';
 
@@ -17,10 +9,10 @@ interface BlogSearchContextProps {
   frontMatters: FrontMatter[];
   filteredFrontMatters: FrontMatter[];
   previewMode: boolean;
-  setFilteredDomains: Dispatch<SetStateAction<string[]>>;
-  setSearchText: Dispatch<SetStateAction<string>>;
-  setFrontMatters: Dispatch<SetStateAction<FrontMatter[]>>;
-  setFilteredFrontMatters: Dispatch<SetStateAction<FrontMatter[]>>;
+  setFilteredDomains: ContextDispatch<string[]>;
+  setSearchText: ContextDispatch<string>;
+  setFrontMatters: ContextDispatch<FrontMatter[]>;
+  setFilteredFrontMatters: ContextDispatch<FrontMatter[]>;
 }
 
 export const BlogSearchContext = createContext<BlogSearchContextProps>({
