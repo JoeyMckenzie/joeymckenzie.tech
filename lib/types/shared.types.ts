@@ -17,3 +17,7 @@ export interface NavigationLink {
 export interface ViewsApiResponse {
   total: string;
 }
+
+export interface CodeSnippet {
+  title: string;
+}

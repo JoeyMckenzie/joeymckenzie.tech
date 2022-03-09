@@ -9,49 +9,19 @@ import {
 import { useForm } from '@formspree/react';
 import { CgSpinnerTwoAlt } from 'react-icons/cg';
 import { AlertContext } from '@/lib/contexts/alert.context';
+import { useContactForm } from '@/lib/hooks/use-contact-form.hook';
 
 const ContactForm: VFC = () => {
-  const { setOpenModal, setOpenNotification } = useContext(AlertContext);
-  const [{ submitting, succeeded, errors }, handleSubmit] = useForm(
-    process.env.NEXT_PUBLIC_FORMSPREE_API_KEY ?? ''
-  );
-
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState<string>();
-
-  const onNameChange: ChangeEventHandler<HTMLInputElement> = useCallback(
-    (e) => setName(e.target.value),
-    [setName]
-  );
-
-  const onEmailChange: ChangeEventHandler<HTMLInputElement> = useCallback(
-    (e) => setEmail(e.target.value),
-    [setEmail]
-  );
-
-  const onMessageChange: ChangeEventHandler<HTMLTextAreaElement> = useCallback(
-    (e) => setMessage(e.target.value),
-    [setMessage]
-  );
-
-  const resetForm = () => {
-    setName('');
-    setEmail('');
-    setMessage('');
-  };
-
-  useEffect(() => {
-    if (!submitting) {
-      if (succeeded) {
-        setOpenModal(true);
-        resetForm();
-      } else if (errors && errors.length > 0) {
-        console.error(errors);
-        setOpenNotification(true);
-      }
-    }
-  }, [submitting, succeeded, errors, setOpenNotification, setOpenModal]);
+  const {
+    handleSubmit,
+    email,
+    message,
+    name,
+    onEmailChange,
+    onMessageChange,
+    onNameChange,
+    submitting,
+  } = useContactForm();
 
   return (
     <div className="relative">

@@ -3,6 +3,7 @@ import {
   Dispatch,
   FC,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -84,5 +85,9 @@ const BlogSearchContextProvider: FC = ({ children }) => {
     </BlogSearchContext.Provider>
   );
 };
+
+export function useBlogSearchContext() {
+  return useContext(BlogSearchContext);
+}
 
 export default BlogSearchContextProvider;

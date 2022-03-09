@@ -1,42 +1,8 @@
-import { ChangeEventHandler, useCallback, useContext, VFC } from 'react';
-import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
+import { VFC } from 'react';
+import { useBlogSearchInput } from '@/lib/hooks/use-blog-search.hook';
 
 const BlogSearchInput: VFC = () => {
-  const {
-    searchText,
-    setSearchText,
-    frontMatters,
-    setFilteredFrontMatters,
-    setFilteredDomains,
-    filteredDomains,
-  } = useContext(BlogSearchContext);
-
-  const onSearch: ChangeEventHandler<HTMLInputElement> = useCallback(
-    (e) => {
-      const searchTextValue = e.target.value.toLocaleLowerCase();
-
-      const matchingFrontMatters =
-        searchTextValue.length === 0
-          ? frontMatters
-          : frontMatters.filter(
-              (fm) => fm.title.toLocaleLowerCase().indexOf(searchTextValue) > -1
-            );
-
-      if (matchingFrontMatters.length > 0 && filteredDomains.length > 0) {
-        setFilteredDomains([]);
-      }
-
-      setFilteredFrontMatters(matchingFrontMatters);
-      setSearchText(searchTextValue);
-    },
-    [
-      frontMatters,
-      filteredDomains,
-      setFilteredFrontMatters,
-      setSearchText,
-      setFilteredDomains,
-    ]
-  );
+  const { searchText, onSearch } = useBlogSearchInput();
 
   return (
     <div className="mx-auto max-w-lg pt-8">

@@ -8,34 +8,33 @@ import {
   map,
   of,
   switchMap,
-  timeout,
 } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 import { mutate } from 'swr';
 
 export function getBlogViews(key: string) {
-  return firstValueFrom(
-    fromFetch<ViewsApiResponse>(key, {
-      selector: (response) => response.json(),
-    }).pipe(
-      map((data) => (isNaN(+data.total) ? 0 : +data.total)),
-      catchError((error) => {
-        console.error(error);
-        return of(0);
-      })
-    )
+  const blogViews = fromFetch<ViewsApiResponse>(key, {
+    selector: (response) => response.json(),
+  }).pipe(
+    map((data) => (isNaN(+data.total) ? 0 : +data.total)),
+    catchError((error) => {
+      console.error(error);
+      return of(0);
+    })
   );
+
+  return firstValueFrom(blogViews);
 }
 
 export function addViewToBlog(apiLink: string, blogViews: number) {
-  return firstValueFrom(
-    from(mutate<number>(apiLink, blogViews + 1, false)).pipe(
-      switchMap(() => fromFetch(apiLink, { method: 'POST' })),
-      switchMap(() => from(mutate(apiLink))),
-      catchError((error) => {
-        console.error(error);
-        return EMPTY;
-      })
-    )
+  const updatedViews = from(mutate<number>(apiLink, blogViews + 1, false)).pipe(
+    exhaustMap(() => fromFetch(apiLink, { method: 'POST' })),
+    switchMap(() => from(mutate(apiLink))),
+    catchError((error) => {
+      console.error(error);
+      return EMPTY;
+    })
   );
+
+  return firstValueFrom(updatedViews);
 }

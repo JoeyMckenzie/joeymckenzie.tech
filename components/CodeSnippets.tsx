@@ -72,36 +72,34 @@ const snippets: CodeSnippet[] = [
   },
 ];
 
-const CodeSnippets: VFC = () => {
-  return (
-    <div className="relative pb-16 lg:pb-24">
-      <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
-        <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200 sm:text-4xl">
-          Code snippets
-        </p>
-        <p className="mx-auto mt-5 max-w-prose text-gray-500 dark:text-gray-400">
-          A collection of common code snippets I&apos;ve compiled over the years
-          and use across projects of all kind. Feel free to grab a quick byte
-          (pun intended)!
-        </p>
-        <div className="mt-12">
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {snippets.map(({ title, description, link, icons }, index) => (
-              <Link href={link} key={index} passHref>
-                <a>
-                  <CodeSnippetCard
-                    title={title}
-                    description={description}
-                    icons={icons}
-                  />
-                </a>
-              </Link>
-            ))}
-          </div>
+const CodeSnippets: VFC = () => (
+  <div className="relative pb-16 lg:pb-24">
+    <div className="mx-auto max-w-md px-4 text-center sm:max-w-3xl sm:px-6 lg:max-w-7xl lg:px-8">
+      <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200 sm:text-4xl">
+        Code snippets
+      </p>
+      <p className="mx-auto mt-5 max-w-prose text-gray-500 dark:text-gray-400">
+        A collection of common code snippets I&apos;ve compiled over the years
+        and use across projects of all kind. Feel free to grab a quick byte (pun
+        intended)!
+      </p>
+      <div className="mt-12">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {snippets.map(({ title, description, link, icons }, index) => (
+            <Link href={link} key={index} passHref>
+              <a>
+                <CodeSnippetCard
+                  title={title}
+                  description={description}
+                  icons={icons}
+                />
+              </a>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 export default CodeSnippets;

@@ -1,23 +1,10 @@
-import { FC, useEffect, useState } from 'react';
-import hljs from 'highlight.js';
+import { FC } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { upsertViewCount } from '@/lib/utilities';
-
-interface CodeSnippet {
-  title: string;
-}
+import { useCodeSnippet } from '@/lib/hooks/use-code-snippet.hook';
+import { CodeSnippet } from '@/lib/types/shared.types';
 
 const CodeSnippetLayout: FC<{ meta: CodeSnippet }> = ({ children, meta }) => {
-  const { route } = useRouter();
-  const [codeSnippetTitle, setCodeSnippetTitle] = useState('');
-
-  useEffect(() => {
-    hljs.highlightAll();
-    setCodeSnippetTitle(meta.title);
-    const slug = route.split('/')[2];
-    upsertViewCount(slug);
-  }, [route, meta, setCodeSnippetTitle]);
+  const { codeSnippetTitle } = useCodeSnippet(meta);
 
   return (
     <>

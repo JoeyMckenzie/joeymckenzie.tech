@@ -1,14 +1,11 @@
-import { Fragment, useContext, VFC } from 'react';
+import { Fragment, VFC } from 'react';
 import { Transition } from '@headlessui/react';
-import {
-  CheckCircleIcon,
-  ExclamationCircleIcon,
-} from '@heroicons/react/outline';
+import { ExclamationCircleIcon } from '@heroicons/react/outline';
 import { XIcon } from '@heroicons/react/solid';
-import { AlertContext } from '@/lib/contexts/alert.context';
+import { useAlertContext } from '@/lib/contexts/alert.context';
 
 const Notification: VFC = () => {
-  const { openNotification, setOpenNotification } = useContext(AlertContext);
+  const { openNotification, setOpenNotification } = useAlertContext();
 
   return (
     <>

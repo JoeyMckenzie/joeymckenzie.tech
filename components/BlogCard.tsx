@@ -1,13 +1,11 @@
-import { useCallback, useContext, useEffect, VFC } from 'react';
-import { FrontMatter, ViewsApiResponse } from '@/lib/types/shared.types';
+import { VFC } from 'react';
+import { FrontMatter } from '@/lib/types/shared.types';
 import { classNames } from '@/lib/utilities';
 import { PILL_COLORS } from '@/lib/constants';
-import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
 import Link from 'next/link';
 import Image from 'next/image';
 import profileImage from '@/public/portfolio_pic.jpg';
-import useSWR from 'swr';
-import { addViewToBlog, getBlogViews } from '@/lib/services/views.service';
+import { useBlogCard } from '@/lib/hooks/use-blog-card.hook';
 
 const HEIGHT_WIDTH_PROFILE_IMAGE_SIZE = 40;
 
@@ -19,32 +17,7 @@ const BlogCard: VFC<{
   const apiLink = `/api/views/${slug}`;
   const blogLink = `/blog/${slug}`;
 
-  const { data: blogViews } = useSWR<number>(apiLink, getBlogViews, {
-    revalidateIfStale: false,
-  });
-
-  const { filteredDomains, setSearchText, setFilteredDomains, previewMode } =
-    useContext(BlogSearchContext);
-
-  const addDomain = useCallback(
-    (domain: string) => {
-      if (previewMode) {
-        return;
-      }
-
-      setSearchText('');
-      if (!filteredDomains.find((d) => d === domain)) {
-        setFilteredDomains([...filteredDomains, domain]);
-      }
-    },
-    [previewMode, filteredDomains, setFilteredDomains, setSearchText]
-  );
-
-  const addBlogView = useCallback(async () => {
-    if (process.env.NODE_ENV === 'production') {
-      await addViewToBlog(apiLink, blogViews ?? 0);
-    }
-  }, [apiLink, blogViews]);
+  const { addDomain, addBlogView, blogViews } = useBlogCard(apiLink);
 
   return (
     <div>

@@ -1,10 +1,13 @@
 import { useCallback, useContext, VFC } from 'react';
-import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
+import {
+  BlogSearchContext,
+  useBlogSearchContext,
+} from '@/lib/contexts/blog-search.context';
 import { classNames } from '@/lib/utilities';
 import { PILL_COLORS } from '@/lib/constants';
 
 const BlogCardFilteredDomainPills: VFC = () => {
-  const { filteredDomains, setFilteredDomains } = useContext(BlogSearchContext);
+  const { filteredDomains, setFilteredDomains } = useBlogSearchContext();
 
   const removeDomain = useCallback(
     (paintedIndex: number) =>

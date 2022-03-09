@@ -7,25 +7,33 @@ export default function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
-  if (request.method !== 'GET') {
+  if (request.method !== 'POST') {
     return methodNotAllowed(response);
   }
 
   if (process.env.PLANETSCALE_ENABLED === 'true') {
     const slug = request.query.slug.toString();
+
     return firstValueFrom(
       from(
-        prisma.views.findUnique({
-          where: {
+        prisma.views.upsert({
+          where: { slug },
+          create: {
             slug,
+            pageType: 'BLOG',
+          },
+          update: {
+            count: {
+              increment: 1,
+            },
           },
         })
       ).pipe(
-        map((views) => {
-          const viewsOrDefault = views?.count.toString() ?? '0';
-          const coercedViews = isNaN(+viewsOrDefault) ? 0 : +viewsOrDefault;
-          return response.status(200).json({ total: coercedViews });
-        }),
+        map((newOrUpdatedViews) =>
+          response.status(200).json({
+            total: newOrUpdatedViews.count.toString(),
+          })
+        ),
         catchError((error) => {
           console.error(error);
           return of(

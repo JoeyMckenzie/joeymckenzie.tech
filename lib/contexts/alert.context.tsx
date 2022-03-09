@@ -3,6 +3,7 @@ import {
   Dispatch,
   FC,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from 'react';
@@ -54,5 +55,9 @@ const AlertContextProvider: FC = ({ children }) => {
     </AlertContext.Provider>
   );
 };
+
+export function useAlertContext() {
+  return useContext(AlertContext);
+}
 
 export default AlertContextProvider;

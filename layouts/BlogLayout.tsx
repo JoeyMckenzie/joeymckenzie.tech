@@ -1,30 +1,14 @@
-import { FC, useContext, useEffect, useState } from 'react';
-import hljs from 'highlight.js';
-import { useRouter } from 'next/router';
-import { BlogSearchContext } from '@/lib/contexts/blog-search.context';
-import Head from 'next/head';
+import { FC } from 'react';
 import { NextSeo } from 'next-seo';
+import { useBlogLayout } from '@/lib/hooks/use-blog-layout.hook';
 
 const BlogLayout: FC = ({ children }) => {
-  const { route } = useRouter();
-  const { frontMatters } = useContext(BlogSearchContext);
-  const [blogTitle, setBlogTitle] = useState('');
-
-  useEffect(() => {
-    hljs.highlightAll();
-
-    const slug = route.split('/')[2];
-    const frontMatter = frontMatters.find((fm) => fm.slug === slug);
-
-    if (frontMatter) {
-      setBlogTitle(frontMatter.title);
-    }
-  }, [route, frontMatters, setBlogTitle]);
+  const { blogTitle } = useBlogLayout();
 
   return (
     <>
       <NextSeo
-        title={`joeymckenzie.tech -  ${blogTitle}`}
+        title={`joeymckenzie.tech - ${blogTitle}`}
         description={blogTitle}
       />
       <div className="relative my-24 overflow-hidden">
