@@ -42,27 +42,27 @@ const blogSearchReducer: Reducer<BlogSearchState, BlogSearchActions> = (
     case 'SET_FRONTMATTERS':
       return {
         ...state,
-        frontMatters: payload,
+        frontMatters: payload as FrontMatter[],
       };
     case 'SET_FILTERED_FRONTMATTERS':
       return {
         ...state,
-        filteredFrontMatters: payload,
+        filteredFrontMatters: payload as FrontMatter[],
       };
     case 'SET_SEARCH_TEXT':
       return {
         ...state,
-        searchText: payload,
+        searchText: payload as string,
       };
     case 'SET_PREVIEW_MODE':
       return {
         ...state,
-        previewMode: payload,
+        previewMode: payload as boolean,
       };
     case 'SET_FILTERED_DOMAINS':
       return {
         ...state,
-        filteredDomains: payload,
+        filteredDomains: payload as string[],
       };
   }
 };
