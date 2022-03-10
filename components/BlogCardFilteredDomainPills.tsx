@@ -1,25 +1,25 @@
-import { useCallback, useContext, VFC } from 'react';
-import {
-  BlogSearchContext,
-  useBlogSearchContext,
-} from '@/lib/contexts/blog-search.context';
+import { useCallback, VFC } from 'react';
+import { useBlogSearchContext } from '@/lib/contexts/blog-search.context';
 import { classNames } from '@/lib/utilities';
 import { PILL_COLORS } from '@/lib/constants';
 
 const BlogCardFilteredDomainPills: VFC = () => {
-  const { filteredDomains, setFilteredDomains } = useBlogSearchContext();
+  const { state, dispatch } = useBlogSearchContext();
 
   const removeDomain = useCallback(
     (paintedIndex: number) =>
-      setFilteredDomains(
-        filteredDomains.filter((_, index) => index !== paintedIndex)
-      ),
-    [filteredDomains, setFilteredDomains]
+      dispatch({
+        type: 'SET_FILTERED_DOMAINS',
+        payload: state.filteredDomains.filter(
+          (_, index) => index !== paintedIndex
+        ),
+      }),
+    [dispatch, state.filteredDomains]
   );
 
   return (
     <div className="flex items-center justify-center space-x-1 pt-4">
-      {filteredDomains.map((domain, index) => (
+      {state.filteredDomains.map((domain, index) => (
         <span
           key={index}
           onClick={() => removeDomain(index)}

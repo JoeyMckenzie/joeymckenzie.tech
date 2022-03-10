@@ -23,5 +23,3 @@ export interface ViewsApiResponse {
 export interface CodeSnippet {
   title: string;
 }
-
-export type ContextDispatch<T> = Dispatch<SetStateAction<T>>;

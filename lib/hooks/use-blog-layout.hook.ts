@@ -5,19 +5,19 @@ import { useBlogSearchContext } from '../contexts/blog-search.context';
 
 export function useBlogLayout() {
   const { route } = useRouter();
-  const { frontMatters } = useBlogSearchContext();
+  const { state } = useBlogSearchContext();
   const [blogTitle, setBlogTitle] = useState('');
 
   useEffect(() => {
     hljs.highlightAll();
 
     const slug = route.split('/')[2];
-    const frontMatter = frontMatters.find((fm) => fm.slug === slug);
+    const frontMatter = state.frontMatters.find((fm) => fm.slug === slug);
 
     if (frontMatter) {
       setBlogTitle(frontMatter.title);
     }
-  }, [route, frontMatters, setBlogTitle]);
+  }, [route, state.frontMatters, setBlogTitle]);
 
   return { blogTitle };
 }

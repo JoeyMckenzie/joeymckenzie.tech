@@ -1,78 +1,121 @@
-import { createContext, FC, useContext, useEffect, useState } from 'react';
-import { ContextDispatch, FrontMatter } from '@/lib/types/shared.types';
+import {
+  createContext,
+  Dispatch,
+  FC,
+  Reducer,
+  useContext,
+  useEffect,
+  useReducer,
+} from 'react';
+import { FrontMatter } from '@/lib/types/shared.types';
 import blogs from '@/public/frontmatters.json';
 import { useRouter } from 'next/router';
 
-interface BlogSearchContextProps {
+interface BlogSearchState {
   filteredDomains: string[];
   searchText: string;
   frontMatters: FrontMatter[];
   filteredFrontMatters: FrontMatter[];
   previewMode: boolean;
-  setFilteredDomains: ContextDispatch<string[]>;
-  setSearchText: ContextDispatch<string>;
-  setFrontMatters: ContextDispatch<FrontMatter[]>;
-  setFilteredFrontMatters: ContextDispatch<FrontMatter[]>;
 }
 
-export const BlogSearchContext = createContext<BlogSearchContextProps>({
+const initialState: BlogSearchState = {
   filteredDomains: [],
   searchText: '',
   frontMatters: [],
   filteredFrontMatters: [],
   previewMode: false,
-  setFilteredDomains: () => {},
-  setSearchText: () => {},
-  setFrontMatters: () => {},
-  setFilteredFrontMatters: () => {},
+};
+
+type BlogSearchActions =
+  | { type: 'SET_SEARCH_TEXT'; payload: string }
+  | { type: 'SET_PREVIEW_MODE'; payload: boolean }
+  | { type: 'SET_FRONTMATTERS'; payload: FrontMatter[] }
+  | { type: 'SET_FILTERED_DOMAINS'; payload: string[] }
+  | { type: 'SET_FILTERED_FRONTMATTERS'; payload: FrontMatter[] };
+
+const blogSearchReducer: Reducer<BlogSearchState, BlogSearchActions> = (
+  state,
+  { type, payload }
+) => {
+  switch (type) {
+    case 'SET_FRONTMATTERS':
+      return {
+        ...state,
+        frontMatters: payload,
+      };
+    case 'SET_FILTERED_FRONTMATTERS':
+      return {
+        ...state,
+        filteredFrontMatters: payload,
+      };
+    case 'SET_SEARCH_TEXT':
+      return {
+        ...state,
+        searchText: payload,
+      };
+    case 'SET_PREVIEW_MODE':
+      return {
+        ...state,
+        previewMode: payload,
+      };
+    case 'SET_FILTERED_DOMAINS':
+      return {
+        ...state,
+        filteredDomains: payload,
+      };
+  }
+};
+
+interface BlogSearchContextProps {
+  state: BlogSearchState;
+  dispatch: Dispatch<BlogSearchActions>;
+}
+
+export const BlogSearchContext = createContext<BlogSearchContextProps>({
+  state: initialState,
+  dispatch: () => {},
 });
 
 const BlogSearchContextProvider: FC = ({ children }) => {
   const { pathname } = useRouter();
-
-  const [domains, setDomains] = useState<string[]>([]);
-  const [searchText, setSearchText] = useState('');
-  const [frontMatters, setFrontMatters] = useState<FrontMatter[]>([]);
-  const [previewMode, setPreviewMode] = useState(false);
-  const [filteredFrontMatters, setFilteredFrontMatters] = useState<
-    FrontMatter[]
-  >([]);
+  const { frontMatters } = blogs;
+  const [state, dispatch] = useReducer(blogSearchReducer, initialState);
 
   useEffect(
-    () => setFilteredFrontMatters(frontMatters),
-    [frontMatters, setFilteredFrontMatters]
+    () =>
+      dispatch({
+        type: 'SET_PREVIEW_MODE',
+        payload: pathname === '/',
+      }),
+    [pathname]
   );
-
-  useEffect(() => setPreviewMode(pathname === '/'), [pathname, setPreviewMode]);
 
   useEffect(() => {
     if (frontMatters.length === 0) {
-      setFrontMatters(blogs.frontMatters);
+      dispatch({
+        type: 'SET_FRONTMATTERS',
+        payload: frontMatters,
+      });
     }
-  }, [frontMatters, setFrontMatters]);
+
+    dispatch({
+      type: 'SET_FRONTMATTERS',
+      payload: frontMatters,
+    });
+  }, [frontMatters]);
 
   useEffect(() => {
-    setFilteredFrontMatters(
-      frontMatters.filter((fm) =>
-        domains.every((d) => fm.domains.indexOf(d) > -1)
-      )
-    );
-  }, [domains, frontMatters, setFilteredFrontMatters]);
+    dispatch({
+      type: 'SET_FILTERED_FRONTMATTERS',
+      payload: frontMatters.filter((fm) =>
+        state.filteredDomains.every((d) => fm.domains.indexOf(d) > -1)
+      ),
+    });
+  }, [frontMatters, state.filteredDomains]);
 
   return (
-    <BlogSearchContext.Provider
-      value={{
-        filteredDomains: domains,
-        searchText,
-        filteredFrontMatters,
-        frontMatters,
-        previewMode,
-        setFilteredDomains: setDomains,
-        setSearchText,
-        setFilteredFrontMatters,
-        setFrontMatters,
-      }}
-    >
+    <BlogSearchContext.Provider value={{ state, dispatch }}>
       {children}
     </BlogSearchContext.Provider>
   );

@@ -3,7 +3,7 @@ import { useState, ChangeEventHandler, useCallback, useEffect } from 'react';
 import { useAlertContext } from '../contexts/alert.context';
 
 export function useContactForm() {
-  const { setOpenModal, setOpenNotification } = useAlertContext();
+  const { dispatch } = useAlertContext();
   const [{ submitting, succeeded, errors }, handleSubmit] = useForm(
     process.env.NEXT_PUBLIC_FORMSPREE_API_KEY ?? ''
   );
@@ -36,14 +36,14 @@ export function useContactForm() {
   useEffect(() => {
     if (!submitting) {
       if (succeeded) {
-        setOpenModal(true);
+        dispatch('OPEN_MODAL');
         resetForm();
       } else if (errors && errors.length > 0) {
         console.error(errors);
-        setOpenNotification(true);
+        dispatch('OPEN_NOTIFICATION');
       }
     }
-  }, [submitting, succeeded, errors, setOpenNotification, setOpenModal]);
+  }, [dispatch, errors, submitting, succeeded]);
 
   return {
     handleSubmit,

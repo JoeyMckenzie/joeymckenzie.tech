@@ -5,7 +5,7 @@ import { XIcon } from '@heroicons/react/solid';
 import { useAlertContext } from '@/lib/contexts/alert.context';
 
 const Notification: VFC = () => {
-  const { openNotification, setOpenNotification } = useAlertContext();
+  const { state, dispatch } = useAlertContext();
 
   return (
     <>
@@ -17,7 +17,7 @@ const Notification: VFC = () => {
         <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
           {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
           <Transition
-            show={openNotification}
+            show={state.showNotification}
             as={Fragment}
             enter="transform ease-out duration-300 transition"
             enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
@@ -48,7 +48,7 @@ const Notification: VFC = () => {
                     <button
                       className="inline-flex rounded-md text-gray-400 hover:text-gray-500 focus:outline-none"
                       onClick={() => {
-                        setOpenNotification(false);
+                        dispatch('CLOSE_NOTIFICATION');
                       }}
                     >
                       <span className="sr-only">Close</span>

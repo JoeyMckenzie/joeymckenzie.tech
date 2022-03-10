@@ -1,17 +1,17 @@
-import { Fragment, useContext, VFC } from 'react';
+import { Fragment, VFC } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { CheckIcon } from '@heroicons/react/outline';
-import { AlertContext } from '@/lib/contexts/alert.context';
+import { useAlertContext } from '@/lib/contexts/alert.context';
 
 const Modal: VFC = () => {
-  const { openModal, setOpenModal } = useContext(AlertContext);
+  const { state, dispatch } = useAlertContext();
 
   return (
-    <Transition.Root show={openModal} as={Fragment}>
+    <Transition.Root show={state.showModal} as={Fragment}>
       <Dialog
         as="div"
         className="fixed inset-0 z-10 overflow-y-auto"
-        onClose={setOpenModal}
+        onClose={() => dispatch('CLOSE_MODAL')}
       >
         <div className="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
@@ -70,7 +70,7 @@ const Modal: VFC = () => {
                 <button
                   type="button"
                   className="inline-flex w-full justify-center rounded-md border border-transparent bg-stone-800 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-stone-500 focus:ring-offset-2 dark:bg-stone-900 sm:text-sm"
-                  onClick={() => setOpenModal(false)}
+                  onClick={() => dispatch('CLOSE_MODAL')}
                 >
                   Close
                 </button>

@@ -1,14 +1,5 @@
-import {
-  ChangeEventHandler,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-  VFC,
-} from 'react';
-import { useForm } from '@formspree/react';
+import { VFC } from 'react';
 import { CgSpinnerTwoAlt } from 'react-icons/cg';
-import { AlertContext } from '@/lib/contexts/alert.context';
 import { useContactForm } from '@/lib/hooks/use-contact-form.hook';
 
 const ContactForm: VFC = () => {

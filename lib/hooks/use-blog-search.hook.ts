@@ -1,18 +1,8 @@
-import { ChangeEventHandler, useCallback, useContext } from 'react';
-import {
-  BlogSearchContext,
-  useBlogSearchContext,
-} from '../contexts/blog-search.context';
+import { ChangeEventHandler, useCallback } from 'react';
+import { useBlogSearchContext } from '../contexts/blog-search.context';
 
 export function useBlogSearchInput() {
-  const {
-    searchText,
-    setSearchText,
-    frontMatters,
-    setFilteredFrontMatters,
-    setFilteredDomains,
-    filteredDomains,
-  } = useBlogSearchContext();
+  const { state, dispatch } = useBlogSearchContext();
 
   const onSearch: ChangeEventHandler<HTMLInputElement> = useCallback(
     (e) => {
@@ -20,29 +10,33 @@ export function useBlogSearchInput() {
 
       const matchingFrontMatters =
         searchTextValue.length === 0
-          ? frontMatters
-          : frontMatters.filter(
+          ? state.frontMatters
+          : state.frontMatters.filter(
               (fm) => fm.title.toLocaleLowerCase().indexOf(searchTextValue) > -1
             );
 
-      if (matchingFrontMatters.length > 0 && filteredDomains.length > 0) {
-        setFilteredDomains([]);
+      if (matchingFrontMatters.length > 0 && state.filteredDomains.length > 0) {
+        dispatch({
+          type: 'SET_FILTERED_DOMAINS',
+          payload: [],
+        });
       }
 
-      setFilteredFrontMatters(matchingFrontMatters);
-      setSearchText(searchTextValue);
+      dispatch({
+        type: 'SET_FILTERED_FRONTMATTERS',
+        payload: matchingFrontMatters,
+      });
+
+      dispatch({
+        type: 'SET_SEARCH_TEXT',
+        payload: searchTextValue,
+      });
     },
-    [
-      frontMatters,
-      filteredDomains,
-      setFilteredFrontMatters,
-      setSearchText,
-      setFilteredDomains,
-    ]
+    [dispatch, state.filteredDomains.length, state.frontMatters]
   );
 
   return {
     onSearch,
-    searchText,
+    searchText: state.searchText,
   };
 }

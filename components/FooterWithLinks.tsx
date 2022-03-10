@@ -115,7 +115,7 @@ const FooterWithLinks: VFC = () => (
       </div>
     </div>
     {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA ? (
-      <span className="flex justify-center pt-4 text-sm">
+      <span className="flex justify-center pt-4 text-sm text-gray-900 dark:text-gray-500">
         version:{' '}
         {process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA.slice(0, 7) ?? ''}
       </span>

@@ -6,7 +6,7 @@ import { getProjectRepos } from '../services/github.service';
 import { GitHubMeta } from '../types/github.types';
 
 export function useFrontMatters() {
-  const { setFrontMatters } = useBlogSearchContext();
+  const { dispatch } = useBlogSearchContext();
   const { data: githubMetas } = useSWR<GitHubMeta[]>(
     'githubMetas',
     getProjectRepos,
@@ -16,8 +16,12 @@ export function useFrontMatters() {
   );
 
   useEffect(
-    () => setFrontMatters(frontMatters.frontMatters),
-    [setFrontMatters]
+    () =>
+      dispatch({
+        type: 'SET_FRONTMATTERS',
+        payload: frontMatters.frontMatters,
+      }),
+    [dispatch]
   );
 
   return { githubMetas };

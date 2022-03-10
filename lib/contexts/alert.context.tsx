@@ -1,47 +1,91 @@
-import { createContext, FC, useContext, useEffect, useState } from 'react';
-import { ContextDispatch } from '../types/shared.types';
+import {
+  createContext,
+  Dispatch,
+  FC,
+  Reducer,
+  useContext,
+  useEffect,
+  useReducer,
+} from 'react';
+
+type AlertContextActions =
+  | 'OPEN_MODAL'
+  | 'CLOSE_MODAL'
+  | 'OPEN_NOTIFICATION'
+  | 'CLOSE_NOTIFICATION';
 
 interface AlertContextState {
-  openModal: boolean;
-  openNotification: boolean;
-  setOpenModal: ContextDispatch<boolean>;
-  setOpenNotification: ContextDispatch<boolean>;
+  showModal: boolean;
+  showNotification: boolean;
 }
 
-export const AlertContext = createContext<AlertContextState>({
-  openModal: false,
-  openNotification: false,
-  setOpenModal: () => {},
-  setOpenNotification: () => {},
+const initialState: AlertContextState = {
+  showModal: false,
+  showNotification: false,
+};
+
+const alertContextReducer: Reducer<AlertContextState, AlertContextActions> = (
+  state,
+  action
+) => {
+  switch (action) {
+    case 'OPEN_MODAL':
+      return {
+        showNotification: false,
+        showModal: true,
+      };
+    case 'CLOSE_MODAL':
+      return {
+        showNotification: false,
+        showModal: false,
+      };
+    case 'OPEN_NOTIFICATION':
+      return {
+        showNotification: true,
+        showModal: false,
+      };
+    case 'CLOSE_NOTIFICATION':
+      return {
+        showNotification: false,
+        showModal: false,
+      };
+  }
+};
+
+interface AlertContextProps {
+  state: AlertContextState;
+  dispatch: Dispatch<AlertContextActions>;
+}
+
+export const AlertContext = createContext<AlertContextProps>({
+  state: initialState,
+  dispatch: () => {},
 });
 
 const TIMEOUT = 5000;
 
 const AlertContextProvider: FC = ({ children }) => {
-  const [openModal, setOpenModal] = useState(false);
-  const [openNotification, setOpenNotification] = useState(false);
+  const [state, dispatch] = useReducer(alertContextReducer, initialState);
 
   useEffect(() => {
-    if (openModal) {
-      setOpenNotification(false);
-      setTimeout(() => setOpenModal(false), TIMEOUT);
+    if (state.showModal) {
+      dispatch('CLOSE_NOTIFICATION');
+      setTimeout(() => dispatch('CLOSE_MODAL'), TIMEOUT);
     }
-  }, [openModal, setOpenModal, setOpenNotification]);
+  }, [state.showModal]);
 
   useEffect(() => {
-    if (openNotification) {
-      setOpenModal(false);
-      setTimeout(() => setOpenNotification(false), TIMEOUT);
+    if (state.showNotification) {
+      dispatch('CLOSE_MODAL');
+      setTimeout(() => dispatch('CLOSE_NOTIFICATION'), TIMEOUT);
     }
-  }, [openNotification, setOpenNotification, setOpenModal]);
+  }, [state.showNotification]);
 
   return (
     <AlertContext.Provider
       value={{
-        openModal,
-        openNotification,
-        setOpenModal,
-        setOpenNotification,
+        state,
+        dispatch,
       }}
     >
       {children}

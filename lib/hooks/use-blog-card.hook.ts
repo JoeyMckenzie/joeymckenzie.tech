@@ -4,25 +4,30 @@ import { useBlogSearchContext } from '../contexts/blog-search.context';
 import { getBlogViews, addViewToBlog } from '../services/views.service';
 
 export function useBlogCard(apiLink: string) {
+  const { state, dispatch } = useBlogSearchContext();
   const { data: blogViews } = useSWR<number>(apiLink, getBlogViews, {
     revalidateIfStale: false,
   });
 
-  const { filteredDomains, setSearchText, setFilteredDomains, previewMode } =
-    useBlogSearchContext();
-
   const addDomain = useCallback(
     (domain: string) => {
-      if (previewMode) {
+      if (state.previewMode) {
         return;
       }
 
-      setSearchText('');
-      if (!filteredDomains.find((d) => d === domain)) {
-        setFilteredDomains([...filteredDomains, domain]);
+      dispatch({
+        type: 'SET_SEARCH_TEXT',
+        payload: '',
+      });
+
+      if (!state.filteredDomains.find((d) => d === domain)) {
+        dispatch({
+          type: 'SET_FILTERED_DOMAINS',
+          payload: [...state.filteredDomains, domain],
+        });
       }
     },
-    [previewMode, filteredDomains, setFilteredDomains, setSearchText]
+    [dispatch, state.filteredDomains, state.previewMode]
   );
 
   const addBlogView = useCallback(async () => {
