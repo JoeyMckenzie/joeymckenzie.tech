@@ -8,7 +8,7 @@ const PROJECT_REPOS = [
   'StateManagementWithFluxor',
   'Dappery',
   'realworld-dotnet-clean-architecture',
-  'realworld-fullstack-go-nextjs',
+  'realworld-go-kit',
   'nextjs-typescript-tailwind-template',
 ];
 

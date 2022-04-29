@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import Index from '@/pages/index';
 
 describe(Index.name, () => {
-  it('should render a heading with text', async () => {
+  it('should render a heading with text', () => {
     // Arrange
     render(<Index />);
 

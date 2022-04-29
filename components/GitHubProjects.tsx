@@ -17,9 +17,11 @@ const GitHubProjects: VFC<{ metas: GitHubMeta[] }> = ({ metas }) => (
       role="list"
       className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
     >
-      {metas.map((meta, index) => (
-        <GitHubProjectCard key={index} meta={meta} />
-      ))}
+      {metas
+        .sort((meta) => meta.stars)
+        .map((meta, index) => (
+          <GitHubProjectCard key={index} meta={meta} />
+        ))}
     </ul>
   </div>
 );
