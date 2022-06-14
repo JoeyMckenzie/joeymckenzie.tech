@@ -25,7 +25,7 @@ const Intro: VFC = () => (
         </p>
         <p className="block max-w-sm pt-2">
           Breaking production environments professionally since 2016, creating
-          content for other developers and engineer, and building things for the
+          content for other developers and engineers, and building things for the
           web that go really, really fast.
         </p>
       </div>
