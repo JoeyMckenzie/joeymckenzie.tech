@@ -53,7 +53,7 @@ const AboutDescription: VFC = () => (
               </dt>
               <dd className="mt-1 text-sm text-gray-900 dark:text-gray-300">
                 Hexagenia by Fall River Brewery, Apocalypse IPA by 10 Barrel
-                Brewing Co., anything that's cold on a hot summer day
+                Brewing Co., anything that&apos;s cold on a hot summer day
               </dd>
             </div>
             <div className="sm:col-span-1">
