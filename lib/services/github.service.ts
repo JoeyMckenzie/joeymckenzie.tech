@@ -5,8 +5,8 @@ import { GitHubMeta, GitHubReposApiResponse } from '@/lib/types/github.types';
 const API_BASE_URL = 'https://api.github.com/repos/joeymckenzie';
 const PROJECT_REPOS = [
   'BlazorConduit',
+  'realworld-rust-axum-sqlx',
   'StateManagementWithFluxor',
-  'Dappery',
   'realworld-dotnet-clean-architecture',
   'realworld-go-kit',
   'nextjs-typescript-tailwind-template',

@@ -32,8 +32,9 @@ const AboutDescription: VFC = () => (
                 Prefers
               </dt>
               <dd className="mt-1 text-sm text-gray-900 dark:text-gray-300">
-                .NET, Go, TypeScript, Tailwind, working with Postgres databases,
-                anything that has to do with modern web development
+                .NET, TypeScript, Go, Rust, container orchestratrion, working
+                with Postgres databases, anything that has to do with modern web
+                development
               </dd>
             </div>
             <div className="sm:col-span-1">
@@ -41,17 +42,43 @@ const AboutDescription: VFC = () => (
                 Could do without
               </dt>
               <dd className="mt-1 text-sm text-gray-900 dark:text-gray-300">
-                Go web frameworks, implicitly typing with{' '}
+                Go web frameworks, throwing exceptions, implicit typing with{' '}
                 <code lang="javascript">any</code>, working with Oracle
                 databases, anything that has to do with Java
               </dd>
             </div>
             <div className="sm:col-span-1">
               <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
-                Favorite Beer
+                Favorite beers
               </dt>
               <dd className="mt-1 text-sm text-gray-900 dark:text-gray-300">
-                Hexagenia IPA by Fall River Brewery
+                Hexagenia by Fall River Brewery, Apocalypse IPA by 10 Barrel
+                Brewing Co., anything that's cold on a hot summer day
+              </dd>
+            </div>
+            <div className="sm:col-span-1">
+              <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Unpopular opinion
+              </dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-300">
+                WSL2 is the best development environment (I&apos;m a{' '}
+                <a
+                  className="text-indigo-500"
+                  href="https://www.debian.org/"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Debian
+                </a>{' '}
+                guy myself)
+              </dd>
+            </div>
+            <div className="sm:col-span-1">
+              <dt className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                Words of wisdom
+              </dt>
+              <dd className="mt-1 text-sm text-gray-900 dark:text-gray-300">
+                Write code your fellow developers love to read
               </dd>
             </div>
             <div className="text-center sm:col-span-2">
@@ -60,15 +87,15 @@ const AboutDescription: VFC = () => (
               </dt>
               <dd className="mt-1 text-sm text-gray-900 dark:text-gray-300">
                 I like building things. I write software for a living as a
-                professional software engineer, amateur scrum master, part-time
-                DBA, pipeline build failure fixer, restart-er of production
-                servers, and connoisseur of cheap beer. I like to write about
-                things in code that mostly have to do with .NET and web
-                development, while also adventuring into a wide variety of
-                technology stacks to blog about. I work at a SaaS company
-                currently writing lots of C#, .NET, and Vue, but I dabble in
-                just about everything the modern web and application frameworks
-                have to offer.
+                professional Software Developer, amateur scrum master, part-time
+                DBA, impromptu DevOps Engineer, sifter of Kibana logs, and
+                connoisseur of cheap beer among other things. I like to write
+                about things in code that mostly have to do with and
+                microservice development, while also adventuring into a wide
+                variety of technology stacks to blog about. I work at a SaaS
+                company currently writing lots of C#, .NET, and Vue, but I
+                dabble in just about everything the modern web and application
+                frameworks have to offer.
               </dd>
               <dd className="mt-2 text-sm text-gray-900 dark:text-gray-300">
                 When I&apos;m not sitting in front of an IDE or breaking
