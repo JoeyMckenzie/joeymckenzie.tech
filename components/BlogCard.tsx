@@ -29,7 +29,7 @@ const BlogCard: VFC<{
               onClick={() => addDomain(domain)}
               className={classNames(
                 PILL_COLORS[index].pill,
-                'inline-flex cursor-pointer items-center rounded-full px-3 py-0.5 text-sm font-medium'
+                'inline-flex cursor-pointer items-center rounded-full px-3 py-0.5 text-sm font-medium shadow-sm'
               )}
             >
               {domain}

@@ -9,6 +9,7 @@ import Notification from '@/components/Notification';
 import FooterWithLinks from '@/components/FooterWithLinks';
 import { ThemeProvider } from 'next-themes';
 import { DefaultSeo } from 'next-seo';
+import Intro from '@/components/Intro';
 
 const CustomApp: VFC<AppProps> = ({ Component, pageProps }) => (
   <ThemeProvider attribute="class">
@@ -30,6 +31,7 @@ const CustomApp: VFC<AppProps> = ({ Component, pageProps }) => (
         <Modal />
         <Notification />
         <Navbar />
+        <Intro />
         <Component {...pageProps} />
         <FooterWithLinks />
       </AlertContextProvider>

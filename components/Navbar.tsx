@@ -3,6 +3,7 @@ import Logo from '@/components/Logo';
 import ThemeToggle from '@/components/ThemeToggle';
 import ActiveLink from '@/components/ActiveLink';
 import { NAVIGATION_LINKS } from '@/lib/constants';
+import SocialsIcons from './SocialsIcons';
 
 const Navbar: VFC = () => (
   <nav className="fixed top-0 z-10 w-full bg-opacity-50 shadow backdrop-blur backdrop-filter">
@@ -13,18 +14,7 @@ const Navbar: VFC = () => (
             <Logo />
           </div>
         </div>
-        <div className="-ml-16 hidden flex-row items-center space-x-4 font-ubuntu sm:flex">
-          {NAVIGATION_LINKS.map((link) => (
-            <ActiveLink
-              key={link.href}
-              activeClassName="text-gray-900 dark:text-gray-200"
-              defaultClassName="text-gray-600 dark:text-gray-500"
-              href={link.href}
-            >
-              {link.name}
-            </ActiveLink>
-          ))}
-        </div>
+        <SocialsIcons containerClassName="flex flex-row my-auto space-x-6" />
         <div className="flex items-center sm:ml-6">
           <ThemeToggle />
         </div>

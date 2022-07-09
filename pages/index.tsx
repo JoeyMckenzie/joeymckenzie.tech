@@ -16,7 +16,6 @@ const Index: NextPage = () => {
         title="joeymckenzie.tech"
         description="Personal portfolio and blog for Joey McKenzie software engineer"
       />
-      <Intro />
       <BlogPreviewContainer />
       {githubMetas && <GitHubProjects metas={githubMetas} />}
       <CodeSnippets />
