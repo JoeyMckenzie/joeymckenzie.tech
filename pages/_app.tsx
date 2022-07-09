@@ -12,7 +12,7 @@ import { DefaultSeo } from 'next-seo';
 import Intro from '@/components/Intro';
 
 const CustomApp: VFC<AppProps> = ({ Component, pageProps }) => (
-  <ThemeProvider attribute="class">
+  <ThemeProvider attribute="class" defaultTheme="system">
     <DefaultSeo
       openGraph={{
         type: 'website',

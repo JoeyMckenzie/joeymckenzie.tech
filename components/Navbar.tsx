@@ -14,7 +14,7 @@ const Navbar: VFC = () => (
             <Logo />
           </div>
         </div>
-        <SocialsIcons containerClassName="flex flex-row my-auto space-x-6" />
+        <SocialsIcons containerClassName="hidden sm:flex flex-row my-auto space-x-6" />
         <div className="flex items-center sm:ml-6">
           <ThemeToggle />
         </div>

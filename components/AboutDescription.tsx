@@ -4,7 +4,7 @@ const AboutDescription: VFC = () => (
   <div className="space-y-6 lg:col-span-2 lg:col-start-1">
     {/* Description list*/}
     <section aria-labelledby="applicant-information-title">
-      <div className="bg-white shadow dark:bg-stone-800 sm:rounded-lg">
+      <div className="bg-white text-center shadow dark:bg-stone-800 sm:rounded-lg sm:text-left">
         <div className="px-4 py-5 sm:px-6">
           <h2
             id="applicant-information-title"

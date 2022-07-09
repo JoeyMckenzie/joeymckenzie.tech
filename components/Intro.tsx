@@ -18,7 +18,7 @@ const Intro: VFC = () => (
         />
       </div>
       <div className="text-center sm:tracking-tight">
-        <h2 className="block text-3xl font-extrabold text-gray-900 dark:text-gray-200 sm:text-4xl">
+        <h2 className="block py-2 text-3xl font-extrabold text-gray-900 dark:text-gray-200 sm:text-4xl">
           Joey McKenzie
         </h2>
         <div className="text-gray-900 dark:text-gray-400">
