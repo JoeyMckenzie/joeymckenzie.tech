@@ -10,33 +10,40 @@ import FooterWithLinks from '@/components/FooterWithLinks';
 import { ThemeProvider } from 'next-themes';
 import { DefaultSeo } from 'next-seo';
 import Intro from '@/components/Intro';
+import { useRouter } from 'next/router';
 
-const CustomApp: VFC<AppProps> = ({ Component, pageProps }) => (
-  <ThemeProvider attribute="class" defaultTheme="system">
-    <DefaultSeo
-      openGraph={{
-        type: 'website',
-        locale: 'en_US',
-        url: 'https://joeymckenzie.tech/',
-        site_name: 'joeymckenzie.tech',
-      }}
-      twitter={{
-        handle: '@_joeyMcKenzie',
-        site: 'https://twitter.com/_joeyMcKenzie',
-        cardType: 'summary_large_image',
-      }}
-    />
-    <BlogSearchContextProvider>
-      <AlertContextProvider>
-        <Modal />
-        <Notification />
-        <Navbar />
-        <Intro />
-        <Component {...pageProps} />
-        <FooterWithLinks />
-      </AlertContextProvider>
-    </BlogSearchContextProvider>
-  </ThemeProvider>
-);
+const CustomApp: VFC<AppProps> = ({ Component, pageProps }) => {
+  const router = useRouter();
+
+  const isBlogPage = router.pathname.indexOf('/blog/') > -1;
+
+  return (
+    <ThemeProvider attribute="class" defaultTheme="system">
+      <DefaultSeo
+        openGraph={{
+          type: 'website',
+          locale: 'en_US',
+          url: 'https://joeymckenzie.tech/',
+          site_name: 'joeymckenzie.tech',
+        }}
+        twitter={{
+          handle: '@_joeyMcKenzie',
+          site: 'https://twitter.com/_joeyMcKenzie',
+          cardType: 'summary_large_image',
+        }}
+      />
+      <BlogSearchContextProvider>
+        <AlertContextProvider>
+          <Modal />
+          <Notification />
+          <Navbar />
+          {!isBlogPage && <Intro />}
+          <Component {...pageProps} />
+          <FooterWithLinks />
+        </AlertContextProvider>
+      </BlogSearchContextProvider>
+    </ThemeProvider>
+  );
+};
 
 export default CustomApp;
