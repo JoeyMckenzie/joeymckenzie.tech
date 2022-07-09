@@ -11,9 +11,9 @@ const HeaderButtons: VFC = () => (
         className={classNames(
           index === 0 ? 'rounded-l-md' : '-ml-px',
           index === NAVIGATION_LINKS.length - 1 ? 'rounded-r-md' : '',
-          'relative inline-flex border border-gray-300 bg-white px-4 py-2 text-sm font-medium transition duration-150 ease-in-out hover:bg-gray-50 focus:z-10 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-900'
+          'relative inline-flex border border-gray-300 bg-white px-4 py-2 text-sm font-medium transition duration-150 ease-in-out hover:bg-gray-50 focus:z-10 focus:outline-none dark:border-stone-700 dark:bg-stone-800 dark:hover:bg-stone-900'
         )}
-        activeClassName="text-gray-900 dark:text-gray-200"
+        activeClassName="text-gray-900 bg-stone-100 dark:text-gray-200 dark:bg-stone-700"
         defaultClassName="text-gray-700 dark:text-gray-500"
         href={link.href}
       >

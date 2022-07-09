@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import { useCallback, VFC } from 'react';
+import { VFC } from 'react';
 import Navbar from '@/components/Navbar';
 import BlogSearchContextProvider from '@/lib/contexts/blog-search.context';
 import AlertContextProvider from '@/lib/contexts/alert.context';
