@@ -13,7 +13,7 @@ const PROJECT_REPOS = [
 ];
 
 export function getProjectRepos() {
-  const repoRequests = PROJECT_REPOS.map((repo) =>
+  const $repoRequests = PROJECT_REPOS.map((repo) =>
     fromFetch<GitHubReposApiResponse>(`${API_BASE_URL}/${repo}`, {
       method: 'GET',
       headers: {
@@ -43,5 +43,5 @@ export function getProjectRepos() {
     )
   );
 
-  return firstValueFrom(forkJoin(repoRequests));
+  return firstValueFrom(forkJoin($repoRequests));
 }

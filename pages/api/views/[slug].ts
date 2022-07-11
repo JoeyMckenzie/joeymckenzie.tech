@@ -1,4 +1,4 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import { methodNotAllowed } from '@/lib/utilities';
 import { catchError, firstValueFrom, from, map, of } from 'rxjs';
 import prisma from '@/lib/prisma';
