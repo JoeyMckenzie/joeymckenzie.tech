@@ -1,6 +1,8 @@
 export interface TweetMeta {
   id: string;
   text: string;
+  created_at: string;
+  public_metrics: {};
 }
 
 export interface TimelineMeta {
