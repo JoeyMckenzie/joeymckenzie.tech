@@ -8,7 +8,7 @@ import { getTimeline } from '@/lib/services/twitter.service';
 const HEIGHT_WIDTH_PROFILE_IMAGE_SIZE = 150;
 
 const Intro: VFC = () => {
-  const {} = useSWR('timeline', getTimeline, {
+  const { data } = useSWR('timeline', getTimeline, {
     revalidateIfStale: false,
   });
 

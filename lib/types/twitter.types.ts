@@ -1,11 +1,11 @@
-export interface TweetMeta {
+export interface TweetResponseMeta {
   id: string;
   text: string;
   created_at: string;
   public_metrics: {};
 }
 
-export interface TimelineMeta {
+export interface TimelineResponseMeta {
   next_token: string;
   result_count: number;
   newest_id: string;
@@ -13,8 +13,8 @@ export interface TimelineMeta {
 }
 
 export interface TwitterTimelineResponse {
-  data: TweetMeta[];
-  meta: TimelineMeta;
+  data: TweetResponseMeta[];
+  meta: TimelineResponseMeta;
 }
 
 export interface TwitterTokenResponse {
@@ -22,14 +22,19 @@ export interface TwitterTokenResponse {
   access_token: string;
 }
 
-export interface TwitterTimelineMetaResponse {
-  tweets: {
-    text: string;
-    createdAt: string;
-  }[];
-  profileMeta: {
-    image: string;
-    username: string;
-    name: string;
-  };
+export interface TweetMeta {
+  id: string;
+  text: string;
+  createdAt: string;
+}
+
+export interface ProfileMeta {
+  image: string;
+  username: string;
+  name: string;
+}
+
+export interface TwitterTimelineMeta {
+  tweets: TweetMeta[];
+  profileMeta: ProfileMeta;
 }

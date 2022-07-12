@@ -3,7 +3,7 @@ import { GitHubMeta } from '@/lib/types/github.types';
 import GitHubProjectCard from '@/components/GitHubProjectCard';
 
 const GitHubProjects: VFC<{ metas: GitHubMeta[] }> = ({ metas }) => (
-  <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
+  <div className="mx-auto max-w-7xl px-6 pb-12 lg:px-8">
     <div className="pb-8 text-center">
       <p className="mt-2 text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200 sm:text-4xl">
         Open Source Projects

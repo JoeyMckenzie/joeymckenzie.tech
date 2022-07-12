@@ -1,6 +1,6 @@
 import {
-  TwitterTimelineMetaResponse,
-  TwitterTimelineResponse,
+  TweetMeta,
+  TwitterTimelineMeta,
   TwitterTokenResponse,
 } from '@/lib/types/twitter.types';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -17,7 +17,6 @@ import {
 import { fromFetch } from 'rxjs/fetch';
 import { Client, auth } from 'twitter-api-sdk';
 
-const TIMELINE_URL = `https://api.twitter.com/2/users/${process.env.TWITTER_USER_ID}/tweets`;
 const TOKEN_URL = `https://${process.env.TWITTER_API_KEY}:${process.env.TWITTER_API_SECRET}@api.twitter.com/oauth2/token?grant_type=client_credentials`;
 
 export default function handler(
@@ -28,32 +27,7 @@ export default function handler(
     return response.status(405);
   }
 
-  const test = new auth.OAuth2Bearer('test;');
-  const client = new Client(test);
-
   if (process.env.TWITTER_API_ENABLED === 'true') {
-    // const $timeline = (token: string) =>
-    //   fromFetch<TwitterTimelineResponse>(TIMELINE_URL, {
-    //     method: 'GET',
-    //     selector: (timelineApiResponse) => timelineApiResponse.json(),
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   }).pipe(
-    //     map((timelineResponse) => {
-    //       // filter out tweets that are responses to other tweets, don't care about those for now
-    //       const tweets = timelineResponse.data
-    //         .map((tweetMeta) => tweetMeta.text)
-    //         .filter((tweet) => tweet.charAt(0) !== '@');
-
-    //       const meta: TwitterTimelineMetaResponse = {};
-
-    //       return response.status(200).json({
-    //         tweets,
-    //       });
-    //     })
-    //   );
-
     const $timeline = (token: string) => {
       const authClient = new auth.OAuth2Bearer(token);
       const client = new Client(authClient);
@@ -63,22 +37,24 @@ export default function handler(
           'tweet.fields': ['created_at', 'public_metrics'],
           'user.fields': ['username', 'profile_image_url'],
           expansions: ['author_id'],
+          max_results: 5,
         })
       ).pipe(
         filter((timelineResponse) => !!timelineResponse),
         map((timelineResponse) => {
           // filter out tweets that are responses to other tweets, don't care about those for now
-          const tweets = timelineResponse
-            .data!.map((tweetMeta) => ({
-              text: tweetMeta.text,
-              createdAt: tweetMeta.created_at ?? '',
-            }))
-            .filter(
-              ({ text }) => text.charAt(0) !== '@' || text.indexOf('RT') < -1
-            );
+          const tweets = timelineResponse.data!.map(
+            (tweetMeta) =>
+              ({
+                id: tweetMeta.id,
+                text: tweetMeta.text,
+                createdAt: tweetMeta.created_at ?? '',
+              } as TweetMeta)
+          );
 
-          const meta: TwitterTimelineMetaResponse = {
-            tweets,
+          // map the timeline response, flattening out tweets and profile information
+          const meta: TwitterTimelineMeta = {
+            tweets: tweets.slice(0, 3),
             profileMeta: {
               image:
                 timelineResponse.includes!.users![0].profile_image_url ?? '',
@@ -87,29 +63,7 @@ export default function handler(
             },
           };
 
-          // return response.status(200).json(meta);
           return meta;
-        })
-      );
-
-      return fromFetch<TwitterTimelineResponse>(TIMELINE_URL, {
-        method: 'GET',
-        selector: (timelineApiResponse) => timelineApiResponse.json(),
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).pipe(
-        map((timelineResponse) => {
-          // filter out tweets that are responses to other tweets, don't care about those for now
-          const tweets = timelineResponse.data
-            .map((tweetMeta) => tweetMeta.text)
-            .filter((tweet) => tweet.charAt(0) !== '@');
-
-          // const meta: TwitterTimelineMetaResponse = {};
-
-          return response.status(200).json({
-            tweets,
-          });
         })
       );
     };
@@ -120,7 +74,6 @@ export default function handler(
     }).pipe(
       map((authenticationResponse) => authenticationResponse.access_token),
       switchMap($timeline),
-      tap(console.log),
       map((meta) => response.status(200).json(meta)),
       catchError((error) => {
         console.error(error);
