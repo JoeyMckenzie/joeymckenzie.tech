@@ -11,13 +11,12 @@ import {
   of,
   switchMap,
   from,
-  tap,
   filter,
 } from 'rxjs';
-import { fromFetch } from 'rxjs/fetch';
 import { Client, auth } from 'twitter-api-sdk';
+import fetch from 'node-fetch';
 
-const TOKEN_URL = `https://${process.env.TWITTER_API_KEY}:${process.env.TWITTER_API_SECRET}@api.twitter.com/oauth2/token?grant_type=client_credentials`;
+const TOKEN_URL = `https://api.twitter.com/oauth2/token?grant_type=client_credentials`;
 
 export default function handler(
   request: NextApiRequest,
@@ -68,11 +67,21 @@ export default function handler(
       );
     };
 
-    const $authentication = fromFetch<TwitterTokenResponse>(TOKEN_URL, {
-      method: 'POST',
-      selector: (authenticationApiResponse) => authenticationApiResponse.json(),
-    }).pipe(
-      map((authenticationResponse) => authenticationResponse.access_token),
+    const twitterAuth = `${process.env.TWITTER_API_KEY}:${process.env.TWITTER_API_SECRET}`;
+    const encodedAuth = Buffer.from(twitterAuth).toString('base64');
+    const $authentication = from(
+      fetch(TOKEN_URL, {
+        method: 'POST',
+        headers: {
+          Authorization: `Basic ${encodedAuth}`,
+        },
+      })
+    ).pipe(
+      switchMap((authenicationResponse) => from(authenicationResponse.json())),
+      map(
+        (authenticationResponse) =>
+          (authenticationResponse as TwitterTokenResponse).access_token
+      ),
       switchMap($timeline),
       map((meta) => response.status(200).json(meta)),
       catchError((error) => {
