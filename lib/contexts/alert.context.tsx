@@ -25,7 +25,7 @@ const initialState: AlertContextState = {
 };
 
 const alertContextReducer: Reducer<AlertContextState, AlertContextActions> = (
-  state,
+  _,
   action
 ) => {
   switch (action) {
@@ -57,12 +57,12 @@ interface AlertContextProps {
   dispatch: Dispatch<AlertContextActions>;
 }
 
-export const AlertContext = createContext<AlertContextProps>({
+const TIMEOUT = 5000;
+
+const AlertContext = createContext<AlertContextProps>({
   state: initialState,
   dispatch: () => {},
 });
-
-const TIMEOUT = 5000;
 
 const AlertContextProvider: FC = ({ children }) => {
   const [state, dispatch] = useReducer(alertContextReducer, initialState);

@@ -27,7 +27,10 @@ const TwitterCard: VFC<{
           </div>
         </div>
         <div className="mb-4 w-full">
-          <p className="text-sm">{tweet.text}</p>
+          <p
+            className="text-sm"
+            dangerouslySetInnerHTML={{ __html: tweet.text }}
+          ></p>
         </div>
         <div className="w-full">
           <p className="text-right text-xs text-gray-500 dark:text-gray-400">

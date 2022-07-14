@@ -20,6 +20,7 @@
     "@prisma/client": "^3.10.0",
     "@tailwindcss/aspect-ratio": "^0.4.0",
     "@tailwindcss/forms": "^0.4.0",
+    "@types/gapi": "^0.0.42",
     "cors": "^2.8.5",
     "highlight.js": "^11.4.0",
     "next": "12.0.10",

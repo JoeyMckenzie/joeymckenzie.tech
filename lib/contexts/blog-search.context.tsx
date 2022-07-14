@@ -72,7 +72,7 @@ interface BlogSearchContextProps {
   dispatch: Dispatch<BlogSearchActions>;
 }
 
-export const BlogSearchContext = createContext<BlogSearchContextProps>({
+const BlogSearchContext = createContext<BlogSearchContextProps>({
   state: initialState,
   dispatch: () => {},
 });

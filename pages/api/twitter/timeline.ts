@@ -27,13 +27,13 @@ export default function handler(
   }
 
   if (process.env.TWITTER_API_ENABLED === 'true') {
-    const $timeline = (token: string) => {
+    const timeline$ = (token: string) => {
       const authClient = new auth.OAuth2Bearer(token);
       const client = new Client(authClient);
 
       return from(
         client.tweets.usersIdTweets(process.env.TWITTER_USER_ID ?? '', {
-          'tweet.fields': ['created_at', 'public_metrics'],
+          'tweet.fields': ['created_at', 'public_metrics', 'entities'],
           'user.fields': ['username', 'profile_image_url'],
           expansions: ['author_id'],
           max_results: 5,
@@ -42,14 +42,34 @@ export default function handler(
         filter((timelineResponse) => !!timelineResponse),
         map((timelineResponse) => {
           // filter out tweets that are responses to other tweets, don't care about those for now
-          const tweets = timelineResponse.data!.map(
-            (tweetMeta) =>
-              ({
-                id: tweetMeta.id,
-                text: tweetMeta.text,
-                createdAt: tweetMeta.created_at ?? '',
-              } as TweetMeta)
-          );
+          const tweets = timelineResponse.data!.map((tweetMeta) => {
+            let currentText = `<p>${tweetMeta.text}</p>`;
+
+            // make the user mentions look like a link
+            tweetMeta.entities?.mentions?.forEach(
+              (mention) =>
+                (currentText = currentText.replaceAll(
+                  `@${mention.username}`,
+                  `<span class="text-blue-500">@${mention.username}</span>`
+                ))
+            );
+
+            // same with hashtags, make them look like a link as well
+            tweetMeta.entities?.hashtags?.forEach(
+              (hashtag) =>
+                (currentText = currentText.replaceAll(
+                  `#${hashtag.tag}`,
+                  `<span class="text-blue-500">#${hashtag.tag}</span>`
+                ))
+            );
+
+            return {
+              id: tweetMeta.id,
+              text: currentText,
+              createdAt: tweetMeta.created_at ?? '',
+              entities: tweetMeta.entities,
+            } as TweetMeta;
+          });
 
           // map the timeline response, flattening out tweets and profile information
           const meta: TwitterTimelineMeta = {
@@ -69,7 +89,8 @@ export default function handler(
 
     const twitterAuth = `${process.env.TWITTER_API_KEY}:${process.env.TWITTER_API_SECRET}`;
     const encodedAuth = Buffer.from(twitterAuth).toString('base64');
-    const $authentication = from(
+
+    const authentication$ = from(
       fetch(TOKEN_URL, {
         method: 'POST',
         headers: {
@@ -82,7 +103,7 @@ export default function handler(
         (authenticationResponse) =>
           (authenticationResponse as TwitterTokenResponse).access_token
       ),
-      switchMap($timeline),
+      switchMap(timeline$),
       map((meta) => response.status(200).json(meta)),
       catchError((error) => {
         console.error(error);
@@ -94,7 +115,7 @@ export default function handler(
       })
     );
 
-    return firstValueFrom($authentication);
+    return firstValueFrom(authentication$);
   }
 
   return response.status(200).json({

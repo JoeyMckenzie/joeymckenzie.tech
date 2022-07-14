@@ -6,6 +6,7 @@ import GitHubProjects from '@/components/GitHubProjects';
 import { NextSeo } from 'next-seo';
 import { useFrontMatters } from '@/lib/hooks/use-frontmatters.hook';
 import RecentTweets from '@/components/RecentTweets';
+import YouTubeVideos from '@/components/YouTubeVideos';
 
 const Index: NextPage = () => {
   const { githubMetas } = useFrontMatters();
@@ -17,6 +18,7 @@ const Index: NextPage = () => {
         description="Personal portfolio and blog for Joey McKenzie software engineer"
       />
       <BlogPreviewContainer />
+      {/* <YouTubeVideos /> */}
       <RecentTweets />
       {githubMetas && <GitHubProjects metas={githubMetas} />}
       <CodeSnippets />

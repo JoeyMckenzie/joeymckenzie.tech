@@ -22,10 +22,20 @@ export interface TwitterTokenResponse {
   access_token: string;
 }
 
+interface TweetEntity {
+  id: string;
+  start: number;
+  end: number;
+  username: string;
+}
+
 export interface TweetMeta {
   id: string;
   text: string;
   createdAt: string;
+  entities: {
+    mentions: TweetEntity[];
+  };
 }
 
 export interface ProfileMeta {
