@@ -13,7 +13,7 @@ import { fromFetch } from 'rxjs/fetch';
 import { mutate } from 'swr';
 
 export function getBlogViews(key: string) {
-  const $blogViews = fromFetch<ViewsApiResponse>(key, {
+  const blogViews$ = fromFetch<ViewsApiResponse>(key, {
     selector: (response) => response.json(),
   }).pipe(
     map((data) => (isNaN(+data.total) ? 0 : +data.total)),
@@ -23,11 +23,11 @@ export function getBlogViews(key: string) {
     })
   );
 
-  return firstValueFrom($blogViews);
+  return firstValueFrom(blogViews$);
 }
 
 export function addViewToBlog(apiLink: string, blogViews: number) {
-  const $updatedViews = from(
+  const updatedViews$ = from(
     mutate<number>(apiLink, blogViews + 1, false)
   ).pipe(
     exhaustMap(() => fromFetch(apiLink, { method: 'POST' })),
@@ -38,5 +38,5 @@ export function addViewToBlog(apiLink: string, blogViews: number) {
     })
   );
 
-  return firstValueFrom($updatedViews);
+  return firstValueFrom(updatedViews$);
 }

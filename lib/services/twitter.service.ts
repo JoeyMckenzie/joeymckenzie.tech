@@ -1,9 +1,9 @@
-import { catchError, EMPTY, firstValueFrom, map, tap } from 'rxjs';
+import { catchError, EMPTY, firstValueFrom } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { TweetMeta, TwitterTimelineMeta } from '../types/twitter.types';
+import { TwitterTimelineMeta } from '../types/twitter.types';
 
-export function getTimeline() {
-  const $timeline = fromFetch<TwitterTimelineMeta>('/api/twitter/timeline', {
+export function getTimeline(url: string) {
+  const $timeline = fromFetch<TwitterTimelineMeta>(url, {
     method: 'GET',
     selector: (response) => response.json(),
   }).pipe(

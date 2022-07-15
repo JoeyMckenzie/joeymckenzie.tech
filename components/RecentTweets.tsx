@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import TweetCard from './TweetCard';
 
 const RecentTweets: VFC = () => {
-  const { data } = useSWR('timeline', getTimeline, {
+  const { data } = useSWR('/api/twitter/timeline', getTimeline, {
     revalidateIfStale: false,
   });
 
