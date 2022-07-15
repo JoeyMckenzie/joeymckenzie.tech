@@ -1,7 +1,8 @@
 import { ProfileMeta, TweetMeta } from '@/lib/types/twitter.types';
 import { VFC } from 'react';
+import TweetMetrics from './TweetMetrics';
 
-const TwitterCard: VFC<{
+const TweetCard: VFC<{
   tweet: TweetMeta;
   profileMeta: ProfileMeta;
 }> = ({ tweet, profileMeta }) => {
@@ -33,13 +34,20 @@ const TwitterCard: VFC<{
           ></p>
         </div>
         <div className="w-full">
-          <p className="text-right text-xs text-gray-500 dark:text-gray-400">
-            <time dateTime={createdDate}>{createdDate}</time>
-          </p>
+          <div className="flex flex-col">
+            <p className="text-right text-xs text-gray-500 dark:text-gray-400">
+              <time dateTime={createdDate}>{createdDate}</time>
+            </p>
+            {tweet.metrics && (
+              <div className="ml-auto">
+                <TweetMetrics metrics={tweet.metrics} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default TwitterCard;
+export default TweetCard;

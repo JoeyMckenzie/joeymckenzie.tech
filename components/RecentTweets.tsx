@@ -1,18 +1,14 @@
 import { getTimeline } from '@/lib/services/twitter.service';
 import { VFC } from 'react';
 import useSWR from 'swr';
-import TwitterCard from './TwitterCard';
+import TweetCard from './TweetCard';
 
 const RecentTweets: VFC = () => {
   const { data } = useSWR('timeline', getTimeline, {
     revalidateIfStale: false,
   });
 
-  if (!data) {
-    return null;
-  }
-
-  return (
+  return data ? (
     <div className="flex flex-col space-y-2 pb-8">
       <h2 className="text-center text-3xl font-extrabold tracking-tight text-gray-900 dark:text-gray-200 sm:text-4xl">
         Recent tweets
@@ -25,12 +21,12 @@ const RecentTweets: VFC = () => {
             rel="noreferrer"
             href={`https://twitter.com/${data.profileMeta.username}/status/${tweet.id}`}
           >
-            <TwitterCard tweet={tweet} profileMeta={data.profileMeta} />
+            <TweetCard tweet={tweet} profileMeta={data.profileMeta} />
           </a>
         ))}
       </div>
     </div>
-  );
+  ) : null;
 };
 
 export default RecentTweets;

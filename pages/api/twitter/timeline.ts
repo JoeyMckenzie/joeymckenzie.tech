@@ -68,6 +68,7 @@ export default function handler(
               text: currentText,
               createdAt: tweetMeta.created_at ?? '',
               entities: tweetMeta.entities,
+              metrics: tweetMeta.public_metrics,
             } as TweetMeta;
           });
 

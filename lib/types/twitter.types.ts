@@ -29,10 +29,18 @@ interface TweetEntity {
   username: string;
 }
 
+export interface TweetMetricsMeta {
+  retweet_count: number;
+  reply_count: number;
+  like_count: number;
+  quote_count: number;
+}
+
 export interface TweetMeta {
   id: string;
   text: string;
   createdAt: string;
+  metrics: TweetMetricsMeta;
   entities: {
     mentions: TweetEntity[];
   };
