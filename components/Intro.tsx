@@ -9,8 +9,8 @@ const HEIGHT_WIDTH_PROFILE_IMAGE_SIZE = 150;
 
 const Intro: VFC = () => (
   <div className="flex flex-col justify-center space-y-8">
-    <div className="mx-auto flex max-w-4xl flex-row justify-center px-4 pt-36 sm:px-6 lg:px-8">
-      <div className="my-auto hidden px-4 sm:block">
+    <div className="mx-auto flex max-w-4xl flex-col justify-center px-4 pt-36 sm:flex-row sm:px-6 lg:px-8">
+      <div className="mx-auto my-auto px-4 sm:mx-0">
         <Image
           height={HEIGHT_WIDTH_PROFILE_IMAGE_SIZE}
           width={HEIGHT_WIDTH_PROFILE_IMAGE_SIZE}

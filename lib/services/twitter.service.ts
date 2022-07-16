@@ -3,7 +3,7 @@ import { fromFetch } from 'rxjs/fetch';
 import { TwitterTimelineMeta } from '../types/twitter.types';
 
 export function getTimeline(url: string) {
-  const $timeline = fromFetch<TwitterTimelineMeta>(url, {
+  const timeline$ = fromFetch<TwitterTimelineMeta>(url, {
     method: 'GET',
     selector: (response) => response.json(),
   }).pipe(
@@ -13,5 +13,5 @@ export function getTimeline(url: string) {
     })
   );
 
-  return firstValueFrom($timeline);
+  return firstValueFrom(timeline$);
 }

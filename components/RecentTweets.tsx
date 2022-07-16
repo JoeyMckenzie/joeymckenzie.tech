@@ -1,5 +1,5 @@
 import { getTimeline } from '@/lib/services/twitter.service';
-import { VFC } from 'react';
+import { useEffect, VFC } from 'react';
 import useSWR from 'swr';
 import TweetCard from './TweetCard';
 

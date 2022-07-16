@@ -1,3 +1,4 @@
+import { LatestVideosResponse } from '@/lib/types/youtube.types';
 import { NextApiRequest, NextApiResponse } from 'next';
 import playlist from './playlist.json';
 
@@ -10,6 +11,6 @@ export default function handler(
   }
 
   return response.status(200).json({
-    viedos: playlist.videos,
-  });
+    videos: playlist.videos,
+  } as LatestVideosResponse);
 }

@@ -18,7 +18,7 @@ const Index: NextPage = () => {
         description="Personal portfolio and blog for Joey McKenzie software engineer"
       />
       <BlogPreviewContainer />
-      {/* <YouTubeVideos /> */}
+      <YouTubeVideos />
       <RecentTweets />
       {githubMetas && <GitHubProjects metas={githubMetas} />}
       <CodeSnippets />
