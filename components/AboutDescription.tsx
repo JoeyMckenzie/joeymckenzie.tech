@@ -88,14 +88,14 @@ const AboutDescription: VFC = () => (
               <dd className="mt-1 text-sm text-gray-900 dark:text-gray-300">
                 I like building things. I write software for a living as a
                 professional Software Developer, amateur scrum master, part-time
-                DBA, impromptu DevOps Engineer, sifter of Kibana logs, and
+                DBA, impromptu DevOps Engineer, a sifter of Kibana logs, and
                 connoisseur of cheap beer among other things. I like to write
                 about things in code that mostly have to do with and
                 microservice development, while also adventuring into a wide
-                variety of technology stacks to blog about. I work at a SaaS
-                company currently writing lots of C#, .NET, and Vue, but I
-                dabble in just about everything the modern web and application
-                frameworks have to offer.
+                variety of technology stacks to blog about. I work at a fintech
+                company currently as a .NET developer, but I dabble in just
+                about everything the modern web and application frameworks have
+                to offer.
               </dd>
               <dd className="mt-2 text-sm text-gray-900 dark:text-gray-300">
                 When I&apos;m not sitting in front of an IDE or breaking
