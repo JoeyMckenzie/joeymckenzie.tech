@@ -56,11 +56,6 @@ export const SOCIALS: NavigationMeta = {
   main: NAVIGATION_LINKS,
   social: [
     {
-      name: 'Resume',
-      href: '/JoeyMcKenzieResume.pdf',
-      icon: (props) => <AcademicCapIcon {...props} />,
-    },
-    {
       name: 'Twitter',
       href: 'https://twitter.com/_joeyMcKenzie',
       icon: (props) => (
@@ -96,6 +91,11 @@ export const SOCIALS: NavigationMeta = {
       name: 'YouTube',
       href: 'https://www.youtube.com/channel/UCkdpN-mQSyJ_2XJMU1kQ5fA',
       icon: (props) => <AiFillYoutube {...props} />,
+    },
+    {
+      name: 'Resume',
+      href: '/JoeyMcKenzieResume.pdf',
+      icon: (props) => <AcademicCapIcon {...props} />,
     },
   ],
 };

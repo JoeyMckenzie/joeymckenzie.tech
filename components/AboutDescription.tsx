@@ -99,9 +99,10 @@ const AboutDescription: VFC = () => (
               </dd>
               <dd className="mt-2 text-sm text-gray-900 dark:text-gray-300">
                 When I&apos;m not sitting in front of an IDE or breaking
-                production environments, you&apos;ll find spending time with my
-                wife and dog, hanging out with friends, or probably sitting at
-                the bar of one of my town&apos;s local breweries.
+                production environments, you&apos;ll find me spending time with
+                my wife and dog, hanging out with friends and family, or
+                probably sitting at the bar of one of my town&apos;s local
+                breweries.
               </dd>
             </div>
           </dl>
