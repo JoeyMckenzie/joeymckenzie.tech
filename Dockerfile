@@ -1,11 +1,18 @@
 # Install dependencies only when needed
 FROM node:16-alpine AS deps
+
 # Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
+
+# Copy over package dependencies and prisma scehma
 COPY package.json package-lock.json ./
 COPY ./prisma ./prisma
+
+# Next, clean install our npm packages removing any existing node_modules
 RUN npm ci
+
 
 # Rebuild the source code only when needed
 FROM node:16-alpine AS builder

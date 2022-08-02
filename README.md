@@ -1,34 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## My personal slice of the internet
 
-## Getting Started
+This template includes a set of our favorite dev tools scaffolded into a Next.js project. Tools include:
 
-First, run the development server:
+- TypeScript
+- Tailwind CSS
+- ESLint, with Prettier plugin
+- Prettier, include Tailwind Plugin
+- Husky pre-commit hooks for formatting
+- Jest
+- Docker
+
+The easiest way to get started with this template is with [degit](https://github.com/Rich-Harris/degit) to avoid
+including the template commit log:
 
 ```bash
-npm run dev
-# or
-yarn dev
+npm install -g degit # or yarn add --global degit
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Once installed:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```bash
+degit JoeyMckenzie/nextjs-typescript-tailwind-template your-project-name
+cd your-project-name && npm install
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+If you'd prefer to simply `git clone` instead:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```bash
+git clone https://github.com/JoeyMckenzie/nextjs-typescript-tailwind-template.git your-project-name
+cd your-project-name && git remote remove origin
+```
 
-## Learn More
+To start with Docker, verify you have it installed, then:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+docker-compose up --build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Note on Docker usage:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+The Docker image is the officially recommended build configuration preconfigured with npm. If you prefer to use yarn,
+do the following within `Dockerfile`:
 
-## Deploy on Vercel
+```Dockerfile
+# If using yarn with a `yarn.lock` comment out below
+# COPY package.json yarn.lock ./
+# RUN yarn install --frozen-lockfile
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# If using npm with a `package-lock.json` comment out above and use below instead
+COPY package.json package-lock.json ./
+RUN npm ci
+```
