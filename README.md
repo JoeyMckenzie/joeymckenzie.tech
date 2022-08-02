@@ -49,5 +49,6 @@ do the following within `Dockerfile`:
 
 # If using npm with a `package-lock.json` comment out above and use below instead
 COPY package.json package-lock.json ./
+
 RUN npm ci
 ```
