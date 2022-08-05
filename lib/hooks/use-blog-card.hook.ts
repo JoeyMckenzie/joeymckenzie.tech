@@ -31,7 +31,7 @@ export function useBlogCard(apiLink: string) {
   );
 
   const addBlogView = useCallback(async () => {
-    if (process.env.NODE_ENV === 'production') {
+    if (process.env.NODE_ENV === 'development') {
       await addViewToBlog(`${apiLink}/new`, blogViews ?? 0);
     }
   }, [apiLink, blogViews]);
