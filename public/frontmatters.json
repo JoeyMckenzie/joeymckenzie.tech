@@ -127,13 +127,22 @@
       "slug": "net-core-dapper-and-crud-buzzword-bingo-part-4"
     },
     {
-      "title": ".NET Core Service lifetimes in a nutshell",
+      "title": ".NET Core service lifetimes in a nutshell",
       "description": "Learn to register your lifetimes accordingly with .NET Core's built-in dependency injection and IoC container.",
       "domains": ["Dapper", ".NET"],
       "date": "Sep 23, 2020",
       "datetime": "2020-09-23",
       "readingTime": "8 min",
       "slug": "service-lifetimes-in-plain-english"
+    },
+    {
+      "title": "Rethinking exceptions in .NET",
+      "description": "Exceptions... exceptions everywhere!",
+      "domains": [".NET"],
+      "date": "Sep 21, 2022",
+      "datetime": "2022-09-21",
+      "readingTime": "5 min",
+      "slug": "rethinking-exceptions-in-dotnet"
     }
   ]
 }
