@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState, VFC } from 'react';
 import { Switch } from '@headlessui/react';
 import { classNames } from '@/lib/utilities';
-import { useThemeToggle } from '@/lib/hooks/use-theme-toggle.hook';
 import { useTheme } from 'next-themes';
 
 enum Theme {
