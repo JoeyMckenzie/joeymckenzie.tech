@@ -94,7 +94,7 @@ export const SOCIALS: NavigationMeta = {
     },
     {
       name: 'Resume',
-      href: '/JoeyMcKenzieResume.pdf',
+      href: '/joey_mckenzie_resume.pdf',
       icon: (props) => <AcademicCapIcon {...props} />,
     },
   ],

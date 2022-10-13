@@ -1,10 +1,30 @@
-import { VFC } from 'react';
+import { useCallback, useEffect, VFC } from 'react';
 import { Switch } from '@headlessui/react';
 import { classNames } from '@/lib/utilities';
 import { useThemeToggle } from '@/lib/hooks/use-theme-toggle.hook';
+import { useTheme } from 'next-themes';
+
+enum Theme {
+  Light = 'light',
+  Dark = 'dark',
+}
 
 const ThemeToggle: VFC = () => {
-  const { enabled, toggleDarkMode } = useThemeToggle();
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    console.log(theme);
+  }, [theme]);
+
+  const enabled = theme === Theme.Dark;
+
+  const toggleDarkMode = useCallback(() => {
+    if (enabled) {
+      setTheme(Theme.Light);
+    } else {
+      setTheme(Theme.Dark);
+    }
+  }, [enabled, setTheme]);
 
   return (
     <Switch
