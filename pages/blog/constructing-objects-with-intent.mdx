@@ -1,7 +1,7 @@
 # Constructing objects with intent
 
 ![constructors meme](/blog/objects-with-intent/constructors_meme.jpg)
-I've been becoming increasingly annoyed, both by legacy code and modern frameworks, with the amount non-constrained object construction that occurs within a codebase. That's a bunch of developer jargon, so what does all that mean exactly? If a developer is working on a feature within a codebase they might be unfamiliar with, it's far too easy to instantiate objects at will with zero constraint with some process downstream in an area of code tucked away in a dark corner expecting the developer to have _correctly_ constructed said object. To me, this feels like a lot like the "read my mind" mentality that occurs in between employers and disgruntled employees in the workplace: employer expects something to happen without communicating to employee that intent (I think we've all experienced this regardless of industry). How does this translate to code? Let's take a simple example from C#.
+I've been becoming increasingly annoyed, both by legacy code and modern frameworks, with the amount of non-constrained object construction that occurs within a codebase. That's a bunch of developer jargon, so what does all that mean exactly? If a developer is working on a feature within a codebase they might be unfamiliar with, it's far too easy to instantiate objects at will with zero constraints with some process downstream in an area of code tucked away in a dark corner expecting the developer to have _correctly_ constructed said object. To me, this feels a lot like the "read my mind" mentality that occurs between employers and disgruntled employees in the workplace: the employer expects something to happen without communicating to the employee that intent (I think we've all experienced this regardless of industry). How does this translate to code? Let's take a simple example from C#.
 
 Let's say I'm working in a codebase that validates addresses. The address structure may look something like:
 
@@ -16,7 +16,7 @@ public sealed record Address
 }
 ```
 
-If a friendly wanted to create a new `Address`, it's up them to understand how the `Address` record is to be instantiated _and_ understand any downstream business logic validation, processes, etc. that involve the `Address` object. As it stands, a developer could _in theory_ instantiate an `Address` while forgetting to set the street, city, state. Not very helpful, as we'll have no way of identifying a user's location if no information is provided. To get around this, we use constructors with the help for C#'s record type:
+If a friendly developer wanted to create a new `Address`, it's up to them to understand how the `Address` record is to be instantiated _and_ understand any downstream business logic validation, processes, etc. that involve the `Address` object. As it stands, a developer could _in theory_ instantiate an `Address` while forgetting to set the street, city, and state. Not very helpful, as we'll have no way of identifying a user's location if no information is provided. To get around this, we use constructors with the help of C#'s record type:
 
 ```csharp
 public sealed record Address(string Street, string City, string State);
@@ -69,7 +69,7 @@ public sealed record Address
 }
 ```
 
-We added a constructor that requires the street while default the city and state to empty strings rather than `null` for sanity. While it's easy enough to use object initializers instead, i.e.
+We added a constructor that requires the street while defaulting the city and state to empty strings rather than `null` for sanity. While it's easy enough to use object initializers instead, i.e.
 
 ```csharp
 var someAddress = new Address
@@ -132,7 +132,7 @@ public sealed record Address
 }
 ```
 
-So now, our consumers have to choose between three different ways to properly construct the address information. While this is "fine" for the most part, I find it often more helpful to add contextual object constructors, a.k.a methods to a object that _clearly convey_ what context the object is to be constructed with:
+So now, our consumers have to choose between three different ways to properly construct the address information. While this is "fine" for the most part, I find it often more helpful to add contextual object constructors, a.k.a methods to an object that _clearly conveys_ what context the object is to be constructed with:
 
 ```csharp
 public sealed record Address
@@ -206,11 +206,11 @@ var fullAddress = Address.FromFullAddress("123 Code Street", ".NETville", "CA");
 fullAddress.PrintAddress();
 ```
 
-Although we still provide constructors, they're now `private` so we can further constrain how consumer instantiate an `Address` to help avoid pesky "missing data/property" bugs. We can think of these `static` builders on our `Address` record as _named constructors_, which come in handy when we need multiple variations of object construction.
+Although we still provide constructors, they're now `private` so we can further constrain how consumers instantiate an `Address` to help avoid pesky "missing data/property" bugs. We can think of these `static` builders on our `Address` record as _named constructors_, which come in handy when we need multiple variations of object construction.
 
 ## Fluent builders for complex objects
 
-Often times, our constructed objects might contain a hodge-podge of properties that may or may not necessarily support one another. I find implementing fluent builders in this case to be helpful for allowing consumers with instantiate their objects in a manner they see fit. Using builders, we offer a _fluent_ like API to callers allowing them customize exactly what the object they're looking to build should look like. In terms of C#, we're looking for something along the lines of:
+Oftentimes, our constructed objects might contain a hodge-podge of properties that may or may not necessarily support one another. I find implementing fluent builders, in this case, to help allow consumers to instantiate their objects in a manner they see fit. Using builders, we offer a _fluent_ like API to callers allowing them to customize exactly what the object they're looking to build should look like. In terms of C#, we're looking for something along the lines of:
 
 ```csharp
 var someFluentlyBuiltObject = new AwesomeFluentBuilder()
@@ -224,9 +224,9 @@ Debug.Assert(someFluentlyBuiltObject.AnswerToLift, 42);
 Debug.Assert(string.Equals(someFluentlyBuiltObject.Opinion, "Lord of the Rings is better than Star Wars"));
 ```
 
-I opt to use the `WithProperty()` convention to make it clear to consumers of my code the object they're constructing will contain whatever data they will correspond to that property's value - somewhat subject, but I feel the intention is clear. Let's take a look at more fleshed out, yet contrived, example in Rust as I've been having somewhat of an obsession lately with the language and ecosystem. Seriously, the joy of using cargo alone makes me instantly annoyed whenever I'm _not_ working in a Rust context. Let's fluently build some pizzas with Rust.
+I opt to use the `WithProperty()` convention to make it clear to consumers of my code that the object they're constructing will contain whatever data they will correspond to that property's value - somewhat subject, but I feel the intention is clear. Let's take a look at a more fleshed out, yet contrived, example in Rust as I've been having somewhat of an obsession lately with the language and ecosystem. Seriously, the joy of using cargo alone makes me instantly annoyed whenever I'm _not_ working in a Rust context. Let's fluently build some pizzas with Rust.
 
-This isn't a post about Rust necessarily, so I'll defer to the rustaceans much smarter and more well versed in the language than myself to deep dive into idiomatic Rust. The concept remains, however - our public API should offer a pizza `struct` that can be consumed by callers. While a caller _could_ in theory construct they're own pizza, we should offer them a convenient way to make pizzas without worrying about the internal details of constructing said pizza.
+This isn't a post about Rust necessarily, so I'll defer to the rustaceans much smarter and more well-versed in the language than myself to deep dive into idiomatic Rust. The concept remains, however - our public API should offer a pizza `struct` that can be consumed by callers. While a caller _could_ in theory, construct they're own pizza, we should offer them a convenient way to make pizzas without worrying about the internal details of constructing said pizza.
 
 We can think of it as the exchange of transactions that occurs when one walks into their favorite pizza joint:
 
@@ -283,7 +283,7 @@ impl Default for Sauce {
 }
 ```
 
-A `Pizza` should contain a `Crust`, `Sauce`, and a plethora of `Topping`s. While callers of our public API could build a pizza themselves, we want to make it as easy as possible to build such a pizza without worrying how to ladle the sauce, toss the dough, shred the mozzarella, etc. Let's add a fluent builder our users can interact to build their perfect `Pizza`:
+A `Pizza` should contain a `Crust`, `Sauce`, and a plethora of `Topping`s. While callers of our public API could build a pizza themselves, we want to make it as easy as possible to build such a pizza without worrying about how to ladle the sauce, toss the dough, shred the mozzarella, etc. Let's add a fluent builder our users can interact to build their perfect `Pizza`:
 
 ```rust
 use crate::pizza::Crust;
@@ -342,7 +342,7 @@ impl PizzaBuilder {
 }
 ```
 
-For those unfamiliar with Rust, we won't hang up on the details here. Our builder simply offers methods on the `PizzaBuilder` struct, consuming whatever previous version of it's internal `Pizza` state through `self`, and creates a new internal state containing the previous pizza state with slight modifications depending on what property we might be updating on the `Pizza` we'll hand back to consumers. When we finally `build()` this `Pizza`, we simply hand back the internally managed pizza state.
+For those unfamiliar with Rust, we won't hang up on the details here. Our builder simply offers methods on the `PizzaBuilder` struct, consuming whatever the previous version of its internal `Pizza` state through `self`, and creates a new internal state containing the previous pizza state with slight modifications depending on what property we might be updating on the `Pizza` we'll hand back to consumers. When we finally `build()` this `Pizza`, we simply hand back the internally managed pizza state.
 
 Consuming our `PizzaBuilder` might look something like:
 
