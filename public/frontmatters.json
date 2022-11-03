@@ -143,6 +143,15 @@
       "datetime": "2022-09-21",
       "readingTime": "5 min",
       "slug": "rethinking-exceptions-in-dotnet"
+    },
+    {
+      "title": "Constructing objects with intent",
+      "description": "Build better object APIs with named constructors and fluent builders!",
+      "domains": [".NET", "Rust", "Design"],
+      "date": "Nov 3, 2022",
+      "datetime": "2022-11-3",
+      "readingTime": "8 min",
+      "slug": "constructing-objects-with-intent"
     }
   ]
 }
