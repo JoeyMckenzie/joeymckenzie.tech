@@ -306,8 +306,7 @@ impl PizzaBuilder {
         Self {
             pizza: Pizza {
                 crust,
-                toppings: self.pizza.toppings,
-                sauce: self.pizza.sauce,
+                ..self.pizza
             },
         }
     }
@@ -315,9 +314,8 @@ impl PizzaBuilder {
     pub fn with_sauce(self, sauce: Sauce) -> Self {
         Self {
             pizza: Pizza {
-                crust: self.pizza.crust,
-                toppings: self.pizza.toppings,
                 sauce,
+                ..self.pizza
             },
         }
     }
@@ -329,9 +327,8 @@ impl PizzaBuilder {
 
         Self {
             pizza: Pizza {
-                crust: self.pizza.crust,
                 toppings: toppings_mut,
-                sauce: self.pizza.sauce,
+                ..self.pizza
             },
         }
     }
