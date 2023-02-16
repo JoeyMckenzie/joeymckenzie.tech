@@ -1,24 +1,16 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
+const { fontFamily } = require('tailwindcss/defaultTheme');
 
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx}',
-    './layouts/**/*.{js,ts,jsx,tsx}',
-    './lib/*.{js,ts,jsx,tsx}',
-  ],
+  content: ['./src/**/*.{js,ts,tsx}'],
   darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-        ubuntu: ['Ubuntu', ...defaultTheme.fontFamily.sans],
+        sans: ['Inter var', ...fontFamily.sans],
+        ubuntu: ['Ubuntu', ...fontFamily.sans],
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/aspect-ratio'),
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [require('@tailwindcss/forms')],
 };
