@@ -1,4 +1,5 @@
 import Footer from './+Footer';
+import Navbar from './+Navbar';
 import Navlinks from './+Navlinks';
 import './globals.css';
 
@@ -14,10 +15,11 @@ export default function RootLayout({
         head.tsx. Find out more at https://beta.nextjs.org/docs/api-reference/file-conventions/head
       */}
       <head />
-      <body className="bg-white dark:bg-black">
-        {/* <Navlinks /> */}
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">{children}</div>
-        <Footer />
+      <body className="bg-neutral-900">
+        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <Navbar />
+          {children}
+        </div>
       </body>
     </html>
   );
