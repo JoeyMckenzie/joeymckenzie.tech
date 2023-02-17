@@ -2,10 +2,6 @@
 
 import { useCallback, useEffect, useState } from 'react';
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ');
-}
-
 function SunIcon() {
   return (
     <svg
@@ -38,7 +34,7 @@ function MoonIcon() {
   );
 }
 
-export default function ThemeToggle() {
+export default function ThemeToggle(): JSX.Element {
   const [enabled, setEnabled] = useState(false);
 
   const toggleTheme = useCallback(() => setEnabled(!enabled), [enabled]);

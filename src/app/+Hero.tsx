@@ -1,5 +1,4 @@
-/* This example requires Tailwind CSS v3.0+ */
-export default function Hero() {
+export default function Hero(): JSX.Element {
   return (
     <div className="bg-white">
       <div className="py-24 px-6 sm:px-6 sm:py-32 lg:px-8">

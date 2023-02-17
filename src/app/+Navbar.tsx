@@ -71,7 +71,7 @@ const navigation: NavigationItem[] = [
   },
 ];
 
-export default function Navbar() {
+export default function Navbar(): JSX.Element {
   return (
     <nav className="mx-auto max-w-7xl py-12 px-6 lg:px-8">
       <div className="flex justify-center space-x-6 md:order-2">
