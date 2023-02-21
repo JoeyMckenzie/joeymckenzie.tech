@@ -24,7 +24,7 @@ const navigationLinks: NavigationLink[] = [
 
 export default function Navbar(): JSX.Element {
   return (
-    <nav className="mt-4 flex flex-row items-center gap-x-2 px-6">
+    <nav className="mt-4 flex flex-row items-center gap-x-2 px-6 sm:justify-center">
       <Link href="/" className="pr-4">
         <FiTerminal className="h-6 w-6 text-neutral-400" />
       </Link>

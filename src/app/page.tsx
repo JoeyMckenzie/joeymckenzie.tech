@@ -1,7 +1,7 @@
+import { getSpotifyAccessToken } from '@/lib/spotify';
 import { allBlogs, Blog } from 'contentlayer/generated';
 import { compareDesc, format, parseISO } from 'date-fns';
-import Link from 'next/link';
-import Header from './+Header';
+import Hero from './+Hero';
 
 // function BlogCard({ blog }: { blog: Blog }): JSX.Element {
 //   const route = `/blog/${blog.slug}`;
@@ -19,15 +19,16 @@ import Header from './+Header';
 //     </div>
 //   );
 // }
-
-export default function Home(): JSX.Element {
+export default async function Home(): Promise<JSX.Element> {
   const blogs = allBlogs.sort((a, b) =>
     compareDesc(new Date(a.date), new Date(b.date))
   );
 
+  const accessToken = await getSpotifyAccessToken();
+
   return (
     <>
-      <Header />
+      <Hero />
       {/* <div className="mx-auto max-w-2xl py-16 text-center">
         <h1 className="mb-8 text-3xl font-bold">Contentlayer Blog Example</h1>
         {blogs.map((blog, index) => (

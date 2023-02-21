@@ -1,6 +1,4 @@
-'use client';
-
-import { SVGProps, useState } from 'react';
+import { SVGProps } from 'react';
 import { SiVercel, SiNextdotjs, SiTwitch, SiLinkedin } from 'react-icons/si';
 
 type NavigationLink = {
@@ -13,12 +11,12 @@ const poweredBy: NavigationLink[] = [
   {
     href: 'https://vercel.com',
     name: 'Vercel',
-    icon: (props) => <SiVercel />,
+    icon: () => <SiVercel />,
   },
   {
     href: 'https://nextjs.com',
     name: 'next.js',
-    icon: (props) => <SiNextdotjs />,
+    icon: () => <SiNextdotjs />,
   },
 ];
 
@@ -66,7 +64,7 @@ const socials: NavigationLink[] = [
   {
     name: 'LinkedIn',
     href: 'https://linkedin.com/in/JoeyMcKenzie',
-    icon: (props) => <SiLinkedin className="h-5 w-5" aria-hidden="true" />,
+    icon: () => <SiLinkedin className="h-5 w-5" aria-hidden="true" />,
   },
 ];
 
