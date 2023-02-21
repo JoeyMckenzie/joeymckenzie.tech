@@ -1,7 +1,8 @@
-import { getSpotifyAccessToken } from '@/lib/spotify';
+import { getCurrentlyListeningTo } from '@/lib/spotify';
 import { allBlogs, Blog } from 'contentlayer/generated';
 import { compareDesc, format, parseISO } from 'date-fns';
 import Hero from './+Hero';
+import ListeningTo from './+ListentingTo';
 
 // function BlogCard({ blog }: { blog: Blog }): JSX.Element {
 //   const route = `/blog/${blog.slug}`;
@@ -23,8 +24,6 @@ export default async function Home(): Promise<JSX.Element> {
   const blogs = allBlogs.sort((a, b) =>
     compareDesc(new Date(a.date), new Date(b.date))
   );
-
-  const accessToken = await getSpotifyAccessToken();
 
   return (
     <>

@@ -1,13 +1,15 @@
+import { getCurrentlyListeningTo } from '@/lib/spotify';
 import Footer from './+Footer';
 import Navbar from './+Navbar';
-import Navlinks from './+Navlinks';
 import './globals.css';
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}): JSX.Element {
+}): Promise<JSX.Element> {
+  const listentingTo = await getCurrentlyListeningTo();
+
   return (
     <html lang="en">
       {/*
@@ -19,7 +21,7 @@ export default function RootLayout({
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <Navbar />
           {children}
-          <Footer />
+          <Footer listeningTo={listentingTo} />
         </div>
       </body>
     </html>

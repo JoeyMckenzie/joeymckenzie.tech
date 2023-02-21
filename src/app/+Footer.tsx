@@ -1,5 +1,7 @@
+import { ListentingToMeta } from '@/lib/spotify';
 import { SVGProps } from 'react';
 import { SiVercel, SiNextdotjs, SiTwitch, SiLinkedin } from 'react-icons/si';
+import ListeningTo from './+ListentingTo';
 
 type NavigationLink = {
   name: string;
@@ -72,42 +74,59 @@ const hash = process.env.NEXT_PUBLIC_GIT_HASH;
 const hasHref = `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${hash}`;
 const hashDisplay = hash?.substring(0, 6);
 
-export default function Footer() {
+function PoweredBy(): JSX.Element {
+  return (
+    <div className="mx-auto mt-8 inline-flex flex-row items-center gap-x-2 md:order-1 md:mx-0 md:mt-0">
+      <p className="text-center font-ubuntu text-xs leading-5 text-neutral-500">
+        Powered by
+      </p>
+      {poweredBy.map((item, index) => (
+        <a
+          key={`powered-by-${index}`}
+          href={item.href}
+          className="text-neutral-500 hover:text-neutral-400"
+        >
+          <span className="sr-only">{item.name}</span>
+          <item.icon className="h-5 w-5" />
+        </a>
+      ))}
+      <a
+        href={hasHref}
+        className="text-center font-ubuntu text-xs leading-5 text-neutral-500 hover:text-neutral-400"
+      >
+        {hashDisplay}
+      </a>
+    </div>
+  );
+}
+
+function Socials(): JSX.Element {
+  return (
+    <div className="flex justify-center space-x-6 md:order-2">
+      {socials.map((item) => (
+        <a
+          key={item.name}
+          href={item.href}
+          className="text-neutral-400 hover:text-neutral-500"
+        >
+          <span className="sr-only">{item.name}</span>
+          <item.icon className="h-6 w-6" aria-hidden="true" />
+        </a>
+      ))}
+    </div>
+  );
+}
+
+export default function Footer({
+  listeningTo,
+}: {
+  listeningTo?: ListentingToMeta;
+}): JSX.Element {
   return (
     <footer className="mx-auto flex max-w-7xl flex-col py-12 px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-      <div className="flex justify-center space-x-6 md:order-2">
-        {socials.map((item) => (
-          <a
-            key={item.name}
-            href={item.href}
-            className="text-neutral-400 hover:text-neutral-500"
-          >
-            <span className="sr-only">{item.name}</span>
-            <item.icon className="h-6 w-6" aria-hidden="true" />
-          </a>
-        ))}
-      </div>
-      <div className="mx-auto mt-8 inline-flex flex-row items-center gap-x-2 md:order-1 md:mx-0 md:mt-0">
-        <p className="text-center font-ubuntu text-xs leading-5 text-neutral-500">
-          Powered by
-        </p>
-        {poweredBy.map((item, index) => (
-          <a
-            key={`powered-by-${index}`}
-            href={item.href}
-            className="text-neutral-500 hover:text-neutral-400"
-          >
-            <span className="sr-only">{item.name}</span>
-            <item.icon className="h-5 w-5" />
-          </a>
-        ))}
-        <a
-          href={hasHref}
-          className="text-center font-ubuntu text-xs leading-5 text-neutral-500 hover:text-neutral-400"
-        >
-          {hashDisplay}
-        </a>
-      </div>
+      <Socials />
+      <ListeningTo listeningTo={listeningTo} />
+      <PoweredBy />
     </footer>
   );
 }
