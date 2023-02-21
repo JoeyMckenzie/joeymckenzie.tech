@@ -32,7 +32,7 @@ export default function Navbar(): JSX.Element {
         <ActiveLink
           key={`link-${index}`}
           href={href}
-          className="inline-flex px-2 py-1 font-ubuntu font-medium text-neutral-400"
+          className="inline-flex px-2 py-1 font-merriweather font-medium text-neutral-400"
           activeClassName="rounded border border-transparent bg-neutral-800 text-neutral-300 hover:bg-neutral-500 focus:outline-none"
         >
           {display}

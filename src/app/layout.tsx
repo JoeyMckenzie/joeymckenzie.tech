@@ -19,6 +19,7 @@ export default function RootLayout({
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <Navbar />
           {children}
+          <Footer />
         </div>
       </body>
     </html>

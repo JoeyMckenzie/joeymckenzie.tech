@@ -9,6 +9,9 @@ module.exports = {
       fontFamily: {
         sans: ['Inter var', ...fontFamily.sans],
         ubuntu: ['Ubuntu', ...fontFamily.sans],
+        merriweather: ['Merriweather', ...fontFamily.serif],
+        'roboto-mono': ['Roboto Mono', ...fontFamily.sans],
+        'roboto-slab': ['Roboto Slab', ...fontFamily.serif],
       },
     },
   },

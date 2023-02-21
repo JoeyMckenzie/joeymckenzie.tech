@@ -1,5 +1,5 @@
 @import url('https://rsms.me/inter/inter.css');
-@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather&family=Ubuntu&family=Roboto+Mono&family=Roboto+Slab&display=swap');
 
 @tailwind base;
 @tailwind components;
