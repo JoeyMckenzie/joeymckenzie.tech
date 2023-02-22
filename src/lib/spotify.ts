@@ -5,7 +5,7 @@ type SpotifyAuthResponse = {
 };
 
 const NOW_PLAYING_ENDPOINT =
-  'https://api.spotify.com/v1/me/player/currently-playing';
+  'https://api.spotify.com/v1/me/player?type=track,episode';
 const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks';
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID ?? '';
@@ -29,7 +29,10 @@ export interface ExternalUrls {
 export interface CurrentlyListeningItem {
   album: Album;
   artists: Artist[];
+  show?: Artist;
+  images?: Image[];
   name: string;
+  external_urls?: ExternalUrls;
 }
 
 export interface Album {
@@ -102,8 +105,10 @@ export async function getCurrentlyListeningTo(): Promise<
   // Note: 204 will comeback when nothing is playing
   if (response.ok && response.status === 200) {
     const listenToResponse: CurrentlyListeningResponse = await response.json();
+    const isTrack = !!listenToResponse.context;
 
-    if (listenToResponse && listenToResponse.item && listenToResponse.context) {
+    // Podcasts nest all `context` nodes under the `item` node instead
+    if (isTrack) {
       const item = listenToResponse.item;
       const context = listenToResponse.context;
 
@@ -118,6 +123,37 @@ export async function getCurrentlyListeningTo(): Promise<
         artist,
         href,
       };
+    } else {
+      const item = listenToResponse.item;
+
+      const albumImage = item.images![0];
+      const trackTitle = item.name;
+      const artist = item.show?.name ?? '';
+      const href = item.external_urls?.spotify ?? '';
+
+      return {
+        albumImage,
+        trackTitle,
+        artist,
+        href,
+      };
     }
+
+    // if (listenToResponse && listenToResponse.item && listenToResponse.context) {
+    //   const item = listenToResponse.item;
+    //   const context = listenToResponse.context;
+
+    //   const albumImage = item.album?.images[0];
+    //   const trackTitle = item?.name;
+    //   const artist = item?.artists[0]?.name;
+    //   const href = context.external_urls?.spotify;
+
+    //   return {
+    //     albumImage,
+    //     trackTitle,
+    //     artist,
+    //     href,
+    //   };
+    // }
   }
 }

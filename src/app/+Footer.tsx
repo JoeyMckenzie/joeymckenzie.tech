@@ -1,7 +1,7 @@
 import { ListentingToMeta } from '@/lib/spotify';
 import { SVGProps } from 'react';
 import { SiVercel, SiNextdotjs, SiTwitch, SiLinkedin } from 'react-icons/si';
-import ListeningTo from './+ListentingTo';
+import SpotifyNowListeningTo from './+ListentingTo';
 
 type NavigationLink = {
   name: string;
@@ -125,7 +125,7 @@ export default function Footer({
   return (
     <footer className="mx-auto flex max-w-7xl flex-col py-12 px-6 md:flex-row md:items-center md:justify-between lg:px-8">
       <Socials />
-      <ListeningTo listeningTo={listeningTo} />
+      <SpotifyNowListeningTo listeningTo={listeningTo} />
       <PoweredBy />
     </footer>
   );

@@ -25,8 +25,10 @@ function ListeningToArtist({ listeningTo }: { listeningTo: ListentingToMeta }) {
           className="rounded-sm"
         />
         <div className="flex flex-col">
-          <h4 className="text-sm font-bold text-neutral-300">{artist}</h4>
-          <p className="text-xs text-neutral-400">{trackTitle}</p>
+          <h4 className="text-sm font-semibold text-neutral-300">
+            {trackTitle}
+          </h4>
+          <p className="text-xs text-neutral-400">{artist}</p>
         </div>
       </div>
     </a>
@@ -46,7 +48,7 @@ function NotCurrentlyListening() {
   );
 }
 
-export default function ListeningTo({
+export default function SpotifyNowListeningTo({
   listeningTo,
 }: {
   listeningTo?: ListentingToMeta;
