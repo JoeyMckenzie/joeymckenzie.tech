@@ -5,7 +5,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write --plugin-search-dir=. ."
+    "format": "prettier --write --plugin-search-dir=. .",
+    "turbo": "turbo build lint"
   },
   "lint-staged": {
     "**/*.{json,js,ts,tsx}": "pnpm run format"

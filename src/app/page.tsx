@@ -3,6 +3,7 @@ import { allBlogs, Blog } from 'contentlayer/generated';
 import { compareDesc, format, parseISO } from 'date-fns';
 import Hero from './+Hero';
 import ListeningTo from './+ListentingTo';
+import SocialButtons from './+SocialButtons';
 
 // function BlogCard({ blog }: { blog: Blog }): JSX.Element {
 //   const route = `/blog/${blog.slug}`;
@@ -28,6 +29,7 @@ export default async function Home(): Promise<JSX.Element> {
   return (
     <>
       <Hero />
+      <SocialButtons />
       {/* <div className="mx-auto max-w-2xl py-16 text-center">
         <h1 className="mb-8 text-3xl font-bold">Contentlayer Blog Example</h1>
         {blogs.map((blog, index) => (
