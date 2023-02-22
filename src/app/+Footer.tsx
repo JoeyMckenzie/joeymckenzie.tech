@@ -123,7 +123,7 @@ export default function Footer({
   listeningTo?: ListentingToMeta;
 }): JSX.Element {
   return (
-    <footer className="mx-auto flex max-w-7xl flex-col py-12 px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+    <footer className="mx-auto flex max-w-4xl flex-col py-12 px-6 md:flex-row md:items-center md:justify-between lg:px-8">
       <Socials />
       <SpotifyNowListeningTo listeningTo={listeningTo} />
       <PoweredBy />

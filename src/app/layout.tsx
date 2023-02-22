@@ -18,11 +18,11 @@ export default async function RootLayout({
       */}
       <head />
       <body className="bg-neutral-900">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-          <Navbar />
+        <Navbar />
+        <div className="mx-auto max-w-screen-md sm:px-6 lg:px-8">
           {children}
-          <Footer listeningTo={listentingTo} />
         </div>
+        <Footer listeningTo={listentingTo} />
       </body>
     </html>
   );

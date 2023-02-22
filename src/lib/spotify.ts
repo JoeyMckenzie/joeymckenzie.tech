@@ -13,41 +13,68 @@ const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET ?? '';
 const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN ?? '';
 
 export interface CurrentlyListeningResponse {
-  context: CurrentlListeningContext;
-  item: CurrentlyListeningItem;
-  is_playing: boolean;
+  timestamp: number;
+  context: Context;
+  item: Item;
+  currently_playing_type: 'episode' | 'track';
 }
 
-export interface CurrentlListeningContext {
+export interface Context {
   external_urls: ExternalUrls;
+  href: string;
+  type: string;
+  uri: string;
 }
 
 export interface ExternalUrls {
   spotify: string;
 }
 
-export interface CurrentlyListeningItem {
+export interface Item {
   album: Album;
   artists: Artist[];
-  show?: Artist;
-  images?: Image[];
+  external_urls: ExternalUrls;
+  href: string;
+  id: string;
   name: string;
-  external_urls?: ExternalUrls;
+  show?: Show;
+  images?: Image[];
 }
 
 export interface Album {
+  artists: Artist[];
+  external_urls: ExternalUrls;
+  href: string;
+  id: string;
   images: Image[];
   name: string;
 }
 
 export interface Artist {
+  external_urls: ExternalUrls;
+  href: string;
+  id: string;
   name: string;
+  type: string;
+  uri: string;
 }
 
 export interface Image {
   height: number;
   url: string;
   width: number;
+}
+
+export interface ExternalIDS {
+  isrc: string;
+}
+
+export interface Show {
+  external_urls: ExternalUrls;
+  href: string;
+  id: string;
+  images: Image[];
+  name: string;
 }
 
 export type ListentingToMeta = {
@@ -104,17 +131,17 @@ export async function getCurrentlyListeningTo(): Promise<
 
   // Note: 204 will comeback when nothing is playing
   if (response.ok && response.status === 200) {
-    const listenToResponse: CurrentlyListeningResponse = await response.json();
-    const isTrack = !!listenToResponse.context;
+    const listeningToResponse: CurrentlyListeningResponse =
+      await response.json();
 
     // Podcasts nest all `context` nodes under the `item` node instead
-    if (isTrack) {
-      const item = listenToResponse.item;
-      const context = listenToResponse.context;
+    if (listeningToResponse.currently_playing_type === 'track') {
+      const item = listeningToResponse.item;
+      const context = listeningToResponse.context;
 
       const albumImage = item.album?.images[0];
       const trackTitle = item?.name;
-      const artist = item?.artists[0]?.name;
+      const artist = item?.artists ? item.artists[0]?.name : '';
       const href = context.external_urls?.spotify;
 
       return {
@@ -124,7 +151,7 @@ export async function getCurrentlyListeningTo(): Promise<
         href,
       };
     } else {
-      const item = listenToResponse.item;
+      const item = listeningToResponse.item;
 
       const albumImage = item.images![0];
       const trackTitle = item.name;
@@ -138,22 +165,5 @@ export async function getCurrentlyListeningTo(): Promise<
         href,
       };
     }
-
-    // if (listenToResponse && listenToResponse.item && listenToResponse.context) {
-    //   const item = listenToResponse.item;
-    //   const context = listenToResponse.context;
-
-    //   const albumImage = item.album?.images[0];
-    //   const trackTitle = item?.name;
-    //   const artist = item?.artists[0]?.name;
-    //   const href = context.external_urls?.spotify;
-
-    //   return {
-    //     albumImage,
-    //     trackTitle,
-    //     artist,
-    //     href,
-    //   };
-    // }
   }
 }
