@@ -75,6 +75,10 @@ async function getSpotifyAccessToken() {
       grant_type: 'refresh_token',
       refresh_token: REFRESH_TOKEN,
     }),
+    next: {
+      // Refetch the access token every 10 minutes
+      revalidate: 600,
+    },
   });
 
   const spotifyAuthResponse: SpotifyAuthResponse = await response.json();
@@ -91,6 +95,8 @@ export async function getCurrentlyListeningTo(): Promise<
     headers: {
       Authorization: `Bearer ${token}`,
     },
+    // We don't want this response cached, my listening habits are sporadic
+    cache: 'no-store',
   });
 
   // Note: 204 will comeback when nothing is playing
