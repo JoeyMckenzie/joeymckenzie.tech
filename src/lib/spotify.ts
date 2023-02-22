@@ -4,8 +4,9 @@ type SpotifyAuthResponse = {
   expires_in: number;
 };
 
-const NOW_PLAYING_ENDPOINT = `https://api.spotify.com/v1/me/player/currently-playing`;
-const TOP_TRACKS_ENDPOINT = `https://api.spotify.com/v1/me/top/tracks`;
+const NOW_PLAYING_ENDPOINT =
+  'https://api.spotify.com/v1/me/player/currently-playing';
+const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks';
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID ?? '';
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET ?? '';

@@ -70,8 +70,8 @@ const socials: NavigationLink[] = [
   },
 ];
 
-const hash = process.env.NEXT_PUBLIC_GIT_HASH;
-const hasHref = `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${hash}`;
+const hash = process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA;
+const hashRef = `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${hash}`;
 const hashDisplay = hash?.substring(0, 6);
 
 function PoweredBy(): JSX.Element {
@@ -91,7 +91,7 @@ function PoweredBy(): JSX.Element {
         </a>
       ))}
       <a
-        href={hasHref}
+        href={hashRef}
         className="text-center font-ubuntu text-xs leading-5 text-neutral-500 hover:text-neutral-400"
       >
         {hashDisplay}
