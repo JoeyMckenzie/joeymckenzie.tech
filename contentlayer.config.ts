@@ -14,6 +14,11 @@ export const Blog = defineDocumentType(() => ({
       description: 'A short description of the blog post',
       required: true,
     },
+    category: {
+      type: 'string',
+      description: 'A one word description of the blog post',
+      required: true,
+    },
     image: {
       type: 'image',
       description: 'A header image for the blog post',

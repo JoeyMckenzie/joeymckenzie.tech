@@ -3,6 +3,7 @@ title: Lorem Ipsum
 summary: Ipsum lorem
 date: 2021-12-24
 image: ../public/me.jpg
+category: rust
 ---
 
 Ullamco et nostrud magna commodo nostrud occaecat quis pariatur id ipsum. Ipsum

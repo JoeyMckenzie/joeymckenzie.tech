@@ -3,6 +3,7 @@ title: Suh dude
 summary: dude suh
 date: 2021-12-24
 image: ../public/me.jpg
+category: design
 ---
 
 Ullamco et nostrud magna commodo nostrud occaecat quis pariatur id ipsum. Ipsum

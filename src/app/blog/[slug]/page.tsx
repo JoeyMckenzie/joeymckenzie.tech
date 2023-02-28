@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { format, parseISO } from 'date-fns';
-import { allBlogs, Blog } from 'contentlayer/generated';
+import { allBlogs } from 'contentlayer/generated';
 import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
