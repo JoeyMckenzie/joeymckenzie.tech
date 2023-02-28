@@ -1,8 +1,6 @@
-import { getCurrentlyListeningTo } from '@/lib/spotify';
 import { allBlogs, Blog } from 'contentlayer/generated';
 import { compareDesc, format, parseISO } from 'date-fns';
 import Hero from './+Hero';
-import SpotifyNowListeningTo from './+ListentingTo';
 import SocialButtons from './+SocialButtons';
 
 // function BlogCard({ blog }: { blog: Blog }): JSX.Element {

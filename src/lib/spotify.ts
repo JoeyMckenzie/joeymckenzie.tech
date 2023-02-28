@@ -1,16 +1,15 @@
+const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
+const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID ?? '';
+const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET ?? '';
+const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN ?? '';
+const NOW_PLAYING_ENDPOINT =
+  'https://api.spotify.com/v1/me/player?type=track,episode';
+
 type SpotifyAuthResponse = {
   access_token: string;
   token_type: string;
   expires_in: number;
 };
-
-const NOW_PLAYING_ENDPOINT =
-  'https://api.spotify.com/v1/me/player?type=track,episode';
-const TOP_TRACKS_ENDPOINT = 'https://api.spotify.com/v1/me/top/tracks';
-const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
-const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID ?? '';
-const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET ?? '';
-const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN ?? '';
 
 export interface CurrentlyListeningResponse {
   timestamp: number;
