@@ -1,7 +1,8 @@
-import Link from 'next/link';
+import hljs from 'highlight.js';
 import { format, parseISO } from 'date-fns';
 import { allBlogs } from 'contentlayer/generated';
 import { notFound } from 'next/navigation';
+import { Mdx } from './+Mdx';
 
 export async function generateStaticParams() {
   return allBlogs.map((post) => ({
@@ -50,8 +51,11 @@ export async function generateMetadata({
   };
 }
 
-// @ts-expect-error
-export default function PostLayout({ params }): JSX.Element {
+export default function PostLayout({
+  params,
+}: {
+  params: { slug: string };
+}): JSX.Element {
   const blog = allBlogs.find((b) => b.slug === params.slug);
 
   if (!blog) {
@@ -60,23 +64,17 @@ export default function PostLayout({ params }): JSX.Element {
 
   return (
     <>
-      <article className="mx-auto max-w-2xl py-16">
+      <article className="mx-auto max-w-2xl py-16 px-6">
         <div className="mb-6 text-center">
-          <Link
-            href="/"
-            className="text-center text-sm font-bold uppercase text-blue-700"
-          >
-            Home
-          </Link>
-        </div>
-        <div className="mb-6 text-center">
-          <h1 className="mb-1 text-3xl font-bold">{blog.title}</h1>
-          <time dateTime={blog.date} className="text-sm text-slate-600">
+          <h1 className="mb-1 text-3xl font-bold text-neutral-300">
+            {blog.title}
+          </h1>
+          <time dateTime={blog.date} className="text-sm text-neutral-400">
             {format(parseISO(blog.date), 'LLLL d, yyyy')}
           </time>
         </div>
         <div
-          className="cl-post-body"
+          className="prose-quoteless prose prose-neutral font-merriweather text-neutral-400"
           dangerouslySetInnerHTML={{ __html: blog.body.html }}
         />
       </article>

@@ -124,8 +124,6 @@ export async function getCurrentlyListeningTo(): Promise<
     headers: {
       Authorization: `Bearer ${token}`,
     },
-    // We don't want this response cached, my listening habits are sporadic
-    cache: 'no-store',
   });
 
   // Note: 204 will comeback when nothing is playing
