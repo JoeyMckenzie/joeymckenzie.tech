@@ -26,7 +26,7 @@ export default function BlogPreview({ post }: BlogPreviewProps): JSX.Element {
             {post.title}
           </a>
         </h3>
-        <p className="line-clamp-3 mt-5 text-sm leading-6 text-neutral-400">
+        <p className="mt-5 text-sm leading-6 text-neutral-400 line-clamp-3">
           {post.summary}
         </p>
       </div>
