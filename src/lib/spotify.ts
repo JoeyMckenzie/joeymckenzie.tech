@@ -76,7 +76,7 @@ export interface Show {
   name: string;
 }
 
-export type ListentingToMeta = {
+export type ListeningToMeta = {
   albumImage: {
     height: number;
     width: number;
@@ -111,9 +111,7 @@ async function getSpotifyAccessToken() {
   return spotifyAuthResponse.access_token;
 }
 
-export async function getCurrentlyListeningTo(): Promise<
-  ListentingToMeta | undefined
-> {
+export async function getCurrentlyListeningTo() {
   const token = await getSpotifyAccessToken();
 
   const response = await fetch(NOW_PLAYING_ENDPOINT, {
@@ -142,7 +140,7 @@ export async function getCurrentlyListeningTo(): Promise<
         trackTitle,
         artist,
         href,
-      };
+      } satisfies ListeningToMeta;
     } else {
       const item = listeningToResponse.item;
 
@@ -156,7 +154,9 @@ export async function getCurrentlyListeningTo(): Promise<
         trackTitle,
         artist,
         href,
-      };
+      } satisfies ListeningToMeta;
     }
   }
+
+  return null;
 }

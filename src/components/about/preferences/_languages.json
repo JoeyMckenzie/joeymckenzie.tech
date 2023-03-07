@@ -1,0 +1,58 @@
+{
+  "languages": [
+    {
+      "href": "https://dotnet.microsoft.com/en-us/",
+      "name": ".NET",
+      "icon": "simple-icons:dotnet",
+      "category": "language"
+    },
+    {
+      "href": "https://www.typescriptlang.org/",
+      "name": "TypeScript",
+      "icon": "mdi:language-typescript",
+      "category": "language"
+    },
+    {
+      "href": "https://www.rust-lang.org/",
+      "name": "Rust",
+      "icon": "mdi:language-rust",
+      "category": "language"
+    },
+    {
+      "href": "https://golang.google.cn/",
+      "name": "Go",
+      "icon": "mdi:language-go",
+      "category": "language"
+    },
+    {
+      "href": "https://reactjs.org/",
+      "name": "React",
+      "icon": "mdi:react",
+      "category": "language"
+    },
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "Svelte",
+      "icon": "simple-icons:svelte",
+      "category": "language"
+    },
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "Angular",
+      "icon": "mdi:angular",
+      "category": "language"
+    },
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "Next.js",
+      "icon": "file-icons:nextjs",
+      "category": "language"
+    },
+    {
+      "href": "https://astro.build/",
+      "name": "Astro",
+      "icon": "simple-icons:astro",
+      "category": "language"
+    }
+  ]
+}

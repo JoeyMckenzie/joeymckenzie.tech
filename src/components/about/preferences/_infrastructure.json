@@ -1,0 +1,39 @@
+{
+  "infrastructure": [
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "AWS",
+      "icon": "mdi:aws"
+    },
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "Docker",
+      "icon": "mdi:docker"
+    },
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "Debian",
+      "icon": "mdi:debian"
+    },
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "Vercel",
+      "icon": "simple-icons:vercel"
+    },
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "Cloudflare",
+      "icon": "simple-icons:cloudflare"
+    },
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "Netlify",
+      "icon": "simple-icons:netlify"
+    },
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "Azure",
+      "icon": "mdi:microsoft-azure"
+    }
+  ]
+}

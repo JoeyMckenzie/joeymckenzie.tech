@@ -2,10 +2,12 @@
 module.exports = {
   ignorePatterns: ['*.cjs', '*.mjs', '*.xml.js'],
   extends: [
+    'eslint:recommended',
     'plugin:astro/recommended',
     'plugin:astro/jsx-a11y-recommended',
     'prettier',
   ],
+  parser: '@typescript-eslint/parser',
   overrides: [
     {
       // Define the configuration for `.astro` file.
@@ -27,7 +29,7 @@ module.exports = {
   ],
   parserOptions: {
     sourceType: 'module',
-    ecmaVersion: 2020,
+    ecmaVersion: 'latest',
   },
   env: {
     browser: true,

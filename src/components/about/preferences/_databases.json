@@ -1,0 +1,22 @@
+{
+  "languages": [
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "SQL Server",
+      "icon": "simple-icons:microsoftsqlserver",
+      "category": "language"
+    },
+    {
+      "href": "https://aws.amazon.com/",
+      "name": "Postgres",
+      "icon": "cib:postgresql",
+      "category": "language"
+    },
+    {
+      "href": "https://planetscale.com/",
+      "name": "PlanetScale",
+      "icon": "logos:planetscale",
+      "category": "language"
+    }
+  ]
+}

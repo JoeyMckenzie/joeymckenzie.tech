@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'astro/types';
 
 type Props = HTMLAttributes<'a'>;
 
-const { href, class: className, ...props } = Astro.props;
+const { href, ...props } = Astro.props;
 const { pathname } = Astro.url;
 const isActive = href === pathname || href === pathname.replace(/\/$/, '');
 ---
@@ -11,9 +11,9 @@ const isActive = href === pathname || href === pathname.replace(/\/$/, '');
 <a
   href={href}
   class:list={[
-    'inline-flex px-2 py-1 font-merriweather font-medium text-neutral-400',
+    'inline-flex px-2 py-1 font-merriweather font-medium text-neutral-400 hover:bg-neutral-700 rounded',
     {
-      'rounded border border-transparent bg-neutral-800 text-neutral-300 hover:bg-neutral-500 focus:outline-none':
+      'border border-transparent bg-neutral-800 text-neutral-300 focus:outline-none':
         isActive,
     },
   ]}

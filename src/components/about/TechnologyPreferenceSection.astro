@@ -1,0 +1,26 @@
+---
+import type { Props as TechnologyPreferenceProps } from './TechnologyPreference.astro';
+import TechnologyPreference from './TechnologyPreference.astro';
+
+type Props = {
+  title: string;
+  preferences: TechnologyPreferenceProps[];
+};
+
+const { title, preferences } = Astro.props;
+---
+
+<div class="mx-auto pt-6">
+  <h2
+    class="text-center font-mono text-lg font-semibold tracking-tight text-neutral-400"
+  >
+    {title}
+  </h2>
+  <div class="grid grid-cols-3 gap-y-6 pt-6 sm:grid-cols-5">
+    {
+      preferences.map(({ href, icon, name }) => (
+        <TechnologyPreference name={name} href={href} icon={icon} />
+      ))
+    }
+  </div>
+</div>
