@@ -1,7 +1,7 @@
 ---
 import { Icon } from 'astro-icon';
 
-const hash = import.meta.env.PUBLIC_GIT_HASH;
+const hash = import.meta.env.VERCEL_GIT_COMMIT_SHA;
 const hashRef = `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${hash}`;
 const hashDisplay = hash?.substring(0, 6);
 ---
