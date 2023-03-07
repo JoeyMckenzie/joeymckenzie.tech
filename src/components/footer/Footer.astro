@@ -1,0 +1,31 @@
+---
+import type { ListentingToMeta } from '@/lib/spotify';
+import ListentingTo from '../ListentingTo.astro';
+import NotCurrentlyListening from '../NotCurrentlyListening.astro';
+import PoweredBy from './PoweredBy.astro';
+import Socials from './Socials.astro';
+
+type Props = {
+  meta?: ListentingToMeta | undefined;
+};
+
+const { meta } = Astro.props;
+---
+
+<footer
+  class="mx-auto flex max-w-4xl flex-col py-12 px-6 md:flex-row md:items-center md:justify-between lg:px-8"
+>
+  <Socials />
+  {
+    meta && (
+      <ListentingTo
+        albumImageSrc={meta.albumImage.url}
+        artist={meta.artist}
+        href={meta.href}
+        trackTitle={meta.trackTitle}
+      />
+    )
+  }
+  {!meta && <NotCurrentlyListening />}
+  <PoweredBy />
+</footer>

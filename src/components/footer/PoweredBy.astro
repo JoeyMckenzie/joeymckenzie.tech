@@ -1,0 +1,35 @@
+---
+import { Icon } from 'astro-icon';
+
+const hash = import.meta.env.PUBLIC_GIT_HASH;
+const hashRef = `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${hash}`;
+const hashDisplay = hash?.substring(0, 6);
+---
+
+<div
+  class="mx-auto mt-8 inline-flex flex-row items-center gap-x-2 md:order-1 md:mx-0 md:mt-0"
+>
+  <p class="text-center font-ubuntu text-xs leading-5 text-neutral-500">
+    Powered by
+  </p>
+
+  <!-- Vercel -->
+  <a href="https://vercel.com" class="text-neutral-500 hover:text-neutral-400">
+    <span class="sr-only">Vercel</span>
+    <Icon name="simple-icons:vercel" class="h-6 w-6" />
+  </a>
+
+  <!-- Astro -->
+  <a href="https://astro.build" class="text-neutral-500 hover:text-neutral-400">
+    <span class="sr-only">Astro</span>
+    <Icon name="simple-icons:astro" class="h-6 w-6" />
+  </a>
+
+  <!-- Git info -->
+  <a
+    href={hashRef}
+    class="text-center font-ubuntu text-xs leading-5 text-neutral-500 hover:text-neutral-400"
+  >
+    {hashDisplay}
+  </a>
+</div>

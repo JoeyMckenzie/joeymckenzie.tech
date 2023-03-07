@@ -1,7 +1,7 @@
 const TOKEN_ENDPOINT = `https://accounts.spotify.com/api/token`;
-const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID ?? '';
-const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET ?? '';
-const REFRESH_TOKEN = process.env.SPOTIFY_REFRESH_TOKEN ?? '';
+const CLIENT_ID = import.meta.env.SPOTIFY_CLIENT_ID ?? '';
+const CLIENT_SECRET = import.meta.env.SPOTIFY_CLIENT_SECRET ?? '';
+const REFRESH_TOKEN = import.meta.env.SPOTIFY_REFRESH_TOKEN ?? '';
 const NOW_PLAYING_ENDPOINT =
   'https://api.spotify.com/v1/me/player?type=track,episode';
 
@@ -104,10 +104,6 @@ async function getSpotifyAccessToken() {
       grant_type: 'refresh_token',
       refresh_token: REFRESH_TOKEN,
     }),
-    next: {
-      // Refetch the access token every 10 minutes
-      revalidate: 600,
-    },
   });
 
   const spotifyAuthResponse: SpotifyAuthResponse = await response.json();
@@ -136,9 +132,9 @@ export async function getCurrentlyListeningTo(): Promise<
       const item = listeningToResponse.item;
       const context = listeningToResponse.context;
 
-      const albumImage = item.album?.images[0];
+      const albumImage = item.album?.images[0]!;
       const trackTitle = item?.name;
-      const artist = item?.artists ? item.artists[0]?.name : '';
+      const artist = item?.artists ? item.artists[0]?.name! : '';
       const href = context.external_urls?.spotify;
 
       return {
@@ -150,7 +146,7 @@ export async function getCurrentlyListeningTo(): Promise<
     } else {
       const item = listeningToResponse.item;
 
-      const albumImage = item.images![0];
+      const albumImage = item.images![0]!;
       const trackTitle = item.name;
       const artist = item.show?.name ?? '';
       const href = item.external_urls?.spotify ?? '';

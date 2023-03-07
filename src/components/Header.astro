@@ -1,0 +1,18 @@
+---
+import { Icon } from 'astro-icon';
+
+type Props = {
+  title: string;
+};
+
+const { title } = Astro.props;
+---
+
+<span class="flex flex-row items-center space-x-2 text-neutral-400">
+  <Icon name="ph:code-duotone" class="mt-8 h-8 w-8 sm:h-10 sm:w-10" />
+  <h2
+    class="font-merriweather text-3xl font-bold tracking-tight text-neutral-400 sm:text-4xl"
+  >
+    {title}
+  </h2>
+</span>

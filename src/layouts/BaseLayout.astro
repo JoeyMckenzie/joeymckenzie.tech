@@ -1,0 +1,23 @@
+---
+import BaseHead from '@/components/BaseHead.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import Navbar from '@/components/Navbar.astro';
+import { getCurrentlyListeningTo } from '@/lib/spotify';
+import Footer from '@/components/footer/Footer.astro';
+
+const listeningTo = await getCurrentlyListeningTo();
+---
+
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body class="h-full bg-neutral-900">
+    <Navbar />
+    <main class="mx-auto max-w-screen-md sm:px-6 lg:px-8">
+      <slot />
+    </main>
+    <Footer meta={listeningTo} />
+  </body>
+</html>

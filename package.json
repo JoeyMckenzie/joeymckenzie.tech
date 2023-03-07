@@ -1,48 +1,42 @@
 {
-  "private": true,
+  "name": "mdx-astro-blog",
+  "type": "module",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "format": "prettier --write --plugin-search-dir=. .",
-    "turbo": "turbo build lint"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "prepare": "husky install",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "lint-staged": {
-    "**/*.{json,js,ts,tsx}": "pnpm run format"
+    "**/*.{cjs,mjs,ts,astro,md}": "pnpm format"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.10",
-    "@heroicons/react": "^2.0.15",
-    "@next/font": "^13.2.3",
+    "@astrojs/mdx": "^0.17.2",
+    "@astrojs/rss": "^2.1.1",
+    "@astrojs/sitemap": "^1.1.0",
+    "@astrojs/tailwind": "^3.0.1",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.9",
-    "@types/node": "18.13.0",
-    "@types/react": "18.0.27",
-    "@types/react-dom": "18.0.10",
-    "contentlayer": "^0.3.0",
-    "date-fns": "^2.29.3",
-    "eslint": "8.34.0",
-    "eslint-config-next": "^13.2.3",
-    "next": "^13.2.3",
-    "next-contentlayer": "^0.3.0",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-icons": "^4.7.1",
-    "rehype-autolink-headings": "^6.1.1",
-    "rehype-pretty-code": "^0.9.4",
-    "rehype-slug": "^5.1.0",
-    "remark-gfm": "^3.0.1",
-    "turbo": "^1.7.4",
-    "typescript": "4.9.5"
+    "astro": "^2.0.18",
+    "astro-icon": "^0.8.0",
+    "tailwindcss": "^3.0.24"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.13",
-    "eslint-config-prettier": "^8.6.0",
-    "postcss": "^8.4.21",
+    "@typescript-eslint/parser": "^5.54.1",
+    "eslint": "^8.35.0",
+    "eslint-config-prettier": "^8.7.0",
+    "eslint-plugin-astro": "^0.23.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.1.2",
     "prettier": "^2.8.4",
-    "prettier-plugin-tailwindcss": "^0.2.2",
-    "tailwindcss": "^3.2.6"
+    "prettier-plugin-astro": "^0.8.0",
+    "prettier-plugin-tailwindcss": "^0.2.4"
   }
 }
