@@ -25,25 +25,37 @@
       "category": "language"
     },
     {
+      "href": "https://www.java.com/",
+      "name": "Java",
+      "icon": "mdi:language-java",
+      "category": "language"
+    },
+    {
       "href": "https://reactjs.org/",
       "name": "React",
       "icon": "mdi:react",
       "category": "language"
     },
     {
-      "href": "https://aws.amazon.com/",
+      "href": "https://vuejs.org/",
+      "name": "Vue",
+      "icon": "mdi:vuejs",
+      "category": "language"
+    },
+    {
+      "href": "https://svelte.dev/",
       "name": "Svelte",
       "icon": "simple-icons:svelte",
       "category": "language"
     },
     {
-      "href": "https://aws.amazon.com/",
+      "href": "https://angular.io/",
       "name": "Angular",
       "icon": "mdi:angular",
       "category": "language"
     },
     {
-      "href": "https://aws.amazon.com/",
+      "href": "https://nextjs.org/",
       "name": "Next.js",
       "icon": "file-icons:nextjs",
       "category": "language"

@@ -1,6 +1,10 @@
 ---
+import FormattedDate from '@/components/FormattedDate.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
 import { CollectionEntry, getCollection } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
+import { Icon } from 'astro-icon';
+
+type Props = CollectionEntry<'blog'>;
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
@@ -9,13 +13,38 @@ export async function getStaticPaths() {
     props: post,
   }));
 }
-type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await post.render();
 ---
 
-<BlogPost {...post.data}>
+<!-- <BlogPost {...post.data}>
   <h1>{post.data.title}</h1>
   <Content />
-</BlogPost>
+</BlogPost> -->
+<BaseLayout>
+  <article
+    class="prose prose-invert overflow-hidden pb-12 font-merriweather text-neutral-400 prose-img:mx-auto prose-img:rounded-md"
+  >
+    <h1 class="text-center font-merriweather text-2xl text-neutral-300">
+      {post.data.title}
+    </h1>
+    <div
+      class="flex flex-row items-center justify-center gap-x-2 font-roboto-mono text-sm tracking-tighter"
+    >
+      <FormattedDate date={post.data.pubDate} />
+      <span class="font-bold">#{post.data.category}</span>
+    </div>
+    <img width={540} height={180} src={post.data.heroImage} alt="" />
+    <Content />
+  </article>
+
+  <a
+    href="/blog"
+    type="button"
+    class="mx-auto flex w-40 items-center justify-center gap-x-1.5 rounded-md bg-neutral-800 py-2 px-3 text-sm font-semibold text-neutral-400 shadow-sm hover:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600"
+  >
+    <Icon name="ic:round-arrow-back" class="h-6 w-6" />
+    Back to blogs
+  </a>
+</BaseLayout>

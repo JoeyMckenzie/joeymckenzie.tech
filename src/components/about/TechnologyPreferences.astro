@@ -11,21 +11,24 @@ type PreferenceMeta = {
   preferences: TechnologyPreference[];
 };
 
+function getPreferenceCategory(
+  category: TechnologyPreferenceCategory
+): PreferenceMeta {
+  return {
+    category,
+    preferences: getPreferencesForCategory(category),
+  };
+}
+
 const preferences: PreferenceMeta[] = [
-  {
-    category: 'language, frameworks, & ecosystems',
-    preferences: getPreferencesForCategory(
-      'language, frameworks, & ecosystems'
-    ),
-  },
-  {
-    category: 'infrastructure & devops',
-    preferences: getPreferencesForCategory('infrastructure & devops'),
-  },
+  getPreferenceCategory('language, frameworks, & ecosystems'),
+  getPreferenceCategory('infrastructure & devops'),
+  getPreferenceCategory('databases & hosting platforms'),
+  getPreferenceCategory('tools & productivity'),
 ];
 ---
 
-<div class="flex flex-col space-y-2">
+<div class="flex flex-col gap-y-6">
   {
     preferences.map(({ category, preferences }) => (
       <TechnologyPreferenceSection preferences={preferences} title={category} />

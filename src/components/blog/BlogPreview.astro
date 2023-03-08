@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import FormattedDate from '../FormattedDate.astro';
+
+export type Props = CollectionEntry<'blog'>['data'] & { slug: string };
+
+const { category, title, description, slug, pubDate } = Astro.props;
+---
+
+<article class="flex max-w-xl flex-col items-start justify-between">
+  <div class="flex items-center gap-x-4 text-xs">
+    <FormattedDate date={pubDate} />
+    <span
+      class="relative z-10 rounded-full bg-neutral-700 py-1.5 px-3 font-medium text-neutral-300"
+      >{category}</span
+    >
+  </div>
+  <a href={`/blog/${slug}`}>
+    <div class="group relative">
+      <h3
+        class="mt-3 text-lg font-semibold leading-6 text-neutral-300 group-hover:text-neutral-400"
+      >
+        <span class="absolute inset-0"></span>
+        {title}
+      </h3>
+      <p class="mt-5 text-sm leading-6 text-neutral-400 line-clamp-3">
+        {description}
+      </p>
+    </div>
+  </a>
+</article>

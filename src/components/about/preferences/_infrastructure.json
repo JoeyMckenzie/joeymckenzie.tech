@@ -6,34 +6,24 @@
       "icon": "mdi:aws"
     },
     {
-      "href": "https://aws.amazon.com/",
+      "href": "https://azure.microsoft.com/",
+      "name": "Azure",
+      "icon": "mdi:microsoft-azure"
+    },
+    {
+      "href": "https://www.docker.com/",
       "name": "Docker",
       "icon": "mdi:docker"
     },
     {
-      "href": "https://aws.amazon.com/",
-      "name": "Debian",
-      "icon": "mdi:debian"
+      "href": "https://www.terraform.io/",
+      "name": "Terraform",
+      "icon": "mdi:terraform"
     },
     {
-      "href": "https://aws.amazon.com/",
-      "name": "Vercel",
-      "icon": "simple-icons:vercel"
-    },
-    {
-      "href": "https://aws.amazon.com/",
+      "href": "https://www.cloudflare.com/",
       "name": "Cloudflare",
       "icon": "simple-icons:cloudflare"
-    },
-    {
-      "href": "https://aws.amazon.com/",
-      "name": "Netlify",
-      "icon": "simple-icons:netlify"
-    },
-    {
-      "href": "https://aws.amazon.com/",
-      "name": "Azure",
-      "icon": "mdi:microsoft-azure"
     }
   ]
 }
