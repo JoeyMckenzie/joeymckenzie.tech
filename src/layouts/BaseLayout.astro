@@ -1,7 +1,7 @@
 ---
-import BaseHead from '@/components/BaseHead.astro';
+import BaseHead from '@/components/layout/BaseHead.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import Navbar from '@/components/Navbar.astro';
+import Navbar from '@/components/layout/Navbar.astro';
 import { getCurrentlyListeningTo } from '@/lib/spotify';
 import Footer from '@/components/footer/Footer.astro';
 
@@ -15,7 +15,7 @@ const listeningTo = await getCurrentlyListeningTo();
   </head>
   <body class="h-full bg-neutral-900">
     <Navbar />
-    <main class="mx-auto max-w-screen-md sm:px-6 lg:px-8">
+    <main class="mx-auto max-w-screen-md px-6 pt-12 lg:px-8">
       <slot />
     </main>
     <Footer meta={listeningTo} />

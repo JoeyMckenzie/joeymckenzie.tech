@@ -1,0 +1,51 @@
+---
+import { Icon } from 'astro-icon';
+import SocialButton, { Props as SocialButtonProps } from './SocialButton.astro';
+
+const socials: SocialButtonProps[] = [
+  {
+    display: 'Twitter',
+    name: 'Twitter',
+    href: 'https://twitter.com/_joeyMcKenzie',
+    icon: 'mdi:twitter',
+  },
+  {
+    display: 'GitHub',
+    name: 'GitHub',
+    href: 'https://github.com/JoeyMcKenzie',
+    icon: 'mdi:github',
+  },
+  {
+    display: 'LinkedIn',
+    name: 'LinkedIn',
+    href: 'https://linkedin.com/in/JoeyMcKenzie',
+    icon: 'mdi:linkedin',
+  },
+];
+---
+
+<div
+  class="mx-auto grid max-w-screen-md grid-cols-1 space-y-2 pt-6 sm:grid-cols-4 sm:gap-x-2 sm:space-y-0"
+>
+  {
+    socials.map(({ display, href, icon, name }) => (
+      <SocialButton display={display} name={name} href={href} icon={icon} />
+    ))
+  }
+
+  <!-- Resume download -->
+  <a
+    href="/resume.pdf"
+    download="resume"
+    target="_blank"
+    type="button"
+    class="inline-flex w-full items-center justify-center rounded-md border border-neutral-700 px-6 py-3 text-sm font-medium text-neutral-400 shadow-sm hover:bg-neutral-700 focus:outline-none"
+  >
+    Resume
+    <Icon
+      name="mdi:tray-arrow-down"
+      class="ml-3 -mr-1 h-5 w-5"
+      aria-hidden="true"
+    />
+  </a>
+</div>
