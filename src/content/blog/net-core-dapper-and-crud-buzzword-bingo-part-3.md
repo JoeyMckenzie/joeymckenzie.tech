@@ -616,11 +616,3 @@ Total tests: 15
 ```
 
 Music to a developer's ears: 15 tests ran, 15 passed. While it is in fact possible to swap out our in-memory SQLite database for disk-based SQL Server, or Postgres, I prefer to use the mock in-memory versions simply because the database context is refreshed easily for us between test runs and ready to go for any need we may be using it for. As a disclaimer, we _will_ be writing more unit tests for our project, both at the unit and functional level, but I'll allude to each test project within the section during that time. [Here's](https://github.com/JoeyMckenzie/Dappery/tree/master/tests/Dappery.Data.Tests) the code we've written so far for our persistence layer. Let's go ahead and leave things here now, and head on to the meat and potatoes of the project: the core business layer!
-
-&nbsp;
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({children}) => <BlogLayout>{children}</BlogLayout
-
->

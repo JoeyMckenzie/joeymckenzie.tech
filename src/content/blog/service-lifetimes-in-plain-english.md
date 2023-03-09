@@ -438,9 +438,3 @@ Again focusing on the output after we create another request scope, we see that 
 Another day, another service lifetime explored. We've seen how different service lifetimes construct themselves at request time and are cleaned up by their respective resource manager. When registering service lifetimes, we have to put some thought into what kind of lifetime scope it should. Would you want a service that utilizes `IDbConnection` to be a singleton? Probably not, as you might have a few angry customers on your hands. After today, I know I'll be a little more conscious about the lifetimes I choose.
 
 Until next time, amigos!
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({children}) => <BlogLayout>{children}</BlogLayout
-
->

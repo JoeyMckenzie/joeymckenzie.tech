@@ -403,7 +403,3 @@ Sweet! We're building fluent pizzas on the fly without having to leak details on
 In short, it's often better to constrain object construction for consumers _if your intent_ as the code owner is to have such consumers utilize your objects in a predefined manner. In essence, we should aim to help consumers build objects _with intent_ rather than letting them run wild with unconstrained creation.
 
 Until next time, friends!
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({ children }) => <BlogLayout>{children}</BlogLayout>;

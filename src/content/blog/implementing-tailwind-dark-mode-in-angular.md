@@ -278,9 +278,3 @@ With dev tools open, you'll see the class list on the `html` tag update each tim
 As always, take a look at the [example code](https://github.com/JoeyMckenzie/joey-mckenzie-io-blog-samples/tree/main/apps/tailwind-dark-mode) for reference and let me know if you have any suggestions for a different implementation.
 
 Happy dark mode-ing, friends!
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({children}) => <BlogLayout>{children}</BlogLayout
-
->

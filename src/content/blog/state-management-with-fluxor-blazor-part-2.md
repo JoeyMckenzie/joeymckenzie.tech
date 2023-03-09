@@ -1063,9 +1063,3 @@ Whew... that was quite a bit of code. Let's sit back and enjoy the fruits of our
 In the final stretch, we've seen one strategy for implementing CRUD workflows with the help of Fluxor in our Blazor applications. Bringing the redux experience to Blazor empowers us .NET developers to build bulletproof and predictable Blazor applications simplifying the complex problem of state management on the frontend, bringing a tried-and-true design patter in flux along with us. Feel free to play around with the code we've written so far, and maybe even improve the workflows we already have set in place (see what happens when you reload the todo detail with a selected todo and try to delete it). All the code we've written so far is available on [GitHub](https://github.com/JoeyMckenzie/StateManagementWithFluxor) for those following along. Next up, we'll explore automated integration testing on our todos application using Cypress to help further strengthen our codebase and provide yet another tool we can bring into the development process to assist with bulletproofing our workflows, along with a few considerations and potential refactors we could make with our current application architecture to make it a bit more robust.
 
 Until next time, friends!
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({children}) => <BlogLayout>{children}</BlogLayout
-
->

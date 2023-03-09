@@ -771,7 +771,3 @@ capability, all without implementing an entirely separate API layer in another f
 fully ready to deploy to Netlify, where our serverless functions will kick in, handling requests from our static Angular
 app deployed to the DSN of our choice. If you're looking to
 embrace the JAMstack with Angular, take Scully and Netlify Functions for a spin!
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({ children }) => <BlogLayout>{children}</BlogLayout>;

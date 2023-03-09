@@ -891,7 +891,3 @@ And with that... we've _finally_ completed our persistence layer! We've laid the
 On a rainy day, I'll sit down and guide us through setting up Docker images for database providers and integrating them with our .NET Core applications. For now, I'll leave it as an exercise for the reader on how to do so.
 
 In our next post, we'll create a simple test project that will help bulletproof our code within this layer, so that any change we decide to make in the future, we'll be able to safely validate that it's still doing its job. After that, we'll implement our business layer that will contain our core CQRS architecture with the help of libraries in MediatR and FluentValidation. Check out the source code [here](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-2-data-layer) to see where we're at so far. Until next time, amigos!
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({ children }) => <BlogLayout>{children}</BlogLayout>;

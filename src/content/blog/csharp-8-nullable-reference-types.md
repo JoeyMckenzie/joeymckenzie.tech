@@ -526,9 +526,3 @@ No beers found
 The nullable reference context new to C# 8.0, allowing us to leverage nullable reference types, is an incredibly powerful tool for developers to construct clean, safe code. With nullable reference types and proper application architecture, we can nearly eliminate nearly _any_ chance of a `NullReferenceException` within our code, guaranteeing compile and runtime safety while building an added layer of code security within our programs. This likely won't be the last time we explore nullable reference types, and if you've been following along with our series on [building a real world application using Dapper and .NET Core](https://betweentwobrackets.netlify.com/2019-10-06-net-core-dapper-and-crud-buzzword-bingo/), we'll see how to utilize the nullable reference context throughout our application for similar benefits.
 
 Until next time, amigos!
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({children}) => <BlogLayout>{children}</BlogLayout
-
->

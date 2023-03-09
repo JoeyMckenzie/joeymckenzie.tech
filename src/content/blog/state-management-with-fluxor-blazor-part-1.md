@@ -705,9 +705,3 @@ You might be asking the question - how does the page know to render the list? Re
 So far, we've seen what flux is, why we would want to use it in a single page application, and how to setup Fluxor with Blazor. For brevity, I've also added a workflow to retrieve todos by ID, but I'll leave the implementation details up to the reader (take a look a the source code [here](https://github.com/JoeyMckenzie/StateManagementWithFluxor/tree/feature/todos-part-1) to see exactly how I've done it - nothing crazy, just a new page with some more actions, reducers, and effects). We've seen how using Redux Dev Tools, we're able to peek into the workflow step-by-step of our application and observe incremental state changes, and later, we'll see the real power of Dev Tools in time travel state transitions.
 
 Next up, we'll implement some CRUD operations and make a few improvements to our current implementation, but for now, we'll call that a day. Cheers!
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({children}) => <BlogLayout>{children}</BlogLayout
-
->

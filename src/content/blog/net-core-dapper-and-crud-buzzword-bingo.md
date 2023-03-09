@@ -463,7 +463,3 @@ For those following along, [here's](https://github.com/JoeyMckenzie/Dappery/tree
 We can see the light at the end of the tunnel! A few lingering questions remain though, in particular with our `tests` directory. We WILL be writing tests, but for our simple domain layer as of now, as there is really no logic in any of the classes we've created so far, we're going to wait until we build the core functionality to start writing unit and integration tests. For now, we'll stop here and continue with the meat and potatoes of our project in the next post in the series, the data layer.
 
 Crack open a cold, you deserve it.
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({ children }) => <BlogLayout>{children}</BlogLayout>;

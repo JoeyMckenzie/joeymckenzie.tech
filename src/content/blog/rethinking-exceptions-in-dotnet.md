@@ -233,7 +233,3 @@ Do we rely on calls to third-party libraries or APIs that don't necessarily shar
 Exceptions have their time and place - as I've grown in my software career, I find that my personal developer growth comes in the form of identifying _when_ and _where_ it may be appropriate to `throw` and surround bits of code in `try`/`catch` blocks rather than relying on them as a crutch for ease of control flow. What this translates to, more or less, is forcing callers and callees to properly handle error cases _as they arise_ rather than making it the next stack frame's problem. Unfortunately, humans are not perfect. Code is written by humans (most of the time), and therefore _can_ be imperfect itself, not accounting for erroneous scenarios that might be outside our peripheral.
 
 Until next time, friends!
-
-import BlogLayout from '@/layouts/BlogLayout';
-
-export default ({ children }) => <BlogLayout>{children}</BlogLayout>;
