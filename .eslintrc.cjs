@@ -12,12 +12,6 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   overrides: [
     {
-      files: ['*.d.ts'],
-      rules: {
-        '@typescript-eslint/triple-slash-reference': 'warn',
-      },
-    },
-    {
       // Define the configuration for `.astro` file.
       files: ['*.astro'],
       // Allows Astro components to be parsed.
@@ -27,10 +21,6 @@ module.exports = {
       parserOptions: {
         extraFileExtensions: ['.astro'],
       },
-    },
-    {
-      files: ['*.tsx'],
-      extends: ['plugin:react/recommended'],
     },
   ],
   parserOptions: {
