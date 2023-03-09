@@ -22,6 +22,11 @@ module.exports = {
         extraFileExtensions: ['.astro'],
       },
     },
+    {
+      files: ['*.tsx'],
+      plugins: ['solid'],
+      extends: ['plugin:solid/typescript'],
+    },
   ],
   parserOptions: {
     sourceType: 'module',

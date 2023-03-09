@@ -93,16 +93,16 @@ function getBasicHash() {
   );
 }
 
-async function getSpotifyAccessToken() {
+async function getSpotifyAccessToken(hash: string, refreshToken: string) {
   const response = await fetch(TOKEN_ENDPOINT, {
     method: 'POST',
     headers: {
-      Authorization: `Basic ${getBasicHash()}`,
+      Authorization: `Basic ${hash}`,
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: new URLSearchParams({
       grant_type: 'refresh_token',
-      refresh_token: REFRESH_TOKEN,
+      refresh_token: refreshToken,
     }),
   });
 
@@ -111,8 +111,11 @@ async function getSpotifyAccessToken() {
   return spotifyAuthResponse.access_token;
 }
 
-export async function getCurrentlyListeningTo() {
-  const token = await getSpotifyAccessToken();
+export async function getCurrentlyListeningTo(
+  hash: string,
+  refreshToken: string
+) {
+  const token = await getSpotifyAccessToken(hash, refreshToken);
 
   const response = await fetch(NOW_PLAYING_ENDPOINT, {
     headers: {
