@@ -1,0 +1,37 @@
+---
+import BaseHead from '@/components/layout/BaseHead.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import Navbar from '@/components/layout/Navbar.astro';
+import Footer from '@/components/footer/Footer.astro';
+
+type Props = {
+  title?: string;
+  description?: string;
+};
+
+const { title, description } = Astro.props;
+const useTitleAndDescription = !!title && !!description;
+---
+
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+  <head>
+    {
+      useTitleAndDescription && (
+        <BaseHead title={title} description={description} />
+      )
+    }
+    {
+      !useTitleAndDescription && (
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+      )
+    }
+  </head>
+  <body class="h-full bg-neutral-900">
+    <Navbar />
+    <main class="mx-auto max-w-screen-md px-6 pt-12 lg:px-8">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

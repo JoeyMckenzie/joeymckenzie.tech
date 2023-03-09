@@ -1,0 +1,16 @@
+---
+type Props = {
+  tagName: string;
+  additionalClasses?: string;
+};
+
+const { tagName, additionalClasses } = Astro.props;
+const defaultClasses = 'text-neutral-400 font-mono';
+const classes = additionalClasses
+  ? `${defaultClasses} ${additionalClasses}`
+  : defaultClasses;
+---
+
+<span class={classes}>&lt;{tagName}&gt;</span>
+<slot />
+<span class={classes}>&lt;/{tagName}&gt;</span>

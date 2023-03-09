@@ -1,0 +1,36 @@
+---
+import { Icon } from 'astro-icon';
+import ListeningTo from './ListeningTo';
+import PoweredBy from './PoweredBy.astro';
+import Socials from './Socials.astro';
+
+const CLIENT_ID = import.meta.env.SPOTIFY_CLIENT_ID ?? '';
+const CLIENT_SECRET = import.meta.env.SPOTIFY_CLIENT_SECRET ?? '';
+const REFRESH_TOKEN = import.meta.env.SPOTIFY_REFRESH_TOKEN ?? '';
+
+// Compute the hash on the client, using it as a resource key for solid
+const basicHash = Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET, 'utf8').toString(
+  'base64'
+);
+---
+
+<footer
+  class="mx-auto flex max-w-4xl flex-col py-12 px-6 md:flex-row md:items-center md:justify-between lg:px-8"
+>
+  <Socials />
+  <ListeningTo hash={basicHash} refreshToken={REFRESH_TOKEN} client:only>
+    <Icon class="h-6 w-6" name="logos:spotify-icon" />
+  </ListeningTo>
+  <!-- {
+    listeningTo && (
+      <ListeningTo
+        albumImageSrc={listeningTo.albumImage.url}
+        artist={listeningTo.artist}
+        href={listeningTo.href}
+        trackTitle={listeningTo.trackTitle}
+      />
+    )
+  }
+  {!listeningTo && <NotCurrentlyListening />} -->
+  <PoweredBy />
+</footer>
