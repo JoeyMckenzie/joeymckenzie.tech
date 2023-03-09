@@ -18,11 +18,7 @@ const post = Astro.props;
 const { Content } = await post.render();
 ---
 
-<!-- <BlogPost {...post.data}>
-  <h1>{post.data.title}</h1>
-  <Content />
-</BlogPost> -->
-<BaseLayout>
+<BaseLayout title={post.data.title} description={post.data.description}>
   <article
     class="prose prose-invert overflow-hidden pb-12 font-merriweather text-neutral-400 prose-img:mx-auto prose-img:rounded-md"
   >

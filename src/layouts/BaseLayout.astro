@@ -5,13 +5,29 @@ import Navbar from '@/components/layout/Navbar.astro';
 import { getCurrentlyListeningTo } from '@/lib/spotify';
 import Footer from '@/components/footer/Footer.astro';
 
+type Props = {
+  title?: string;
+  description?: string;
+};
+
 const listeningTo = await getCurrentlyListeningTo();
+const { title, description } = Astro.props;
+const useTitleAndDescription = !!title && !!description;
 ---
 
 <!DOCTYPE html>
 <html lang="en" class="h-full">
   <head>
-    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    {
+      useTitleAndDescription && (
+        <BaseHead title={title} description={description} />
+      )
+    }
+    {
+      !useTitleAndDescription && (
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+      )
+    }
   </head>
   <body class="h-full bg-neutral-900">
     <Navbar />

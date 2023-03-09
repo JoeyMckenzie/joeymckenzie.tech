@@ -62,7 +62,7 @@ I'm using CSS in the example below, so we need to add the Tailwind utilities to 
 
 #### styles.css
 
-```css
+```csharp
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
