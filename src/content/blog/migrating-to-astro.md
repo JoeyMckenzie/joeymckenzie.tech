@@ -4,6 +4,7 @@ description: 'The developer credo: rewrite your blog with a new framework every 
 pubDate: 'Mar 02 2023'
 heroImage: '/blog/jamstack-angular-apps-with-scully/angular-scully-netlify-meme.jpg'
 category: 'astro'
+published: false
 ---
 
 There's no denying that the [JAMstack](https://jamstack.org/) has taken the traditional web development world by

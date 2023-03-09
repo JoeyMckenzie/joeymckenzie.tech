@@ -2,9 +2,9 @@
 import { getCollection } from 'astro:content';
 import BlogPreview from './BlogPreview.astro';
 
-const posts = (await getCollection('blog')).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
+const posts = (await getCollection('blog'))
+  .filter((p) => p.data.published)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <div class="mx-auto">

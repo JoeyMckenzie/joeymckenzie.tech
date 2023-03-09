@@ -9,17 +9,8 @@ const { title } = Astro.props;
 ---
 
 <span
-  class="flex flex-row items-center space-x-2 text-neutral-400 sm:justify-center"
+  class="flex flex-row items-center space-x-0 text-neutral-400 sm:justify-center sm:space-x-2"
 >
-  <!-- <Icon
-    name="clarity:command-line"
-    class="mr-1 w-8 first-letter:h-8 sm:h-10 sm:w-10"
-  /> -->
-  <!-- <Icon
-    name="ri:terminal-fill"
-    class="mr-1 w-8 first-letter:h-8 sm:h-10 sm:w-10"
-  /> -->
-  <!-- <Icon name="raphael:commandline" class="h-8 w-8 sm:h-10 sm:w-10" /> -->
   <HtmlTag additionalClasses="hidden sm:block text-xl" tagName="page">
     <h2
       class="font-mono text-2xl font-semibold tracking-tight text-neutral-400 sm:text-3xl"
@@ -27,9 +18,4 @@ const { title } = Astro.props;
       {title}
     </h2>
   </HtmlTag>
-  <!-- <h2
-    class="block font-mono text-3xl font-bold tracking-tight text-neutral-400 sm:hidden sm:text-4xl"
-  >
-    {title}
-  </h2> -->
 </span>

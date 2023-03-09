@@ -2,7 +2,8 @@
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from '../shared/FormattedDate.astro';
 
-export type Props = CollectionEntry<'blog'>['data'] & { slug: string };
+type ContentData = CollectionEntry<'blog'>['data'];
+export type Props = Omit<ContentData, 'published'> & { slug: string };
 
 const { category, title, description, slug, pubDate } = Astro.props;
 ---

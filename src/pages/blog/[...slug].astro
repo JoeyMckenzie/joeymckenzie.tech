@@ -1,17 +1,19 @@
 ---
 import FormattedDate from '@/components/shared/FormattedDate.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { CollectionEntry, getCollection } from 'astro:content';
 import { Icon } from 'astro-icon';
+import { CollectionEntry, getCollection } from 'astro:content';
 
 type Props = CollectionEntry<'blog'>;
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: post,
-  }));
+  return posts
+    .filter((post) => post.data.published)
+    .map((post) => ({
+      params: { slug: post.slug },
+      props: post,
+    }));
 }
 
 const post = Astro.props;
@@ -31,7 +33,7 @@ const { Content } = await post.render();
       <FormattedDate date={post.data.pubDate} />
       <span class="font-bold">#{post.data.category}</span>
     </div>
-    <img width={540} height={180} src={post.data.heroImage} alt="" />
+    <img width={540} height={280} src={post.data.heroImage} alt="" />
     <Content />
   </article>
 
