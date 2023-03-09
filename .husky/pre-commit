@@ -2,4 +2,3 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 pnpm dlx lint-staged
-turbo build lint

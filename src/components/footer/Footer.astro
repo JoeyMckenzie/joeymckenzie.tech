@@ -8,10 +8,6 @@ const CLIENT_ID = import.meta.env.SPOTIFY_CLIENT_ID ?? '';
 const CLIENT_SECRET = import.meta.env.SPOTIFY_CLIENT_SECRET ?? '';
 const REFRESH_TOKEN = import.meta.env.SPOTIFY_REFRESH_TOKEN ?? '';
 
-console.log('CLIENT_ID', CLIENT_ID);
-console.log('CLIENT_SECRET', CLIENT_SECRET);
-console.log('REFRESH_TOKEN', REFRESH_TOKEN);
-
 // Compute the hash on the client, using it as a resource key for solid
 const basicHash = Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET, 'utf8').toString(
   'base64'
