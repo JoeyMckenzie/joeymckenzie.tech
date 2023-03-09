@@ -2,7 +2,6 @@
 import BaseHead from '@/components/layout/BaseHead.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import Navbar from '@/components/layout/Navbar.astro';
-import { getCurrentlyListeningTo } from '@/lib/spotify';
 import Footer from '@/components/footer/Footer.astro';
 
 type Props = {
@@ -10,7 +9,6 @@ type Props = {
   description?: string;
 };
 
-const listeningTo = await getCurrentlyListeningTo();
 const { title, description } = Astro.props;
 const useTitleAndDescription = !!title && !!description;
 ---
@@ -34,6 +32,6 @@ const useTitleAndDescription = !!title && !!description;
     <main class="mx-auto max-w-screen-md px-6 pt-12 lg:px-8">
       <slot />
     </main>
-    <Footer meta={listeningTo} />
+    <Footer />
   </body>
 </html>

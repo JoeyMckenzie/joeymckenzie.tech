@@ -3,12 +3,20 @@ module.exports = {
   ignorePatterns: ['*.cjs', '*.mjs', '*.xml.js'],
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:astro/recommended',
     'plugin:astro/jsx-a11y-recommended',
     'prettier',
   ],
+  plugins: ['@typescript-eslint'],
   parser: '@typescript-eslint/parser',
   overrides: [
+    {
+      files: ['*.d.ts'],
+      rules: {
+        '@typescript-eslint/triple-slash-reference': 'warn',
+      },
+    },
     {
       // Define the configuration for `.astro` file.
       files: ['*.astro'],
@@ -17,19 +25,20 @@ module.exports = {
       // Parse the script in `.astro` as TypeScript by adding the following configuration.
       // It's the setting you need when using TypeScript.
       parserOptions: {
-        parser: '@typescript-eslint/parser',
         extraFileExtensions: ['.astro'],
       },
-      rules: {
-        // override/add rules settings here, such as:
-        // "astro/no-set-html-directive": "error"
-      },
     },
-    // ...
+    {
+      files: ['*.tsx'],
+      extends: ['plugin:react/recommended'],
+    },
   ],
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 'latest',
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
   env: {
     browser: true,

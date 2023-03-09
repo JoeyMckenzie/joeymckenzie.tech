@@ -1,15 +1,11 @@
 ---
-import type { ListentingToMeta } from '@/lib/spotify';
-import ListentingTo from './ListentingTo.astro';
-import NotCurrentlyListening from './NotCurrentlyListening.astro';
+import { getCurrentlyListeningTo } from '@/lib/spotify';
+import ListeningTo from './ListeningTo.astro';
 import PoweredBy from './PoweredBy.astro';
 import Socials from './Socials.astro';
+import NotCurrentlyListening from './NotCurrentlyListening.astro';
 
-type Props = {
-  meta?: ListentingToMeta | undefined;
-};
-
-const { meta } = Astro.props;
+const listeningTo = await getCurrentlyListeningTo();
 ---
 
 <footer
@@ -17,15 +13,15 @@ const { meta } = Astro.props;
 >
   <Socials />
   {
-    meta && (
-      <ListentingTo
-        albumImageSrc={meta.albumImage.url}
-        artist={meta.artist}
-        href={meta.href}
-        trackTitle={meta.trackTitle}
+    listeningTo && (
+      <ListeningTo
+        albumImageSrc={listeningTo.albumImage.url}
+        artist={listeningTo.artist}
+        href={listeningTo.href}
+        trackTitle={listeningTo.trackTitle}
       />
     )
   }
-  {!meta && <NotCurrentlyListening />}
+  {!listeningTo && <NotCurrentlyListening />}
   <PoweredBy />
 </footer>

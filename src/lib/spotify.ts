@@ -130,9 +130,14 @@ export async function getCurrentlyListeningTo() {
       const item = listeningToResponse.item;
       const context = listeningToResponse.context;
 
-      const albumImage = item.album?.images[0]!;
+      const albumImage = item.album?.images[0] || {
+        height: 0,
+        width: 0,
+        url: '',
+      };
+
       const trackTitle = item?.name;
-      const artist = item?.artists ? item.artists[0]?.name! : '';
+      const artist = item?.artists[0]?.name ?? '';
       const href = context.external_urls?.spotify;
 
       return {
