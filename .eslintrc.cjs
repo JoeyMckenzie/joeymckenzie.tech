@@ -1,6 +1,6 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
-  ignorePatterns: ['*.cjs', '*.mjs', '*.xml.js'],
+  ignorePatterns: ['*.cjs', '*.mjs', '*.xml.js', 'env.d.ts'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
