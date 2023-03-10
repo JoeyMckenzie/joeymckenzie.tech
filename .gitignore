@@ -21,3 +21,8 @@ pnpm-debug.log*
 
 # turbo
 .turbo
+
+# Added by cargo
+
+/target
+/Cargo.lock

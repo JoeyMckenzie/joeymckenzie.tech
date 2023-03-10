@@ -1,0 +1,14 @@
+[package]
+name = "joey-mckenzie-tech"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+name = "spotify"
+path = "shuttle/spotify.rs"
+
+[dependencies]
+shuttle-service = { version = "0.11", features = ["web-axum"] }
+axum = "0.6"
+sync_wrapper = "0.1.2"
