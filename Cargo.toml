@@ -6,9 +6,14 @@ publish = false
 
 [lib]
 name = "spotify"
-path = "shuttle/spotify.rs"
+path = "functions/lib.rs"
 
 [dependencies]
 shuttle-service = { version = "0.11", features = ["web-axum"] }
-axum = "0.6"
+axum = { version = "0.6", features = ["json"] }
 sync_wrapper = "0.1.2"
+shuttle-secrets = "0.11"
+tracing = "0.1"
+serde = { version = "1.0", features = ["serde_derive"] }
+tower-http = { version = "0.4", features = ["limit", "timeout", "cors"] }
+reqwest = { version = "0.11", features = ["json"] }

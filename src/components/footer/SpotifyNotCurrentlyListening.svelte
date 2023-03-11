@@ -1,10 +1,6 @@
----
-import { Icon } from 'astro-icon';
----
-
 <div class="flex flex-col space-y-1 pt-6 md:pt-0">
   <div class="flex flex-row items-center justify-center space-x-2">
-    <Icon class="h-6 w-6" name="logos:spotify-icon" />
+    <slot />
     <div class="flex flex-col">
       <h4 class="text-xs text-neutral-500">Not currently listening</h4>
     </div>

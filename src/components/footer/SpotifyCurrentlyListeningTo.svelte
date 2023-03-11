@@ -1,18 +1,12 @@
----
-import { Icon } from 'astro-icon';
-
-type Props = {
-  href: string;
-  albumImageSrc: string;
-  trackTitle: string;
-  artist: string;
-};
-
-const { href, albumImageSrc, trackTitle, artist } = Astro.props;
----
+<script lang="ts">
+  export let href = '';
+  export let albumImageSrc = '';
+  export let trackTitle = '';
+  export let artist = '';
+</script>
 
 <a
-  href={href}
+  {href}
   target="_blank"
   rel="noreferrer"
   class="flex flex-col space-y-1 pt-6 md:pt-0"
@@ -23,7 +17,7 @@ const { href, albumImageSrc, trackTitle, artist } = Astro.props;
     Now listening
   </h2>
   <div class="flex flex-row items-center justify-center space-x-2">
-    <Icon class="h-6 w-6" name="logos:spotify-icon" />
+    <slot />
     <img
       src={albumImageSrc}
       width="30"
@@ -32,9 +26,7 @@ const { href, albumImageSrc, trackTitle, artist } = Astro.props;
       class="rounded-sm"
     />
     <div class="flex flex-col">
-      <h4 class="text-sm font-semibold text-neutral-300">
-        {trackTitle}
-      </h4>
+      <h4 class="text-sm font-semibold text-neutral-300">{trackTitle}</h4>
       <p class="text-xs text-neutral-400">{artist}</p>
     </div>
   </div>

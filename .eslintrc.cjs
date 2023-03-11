@@ -1,5 +1,6 @@
 /** @type {import('eslint').Linter.Config} */
 module.exports = {
+  root: true,
   ignorePatterns: ['*.cjs', '*.mjs', '*.xml.js', 'env.d.ts'],
   extends: [
     'eslint:recommended',
@@ -23,17 +24,17 @@ module.exports = {
       },
     },
     {
-      files: ['*.tsx'],
-      plugins: ['solid'],
-      extends: ['plugin:solid/typescript'],
+      files: ['*.svelte'],
+      processor: 'svelte3/svelte3',
+      plugins: ['svelte3'],
+      settings: {
+        'svelte3/typescript': () => require('typescript'),
+      },
     },
   ],
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 'latest',
-    ecmaFeatures: {
-      jsx: true,
-    },
   },
   env: {
     browser: true,
