@@ -2,7 +2,7 @@
   import SpotifyCurrentlyListeningTo from './SpotifyCurrentlyListeningTo.svelte';
   import SpotifyNotCurrentlyListening from './SpotifyNotCurrentlyListening.svelte';
 
-  export let SHUTTLE_NOW_PLAYING_URL = '';
+  export let nowPlayingUrl = '';
 
   type NowPlayingResponse = {
     href: string;
@@ -13,12 +13,14 @@
   };
 
   async function getNowPlaying(): Promise<NowPlayingResponse> {
-    const response = await fetch(SHUTTLE_NOW_PLAYING_URL);
+    const response = await fetch(nowPlayingUrl);
     return response.json();
   }
 </script>
 
-{#await getNowPlaying() then nowPlaying}
+{#await getNowPlaying()}
+  <SpotifyNotCurrentlyListening><slot /></SpotifyNotCurrentlyListening>
+{:then nowPlaying}
   <SpotifyCurrentlyListeningTo
     albumImageSrc={nowPlaying.albumImageSrc}
     href={nowPlaying.href}

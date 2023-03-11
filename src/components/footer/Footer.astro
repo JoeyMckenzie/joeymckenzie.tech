@@ -3,13 +3,15 @@ import { Icon } from 'astro-icon';
 import PoweredBy from './PoweredBy.astro';
 import Socials from './Socials.astro';
 import SpotifyNowPlaying from './SpotifyNowPlaying.svelte';
+
+const nowPlayingUrl = import.meta.env.SHUTTLE_SPOTIFY_URL;
 ---
 
 <footer
   class="mx-auto flex max-w-4xl flex-col py-12 px-6 md:flex-row md:items-center md:justify-between lg:px-8"
 >
   <Socials />
-  <SpotifyNowPlaying client:load>
+  <SpotifyNowPlaying nowPlayingUrl={nowPlayingUrl} client:load>
     <Icon class="h-6 w-6" name="logos:spotify-icon" />
   </SpotifyNowPlaying>
   <PoweredBy />
