@@ -20,13 +20,14 @@
 
 {#await getNowPlaying()}
   <SpotifyNotCurrentlyListening><slot /></SpotifyNotCurrentlyListening>
-{:then nowPlaying}
-  <SpotifyCurrentlyListeningTo
-    albumImageSrc={nowPlaying.albumImageSrc}
-    href={nowPlaying.href}
-    artist={nowPlaying.artist}
-    trackTitle={nowPlaying.trackTitle}><slot /></SpotifyCurrentlyListeningTo
-  >
+{:then { albumImageSrc, artist, href, nowPlaying, trackTitle }}
+  {#if nowPlaying}
+    <SpotifyCurrentlyListeningTo {albumImageSrc} {href} {artist} {trackTitle}
+      ><slot /></SpotifyCurrentlyListeningTo
+    >
+  {:else}
+    <SpotifyNotCurrentlyListening><slot /></SpotifyNotCurrentlyListening>
+  {/if}
 {:catch}
   <SpotifyNotCurrentlyListening><slot /></SpotifyNotCurrentlyListening>
 {/await}
