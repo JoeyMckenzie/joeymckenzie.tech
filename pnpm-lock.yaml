@@ -1,7 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@astrojs/mdx': ^0.17.2
+  '@astrojs/mdx': ^0.18.0
   '@astrojs/rss': ^2.1.1
   '@astrojs/sitemap': ^1.1.0
   '@astrojs/svelte': ^2.1.0
@@ -15,7 +15,7 @@ specifiers:
   astro-icon: ^0.8.0
   eslint: ^8.35.0
   eslint-config-prettier: ^8.7.0
-  eslint-plugin-astro: ^0.23.0
+  eslint-plugin-astro: ^0.24.0
   eslint-plugin-jsx-a11y: ^6.7.1
   eslint-plugin-svelte3: ^4.0.0
   husky: ^8.0.0
@@ -28,7 +28,7 @@ specifiers:
   tailwindcss: ^3.0.24
 
 dependencies:
-  '@astrojs/mdx': 0.17.2_astro@2.1.2+rollup@3.18.0
+  '@astrojs/mdx': 0.18.0_astro@2.1.2+rollup@3.18.0
   '@astrojs/rss': 2.1.1
   '@astrojs/sitemap': 1.1.0
   '@astrojs/svelte': 2.1.0_cwwjeimflajokwv4ietebda644
@@ -46,7 +46,7 @@ devDependencies:
   '@typescript-eslint/parser': 5.54.1_ycpbpc6yetojsgtrx3mwntkhsu
   eslint: 8.35.0
   eslint-config-prettier: 8.7.0_eslint@8.35.0
-  eslint-plugin-astro: 0.23.0_eslint@8.35.0
+  eslint-plugin-astro: 0.24.0_eslint@8.35.0
   eslint-plugin-jsx-a11y: 6.7.1_eslint@8.35.0
   eslint-plugin-svelte3: 4.0.0_edkhwr7m6j5c643qin6znnpg6e
   husky: 8.0.3
@@ -102,32 +102,6 @@ packages:
       vscode-uri: 3.0.7
     dev: false
 
-  /@astrojs/markdown-remark/2.0.1_astro@2.1.2:
-    resolution:
-      {
-        integrity: sha512-xQF1rXGJN18m+zZucwRRtmNehuhPMMhZhi6HWKrtpEAKnHSPk8lqf1GXgKH7/Sypglu8ivdECZ+EGs6kOYVasQ==,
-      }
-    peerDependencies:
-      astro: ^2.0.2
-    dependencies:
-      '@astrojs/prism': 2.1.0
-      astro: 2.1.2
-      github-slugger: 1.5.0
-      import-meta-resolve: 2.2.1
-      rehype-raw: 6.1.1
-      rehype-stringify: 9.0.3
-      remark-gfm: 3.0.1
-      remark-parse: 10.0.1
-      remark-rehype: 10.1.0
-      remark-smartypants: 2.0.0
-      shiki: 0.11.1
-      unified: 10.1.2
-      unist-util-visit: 4.1.2
-      vfile: 5.3.7
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
-
   /@astrojs/markdown-remark/2.1.0_astro@2.1.2:
     resolution:
       {
@@ -155,15 +129,15 @@ packages:
       - supports-color
     dev: false
 
-  /@astrojs/mdx/0.17.2_astro@2.1.2+rollup@3.18.0:
+  /@astrojs/mdx/0.18.0_astro@2.1.2+rollup@3.18.0:
     resolution:
       {
-        integrity: sha512-mol57cw1jJMcQgKMRGn7p6cewajq6JTNtqj5aAZgROWam/phVDSOCbXj/WU3O9+3qFnyKtpczoufQKwJTQltAw==,
+        integrity: sha512-mgICosefMpl67O7ER6Yi6ylT9Hk8ZAO6GhTlx4pYXIMOWFMQlP0NXQ9teZwPhOWzBcHWnsHEF+AzVZWbiC2EBg==,
       }
     engines: { node: '>=16.12.0' }
     dependencies:
-      '@astrojs/markdown-remark': 2.0.1_astro@2.1.2
-      '@astrojs/prism': 2.0.0
+      '@astrojs/markdown-remark': 2.1.0_astro@2.1.2
+      '@astrojs/prism': 2.1.0
       '@mdx-js/mdx': 2.3.0
       '@mdx-js/rollup': 2.3.0_rollup@3.18.0
       acorn: 8.8.2
@@ -183,16 +157,6 @@ packages:
       - astro
       - rollup
       - supports-color
-    dev: false
-
-  /@astrojs/prism/2.0.0:
-    resolution:
-      {
-        integrity: sha512-YgeoeEPqsxaEpg0rwe/bUq3653LqSQnMjrLlpYwrbQQMQQqz6Y5yXN+RX3SfLJ6ppNb4+Fu2+Z49EXjk48Ihjw==,
-      }
-    engines: { node: '>=16.12.0' }
-    dependencies:
-      prismjs: 1.29.0
     dev: false
 
   /@astrojs/prism/2.1.0:
@@ -1788,10 +1752,10 @@ packages:
     hasBin: true
     dev: false
 
-  /astro-eslint-parser/0.11.0:
+  /astro-eslint-parser/0.12.0:
     resolution:
       {
-        integrity: sha512-vcz8KBQ20WNOot6qK6w7DQtz2hwg+aLLqlUa6nAnitJLqbR12GxJN/+96U3O+VI4da5Up+FMWqNoL9mywSENtA==,
+        integrity: sha512-1r8TXPHoUk6OSNzeGOGpklmPedleYVpZU50jIPfsQjzrGMs+XpCSCc8+AATnKraPYnTvkmNClhjafSY6w3H90g==,
       }
     engines: { node: ^14.18.0 || >=16.0.0 }
     dependencies:
@@ -2887,10 +2851,10 @@ packages:
       eslint: 8.35.0
     dev: true
 
-  /eslint-plugin-astro/0.23.0_eslint@8.35.0:
+  /eslint-plugin-astro/0.24.0_eslint@8.35.0:
     resolution:
       {
-        integrity: sha512-KsIL1sOrz40qf/d9RP4E3sH6+p6nrIBBXB6rPuE9EWb5de+m9BWfvURuoECXfiXCmQh8UlHJUxgSWxn1bLsD8g==,
+        integrity: sha512-oRGBMZPAFHhAHD8cyZez4OA5LRkgxLA+RtCIInC4nzw8thO/uojMdKXDri+sy2IFsGcu2PpOw70Uik0U5/izug==,
       }
     engines: { node: ^14.18.0 || >=16.0.0 }
     peerDependencies:
@@ -2898,7 +2862,7 @@ packages:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.4.14
       '@typescript-eslint/types': 5.54.1
-      astro-eslint-parser: 0.11.0
+      astro-eslint-parser: 0.12.0
       eslint: 8.35.0
       eslint-utils: 3.0.0_eslint@8.35.0
       postcss: 8.4.21
