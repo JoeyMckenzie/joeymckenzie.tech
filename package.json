@@ -16,7 +16,7 @@
     "**/*.{cjs,mjs,ts,svelte,astro,md,json,yaml}": "pnpm format"
   },
   "dependencies": {
-    "@astrojs/mdx": "^0.17.2",
+    "@astrojs/mdx": "^0.18.0",
     "@astrojs/rss": "^2.1.1",
     "@astrojs/sitemap": "^1.1.0",
     "@astrojs/svelte": "^2.1.0",
