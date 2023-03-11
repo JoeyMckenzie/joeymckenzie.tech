@@ -13,7 +13,7 @@
     "format": "prettier --write ."
   },
   "lint-staged": {
-    "**/*.{cjs,mjs,ts,svelte,astro,md}": "pnpm format"
+    "**/*.{cjs,mjs,ts,svelte,astro,md,json,yaml}": "pnpm format"
   },
   "dependencies": {
     "@astrojs/mdx": "^0.17.2",

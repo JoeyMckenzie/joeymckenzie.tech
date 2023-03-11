@@ -7,11 +7,11 @@
       "@/*": ["./src/*"]
     }
   },
-	"exclude": [
-		"./node_modules/**",
+  "exclude": [
+    "./node_modules/**",
     ".astro/**",
     ".turbo/**",
     ".dist/**",
-    "target/**",
-	]
+    "target/**"
+  ]
 }
