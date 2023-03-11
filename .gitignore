@@ -23,6 +23,6 @@ pnpm-debug.log*
 .turbo
 
 # shuttle
-secrets.toml
+Secrets.toml
 /target
 /Cargo.lock
