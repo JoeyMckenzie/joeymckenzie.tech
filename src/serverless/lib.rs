@@ -8,6 +8,7 @@ use shuttle_secrets::SecretStore;
 
 use sync_wrapper::SyncWrapper;
 
+/// The shuttle entry point injected with our secrets store at dev/runtime with secrets from `Secrets.toml`. Don't check that file in!
 #[shuttle_service::main]
 async fn spotify(
     #[shuttle_secrets::Secrets] secret_store: SecretStore,

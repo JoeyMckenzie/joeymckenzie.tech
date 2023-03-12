@@ -32,8 +32,6 @@ impl IntoResponse for ShuttleServerError {
             Self::ReqwestFailed(err) => (StatusCode::BAD_REQUEST, err.to_string()),
         };
 
-        // I'm not a fan of the error specification, so for the sake of consistency,
-        // serialize singular errors as a map of vectors similar to the 422 validation responses
         let body = Json(ServerError::new(error_message));
 
         (status, body).into_response()

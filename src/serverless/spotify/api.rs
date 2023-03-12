@@ -1,3 +1,6 @@
+//! The following structures are the raw response types Spotify sends back. For simple purposes,
+//! we're only consuming track/show information in the form of title and album image.
+
 use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]

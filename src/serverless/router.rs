@@ -8,12 +8,14 @@ use tower_http::{cors::CorsLayer, timeout::TimeoutLayer};
 
 use crate::{handlers::get_currently_listening_to, spotify::client::SpotifyClient};
 
+/// The expected UI dev/production ports. Note that shuttle does not support array-based secrets, so we'll define them as `const`s here for now.
 pub const CORS_ORIGINS: [&str; 3] = [
     "http://localhost:3000",
     "https://joeymckenzie.tech",
     "https://www.joeymckenzie.tech",
 ];
 
+/// Builds a Spotify API client based on the shuttle secrets set at runtime.
 pub fn build_spotify_client_from_shuttle_secrets(secret_store: &SecretStore) -> Arc<SpotifyClient> {
     let refresh_token = secret_store
         .get("SPOTIFY_REFRESH_TOKEN")
@@ -28,6 +30,7 @@ pub fn build_spotify_client_from_shuttle_secrets(secret_store: &SecretStore) -> 
     build_spotify_client(refresh_token, client_id, client_secret)
 }
 
+/// Builds a Spotify API client based on local environments, used primarily for the debug runner in `debug.rs`.
 pub fn build_spotify_client_from_env() -> Arc<SpotifyClient> {
     dotenv::dotenv().ok();
 
@@ -41,7 +44,8 @@ pub fn build_spotify_client_from_env() -> Arc<SpotifyClient> {
     build_spotify_client(refresh_token, client_id, client_secret)
 }
 
-pub fn build_spotify_client(
+// Constructs our API client based on the Spotify variables based on the runtime context.
+fn build_spotify_client(
     refresh_token: String,
     client_id: String,
     client_secret: String,
@@ -52,6 +56,7 @@ pub fn build_spotify_client(
     Arc::new(spotify_client)
 }
 
+/// Builds the axum router with an extension layer for our Spotify API client and various middlewares.
 pub fn build_router(timeout_duration_seconds: u64, spotify_client: Arc<SpotifyClient>) -> Router {
     let timeout_duration = Duration::from_secs(timeout_duration_seconds);
 

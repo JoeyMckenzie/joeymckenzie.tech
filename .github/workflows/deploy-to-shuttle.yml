@@ -2,9 +2,9 @@ name: Deploy to shuttle
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
   pull_request:
-    branches: ['main']
+    branches: ["main"]
 
 env:
   CARGO_TERM_COLOR: always
@@ -14,6 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: shuttle-hq/deploy-action@main
-        with:
-          deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+      - uses: actions/checkout@v3
+
+      - name: Build dependencies
+        run: cargo build --release
+
+      # TODO: This is taking way longer than expected, should look into this eventually
+
+      # - name: Install cargo-shuttle
+      #   run: cargo install cargo-shuttle
+
+      # - name: Authenticate with shuttle
+      #   run: cargo shuttle login --api-key ${{ secrets.SHUTTLE_API_KEY }}
+
+      # - name: Deploy to shuttle
+      #   run: cargo shuttle deploy

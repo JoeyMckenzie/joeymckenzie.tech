@@ -11,13 +11,17 @@ use tracing::info;
 
 const PORT: u16 = 8080;
 
+/// A runnable version of the serverless function that is deployed to [shuttle](https://shuttle.rs),
+/// acting as an entry point to allow for ease of debugging and local development without needing
+/// to spin up a local shuttle dev server.
 #[tokio::main]
 async fn main() -> Result<(), ShuttleServerError> {
+    // By default, all shuttle output utilizes tracing so we'll utilize standard output logging for dev runs
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::DEBUG)
         .init();
 
-    info!("initializing spotify client");
+    info!("Initializing spotify client...");
 
     let spotify_client = build_spotify_client_from_env();
     let timeout_duration_seconds = env::var("TIMEOUT_DURATION_SECONDS")
@@ -25,12 +29,12 @@ async fn main() -> Result<(), ShuttleServerError> {
         .parse::<u64>()
         .expect("timeout duration is not valid");
 
-    info!("spotify client initialized, building router");
+    info!("Spotify client initialized! Building router...");
 
     let router = build_router(timeout_duration_seconds, spotify_client);
 
     info!(
-        "router successfully initialized, now serving on port {}",
+        "Router successfully initialized! Now serving on port {}",
         PORT
     );
 
