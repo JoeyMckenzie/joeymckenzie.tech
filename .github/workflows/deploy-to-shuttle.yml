@@ -20,7 +20,7 @@ jobs:
         run: cargo install cargo-shuttle
 
       - name: Authenticate with shuttle
-        run: cargo shuttle login --api-key {{ secrets.SHUTTLE_API_KEY }}
+        run: cargo shuttle login --api-key ${{ secrets.SHUTTLE_API_KEY }}
 
       - name: Deploy to shuttle
         run: cargo shuttle deploy

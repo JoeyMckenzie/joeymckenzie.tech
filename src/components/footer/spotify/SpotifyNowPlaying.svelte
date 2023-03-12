@@ -1,5 +1,5 @@
 <script lang="ts">
-  import SpotifyCurrentlyListeningTo from './SpotifyCurrentlyListeningTo.svelte';
+  import SpotifyCurrentlyListeningTo from './SpotifyCurrentlyNowPlaying.svelte';
   import SpotifyNotCurrentlyListening from './SpotifyNotCurrentlyListening.svelte';
 
   export let nowPlayingUrl = '';
@@ -19,7 +19,9 @@
 </script>
 
 {#await getNowPlaying()}
-  <SpotifyNotCurrentlyListening><slot /></SpotifyNotCurrentlyListening>
+  <SpotifyNotCurrentlyListening text="Loading..."
+    ><slot /></SpotifyNotCurrentlyListening
+  >
 {:then { albumImageSrc, artist, href, nowPlaying, trackTitle }}
   {#if nowPlaying}
     <SpotifyCurrentlyListeningTo {albumImageSrc} {href} {artist} {trackTitle}
