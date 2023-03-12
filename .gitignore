@@ -1,5 +1,6 @@
 # build output
 dist/
+
 # generated types
 .astro/
 
@@ -22,7 +23,7 @@ pnpm-debug.log*
 # turbo
 .turbo
 
-# shuttle
+# shuttle/rust
 Secrets.toml
 /target
 /Cargo.lock
