@@ -13,7 +13,8 @@
     "format": "prettier --write ."
   },
   "lint-staged": {
-    "**/*.{cjs,mjs,ts,svelte,astro,md,json,yaml}": "pnpm format"
+    "**/*.{cjs,mjs,ts,svelte,astro,md,json,yaml}": "pnpm format",
+    "**/*.rs": "cargo fmt -- --emit=files"
   },
   "dependencies": {
     "@astrojs/mdx": "^0.18.0",

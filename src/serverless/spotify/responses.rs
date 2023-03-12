@@ -1,6 +1,6 @@
 use serde::Serialize;
 
-use crate::spotify::SpotifyNowPlayingResponse;
+use super::api::SpotifyNowPlayingResponse;
 
 #[derive(Serialize, Debug, Default)]
 #[serde(rename_all = "camelCase")]
