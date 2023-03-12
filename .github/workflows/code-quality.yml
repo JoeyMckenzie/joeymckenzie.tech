@@ -2,7 +2,7 @@ name: Code quality checks
 
 on:
   workflow_run:
-    workflows: ["Build and test for release"]
+    workflows: ["Build and test for release", "Build astro site"]
     types:
       - completed
 
