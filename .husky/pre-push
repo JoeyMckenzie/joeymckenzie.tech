@@ -4,8 +4,8 @@
 turbo build lint
 
 # manually deploy shuttle functions if propositioned during push
-DeployToShuttle="${DEPLOY_SHUTTLE:-false}"
+DeployToShuttle=${DEPLOY_SHUTTLE:-false}
 
-if [[ -z "${DeployToShuttle}" ]]; then
+if [ true = ${DeployToShuttle} ]; then
   cargo shuttle deploy
 fi
