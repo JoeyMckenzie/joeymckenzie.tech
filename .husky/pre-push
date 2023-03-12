@@ -2,10 +2,3 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 turbo build lint
-
-# manually deploy shuttle functions if propositioned during push
-DeployToShuttle=${DEPLOY_SHUTTLE:-false}
-
-if [ true = ${DeployToShuttle} ]; then
-  cargo shuttle deploy
-fi
