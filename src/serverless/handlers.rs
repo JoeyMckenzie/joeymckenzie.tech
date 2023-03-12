@@ -4,7 +4,7 @@ use axum::{Extension, Json};
 use tracing::info;
 
 use crate::{
-    errors::ShuttleServerError,
+    errors::AppServerError,
     spotify::{client::SpotifyClient, responses::NowPlayingResponse},
 };
 
@@ -14,7 +14,7 @@ use crate::{
 /// logged
 pub async fn get_currently_listening_to(
     Extension(spotify_client): Extension<Arc<SpotifyClient>>,
-) -> Result<Json<NowPlayingResponse>, ShuttleServerError> {
+) -> Result<Json<NowPlayingResponse>, AppServerError> {
     info!(
         "Received request for spotify currently listening to, retrieving access token from spotify..."
     );

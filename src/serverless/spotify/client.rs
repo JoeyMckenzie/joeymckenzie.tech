@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use reqwest::{Client, StatusCode};
 use tracing::info;
 
-use crate::{errors::ShuttleServerError, spotify::api::SpotifyNowPlayingResponse};
+use crate::{errors::AppServerError, spotify::api::SpotifyNowPlayingResponse};
 
 use super::{api::SpotifyAuthResponse, responses::NowPlayingResponse};
 
@@ -42,7 +42,7 @@ impl SpotifyClient {
     /// To retrive an access token, we send a basic authentication header along with the
     /// grant type and refresh token on the request, and in turn receive an access token.
     #[tracing::instrument]
-    pub async fn get_access_token(&self) -> Result<String, ShuttleServerError> {
+    pub async fn get_access_token(&self) -> Result<String, AppServerError> {
         let mut auth_params = HashMap::new();
         auth_params.insert("grant_type", "refresh_token");
         auth_params.insert("refresh_token", &self.refresh_token);
@@ -66,7 +66,7 @@ impl SpotifyClient {
     pub async fn get_listening_to(
         &self,
         access_token: String,
-    ) -> Result<NowPlayingResponse, ShuttleServerError> {
+    ) -> Result<NowPlayingResponse, AppServerError> {
         let response = self
             .client
             .get(NOW_PLAYING_ENDPOINT)

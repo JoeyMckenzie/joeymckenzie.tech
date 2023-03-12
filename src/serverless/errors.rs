@@ -18,14 +18,14 @@ impl ServerError {
 }
 
 #[derive(Debug, Error)]
-pub enum ShuttleServerError {
+pub enum AppServerError {
     #[error("{0}")]
     StartupFailed(#[from] hyper::Error),
     #[error("{0}")]
     ReqwestFailed(#[from] reqwest::Error),
 }
 
-impl IntoResponse for ShuttleServerError {
+impl IntoResponse for AppServerError {
     fn into_response(self) -> Response {
         let (status, error_message) = match self {
             Self::StartupFailed(err) => (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()),

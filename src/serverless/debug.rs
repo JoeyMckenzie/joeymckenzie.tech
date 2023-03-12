@@ -1,12 +1,14 @@
 mod errors;
 mod handlers;
-pub mod router;
+mod router;
 mod spotify;
+mod state;
 
 use std::env;
 
-use errors::ShuttleServerError;
+use errors::AppServerError;
 use router::{build_router, build_spotify_client_from_env};
+use state::AppConfiguration;
 use tracing::info;
 
 const PORT: u16 = 8080;
@@ -15,7 +17,7 @@ const PORT: u16 = 8080;
 /// acting as an entry point to allow for ease of debugging and local development without needing
 /// to spin up a local shuttle dev server.
 #[tokio::main]
-async fn main() -> Result<(), ShuttleServerError> {
+async fn main() -> Result<(), AppServerError> {
     // By default, all shuttle output utilizes tracing so we'll utilize standard output logging for dev runs
     tracing_subscriber::fmt()
         .with_max_level(tracing::Level::DEBUG)
