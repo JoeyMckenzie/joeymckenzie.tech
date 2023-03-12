@@ -16,10 +16,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: |
+      - name: Install lld
+        run: |
           sudo apt update
           sudo apt install clang lld
 
-      - uses: shuttle-hq/deploy-action@main
-        with:
-          deploy-key: ${{ secrets.SHUTTLE_API_KEY }}
+      - name: Install cargo-shuttle
+        run: |
+          cargo install cargo-quickinstall
+          cargo quickinstall cargo-shuttle
+
+      - name: Authenticate with shuttle
+        run: cargo shuttle login --api-key ${{ secrets.SHUTTLE_API_KEY }}
+
+      - name: Deploy to shuttle
+        run: cargo shuttle deploy
