@@ -1,10 +1,10 @@
 name: Deploy to shuttle
 
 on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+  workflow_run:
+    workflows: ["Build and test for release"]
+    types:
+      - completed
 
 env:
   CARGO_TERM_COLOR: always
@@ -15,11 +15,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-
-      - name: Install lld
-        run: |
-          sudo apt update
-          sudo apt install clang lld
 
       - name: Install cargo-shuttle
         run: |

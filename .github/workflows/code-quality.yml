@@ -1,0 +1,26 @@
+name: Code quality checks
+
+on:
+  workflow_run:
+    workflows: ["Build and test for release"]
+    types:
+      - completed
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Add fustfmt
+        run: rustup component add rustfmt
+
+      - name: Run formatter
+        run: cargo fmt --all -- --check
+
+      # Ideally, this is where we'd put things like codecov uploads,
+      # external build metrics, telemetry about our codebase, etc.

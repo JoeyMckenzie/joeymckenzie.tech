@@ -8,6 +8,10 @@ use crate::{
     spotify::{client::SpotifyClient, responses::NowPlayingResponse},
 };
 
+/// An endpoint for retrieving our current listening state.
+/// When calling the Spotify API, it's important to note
+/// that if there is no song or podcast playing on a device
+/// logged
 pub async fn get_currently_listening_to(
     Extension(spotify_client): Extension<Arc<SpotifyClient>>,
 ) -> Result<Json<NowPlayingResponse>, ShuttleServerError> {
