@@ -3,6 +3,7 @@ name = "joey-mckenzie-tech"
 version = "0.1.0"
 edition = "2021"
 publish = false
+license-file = "./LICENSE"
 
 [lib]
 name = "spotify"
