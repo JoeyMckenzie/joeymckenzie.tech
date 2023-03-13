@@ -22,6 +22,10 @@ jobs:
       - name: Run rust formatter checks
         run: cargo fmt --all -- --check
 
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
