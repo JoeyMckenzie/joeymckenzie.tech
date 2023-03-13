@@ -2,7 +2,6 @@ mod errors;
 mod handlers;
 pub mod router;
 mod spotify;
-mod state;
 
 use router::{build_router, build_spotify_client_from_shuttle_secrets};
 use shuttle_secrets::SecretStore;

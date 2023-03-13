@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::{Extension, Json};
+use axum::{extract::State, Json};
 use tracing::info;
 
 use crate::{
@@ -13,7 +13,7 @@ use crate::{
 /// that if there is no song or podcast playing on a device
 /// logged
 pub async fn get_currently_listening_to(
-    Extension(spotify_client): Extension<Arc<SpotifyClient>>,
+    State(spotify_client): State<Arc<SpotifyClient>>,
 ) -> Result<Json<NowPlayingResponse>, AppServerError> {
     info!(
         "Received request for spotify currently listening to, retrieving access token from spotify..."

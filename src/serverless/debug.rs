@@ -1,14 +1,12 @@
 mod errors;
 mod handlers;
-mod router;
+pub mod router;
 mod spotify;
-mod state;
 
 use std::env;
 
 use errors::AppServerError;
 use router::{build_router, build_spotify_client_from_env};
-use state::AppConfiguration;
 use tracing::info;
 
 const PORT: u16 = 8080;

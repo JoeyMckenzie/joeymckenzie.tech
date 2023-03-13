@@ -1,6 +1,6 @@
 use std::{env, sync::Arc, time::Duration};
 
-use axum::{http::HeaderValue, routing::get, Extension, Router};
+use axum::{http::HeaderValue, routing::get, Router};
 use hyper::{header, Method};
 use reqwest::Client;
 use shuttle_secrets::SecretStore;
@@ -74,5 +74,5 @@ pub fn build_router(timeout_duration_seconds: u64, spotify_client: Arc<SpotifyCl
                 .allow_methods([Method::GET])
                 .allow_headers([header::ACCEPT]),
         )
-        .layer(Extension(spotify_client))
+        .with_state(spotify_client)
 }
