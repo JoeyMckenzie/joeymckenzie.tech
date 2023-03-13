@@ -19,8 +19,17 @@ jobs:
       - name: Add fustfmt
         run: rustup component add rustfmt
 
-      - name: Run formatter
+      - name: Run rust formatter checks
         run: cargo fmt --all -- --check
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+          cache: "pnpm"
+
+      - name: Run prettier checks
+        run: pnpm format:check
 
       # Ideally, this is where we'd put things like codecov uploads,
       # external build metrics, telemetry about our codebase, etc.

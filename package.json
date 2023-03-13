@@ -10,7 +10,8 @@
     "astro": "astro",
     "prepare": "husky install",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "lint-staged": {
     "**/*.{cjs,mjs,ts,svelte,astro,md,json,yaml}": "pnpm format",
