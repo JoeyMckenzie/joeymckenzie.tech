@@ -26,7 +26,7 @@
       class="rounded-sm"
     />
     <div class="flex flex-col">
-      <h4 class="text-sm font-semibold text-neutral-300">{trackTitle}</h4>
+      <h4 class="text-xs font-semibold text-neutral-300">{trackTitle}</h4>
       <p class="text-xs text-neutral-400">{artist}</p>
     </div>
   </div>

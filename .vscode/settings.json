@@ -11,5 +11,11 @@
     "source.fixAll": true,
     "source.organizeImports": true
   },
-  "dotenv.enableAutocloaking": false
+  "dotenv.enableAutocloaking": false,
+  "grammarly.selectors": [
+    {
+      "language": "markdown",
+      "scheme": "file"
+    }
+  ]
 }
