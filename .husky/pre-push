@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-turbo build lint
+# TODO: removing turbo from pre-push, may replace with tests instead
+# turbo build lint

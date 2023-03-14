@@ -29,5 +29,5 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Build astro site
-        run: pnpm build
+      - name: Build and lint astro site
+        run: pnpm turbo

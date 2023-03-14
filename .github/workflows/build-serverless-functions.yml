@@ -26,3 +26,9 @@ jobs:
 
       - name: Run unit tests
         run: cargo test --quiet
+
+      - name: Add fustfmt
+        run: rustup component add rustfmt
+
+      - name: Run rust formatter checks
+        run: cargo fmt --all -- --check
