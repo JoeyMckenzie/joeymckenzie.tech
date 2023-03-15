@@ -8,6 +8,10 @@ use tower_http::{cors::CorsLayer, timeout::TimeoutLayer};
 
 use crate::{handlers::get_currently_listening_to, spotify::client::SpotifyClient};
 
+const SPOTIFY_REFRESH_TOKEN_KEY: &str = "SPOTIFY_REFRESH_TOKEN";
+const SPOTIFY_CLIENT_ID_KEY: &str = "SPOTIFY_CLIENT_ID";
+const SPOTIFY_CLIENT_SECRET_KEY: &str = "SPOTIFY_CLIENT_SECRET";
+
 /// The expected UI dev/production ports. Note that shuttle does not support array-based secrets, so we'll define them as `const`s here for now.
 pub const CORS_ORIGINS: [&str; 3] = [
     "http://localhost:3000",
@@ -18,13 +22,13 @@ pub const CORS_ORIGINS: [&str; 3] = [
 /// Builds a Spotify API client based on the shuttle secrets set at runtime.
 pub fn build_spotify_client_from_shuttle_secrets(secret_store: &SecretStore) -> Arc<SpotifyClient> {
     let refresh_token = secret_store
-        .get("SPOTIFY_REFRESH_TOKEN")
+        .get(SPOTIFY_REFRESH_TOKEN_KEY)
         .expect("refresh token must be provided, please check the secrets file");
     let client_id = secret_store
-        .get("SPOTIFY_CLIENT_ID")
+        .get(SPOTIFY_CLIENT_ID_KEY)
         .expect("spotfiy client id must be provided, please check the secrets file");
     let client_secret = secret_store
-        .get("SPOTIFY_CLIENT_SECRET")
+        .get(SPOTIFY_CLIENT_SECRET_KEY)
         .expect("spotfiy client secret must be provided, please check the secrets file");
 
     build_spotify_client(refresh_token, client_id, client_secret)
