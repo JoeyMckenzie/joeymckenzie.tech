@@ -1,16 +1,17 @@
 ---
-import BaseHead from '@/components/layout/BaseHead.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import Navbar from '@/components/layout/Navbar.astro';
 import Footer from '@/components/footer/Footer.astro';
+import BaseHead from '@/components/layout/BaseHead.astro';
+import Navbar from '@/components/layout/Navbar.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 type Props = {
   title?: string;
   description?: string;
+  image?: string;
 };
 
-const { title, description } = Astro.props;
-const useTitleAndDescription = !!title && !!description;
+const { title, description, image } = Astro.props;
+const useTitleAndDescription = !!title && !!description && !!image;
 ---
 
 <!DOCTYPE html>
@@ -18,7 +19,7 @@ const useTitleAndDescription = !!title && !!description;
   <head>
     {
       useTitleAndDescription && (
-        <BaseHead title={title} description={description} />
+        <BaseHead title={title} description={description} image={image} />
       )
     }
     {

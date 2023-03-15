@@ -20,7 +20,11 @@ const post = Astro.props;
 const { Content } = await post.render();
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  image={post.data.heroImage ?? '/favicon.ico'}
+>
   <article
     class="prose overflow-hidden pb-12 font-merriweather text-neutral-400 prose-h2:text-neutral-200 prose-a:text-neutral-200 hover:prose-a:text-neutral-300 prose-img:mx-auto prose-img:rounded-md"
   >
