@@ -26,7 +26,7 @@ const { Content } = await post.render();
   image={post.data.heroImage ?? '/favicon.ico'}
 >
   <article
-    class="prose overflow-hidden pb-12 font-merriweather text-neutral-400 prose-h2:text-neutral-200 prose-a:text-neutral-200 hover:prose-a:text-neutral-300 prose-img:mx-auto prose-img:rounded-md"
+    class="prose prose-invert overflow-hidden pb-12 font-merriweather text-neutral-400 prose-h2:text-neutral-200 prose-a:text-neutral-200 hover:prose-a:text-neutral-300 prose-code:text-neutral-500 prose-img:mx-auto prose-img:rounded-md"
   >
     <h1 class="text-center font-merriweather text-2xl text-neutral-300">
       {post.data.title}
