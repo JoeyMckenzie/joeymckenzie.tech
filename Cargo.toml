@@ -9,10 +9,6 @@ license-file = "./LICENSE"
 name = "spotify"
 path = "src/serverless/main.rs"
 
-[[bin]]
-name = "serverless_debug"
-path = "src/serverless/debug.rs"
-
 [dependencies]
 # framework crates
 tokio = { version = "1.26", features = ["full"] }
@@ -32,6 +28,4 @@ reqwest = { version = "0.11", features = ["json"] }
 thiserror = "1"
 
 # crates for running debug
-dotenv = "0.15"
 tracing-subscriber = "0.3"
-derive_builder = "0.12.0"

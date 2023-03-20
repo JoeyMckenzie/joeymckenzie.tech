@@ -1,4 +1,4 @@
-use std::{env, sync::Arc, time::Duration};
+use std::{sync::Arc, time::Duration};
 
 use axum::{http::HeaderValue, routing::get, Router};
 use hyper::{header, Method};
@@ -29,20 +29,6 @@ pub fn build_spotify_client_from_shuttle_secrets(secret_store: &SecretStore) -> 
         .expect("spotfiy client id must be provided, please check the secrets file");
     let client_secret = secret_store
         .get(SPOTIFY_CLIENT_SECRET_KEY)
-        .expect("spotfiy client secret must be provided, please check the secrets file");
-
-    build_spotify_client(refresh_token, client_id, client_secret)
-}
-
-/// Builds a Spotify API client based on local environments, used primarily for the debug runner in `debug.rs`.
-pub fn build_spotify_client_from_env() -> Arc<SpotifyClient> {
-    dotenv::dotenv().ok();
-
-    let refresh_token = env::var("SPOTIFY_REFRESH_TOKEN")
-        .expect("refresh token must be provided, please check the secrets file");
-    let client_id = env::var("SPOTIFY_CLIENT_ID")
-        .expect("spotfiy client id must be provided, please check the secrets file");
-    let client_secret = env::var("SPOTIFY_CLIENT_SECRET")
         .expect("spotfiy client secret must be provided, please check the secrets file");
 
     build_spotify_client(refresh_token, client_id, client_secret)
