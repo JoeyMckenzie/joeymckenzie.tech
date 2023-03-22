@@ -13,7 +13,7 @@ const SPOTIFY_CLIENT_ID_KEY: &str = "SPOTIFY_CLIENT_ID";
 const SPOTIFY_CLIENT_SECRET_KEY: &str = "SPOTIFY_CLIENT_SECRET";
 
 /// The expected UI dev/production ports. Note that shuttle does not support array-based secrets, so we'll define them as `const`s here for now.
-pub const CORS_ORIGINS: [&str; 3] = [
+const CORS_ORIGINS: [&str; 3] = [
     "http://localhost:3000",
     "https://joeymckenzie.tech",
     "https://www.joeymckenzie.tech",
