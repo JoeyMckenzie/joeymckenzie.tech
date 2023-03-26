@@ -2,7 +2,7 @@ name: Deploy to shuttle
 
 on:
   workflow_run:
-    workflows: ['Build and test serverless functions for release']
+    workflows: ["Build and test serverless functions for release"]
     types:
       - completed
 
@@ -19,10 +19,11 @@ jobs:
 
       - name: Install protoc
         run: |
-          curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v21.9/protoc-21.9-linux-x86_64.zip \
-            && sudo unzip -o protoc-21.9-linux-x86_64.zip -d /usr/local bin/protoc \
-            && sudo unzip -o protoc-21.9-linux-x86_64.zip -d /usr/local 'include/*' \
-            && rm -f protoc-21.9-linux-x86_64.zip
+          ARCH="linux-x86_64" && \
+          VERSION="22.2" && \
+          curl -OL "https://github.com/protocolbuffers/protobuf/releases/download/v$VERSION/protoc-$VERSION-$ARCH.zip" && \
+          sudo unzip -o "protoc-$VERSION-$ARCH.zip" bin/protoc "include/*" -d /usr/local && \
+          rm -f "protoc-$VERSION-$ARCH.zip"
 
       - name: Install cargo-shuttle
         run: |
