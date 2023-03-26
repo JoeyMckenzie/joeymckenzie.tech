@@ -1,6 +1,6 @@
 # Note: mold is lld's modern successor only available on Linux/macOS
-# Eventually will upgrade to use mold in place of lld (not on Debian 11 right now)
-
+# Read more about the project here: https://github.com/rui314/mold
+# if your gcc version is recent enough, you can remove clang as your linker
 [target.x86_64-unknown-linux-gnu]
 linker = "clang"
 rustflags = ["-C", "link-arg=-fuse-ld=mold"]
