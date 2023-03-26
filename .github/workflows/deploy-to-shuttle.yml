@@ -12,7 +12,9 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: src/serverless
     steps:
       - uses: actions/checkout@v3
       - uses: rui314/setup-mold@v1

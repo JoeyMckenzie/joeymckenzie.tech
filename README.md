@@ -20,7 +20,7 @@ To start the dev server:
 npm run dev # or pnpm dev
 ```
 
-That's it! To run the serverless functions, make sure you have rust installed (preferably via [rustup](https://rustup.rs/)) and build. Before building, make sure to install [lld](https://lld.llvm.org/) to swap out the default linker for builds. If you prefer to use the default link, simply remove the `.cargo` directory and build.
+That's it! To run the serverless functions, make sure you have rust installed (preferably via [rustup](https://rustup.rs/)) and build. Before building, make sure to install [mold](https://github.com/rui314/mold) (the successor to [lld](https://lld.llvm.org/)) to swap out the default linker for builds. If you prefer to use the default link, simply remove the `.cargo` directory and build.
 
 ## 🪝 Git hooks
 
@@ -39,6 +39,7 @@ turbo build lint # to initially populate the task execution cache
 ## 🚀 Project Structure
 
 ```bash
+├── examples/ # code samples from blog posts
 ├── public/ # for public assets available to all astro pages and svelte components
 ├── src/
 │   ├── components/ # various page components and svelte integration components
