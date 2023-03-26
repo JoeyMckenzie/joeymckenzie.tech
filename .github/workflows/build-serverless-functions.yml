@@ -2,9 +2,9 @@ name: Build and test serverless functions for release
 
 on:
   push:
-    branches: ['main']
+    branches: ["main"]
   pull_request:
-    branches: ['main']
+    branches: ["main"]
 
 env:
   CARGO_TERM_COLOR: always
@@ -15,20 +15,13 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
-
-      - name: Install lld
-        run: |
-          sudo apt update
-          sudo apt install clang lld
+      - uses: rui314/setup-mold@v1
 
       - name: Build for release
         run: cargo build --release
 
       - name: Run unit tests
         run: cargo test --quiet
-
-      - name: Add fustfmt
-        run: rustup component add rustfmt
 
       - name: Run rust formatter checks
         run: cargo fmt --all -- --check

@@ -1,5 +1,6 @@
 # Note: mold is lld's modern successor only available on Linux/macOS
 # Eventually will upgrade to use mold in place of lld (not on Debian 11 right now)
 
-[build]
-rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+[target.x86_64-unknown-linux-gnu]
+linker = "clang"
+rustflags = ["-C", "link-arg=-fuse-ld=mold"]
