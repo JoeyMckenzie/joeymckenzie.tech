@@ -3,6 +3,7 @@
     "aaron-bond.better-comments",
     "rust-lang.rust-analyzer",
     "svelte.svelte-vscode",
-    "astro-build.astro-vscode"
+    "astro-build.astro-vscode",
+    "tamasfe.even-better-toml"
   ]
 }
