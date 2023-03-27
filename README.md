@@ -39,8 +39,8 @@ turbo build lint # to initially populate the task execution cache
 ## 🚀 Project Structure
 
 ```bash
-├── examples/ # code samples from blog posts
 ├── public/ # for public assets available to all astro pages and svelte components
+├── samples/ # code samples from blog posts
 ├── src/
 │   ├── components/ # various page components and svelte integration components
 │   ├── content/ # markdown files powering the blog
