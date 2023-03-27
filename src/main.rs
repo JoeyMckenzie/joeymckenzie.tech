@@ -1,9 +1,6 @@
-mod errors;
-mod handlers;
-pub mod router;
-mod spotify;
+mod serverless;
 
-use router::{build_router, build_spotify_client_from_shuttle_secrets};
+use serverless::router::{build_router, build_spotify_client_from_shuttle_secrets};
 use shuttle_secrets::SecretStore;
 
 /// The shuttle entry point injected with our secrets store at dev/runtime with secrets from `Secrets.toml`. Don't check that file in!

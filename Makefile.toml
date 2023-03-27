@@ -4,18 +4,13 @@ CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
 [config] ## we want most/all of our tasks to run in the context of a workspace
 default_to_workspace = false
 
-[tasks.serverless]
+[tasks.blog-serverless]
 install_crate = "cargo-shuttle"
-cwd = "src/serverless"
 command = "cargo"
 args = ["shuttle", "run"]
 
-[tasks.add-migration]
-cwd = "crates/blog-core"
-command = "sqlx"
-args = ["migrate", "add", "${@}"]
-
-[tasks.migrate]
-cwd = "crates/blog-core"
-command = "sqlx"
-args = ["migrate", "run"]
+[tasks.samples-serverless-rust]
+install_crate = "cargo-shuttle"
+cwd = "samples/serverless-rust-with-shuttle"
+command = "cargo"
+args = ["shuttle", "run"]

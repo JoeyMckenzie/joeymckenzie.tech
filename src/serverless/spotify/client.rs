@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use reqwest::{Client, StatusCode};
 use tracing::info;
 
-use crate::{errors::AppServerError, spotify::api::SpotifyNowPlayingResponse};
+use crate::serverless::{errors::AppServerError, spotify::api::SpotifyNowPlayingResponse};
 
 use super::{api::SpotifyAuthResponse, responses::NowPlayingResponse};
 

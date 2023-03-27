@@ -6,7 +6,7 @@ use reqwest::Client;
 use shuttle_secrets::SecretStore;
 use tower_http::{cors::CorsLayer, timeout::TimeoutLayer};
 
-use crate::{handlers::get_currently_listening_to, spotify::client::SpotifyClient};
+use super::{handlers::get_currently_listening_to, spotify::client::SpotifyClient};
 
 const SPOTIFY_REFRESH_TOKEN_KEY: &str = "SPOTIFY_REFRESH_TOKEN";
 const SPOTIFY_CLIENT_ID_KEY: &str = "SPOTIFY_CLIENT_ID";

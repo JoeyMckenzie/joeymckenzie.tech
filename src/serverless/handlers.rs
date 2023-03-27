@@ -3,7 +3,7 @@ use std::sync::Arc;
 use axum::{extract::State, Json};
 use tracing::info;
 
-use crate::{
+use super::{
     errors::AppServerError,
     spotify::{client::SpotifyClient, responses::NowPlayingResponse},
 };
