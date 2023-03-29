@@ -27,3 +27,4 @@ pnpm-debug.log*
 Secrets.toml
 /target
 /Cargo.lock
+/samples/**/target
