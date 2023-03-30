@@ -1,7 +1,7 @@
 ---
 title: 'Going serverless with Rust and Shuttle'
 description: "Managing infrastructure is already hard enough, let's write some serverless Rust with Shuttle!"
-pubDate: 'Apr 01 2023'
+pubDate: 'Mar 30 2023'
 heroImage: '/blog/serverless-rust-with-shuttle/shuttle_meme.jpg'
 category: 'rust'
 ---
