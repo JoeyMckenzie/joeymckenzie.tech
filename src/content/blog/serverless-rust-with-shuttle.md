@@ -526,6 +526,139 @@ Nice! Pat yourself on the back, we've written quite a bit of code and have a fun
 
 ## Deploying to shuttle
 
-Before we finish up the core logic of our code, let's left-shift our deployment process a bit. Let's actually _deploy_ our function, verifying all our I's are dotted and T's crossed. Heading over to [shuttle](https://shuttle.rs)'s website and signing up, we should be met with a screen like the following:
+Before we finish up the core logic of our code, let's left-shift our deployment process a bit. Let's deploy our function, verifying all our I's are dotted and T's crossed. Heading over to [shuttle](https://shuttle.rs)'s website and signing up, we should be met with a screen like the following:
 
-![shuttle dashoboard](/blog/serverless-rust-with-shuttle/shuttle_dashboard.png)
+![shuttle dashboard](/blog/serverless-rust-with-shuttle/shuttle_dashboard.png)
+
+I'm also going to update the name of our function to something a bit more relevant with a `Shuttle.toml` file at the root of our project:
+
+```toml
+name = "github-repository-star-counter"
+```
+
+You'll need to adjust the name as, sadly, I'll be taking this name for myself. Once you're authenticated, simply run the deploy command `cargo shuttle deploy` and we should a bunch of internal logging from shuttle along with a successful deploy message along the lines of:
+
+```bash
+These secrets can be accessed by github-repository-star-counter
+╭─────────────────────╮
+│         Keys        │
+╞═════════════════════╡
+│ GITHUB_ACCESS_TOKEN │
+╰─────────────────────╯
+
+Service Name:  github-repository-star-counter
+Deployment ID: 3339ef4c-60f0-47e6-a159-5034ac03ad4f
+Status:        running
+Last Updated:  2023-03-29T23:09:40Z
+URI:           https://github-repository-star-counter.shuttleapp.rs
+```
+
+Heck yeah! Our function has been deployed and also picked up our key from our `Secrets.toml` file. Let's test the out by `curl`ing to the URI:
+
+```bash
+curl --location https://github-repository-star-counter.shuttleapp.rs/my-repository/stars
+{"count":9000}
+```
+
+We've officially got serverless Rust running in production - how cool is that?
+
+With our initial deployment out of the way, let's finish fleshing out our function to retrieve repository stars.
+
+## Back to business
+
+Let's add the client request to GitHub. Since we'll be establishing a connection to GitHub's API servers, rather than spin up a new HTTP client per request, let's instantiate a single client at startup for our handlers to pull out of from state. There's lots of benefits to recycling HTTP client connections throughout an applications lifetime, but that's a bit beyond the scope of what we're doing today.
+
+Let's update our `HandlerState` to include a `Client` from the `reqwest` crate:
+
+```rust
+use std::sync::Arc;
+
+use reqwest::Client;
+
+#[derive(Debug)]
+pub struct HandlerState {
+    pub access_token: String,
+    pub client: Client,
+}
+
+impl HandlerState {
+    pub fn new_state(access_token: String) -> Arc<HandlerState> {
+        let client = Client::new();
+
+        Arc::new(HandlerState {
+            access_token,
+            client,
+        })
+    }
+}
+```
+
+Now that we'll have access to the http client, let's test out a call to the repositories. The URL we'll be calling to retrieve repository information will be in the form of `https://api.github.com/repos/OWNER/REPO` where we'll hard code `OWNER` to be your username for now. Let's test a call out to see what the response looks like:
+
+```bash
+curl --request GET \
+--url "https://api.github.com/repos/joeymckenzie/realworld-rust-axum-sqlx" \
+--header "Accept: application/vnd.github+json" \
+--header "Authorization: Bearer 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"
+{
+  "id": 485222387,
+  "node_id": "R_kgDOHOvn8w",
+  "name": "realworld-rust-axum-sqlx",
+  // ...a ton of other properties
+  "stargazers_count": 129,
+}
+```
+
+We see in the response we get _a lot_ of other data that doesn't necessarily pertain to the number of stars on the repositories. The only property we care about for now is the `stargazers_count` which represents the number of stars our repository has. Let's create a response model to deserialize this response into Rust code. Back in our `handlers.rs` file:
+
+```rust
+// Imports...
+
+#[derive(Serialize, Debug)]
+pub struct StarsResponse {
+    count: usize,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct GitHubRepositoryResponse {
+    stargazers_count: usize
+}
+
+pub async fn get_repository_stars(
+    State(state): State<Arc<HandlerState>>,
+    Path(repository): Path<String>,
+) -> Result<Json<StarsResponse>, ApiError> {
+    // Code...
+}
+```
+
+We've added a `GithubRepositoryResponse` to handle pulling data out into a `struct`. Let's implement the call now in our handler:
+
+```rust
+pub async fn get_repository_stars(
+    State(state): State<Arc<HandlerState>>,
+    Path(repository): Path<String>,
+) -> Result<Json<StarsResponse>, ApiError> {
+    tracing::info!(
+        "Received request to get start count for repository {}",
+        repository
+    );
+
+    let url = format!("https://api.github.com/repos/joeymckenzie/{}", repository);
+
+    let response = state
+        .client
+        .get(url)
+        .bearer_auth(state.access_token)
+        .send()
+        .await?;
+
+    let response = StarsResponse { count: 9000 };
+
+    Ok(Json(response))
+}
+```
+
+Now if try to compile, we'll get an error yelling at us stating we have no conversion between a `reqwest` error and something axum understands with our `ApiError`. Yep, you guessed it - time to do some error converting.
+
+## Mapping errors with `thiserror`

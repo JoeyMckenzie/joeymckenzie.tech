@@ -21,6 +21,16 @@ pub async fn get_repository_stars(
         "Received request to get start count for repository {}",
         repository
     );
+
+    let url = format!("https://api.github.com/repos/joeymckenzie/{}", repository);
+
+    let response = state
+        .client
+        .get(url)
+        .bearer_auth(state.access_token)
+        .send()
+        .await?;
+
     let response = StarsResponse { count: 9000 };
     Ok(Json(response))
 }
