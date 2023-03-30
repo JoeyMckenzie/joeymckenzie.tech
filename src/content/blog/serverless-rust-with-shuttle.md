@@ -438,7 +438,7 @@ pub async fn get_repository_stars(
 and thanks to `cargo-watch`, our server should be back up and running. Sending through yet another request, we should see our server output something like:
 
 ```bash
-samples/serverless-rust-with-shuttle/src/handlers.rs:16] &state.access_token = "ghp..."
+&state.access_token = "ghp..."
 ```
 
 Nice! We're propagating down our state to our handler leaning on `Arc` to help us facilitate sharing our `HandlerState` across request threads and we're finally in a spot to start calling out to the GitHub API.
@@ -717,7 +717,7 @@ impl IntoResponse for ApiError {
 }
 ```
 
-Leaning on `thiserror`, we can leverage the `#[error]` macro to spit out a big of boilerplate error conversion code for us. For a sanity check, let's take a look at the generated code with another quick `cargo expand errors`:
+Leaning on `thiserror`, we can leverage the `#[error]` macro to spit out a bit of boilerplate error conversion code for us. For a sanity check, let's take a look at the generated code with another quick `cargo expand errors`:
 
 ```rust
 pub enum ApiError {
@@ -776,7 +776,7 @@ impl ::core::fmt::Debug for ApiError {
 }
 ```
 
-Sifting through the other bits of code that is printed out to the console, we see that `thiserror` is generating some boilerplate to `impl` `std::error::Error` and `From<reqwest::Error>` for us, so we can avoid writing the implementations ourselves. Thanks, [dtolnay](https://crates.io/users/dtolnay)!
+Sifting through the other bits of code that are printed out to the console, we see that `thiserror` is generating some boilerplate to `impl` `std::error::Error` and `From<reqwest::Error>` for us, so we can avoid writing the implementations ourselves. Thanks, [dtolnay](https://crates.io/users/dtolnay)!
 
 ## So many stars
 
@@ -793,11 +793,13 @@ pub async fn get_repository_stars(
     );
 
     let url = format!("https://api.github.com/repos/joeymckenzie/{}", repository);
+    dbg!(url.clone());
 
     let github_response = state
         .client
         .get(url)
         .bearer_auth(&state.access_token)
+        .header("User-Agent", "github-repository-star-counter/0.0.1")
         .send()
         .await?
         .json::<GitHubRepositoryResponse>()
@@ -811,8 +813,35 @@ pub async fn get_repository_stars(
 }
 ```
 
-We'll attempt to deserialize the response into our `GitHubRepositoryResponse` and again `await?` the process as we need to read from the response buffer and propagate any errors. We're already converting between `reqwest` errors and our internal `ApiError`, so we're all good there. Let's spin up our function and send a request through:
+We'll attempt to deserialize the response into our `GitHubRepositoryResponse` and again `await?` the process as we need to read from the response buffer and propagate any errors. We're already converting between `reqwest` errors and our internal `ApiError`, so we're all good there.
+
+We also add a `User-Agent` header to let the GitHub API servers know who we are - this is arbitrary for our purposes, but is important for requests coming from the browser, in Postman, etc. Let's spin up our function and send a request through:
 
 ```bash
-
+ curl -l http://localhost:8000/realworld-rust-axum-sqlx/stars
+{"count":129}
 ```
+
+We have a response! Now that we've got the core logic in place, let's go ahead and deploy our function with `cargo shuttle deploy`. Once the deployment finishes, let's ping our function at the deployment URL:
+
+```bash
+curl -l https://github-repository-star-counter.shuttleapp.rs/realworld-rust-axum-sqlx/stars
+{"count":129}
+```
+
+Nice! We've got good responses coming back from a serverless function written entirely in Rust. Let's check the logs with a quick `cargo shuttle logs` to trace our request:
+
+```bash
+cargo shuttle logs
+# A few other logs that aren't important for now...
+ INFO serverless_rust_with_shuttle::handlers: Received request to get start count for repository realworld-rust-axum-sqlx
+DEBUG reqwest::connect: starting new connection: https://api.github.com/
+DEBUG hyper::client::connect::dns: resolving host="api.github.com"
+DEBUG hyper::client::connect::http: connecting to 140.82.121.6:443
+ INFO serverless_rust_with_shuttle::handlers: Response received from GitHub GitHubRepositoryResponse { stargazers_count: 129 }
+DEBUG hyper::proto::h1::io: flushed 121 bytes
+```
+
+And that's a wrap! We've got Rust running out in the wild in the form of a serverless function and I couldn't be happier. There's quite a bit of cleanup we could do, for instance handling cases where the repository doesn't exist, but I'll leave that as an exercise for the reader.
+
+Until next, friends!

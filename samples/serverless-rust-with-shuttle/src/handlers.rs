@@ -33,16 +33,17 @@ pub async fn get_repository_stars(
     let github_response = state
         .client
         .get(url)
-        .bearer_auth(state.access_token.clone())
+        .bearer_auth(&state.access_token)
+        .header("User-Agent", "github-repository-star-counter/0.0.1")
         .send()
+        .await?
+        .json::<GitHubRepositoryResponse>()
         .await?;
 
-    dbg!(&github_response);
-
-    let parsed_response = github_response.json::<GitHubRepositoryResponse>().await?;
+    tracing::info!("Response received from GitHub {:?}", github_response);
 
     let response = StarsResponse {
-        count: parsed_response.stargazers_count,
+        count: github_response.stargazers_count,
     };
 
     Ok(Json(response))
