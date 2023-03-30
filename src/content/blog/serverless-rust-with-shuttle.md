@@ -36,10 +36,10 @@ cargo install cargo-shuttle # or quickinstall if you prefer
 Quick the shuttle CLI in place, let's scaffold out an [axum](https://crates.io/crates/axum/) server to respond to our requests:
 
 ```bash
-cargo shuttle init --axum --name serverless-rust-with-shuttle
+cargo shuttle init --axum
 ```
 
-Taking a look at `main.rs` that shuttle generates for us should look something like this:
+Follow the prompts of naming the project and selecting a folder. Taking a look at `main.rs` that shuttle generates for us should look something like this:
 
 ```rust
 use axum::{routing::get, Router};
@@ -79,11 +79,9 @@ A few key notes here:
 - Shuttle bootstraps a few dependencies for us in `shuttle-runtime` and `shuttle-axum` (0.12.0 at the time of this writing)
 - These crates allow us to invoke our function as an axum-specific serverless application as we see in our `main.rs` file
 
-But what's this `#[shuttle_runtime::main]` macro on our `main` function? Let's take a look with a quick `cargo rustc --profile=check -- -Zunpretty=expanded` (or simply [`cargo expand`](https://crates.io/crates/cargo-expand/) if you have it installed):
+But what's this `#[shuttle_runtime::main]` macro on our `main` function? Let's take a look with a quick [`cargo expand`](https://crates.io/crates/cargo-expand/) if you have it installed:
 
-```bash
-cargo rustc --profile=check -- -Zunpretty=expanded
-    Checking serverless-rust-with-shuttle v0.1.0 (/path/to/serverless-rust-with-shuttle)
+```rust
 #![feature(prelude_import)]
 #[prelude_import]
 use std::prelude::rust_2021::*;
@@ -116,8 +114,6 @@ async fn axum() -> shuttle_axum::ShuttleAxum {
 
     Ok(router.into())
 }
-    Finished dev [unoptimized + debuginfo] target(s) in 0.22s
-[Shuttle](https://shuttle.rs/)
 ```
 
 Whoa! If we look closely, we see a familiar bit of generated code:
@@ -131,7 +127,7 @@ Whoa! If we look closely, we see a familiar bit of generated code:
 
 Shuttle's `#[shuttle_runtime::main]` macro generates the _same code_ a typical `#[tokio::main]` macro generates along with a few extra bits (like including the defacto logging crate in [`tracing`](https://crates.io/crates/tracing/) for logging to the server's console through [`tracing-subscriber`](https://crates.io/crates/tracing-subscriber)). No magic here, just a bit of generated boilerplate for us to hit the ground running.
 
-A quick note, shuttle recently (at the time of this writing) added a dependencies on [protobuf](https://github.com/protocolbuffers/protobuf) to facilitate some of their internal infrastructure. If you're missing `protoc` as a dependency on your machine, take a look at my blog's [README](https://github.com/JoeyMckenzie/joey-mckenzie-tech/blob/main/README.md#running-shuttle-functions-locally) for some quick instructions on how to get up and running with the package.
+A quick note, shuttle recently (at the time of this writing) added a dependency on [protobuf](https://github.com/protocolbuffers/protobuf)](https://github.com/protocolbuffers/protobuf) to facilitate some of their internal infrastructure. If you're missing `protoc` as a dependency on your machine, take a look at my blog's [README](https://github.com/JoeyMckenzie/joey-mckenzie-tech/blob/main/README.md#running-shuttle-functions-locally) for some quick instructions on how to get up and running with the package.
 
 ## Managing secrets
 
@@ -315,7 +311,7 @@ We'll get around to adding some branches to our `ApiError` enum eventually, but 
 cargo add http
 ```
 
-Now running our code and making another request, we should still see the same message response as the previous request we made before we updated our handler. Our `main.rs` file is getting rather large, so let's split some things out for organization purposes. Let's add two additional files in `errors.rs` and `handlers.rs` to house our error implementation and request handlers, respectively
+Now running our code and making another request, we should still see the same message response as the previous request we made before we updated our handler. Our `main.rs` file is getting rather large, so let's split some things out for organizational purposes. Let's add two additional files in `errors.rs` and `handlers.rs` to house our error implementation and request handlers, respectively
 
 ### errors.rs
 
@@ -368,7 +364,7 @@ pub async fn get_repository_stars() -> Result<Json<StarsResponse>, ApiError> {
 }
 ```
 
-After cleaning up a few import errors and peppering in a few `pub`s for visibility, our `main.rs` file should now look like:
+After cleaning up a few import errors and peppering in a few `pub`s for visibility, our `main.rs` file should now look like this:
 
 ```rust
 mod errors;
@@ -451,10 +447,10 @@ Before we do so, let's take a look at what we've got so far:
 
 - We've got a serverless function spun with axum bootstrapped with shuttle
 - We're handling errors according to axum convention
-- We've separated out our bits of code into logical grouped units
+- We've separated out our bits of code into logically grouped units
 - We're propagating top-level application state safely down to request handlers
 
-Doesn't seem like much, but we've accomplished quite a bit! Let's go back and add a bit of `tracing` so we can see inside the mind of our function as its processing requests. Recall earlier in the expanded macro just above `main` that shuttle provides we have our application bootstrapped with `tracing` behind the scenes ready to go to start logging. Let's add some trace logging in a few places so we can pretty-print out to the console. First, let's add the `tracing` crate:
+Doesn't seem like much, but we've accomplished quite a bit! Let's go back and add a bit of `tracing` so we can see inside the mind of our function as it processes requests. Recall earlier in the expanded macro just above `main` that shuttle provides we have our application bootstrapped with `tracing` behind the scenes ready to go to start logging. Let's add some trace logging in a few places so we can pretty-print out to the console. First, let's add the `tracing` crate:
 
 ```bash
 cargo add tracing
@@ -553,7 +549,7 @@ Last Updated:  2023-03-29T23:09:40Z
 URI:           https://github-repository-star-counter.shuttleapp.rs
 ```
 
-Heck yeah! Our function has been deployed and also picked up our key from our `Secrets.toml` file. Let's test the out by `curl`ing to the URI:
+Heck yeah! Our function has been deployed and also picked up our key from our `Secrets.toml` file. Let's test it out by `curl`ing to the URI:
 
 ```bash
 curl --location https://github-repository-star-counter.shuttleapp.rs/my-repository/stars
@@ -566,7 +562,7 @@ With our initial deployment out of the way, let's finish fleshing out our functi
 
 ## Back to business
 
-Let's add the client request to GitHub. Since we'll be establishing a connection to GitHub's API servers, rather than spin up a new HTTP client per request, let's instantiate a single client at startup for our handlers to pull out of from state. There's lots of benefits to recycling HTTP client connections throughout an applications lifetime, but that's a bit beyond the scope of what we're doing today.
+Let's add the client request to GitHub. Since we'll be establishing a connection to GitHub's API servers, rather than spin up a new HTTP client per request, let's instantiate a single client at startup for our handlers to pull out of from state. There are lots of benefits to recycling HTTP client connections throughout an application's lifetime, but that's a bit beyond the scope of what we're doing today.
 
 Let's update our `HandlerState` to include a `Client` from the `reqwest` crate:
 
@@ -593,7 +589,7 @@ impl HandlerState {
 }
 ```
 
-Now that we'll have access to the http client, let's test out a call to the repositories. The URL we'll be calling to retrieve repository information will be in the form of `https://api.github.com/repos/OWNER/REPO` where we'll hard code `OWNER` to be your username for now. Let's test a call out to see what the response looks like:
+Now that we'll have access to the HTTP client, let's test out a call to the repositories. The URL we'll be calling to retrieve repository information will be in the form of `https://api.github.com/repos/OWNER/REPO` where we'll hard code `OWNER` to be your username for now. Let's test a call out to see what the response looks like:
 
 ```bash
 curl --request GET \
@@ -661,4 +657,162 @@ pub async fn get_repository_stars(
 
 Now if try to compile, we'll get an error yelling at us stating we have no conversion between a `reqwest` error and something axum understands with our `ApiError`. Yep, you guessed it - time to do some error converting.
 
-## Mapping errors with `thiserror`
+## Propagating errors
+
+One of the first fundamental concepts we learn in Rust is the proper handling and conversion of errors. With Rust's expansive crate ecosystem and library authors offering custom errors about their internal processes in their public APIs, we're bound to eventually be forced to convert external errors to something that's known within our programs. There are many great articles, including [the book itself](https://doc.rust-lang.org/stable/book/), that do a much more fantastic job than I'll do here going over converting errors from (in our case) `reqwest` to our internal `ApiError`.
+
+In the simplest case, we'll need to convert `From` a `reqwest::Error` to an `ApiError`:
+
+### errors.rs
+
+```rust
+pub enum ApiError {
+    RequestFailed(String),
+}
+
+impl From<reqwest::Error> for ApiError {
+    fn from(value: reqwest::Error) -> Self {
+        Self::RequestFailed(value.to_string())
+    }
+}
+```
+
+We could do this for any number of errors that will rear their ugly heads at some point while our function is executing, but for now, I'll take the easy way out with [`thiserror`](https://crates.io/crates/thiserror):
+
+```bash
+cargo add thiserror
+```
+
+Now we can trim up `errors.rs`:
+
+```rust
+use axum::{response::IntoResponse, Json};
+use http::StatusCode;
+use serde::Serialize;
+use thiserror::Error;
+
+#[derive(Serialize, Debug)]
+struct HandlerError {
+    message: String,
+}
+
+#[derive(Error, Debug)]
+pub enum ApiError {
+    #[error("The request to GitHub failed: {0}")]
+    RequestFailed(#[from] reqwest::Error),
+}
+
+impl IntoResponse for ApiError {
+    fn into_response(self) -> axum::response::Response {
+        let (status, error_message) = match self {
+            Self::RequestFailed(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()),
+        };
+
+        let body = Json(HandlerError {
+            message: error_message,
+        });
+
+        (status, body).into_response()
+    }
+}
+```
+
+Leaning on `thiserror`, we can leverage the `#[error]` macro to spit out a big of boilerplate error conversion code for us. For a sanity check, let's take a look at the generated code with another quick `cargo expand errors`:
+
+```rust
+pub enum ApiError {
+    #[error("The request to GitHub failed")]
+    RequestFailed(#[from] reqwest::Error),
+}
+
+#[allow(unused_qualifications)]
+impl std::error::Error for ApiError {
+    fn source(&self) -> std::option::Option<&(dyn std::error::Error + 'static)> {
+        use thiserror::__private::AsDynError;
+        #[allow(deprecated)]
+        match self {
+            ApiError::RequestFailed { 0: source, .. } => {
+                std::option::Option::Some(source.as_dyn_error())
+            }
+        }
+    }
+}
+
+#[allow(unused_qualifications)]
+impl std::fmt::Display for ApiError {
+    fn fmt(&self, __formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+        #[allow(unused_variables, deprecated, clippy::used_underscore_binding)]
+        match self {
+            ApiError::RequestFailed(_0) => {
+                __formatter.write_fmt(format_args!("The request to GitHub failed"))
+            }
+        }
+    }
+}
+
+#[allow(unused_qualifications)]
+impl std::convert::From<reqwest::Error> for ApiError {
+    #[allow(deprecated)]
+    fn from(source: reqwest::Error) -> Self {
+        ApiError::RequestFailed {
+            0: source,
+        }
+    }
+}
+
+#[automatically_derived]
+impl ::core::fmt::Debug for ApiError {
+    fn fmt(&self, f: &mut ::core::fmt::Formatter) -> ::core::fmt::Result {
+        match self {
+            ApiError::RequestFailed(__self_0) => {
+                ::core::fmt::Formatter::debug_tuple_field1_finish(
+                    f,
+                    "RequestFailed",
+                    &__self_0,
+                )
+            }
+        }
+    }
+}
+```
+
+Sifting through the other bits of code that is printed out to the console, we see that `thiserror` is generating some boilerplate to `impl` `std::error::Error` and `From<reqwest::Error>` for us, so we can avoid writing the implementations ourselves. Thanks, [dtolnay](https://crates.io/users/dtolnay)!
+
+## So many stars
+
+Okay, back to our handler. So we're handling the result errors `reqwest` _could_ propagate back to us, now let's rip the `stargazer_count` off the API response to map back to our `StarsResponse` struct. Let's throw a `.json()` after our `.await?` to do so:
+
+```rust
+pub async fn get_repository_stars(
+    State(state): State<Arc<HandlerState>>,
+    Path(repository): Path<String>,
+) -> Result<Json<StarsResponse>, ApiError> {
+    tracing::info!(
+        "Received request to get start count for repository {}",
+        repository
+    );
+
+    let url = format!("https://api.github.com/repos/joeymckenzie/{}", repository);
+
+    let github_response = state
+        .client
+        .get(url)
+        .bearer_auth(&state.access_token)
+        .send()
+        .await?
+        .json::<GitHubRepositoryResponse>()
+        .await?;
+
+    let response = StarsResponse {
+        count: github_response.stargazers_count,
+    };
+
+    Ok(Json(response))
+}
+```
+
+We'll attempt to deserialize the response into our `GitHubRepositoryResponse` and again `await?` the process as we need to read from the response buffer and propagate any errors. We're already converting between `reqwest` errors and our internal `ApiError`, so we're all good there. Let's spin up our function and send a request through:
+
+```bash
+
+```

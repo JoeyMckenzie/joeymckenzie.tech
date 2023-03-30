@@ -1730,6 +1730,7 @@ dependencies = [
  "shuttle-axum",
  "shuttle-runtime",
  "shuttle-secrets",
+ "thiserror",
  "tokio",
  "tracing",
 ]
