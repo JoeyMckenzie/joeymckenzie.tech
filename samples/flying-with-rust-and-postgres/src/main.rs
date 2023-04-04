@@ -90,7 +90,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         .await?;
     println!("Connection pool initialized, running migrations...");
 
-    sqlx::migrate!("./migrations").run(&pool).await?;
+    sqlx::migrate!().run(&pool).await?;
 
     println!("Migrations successfully applied! Initializing router...");
 
