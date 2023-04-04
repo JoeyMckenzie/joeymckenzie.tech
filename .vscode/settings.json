@@ -2,7 +2,7 @@
   "[*]": {
     "editor.tabSize": 2
   },
-  "[rust]": {
+  "[rust,md]": {
     "editor.tabSize": 4
   },
   "eslint.validate": [

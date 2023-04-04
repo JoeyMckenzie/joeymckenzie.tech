@@ -20,8 +20,8 @@ Harkening back to looking for any excuse to write more Rust, my typical deployme
 
 - Write code (entirely bug-free, obviously)
 - Construct a sensible Dockefile
-- Deploy to [fly](https://fly.io/) for my server to run
-- Configure CI to re-publish on pushes to `main`
+- Deploy to some sort managed SaaS infrastructure platform
+- Configure CI, testing pipelines, etc.
 
 While the current landscape of tools is small enough for micro-projects, I'd love to be an even lazier developer than I currently am and remove the middle to bullet points above. With shuttle, I'm able to write code and simply deploy my function - no containerization, no server configurations, simply just running a few commands and I'm able to go from local dev to production in minutes. Let's write a serverless function with shuttle that retrieves GitHub stars from one of our repositories!
 
@@ -127,7 +127,7 @@ Whoa! If we look closely, we see a familiar bit of generated code:
 
 Shuttle's `#[shuttle_runtime::main]` macro generates the _same code_ a typical `#[tokio::main]` macro generates along with a few extra bits (like including the defacto logging crate in [`tracing`](https://crates.io/crates/tracing/) for logging to the server's console through [`tracing-subscriber`](https://crates.io/crates/tracing-subscriber)). No magic here, just a bit of generated boilerplate for us to hit the ground running.
 
-A quick note, shuttle recently (at the time of this writing) added a dependency on [protobuf](https://github.com/protocolbuffers/protobuf)](https://github.com/protocolbuffers/protobuf) to facilitate some of their internal infrastructure. If you're missing `protoc` as a dependency on your machine, take a look at my blog's [README](https://github.com/JoeyMckenzie/joey-mckenzie-tech/blob/main/README.md#running-shuttle-functions-locally) for some quick instructions on how to get up and running with the package.
+A quick note, shuttle recently (at the time of this writing) added a dependency on [protobuf](https://github.com/protocolbuffers/protobuf) to facilitate some of their internal infrastructure. If you're missing `protoc` as a dependency on your machine, take a look at my blog's [README](https://github.com/JoeyMckenzie/joey-mckenzie-tech/blob/main/README.md#running-shuttle-functions-locally) for some quick instructions on how to get up and running with the package.
 
 ## Managing secrets
 
