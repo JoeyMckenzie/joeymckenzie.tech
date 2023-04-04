@@ -882,3 +882,7 @@ And just like, we're up and running with fly, Rust, and Postgres!
 ## Wrapping up
 
 In my quest for a developer-friendly hosting platform, I've been thoroughly satisfied with what fly offers. I'm excited to see what I can build, and without a doubt, I'll be looking for more excuses to host whatever I can with the platform.
+
+All the code we wrote today you can find on my [blog samples](https://github.com/JoeyMckenzie/joey-mckenzie-tech/tree/main/samples/flying-with-rust-and-postgres).
+
+Until next time, friends!
