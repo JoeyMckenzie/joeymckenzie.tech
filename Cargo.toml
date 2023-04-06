@@ -1,6 +1,3 @@
-[workspace]
-members = [".", "samples/*"]
-
 [package]
 name = "joey-mckenzie-tech"
 version = "0.1.0"
@@ -13,9 +10,9 @@ license = "MIT"
 tokio = { version = "1.26", features = ["full"] }
 
 # web crates
-shuttle-axum = "0.12.0"
-shuttle-runtime = "0.12.0"
-shuttle-secrets = "0.12.0"
+shuttle-axum = "0.13.0"
+shuttle-runtime = "0.13.0"
+shuttle-secrets = "0.13.0"
 axum = { version = "0.6", features = ["json"] }
 tower-http = { version = "0.4", features = ["limit", "timeout", "cors"] }
 hyper = "0.14"

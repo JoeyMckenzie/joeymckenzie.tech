@@ -76,3 +76,23 @@ cargo shuttle deploy
 ```
 
 That's it! You should now have a serverless function running at the output URL based on the code found in the `src/serverless` directory.
+
+## Running shuttle functions locally
+
+Shuttle recently made some core infrastructure changes requiring `protoc` to be installed on the target machine. Instructions for installing `protoc` can be found [on the website](https://docs.shuttle.rs/support/installing-protoc) with implementations varying depending on machines and package managers. An example can be found in the rust build/deploy actions, or simply installing `protobuf` with `brew`:
+
+```bash
+brew install protobuf
+```
+
+Verify your installation with:
+
+```bash
+protoc --version
+```
+
+Note that older versions of `protoc` will not work, thus the minor workarounds found in the docs or by simply using `brew`. Once installed, you can start local functions with:
+
+```bash
+cargo shuttle run
+```

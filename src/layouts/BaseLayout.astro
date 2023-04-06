@@ -11,22 +11,16 @@ type Props = {
 };
 
 const { title, description, image } = Astro.props;
-const useTitleAndDescription = !!title && !!description && !!image;
 ---
 
 <!DOCTYPE html>
 <html lang="en" class="h-full">
   <head>
-    {
-      useTitleAndDescription && (
-        <BaseHead title={title} description={description} image={image} />
-      )
-    }
-    {
-      !useTitleAndDescription && (
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-      )
-    }
+    <BaseHead
+      title={title ?? SITE_TITLE}
+      description={description ?? SITE_DESCRIPTION}
+      image={image ?? ''}
+    />
   </head>
   <body class="h-full bg-neutral-900">
     <Navbar />
