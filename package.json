@@ -20,7 +20,7 @@
     "**/*.rs": "cargo fmt -- --emit=files"
   },
   "dependencies": {
-    "@astrojs/mdx": "^0.18.0",
+    "@astrojs/mdx": "^0.19.0",
     "@astrojs/rss": "^2.1.1",
     "@astrojs/sitemap": "^1.1.0",
     "@astrojs/svelte": "^2.1.0",
