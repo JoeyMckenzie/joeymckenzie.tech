@@ -2,6 +2,7 @@
 import Footer from '@/components/footer/Footer.astro';
 import BaseHead from '@/components/layout/BaseHead.astro';
 import Navbar from '@/components/layout/Navbar.astro';
+import { inject } from '@vercel/analytics';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 type Props = {
@@ -11,6 +12,8 @@ type Props = {
 };
 
 const { title, description, image } = Astro.props;
+
+inject();
 ---
 
 <!DOCTYPE html>
