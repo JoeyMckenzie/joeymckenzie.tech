@@ -18,7 +18,7 @@ jobs:
       - uses: rui314/setup-mold@v1
 
       - name: Install protoc
-        run: ${pwd}/scripts/install.sh
+        run: scripts/install.sh
 
       - name: Build for release
         run: cargo build --release
