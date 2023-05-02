@@ -55,5 +55,5 @@ dist
 
 # rust
 
+Cargo.lock
 /target
-/samples/**/target
