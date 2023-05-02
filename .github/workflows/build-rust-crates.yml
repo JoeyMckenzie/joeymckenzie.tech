@@ -1,4 +1,4 @@
-name: Build and test serverless functions for release
+name: Build and test rust server for release
 
 on:
   push:
