@@ -20,11 +20,14 @@ COPY ./samples ./samples
 COPY ./src ./src
 COPY ./scripts/install.sh ./
 
+# we need to install a few tools as root, so change the user to root so we can "sudo" commands
+USER root
+
 # install protoc before building our crates, as our examples involve some shuttle samples
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt update; \
-    apt install --yes curl unzip pkg-config libssl-dev; \
+    apt install --yes curl unzip pkg-config libssl-dev sudo; \
     apt clean autoclean; \
     apt autoremove --yes; \
     ./install.sh;
