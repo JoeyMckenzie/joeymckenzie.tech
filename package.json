@@ -28,7 +28,7 @@
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@tailwindcss/typography": "^0.5.9",
-    "@vercel/analytics": "^0.1.11",
+    "@vercel/analytics": "^1.0.0",
     "astro": "^2.1.2",
     "astro-icon": "^0.8.0",
     "svelte": "^3.54.0",
