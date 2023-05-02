@@ -45,3 +45,11 @@ args = [
     "-it",
     "${DOCKER_BUILD_TAG}",
 ]
+
+[tasks.docker-stop]
+command = "docker"
+args = ["stop", "${DOCKER_BUILD_TAG}"]
+
+[tasks.docker-start]
+command = "docker"
+args = ["stop", "${DOCKER_BUILD_TAG}"]
