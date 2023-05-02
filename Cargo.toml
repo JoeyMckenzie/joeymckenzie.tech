@@ -1,3 +1,6 @@
+[workspace]
+members = [".", "samples/*"]
+
 [package]
 name = "joey-mckenzie-tech"
 version = "0.1.0"
@@ -10,18 +13,13 @@ license = "MIT"
 tokio = { version = "1.26", features = ["full"] }
 
 # web crates
-shuttle-axum = "0.13.0"
-shuttle-runtime = "0.13.0"
-shuttle-secrets = "0.13.0"
 axum = { version = "0.6", features = ["json"] }
 tower-http = { version = "0.4", features = ["limit", "timeout", "cors"] }
 hyper = "0.14"
-
-# utilitiy crates
 tracing = "0.1"
 serde = { version = "1.0", features = ["serde_derive"] }
 reqwest = { version = "0.11", features = ["json"] }
 thiserror = "1"
-
-# crates for running debug
-tracing-subscriber = "0.3"
+tracing-subscriber = "0.3.17"
+dotenvy = "0.15.7"
+clap = { version = "4.2.5", features = ["env"] }

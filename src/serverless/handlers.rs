@@ -16,13 +16,13 @@ pub async fn get_currently_listening_to(
     State(spotify_client): State<Arc<SpotifyClient>>,
 ) -> Result<Json<NowPlayingResponse>, AppServerError> {
     info!(
-        "Received request for spotify currently listening to, retrieving access token from spotify..."
+        "received request for spotify currently listening to, retrieving access token from spotify..."
     );
     let access_token = spotify_client.get_access_token().await?;
 
-    info!("Successfully retrieved access token from spotify, request now playing...");
+    info!("successfully retrieved access token from spotify, request now playing...");
     let now_playing = spotify_client.get_listening_to(access_token).await?;
 
-    info!("Currently listening to response: {:?}", now_playing);
+    info!("currently listening to response: {:?}", now_playing);
     Ok(Json(now_playing))
 }

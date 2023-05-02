@@ -3,7 +3,6 @@ use std::{sync::Arc, time::Duration};
 use axum::{http::HeaderValue, routing::get, Router};
 use hyper::{header, Method};
 use reqwest::Client;
-use shuttle_secrets::SecretStore;
 use tower_http::{cors::CorsLayer, timeout::TimeoutLayer};
 
 use super::{handlers::get_currently_listening_to, spotify::client::SpotifyClient};
@@ -19,34 +18,19 @@ const CORS_ORIGINS: [&str; 3] = [
     "https://www.joeymckenzie.tech",
 ];
 
-/// Builds a Spotify API client based on the shuttle secrets set at runtime.
-pub fn build_spotify_client_from_shuttle_secrets(secret_store: &SecretStore) -> Arc<SpotifyClient> {
-    let refresh_token = secret_store
-        .get(SPOTIFY_REFRESH_TOKEN_KEY)
-        .expect("refresh token must be provided, please check the secrets file");
-    let client_id = secret_store
-        .get(SPOTIFY_CLIENT_ID_KEY)
-        .expect("spotfiy client id must be provided, please check the secrets file");
-    let client_secret = secret_store
-        .get(SPOTIFY_CLIENT_SECRET_KEY)
-        .expect("spotfiy client secret must be provided, please check the secrets file");
-
-    build_spotify_client(refresh_token, client_id, client_secret)
-}
-
 // Constructs our API client based on the Spotify variables based on the runtime context.
-fn build_spotify_client(
-    refresh_token: String,
-    client_id: String,
-    client_secret: String,
-) -> Arc<SpotifyClient> {
+pub fn build_spotify_client() -> Result<Arc<SpotifyClient>, Box<dyn std::error::Error>> {
+    let refresh_token = std::env::var(SPOTIFY_REFRESH_TOKEN_KEY)?;
+    let client_id = std::env::var(SPOTIFY_CLIENT_ID_KEY)?;
+    let client_secret = std::env::var(SPOTIFY_CLIENT_SECRET_KEY)?;
     let client = Client::new();
     let spotify_client = SpotifyClient::new(client, refresh_token, client_id, client_secret);
 
-    Arc::new(spotify_client)
+    Ok(Arc::new(spotify_client))
 }
 
 /// Builds the axum router with an extension layer for our Spotify API client and various middlewares.
+#[tracing::instrument]
 pub fn build_router(timeout_duration_seconds: u64, spotify_client: Arc<SpotifyClient>) -> Router {
     let timeout_duration = Duration::from_secs(timeout_duration_seconds);
 
