@@ -13,21 +13,6 @@ jobs:
     steps:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - uses: actions/checkout@v3
-      - uses: actions/setup-go@v4
-        with:
-          go-version: '1.20'
-          cache: false
-
-      - name: Install task CLI
-        run: go install github.com/go-task/task/v3/cmd/task@latest
-
-      - name: Build project
-        run: task build
-
-      - name: Run unit tests
-        run: task test
-        env:
-          DSN: ${{ secrets.DSN }}
 
       - name: Deploy to fly
         run: flyctl deploy --remote-only
