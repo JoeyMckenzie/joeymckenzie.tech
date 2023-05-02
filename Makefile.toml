@@ -1,16 +1,47 @@
 [env] ## tells cargo make that we're in the context of a Cargo workspace
-CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+DOCKER_BUILD_TAG = "joey_mckenzie_tech"
 
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
 [config] ## we want most/all of our tasks to run in the context of a workspace
 default_to_workspace = false
 
-[tasks.blog-serverless]
-install_crate = "cargo-shuttle"
+[tasks.run-server]
+install_crate = "cargo-watch"
 command = "cargo"
-args = ["shuttle", "run"]
+args = ["watch", "-x", "run"]
 
-[tasks.samples-serverless-rust]
-install_crate = "cargo-shuttle"
-cwd = "samples/serverless-rust-with-shuttle"
-command = "cargo"
-args = ["shuttle", "run"]
+[tasks.docker-build]
+command = "docker"
+env_files = [".env"]
+args = [
+    "build",
+    ".",
+    "--build-arg",
+    "PORT=${PORT}",
+    "--build-arg",
+    "SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}",
+    "--build-arg",
+    "SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}",
+    "--build-arg",
+    "SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}",
+    "--build-arg",
+    "TIMEOUT_DURATION_SECONDS=${TIMEOUT_DURATION_SECONDS}",
+    "--build-arg",
+    "LOG_LEVEL=${LOG_LEVEL}",
+    "-t",
+    "${DOCKER_BUILD_TAG}",
+]
+
+[tasks.docker-run]
+command = "docker"
+env_files = [".env"]
+args = [
+    "run",
+    "-d",
+    "-p",
+    "${PORT}:${PORT}",
+    "--name",
+    "${DOCKER_BUILD_TAG}",
+    "-it",
+    "${DOCKER_BUILD_TAG}",
+]

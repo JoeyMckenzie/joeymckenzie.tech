@@ -22,5 +22,6 @@
       "language": "markdown",
       "scheme": "file"
     }
-  ]
+  ],
+  "rust-analyzer.linkedProjects": ["./Cargo.toml"]
 }

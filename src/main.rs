@@ -1,4 +1,4 @@
-mod serverless;
+mod server;
 
 use std::net::SocketAddr;
 
@@ -6,7 +6,7 @@ use tracing::info;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 
-use serverless::router::{build_router, build_spotify_client};
+use server::router::{build_router, build_spotify_client};
 
 /// The shuttle entry point injected with our secrets store at dev/runtime with secrets from `Secrets.toml`. Don't check that file in!
 #[tokio::main]

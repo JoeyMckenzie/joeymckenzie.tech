@@ -52,7 +52,25 @@ RUN set -eux; \
 
 WORKDIR /deploy
 
+# copy over build artifacts from the build stage
 COPY --from=build /app/server ./
+
+# we'll set these environment variables during the build step, both locally and in our Fly instance
+ARG SPOTIFY_REFRESH_TOKEN=""
+ARG SPOTIFY_CLIENT_ID=""
+ARG SPOTIFY_CLIENT_SECRET=""
+ARG TIMEOUT_DURATION_SECONDS=""
+ARG PORT=""
+ARG LOG_LEVEL=""
+
+# create a .env file for loading variables
+RUN echo "\n\
+    SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}\n\
+    SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}\n\
+    SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}\n\
+    TIMEOUT_DURATION_SECONDS=${TIMEOUT_DURATION_SECONDS}\n\
+    PORT=${PORT}\n\
+    LOG_LEVEL=${LOG_LEVEL}" > ./.env
 
 EXPOSE 80
 EXPOSE 443

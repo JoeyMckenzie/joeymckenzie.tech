@@ -3,7 +3,7 @@
 
 interface ImportMetaEnv {
   readonly VERCEL_GIT_COMMIT_SHA: string;
-  readonly SHUTTLE_SPOTIFY_URL: string;
+  readonly API_BASE_URL: string;
 }
 
 interface ImportMeta {
