@@ -614,7 +614,7 @@ context, but this time on the client.
 ## Wrapping up
 
 I like RxJS, and love more so RxJS-ifying anything and everything I can. While there are existing RxJS/react
-integration libraries, I prefer simply using RxJS in its natural form, allowing me to fully customize how I `.pipe() ` streams of data however I like. RxJS, again, is a _huge_ library of utilities for pub/sub and reactive programming
+integration libraries, I prefer simply using RxJS in its natural form, allowing me to fully customize how I `.pipe()` streams of data however I like. RxJS, again, is a _huge_ library of utilities for pub/sub and reactive programming
 with JS, and is not meant to _replace_ promises, but rather offer an alternative, or in our case, complimentary
 functionality that promises provide in the first place. I love RxJS, and will definitely be using it wherever I can
 in my

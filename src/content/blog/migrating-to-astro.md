@@ -66,7 +66,7 @@ And I want to write Rust.
 
 So let's do all of that.
 
-## Many hours later...
+## Many hours later
 
 Fast-forward some time, and with the help of shuttle, I was able to spin up a mighty small [axum](https://docs.rs/axum/latest/axum/) server with a single route to call out to Spotify, get some data, and marshal it into a simple response for the frontend end all while securely keeping my credentials and refresh token hidden from the outside world.
 
