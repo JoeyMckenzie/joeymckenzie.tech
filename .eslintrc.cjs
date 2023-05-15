@@ -24,12 +24,8 @@ module.exports = {
       },
     },
     {
-      files: ['*.svelte'],
-      processor: 'svelte3/svelte3',
-      plugins: ['svelte3'],
-      settings: {
-        'svelte3/typescript': () => require('typescript'),
-      },
+      files: ['*.tsx'],
+      extends: ['plugin:solid/recommended'],
     },
   ],
   parserOptions: {

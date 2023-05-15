@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "turbo": "turbo build lint"
+    "format:watch": "pnpm dlx onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
   },
   "lint-staged": {
     "**/*.{cjs,mjs,ts,svelte,astro,md,json,yaml}": "pnpm format",
@@ -23,7 +23,7 @@
     "@astrojs/mdx": "^0.19.0",
     "@astrojs/rss": "^2.1.1",
     "@astrojs/sitemap": "^1.1.0",
-    "@astrojs/svelte": "^2.1.0",
+    "@astrojs/solid-js": "^2.1.1",
     "@astrojs/tailwind": "^3.0.1",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/line-clamp": "^0.4.2",
@@ -31,7 +31,7 @@
     "@vercel/analytics": "^1.0.0",
     "astro": "^2.1.2",
     "astro-icon": "^0.8.0",
-    "svelte": "^3.54.0",
+    "solid-js": "^1.4.3",
     "tailwindcss": "^3.0.24"
   },
   "devDependencies": {
@@ -41,12 +41,11 @@
     "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-astro": "^0.26.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-svelte3": "^4.0.0",
+    "eslint-plugin-solid": "^0.12.1",
     "husky": "^8.0.0",
     "lint-staged": "^13.1.2",
     "prettier": "^2.8.4",
     "prettier-plugin-astro": "^0.8.0",
-    "prettier-plugin-svelte": "^2.9.0",
     "prettier-plugin-tailwindcss": "^0.2.4",
     "turbo": "^1.8.3"
   }
