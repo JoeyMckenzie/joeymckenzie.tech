@@ -5,20 +5,9 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[[bin]]
-name = "with-neon"
-path = "src/with-neon.rs"
-
-[[bin]]
-name = "with-planetscale"
-path = "src/with-planetscale.rs"
-
 [dependencies]
 anyhow = "1.0.71"
+dotenvy = "0.15.7"
 postgres = "0.19.5"
-sqlx = { version = "0.6.3", features = [
-    "runtime-tokio-rustls",
-    "postgres",
-    "mysql",
-] }
+sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls", "postgres"] }
 tokio = { version = "1.28.0", features = ["full"] }
