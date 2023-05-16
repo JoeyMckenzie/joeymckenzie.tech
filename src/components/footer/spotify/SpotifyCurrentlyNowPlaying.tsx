@@ -12,12 +12,12 @@ const SpotifyNowCurrentlyPlaying: Component<
     href={props.response.href}
     target="_blank"
     rel="noreferrer"
-    class="flex flex-col space-y-1 pt-6 md:pt-0"
+    class="flex flex-col"
   >
     <h2 class="inline-flex justify-center font-ubuntu text-xs text-neutral-400 md:justify-start">
       Now listening
     </h2>
-    <div class="flex flex-row items-center justify-center space-x-2">
+    <div class="flex flex-row items-center justify-center gap-x-2">
       {props.children}
       <img
         src={props.response.albumImageSrc}
