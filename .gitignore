@@ -29,3 +29,7 @@ Secrets.toml
 /Cargo.lock
 /samples/**/target
 /samples/**/Cargo.lock
+
+# zig
+/samples/**/zig-cache
+/samples/**/zig-out
