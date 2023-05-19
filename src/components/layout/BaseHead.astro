@@ -45,3 +45,6 @@ const { title, description, image = '/favicon.ico' } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<!-- Vercel Analytics -->
+<script defer src="/_vercel/insights/script.js"></script>
