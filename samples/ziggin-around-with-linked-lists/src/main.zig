@@ -11,9 +11,8 @@ fn LinkedList(comptime T: type) type {
         };
 
         // 2a. Define the linked list properties
-        // There should be three: head, tail, length, and allocator
+        // There should be three: head, length, and allocator
         head: ?*Node,
-        tail: ?*Node,
         length: u32,
         allocator: std.mem.Allocator,
 
@@ -35,11 +34,6 @@ fn LinkedList(comptime T: type) type {
             // Finally, repoint our head to the new node and increment the count
             self.head = newNode;
             self.length += 1;
-
-            // For a linked list with a single item, both the head and tail will be the same node in the list
-            if (self.length == 1) {
-                self.tail = self.head;
-            }
         }
 
         // 4. Define a pop method
