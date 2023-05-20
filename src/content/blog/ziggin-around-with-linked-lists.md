@@ -495,6 +495,8 @@ fn LinkedList(comptime T: type) type {
             // For a linked list with a single item, both the head and tail will be the same node in the list
             if (self.length == 1) {
                 self.tail = self.head;
+            } else if (self.length > 1) {
+
             }
         }
     };
@@ -505,7 +507,7 @@ Running our tests now, we're back to both of them passing... but we have yet ano
 I'll let you take a guess - what happens if we add more than one node to our linked list?
 As it stands, when we push our initial item into the linked list, `tail` will point to `head`.
 If we push _another_ item into the list... yep, you guessed... `tail` will _still_ point to the initial
-item! Not good, we need to update this so our tail is always the last node inserted:
+item. Not good, we need to update this so our tail is always the last node inserted:
 
 ```zig
 
