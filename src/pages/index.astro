@@ -3,6 +3,10 @@ import SocialButtons from '@/components/home/SocialButtons.astro';
 import Header from '@/components/layout/Header.astro';
 import InlineBold from '@/components/shared/InlineBold.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const accountId = import.meta.env.CLOUDFLARE_R2_ACCOUNT_ID ?? '';
+const r2Key = import.meta.env.CLOUDFLARE_R2_KEY ?? '';
+const r2Secret = import.meta.env.CLOUDFLARE_R2_SECRET ?? '';
 ---
 
 <BaseLayout

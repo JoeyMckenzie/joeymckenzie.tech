@@ -1,6 +1,5 @@
 ---
 import { Icon } from 'astro-icon';
-import ResumeDownload from './ResumeDownload';
 import SocialButton, { Props as SocialButtonProps } from './SocialButton.astro';
 
 const socials: SocialButtonProps[] = [
@@ -32,12 +31,18 @@ const socials: SocialButtonProps[] = [
     socials.map(({ display, href, icon, name }) => (
       <SocialButton display={display} name={name} href={href} icon={icon} />
     ))
-  }
-  <ResumeDownload client:load>
+  }<a
+    href="https://resume.joeymckenzie.tech/resume.pdf"
+    download="resume"
+    target="_blank"
+    type="button"
+    class="inline-flex w-full items-center justify-center rounded-md border border-neutral-700 px-6 py-3 text-sm font-medium text-neutral-400 shadow-sm hover:bg-neutral-700 focus:outline-none sm:px-4"
+  >
+    Resume
     <Icon
       name="mdi:tray-arrow-down"
       class="ml-3 -mr-1 h-5 w-5"
       aria-hidden="true"
     />
-  </ResumeDownload>
+  </a>
 </div>
