@@ -11,6 +11,7 @@
     "astro": "astro",
     "prepare": "husky install",
     "lint": "eslint .",
+    "turbo": "turbo build lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "format:watch": "pnpm dlx onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
