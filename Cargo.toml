@@ -1,5 +1,5 @@
 [workspace]
-members = [".", "samples/*"]
+members = [".", "samples/rust/*"]
 
 [package]
 name = "joey-mckenzie-tech"

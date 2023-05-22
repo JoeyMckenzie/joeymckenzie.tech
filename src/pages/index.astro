@@ -3,10 +3,6 @@ import SocialButtons from '@/components/home/SocialButtons.astro';
 import Header from '@/components/layout/Header.astro';
 import InlineBold from '@/components/shared/InlineBold.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-
-const accountId = import.meta.env.CLOUDFLARE_R2_ACCOUNT_ID ?? '';
-const r2Key = import.meta.env.CLOUDFLARE_R2_KEY ?? '';
-const r2Secret = import.meta.env.CLOUDFLARE_R2_SECRET ?? '';
 ---
 
 <BaseLayout
@@ -19,7 +15,7 @@ const r2Secret = import.meta.env.CLOUDFLARE_R2_SECRET ?? '';
       class="prose mx-auto inline-flex max-w-2xl flex-col text-sm leading-6 text-neutral-400"
     >
       <p class="mt-6">
-        Hi, I&apos;m Joey. I&apos;m a
+        Hi, I'm Joey. I'm a
         <InlineBold>Senior Software Engineer</InlineBold> based in Northern California
         working in fintech. I enjoy writing about software, design, dad jokes, and
         cheap beer among a few other things. I like building fast and efficient web
