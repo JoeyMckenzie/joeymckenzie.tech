@@ -1,5 +1,9 @@
 #!/usr/bin/env sh
 
+# Various install scripts for tools used throughout the project
+
+# The shuttle examples require protoc, so install it as a dependency (assumes we're running on linux)
+
 ARCH="linux-x86_64"
 VERSION="22.2"
 
