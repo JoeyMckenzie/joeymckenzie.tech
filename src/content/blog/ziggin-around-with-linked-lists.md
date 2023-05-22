@@ -7,8 +7,7 @@ category: 'zig'
 ---
 
 So I've been looking for a reason to write code to keep me sane while in the
-thick of parental leave, and I, like I'm sure most of us have seen on tech bro
-twitter, have been seeing a lot of commotion about [Zig](https://Ziglang.org).
+thick of parental leave, and I, like I'm sure most of us have seen on tech bro Twitter, have been seeing a lot of commotion about [Zig](https://Ziglang.org).
 I've been writing quite a bit of Rust, and Zig's model of no hidden memory
 allocation or hidden control flow is fascinating to me.
 
@@ -21,10 +20,13 @@ where corporate .NET developer America is not concerned
 much about zero cost abstractions and memory safety.
 
 I wanted to get down and dirty with some Zig, and what better way to
-that than take a trip down CS-from-college memory lane: implementing a (poor man's)
+than to take a trip down CS-from-college memory lane: implementing a (poor man's)
 linked list! I like to drink from the fire hose, so to speak, when learning
 a new language so I'll treat this blog post as a live look into my trials
 and tribulations of getting started with Zig.
+
+As always, you can find all the sample source code we'll be writing in this blog
+post available on [my blog](https://github.com/JoeyMckenzie/joey-mckenzie-tech/tree/main/samples/zig/ziggin-around-with-linked-lists), so feel free to reference it any time.
 
 ## Getting started with Zig
 
