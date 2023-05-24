@@ -10,16 +10,26 @@ license = "MIT"
 
 [dependencies]
 # framework crates
-tokio = { version = "1.26", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
 
 # web crates
 axum = { version = "0.6", features = ["json"] }
 tower-http = { version = "0.4", features = ["limit", "timeout", "cors"] }
 hyper = "0.14"
+reqwest = { version = "0.11", features = ["json"] }
+
+# utility crates
 tracing = "0.1"
 serde = { version = "1.0", features = ["serde_derive"] }
-reqwest = { version = "0.11", features = ["json"] }
 thiserror = "1"
 tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
 dotenvy = "0.15.7"
 clap = { version = "4.2.5", features = ["env"] }
+anyhow = "1.0.71"
+
+# database crates
+sqlx = { version = "0.6", features = [
+  "runtime-tokio-rustls",
+  "postgres",
+  "migrate",
+] }

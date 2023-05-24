@@ -23,6 +23,8 @@ pub enum AppServerError {
     StartupFailed(#[from] hyper::Error),
     #[error("{0}")]
     ReqwestFailed(#[from] reqwest::Error),
+    #[error("{0}")]
+    SqlxQueryFailed(#[from] sqlx::Error),
 }
 
 impl IntoResponse for AppServerError {
@@ -30,6 +32,7 @@ impl IntoResponse for AppServerError {
         let (status, error_message) = match self {
             Self::StartupFailed(err) => (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()),
             Self::ReqwestFailed(err) => (StatusCode::BAD_REQUEST, err.to_string()),
+            Self::SqlxQueryFailed(err) => (StatusCode::INTERNAL_SERVER_ERROR, err.to_string()),
         };
 
         let body = Json(ServerError::new(error_message));

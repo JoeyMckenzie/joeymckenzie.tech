@@ -404,7 +404,7 @@ Specifically, `migrate` will allow us to use migrations to keep our local develo
 
 ```bash
 # We're only using Postgres, so we need just a subset of all features
-> cargo install sqlx-cli --no-default-features --features native-tls, postgres
+> cargo install sqlx-cli --no-default-features --features rustls, postgres
 ```
 
 After it's installed, let's add a `.env` file that the sqlx CLI will look for when running and applying migrations:
