@@ -17,7 +17,9 @@ COPY ./Cargo.toml ./
 # though only for the build step as we'll only use the crate that gets deployed
 # to fly as the crate that runs in the runtime container
 COPY ./samples ./samples
-COPY ./src ./src
+COPY ./migrations ./migrations
+COPY ./src/main.rs ./src/main.rs
+COPY ./src/server ./src/server
 COPY ./scripts/install.sh ./
 
 # we need to install a few tools as root, so change the user to root so we can "sudo" commands
@@ -38,7 +40,32 @@ RUN --mount=type=cache,target=/app/target \
     --mount=type=cache,target=/usr/local/cargo/git \
     --mount=type=cache,target=/usr/local/rustup \
     set -eux; \
-    rustup install nightly; \
+    rustup install nightly;
+
+# we'll set these environment variables during the build step, both locally and in our Fly instance
+ARG SPOTIFY_REFRESH_TOKEN=""
+ARG SPOTIFY_CLIENT_ID=""
+ARG SPOTIFY_CLIENT_SECRET=""
+ARG DATABASE_URL=""
+ARG RUST_ENV=""
+
+# create a .env file for loading variables
+RUN echo "\n\
+    SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}\n\
+    SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}\n\
+    SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}\n\
+    RUST_ENV=${RUST_ENV}\n\
+    DATABASE_URL=${DATABASE_URL}" > ./.env
+
+# prepare our sqlx compile time checks
+RUN set -eux; \
+    cargo install --locked sqlx-cli; \
+    cargo sqlx prepare;
+
+COPY ./sqlx-data.json ./sqlx-data.json
+
+# finally, build the workspace
+RUN set -eux; \
     cargo build --workspace --release; \
     objcopy --compress-debug-sections target/release/joey-mckenzie-tech ./server
 
@@ -48,7 +75,7 @@ FROM debian:${DEBIAN_VERSION}-slim as deploy
 RUN set -eux; \
     export DEBIAN_FRONTEND=noninteractive; \
     apt update; \
-    apt install --yes --no-install-recommends bind9-dnsutils iputils-ping iproute2 curl ca-certificates htop pkg-config libssl-dev; \
+    apt install --yes --no-install-recommends openssl ca-certificates; \
     apt clean autoclean; \
     apt autoremove --yes; \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
@@ -56,24 +83,9 @@ RUN set -eux; \
 WORKDIR /deploy
 
 # copy over build artifacts from the build stage
+COPY ./config ./config
 COPY --from=build /app/server ./
-
-# we'll set these environment variables during the build step, both locally and in our Fly instance
-ARG SPOTIFY_REFRESH_TOKEN=""
-ARG SPOTIFY_CLIENT_ID=""
-ARG SPOTIFY_CLIENT_SECRET=""
-ARG TIMEOUT_DURATION_SECONDS=""
-ARG PORT=""
-ARG LOG_LEVEL=""
-
-# create a .env file for loading variables
-RUN echo "\n\
-    SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}\n\
-    SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}\n\
-    SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}\n\
-    TIMEOUT_DURATION_SECONDS=${TIMEOUT_DURATION_SECONDS}\n\
-    PORT=${PORT}\n\
-    LOG_LEVEL=${LOG_LEVEL}" > ./.env
+COPY --from=build /app/.env ./
 
 EXPOSE 80
 EXPOSE 443

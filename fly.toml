@@ -7,9 +7,7 @@ primary_region = "lax"
 processes = []
 
 [env]
-TIMEOUT_DURATION_SECONDS = "10"
-PORT = "80"
-LOG_LEVEL = "info"
+RUST_ENV = "production"
 
 [experimental]
 auto_rollback = true

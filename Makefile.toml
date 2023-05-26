@@ -1,11 +1,13 @@
 [env] ## tells cargo make that we're in the context of a Cargo workspace
 DOCKER_BUILD_TAG = "joey_mckenzie_tech"
+PORT = 8080
 
 CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
 [config] ## we want most/all of our tasks to run in the context of a workspace
 default_to_workspace = false
 
-[tasks.run-server]
+[tasks.run]
+env = { "RUST_ENV" = "development" }
 install_crate = "cargo-watch"
 command = "cargo"
 args = ["watch", "-x", "run"]
@@ -17,24 +19,21 @@ args = [
     "build",
     ".",
     "--build-arg",
-    "PORT=${PORT}",
-    "--build-arg",
     "SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}",
     "--build-arg",
     "SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}",
     "--build-arg",
     "SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}",
     "--build-arg",
-    "TIMEOUT_DURATION_SECONDS=${TIMEOUT_DURATION_SECONDS}",
+    "DATABASE_URL=${DATABASE_URL}",
     "--build-arg",
-    "LOG_LEVEL=${LOG_LEVEL}",
+    "RUST_ENV=${RUST_ENV}",
     "-t",
     "${DOCKER_BUILD_TAG}",
 ]
 
 [tasks.docker-run]
 command = "docker"
-env_files = [".env"]
 args = [
     "run",
     "-d",

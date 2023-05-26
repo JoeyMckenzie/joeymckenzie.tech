@@ -1,0 +1,9 @@
+log_level = "info"
+
+[server]
+timeout_duration_seconds = 10
+port = 8080
+cors_origins = ["http://localhost:3000"]
+
+[database]
+max_db_connections = 5

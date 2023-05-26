@@ -16,24 +16,13 @@ use super::{
     state::AppState,
 };
 
-const SPOTIFY_REFRESH_TOKEN_KEY: &str = "SPOTIFY_REFRESH_TOKEN";
-const SPOTIFY_CLIENT_ID_KEY: &str = "SPOTIFY_CLIENT_ID";
-const SPOTIFY_CLIENT_SECRET_KEY: &str = "SPOTIFY_CLIENT_SECRET";
-
-/// The expected UI dev/production ports. Note that shuttle does not support array-based secrets, so we'll define them as `const`s here for now.
-const CORS_ORIGINS: [&str; 3] = [
-    "http://localhost:3000",
-    "https://joeymckenzie.tech",
-    "https://www.joeymckenzie.tech",
-];
-
 // Constructs our API client based on the Spotify variables based on the runtime context.
 pub fn build_spotify_client() -> anyhow::Result<SpotifyClient> {
-    let refresh_token = std::env::var(SPOTIFY_REFRESH_TOKEN_KEY)
+    let refresh_token = std::env::var("SPOTIFY_REFRESH_TOKEN")
         .context("spotify refresh token environment variable not found")?;
-    let client_id = std::env::var(SPOTIFY_CLIENT_ID_KEY)
+    let client_id = std::env::var("SPOTIFY_CLIENT_ID")
         .context("spotify client ID environment variable not found")?;
-    let client_secret = std::env::var(SPOTIFY_CLIENT_SECRET_KEY)
+    let client_secret = std::env::var("SPOTIFY_CLIENT_SECRET")
         .context("spotify client secret environment variable not found")?;
     let client = Client::new();
     let spotify_client = SpotifyClient::new(client, refresh_token, client_id, client_secret);
@@ -46,7 +35,12 @@ pub fn build_spotify_client() -> anyhow::Result<SpotifyClient> {
 pub fn build_router(timeout_duration_seconds: u64, app_state: Arc<AppState>) -> Router {
     let timeout_duration = Duration::from_secs(timeout_duration_seconds);
 
-    let origins = CORS_ORIGINS
+    let origins = app_state
+        .as_ref()
+        .settings
+        .server
+        .cors_origins
+        .clone()
         .into_iter()
         .map(|o| o.parse::<HeaderValue>().unwrap())
         .collect::<Vec<HeaderValue>>();
@@ -59,7 +53,7 @@ pub fn build_router(timeout_duration_seconds: u64, app_state: Arc<AppState>) -> 
         .layer(
             CorsLayer::new()
                 .allow_origin(origins)
-                .allow_methods([Method::GET])
+                .allow_methods([Method::GET, Method::POST])
                 .allow_headers([header::ACCEPT]),
         )
         .with_state(app_state)

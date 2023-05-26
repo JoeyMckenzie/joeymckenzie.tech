@@ -1,0 +1,9 @@
+log_level = "info"
+
+[server]
+timeout_duration_seconds = 10
+port = 80
+cors_origins = ["https://joeymckenzie.tech", "https://www.joeymckenzie.tech"]
+
+[database]
+max_db_connections = 50
