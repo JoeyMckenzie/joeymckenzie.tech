@@ -19,7 +19,7 @@
   "lint-staged": {
     "**/*.{cjs,mjs,ts,svelte,astro,md,json,yaml}": "pnpm format",
     "**/*.rs": "cargo fmt -- --emit=files",
-    "**/*.zig": "zig format --stdin"
+    "**/*.zig": "zig fmt"
   },
   "dependencies": {
     "@astrojs/mdx": "^0.19.0",
