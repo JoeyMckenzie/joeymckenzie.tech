@@ -46,6 +46,10 @@ great developer experiences as PlanetScale, with the obvious difference of
 being Postgres-based as opposed to MySQL. As with every great piece of new
 technology I come across, it's time to figure out how we can integrate it with Rust.
 
+As always, the source code for all examples can be found on my blog [here](https://github.com/JoeyMckenzie/joey-mckenzie-tech/tree/main/samples/with-neon).
+
+## Getting started
+
 Let's build out a simple CRUD-based console application expanding on a previous
 post involving logging awesome beers we've come across. To spice things up a bit,
 let's _also_ add a logging mechanism for awesome breweries we've patronized as well.

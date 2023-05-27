@@ -1,4 +1,0 @@
-# We don't need the target folder, we'll build this in the container
-/target
-Makefile
-.env

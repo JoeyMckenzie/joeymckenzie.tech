@@ -26,7 +26,7 @@ a new language so I'll treat this blog post as a live look into my trials
 and tribulations of getting started with Zig.
 
 As always, you can find all the sample source code we'll be writing in this blog
-post available on [my blog](https://github.com/JoeyMckenzie/joey-mckenzie-tech/tree/main/samples/zig/ziggin-around-with-linked-lists), so feel free to reference it any time.
+post available on [my blog](https://github.com/JoeyMckenzie/joey-mckenzie-tech/tree/main/samples/zig/with-linked-lists), so feel free to reference it any time.
 
 ## Getting started with Zig
 

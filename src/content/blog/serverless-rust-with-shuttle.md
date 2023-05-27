@@ -846,6 +846,6 @@ DEBUG hyper::proto::h1::io: flushed 121 bytes
 
 And that's a wrap! We've got Rust running out in the wild in the form of a serverless function and I couldn't be happier. There's quite a bit of cleanup we could do, for instance handling cases where the repository doesn't exist, but I'll leave that as an exercise for the reader.
 
-All the source code for this function can be on my GitHub [here](https://github.com/JoeyMckenzie/joey-mckenzie-tech).
+All the source code for this function can be on my GitHub [here](https://github.com/JoeyMckenzie/joey-mckenzie-tech/samples/rust/with-shuttle).
 
 Until next, friends!
