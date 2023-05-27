@@ -17,6 +17,7 @@ COPY ./Cargo.toml ./
 # though only for the build step as we'll only use the crate that gets deployed
 # to fly as the crate that runs in the runtime container
 COPY ./samples ./samples
+COPY ./sqlx-data.json ./sqlx-data.json
 COPY ./migrations ./migrations
 COPY ./src/main.rs ./src/main.rs
 COPY ./src/server ./src/server
@@ -40,7 +41,9 @@ RUN --mount=type=cache,target=/app/target \
     --mount=type=cache,target=/usr/local/cargo/git \
     --mount=type=cache,target=/usr/local/rustup \
     set -eux; \
-    rustup install nightly;
+    rustup install nightly; \
+    cargo build --workspace --release; \
+    objcopy --compress-debug-sections target/release/joey-mckenzie-tech ./server
 
 # we'll set these environment variables during the build step, both locally and in our Fly instance
 ARG SPOTIFY_REFRESH_TOKEN=""
@@ -56,18 +59,6 @@ RUN echo "\n\
     SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}\n\
     RUST_ENV=${RUST_ENV}\n\
     DATABASE_URL=${DATABASE_URL}" > ./.env
-
-# prepare our sqlx compile time checks
-RUN set -eux; \
-    cargo install --locked sqlx-cli; \
-    cargo sqlx prepare;
-
-COPY ./sqlx-data.json ./sqlx-data.json
-
-# finally, build the workspace
-RUN set -eux; \
-    cargo build --workspace --release; \
-    objcopy --compress-debug-sections target/release/joey-mckenzie-tech ./server
 
 # stage two - we'll utilize a second container to run our built binary from our first container - slim containers!
 FROM debian:${DEBIAN_VERSION}-slim as deploy
