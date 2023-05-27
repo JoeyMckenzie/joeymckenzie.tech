@@ -13,10 +13,6 @@ use super::{
     views::responses::{ViewCountResponse, ViewCountsResponse},
 };
 
-/// An endpoint for retrieving our current listening state.
-/// When calling the Spotify API, it's important to note
-/// that if there is no song or podcast playing on a device
-/// logged
 pub async fn get_currently_listening_to(
     State(state): State<Arc<AppState>>,
 ) -> Result<Json<NowPlayingResponse>, AppServerError> {
@@ -32,29 +28,37 @@ pub async fn get_currently_listening_to(
     Ok(Json(now_playing))
 }
 
-/// An endpoint for updating the view count for blogs.
-/// We'll lazily upsert the view count based on the slug.
 pub async fn increment_view_count(
     Path(slug): Path<String>,
     State(state): State<Arc<AppState>>,
 ) -> Result<(), AppServerError> {
+    info!("received request to increment view count for slug {}", slug);
+    state.repository.create_view_count(slug.clone()).await?;
+    info!("view count incremented for slug {}", slug);
     Ok(())
 }
 
-/// An endpoint for retrieving all view counts from neon.
 pub async fn get_all_view_counts(
-    Path(slug): Path<String>,
     State(state): State<Arc<AppState>>,
-) -> Result<ViewCountsResponse, AppServerError> {
-    Ok(ViewCountsResponse::new(Vec::<ViewCountResponse>::new()))
+) -> Result<Json<ViewCountsResponse>, AppServerError> {
+    info!("retrieving all view counts for blogs");
+    let view_counts = state.repository.get_view_counts().await?;
+    let mapped_view_counts = view_counts
+        .into_iter()
+        .map(|vc| ViewCountResponse::new(vc.view_count, vc.slug))
+        .collect();
+    let response = ViewCountsResponse::new(mapped_view_counts);
+    Ok(Json(response))
 }
 
 pub async fn get_view_count_for_slug(
     Path(slug): Path<String>,
     State(state): State<Arc<AppState>>,
-) -> Result<ViewCountResponse, AppServerError> {
-    Ok(ViewCountResponse::new(
-        420_u32,
-        "how-to-be-awesome".to_string(),
-    ))
+) -> Result<Json<ViewCountResponse>, AppServerError> {
+    info!("retrieving view count for slug {}", slug);
+    let view_count = state.repository.get_view_count(slug).await?;
+    Ok(Json(ViewCountResponse::new(
+        view_count.view_count,
+        view_count.slug,
+    )))
 }

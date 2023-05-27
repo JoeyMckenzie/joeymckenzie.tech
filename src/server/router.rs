@@ -11,7 +11,10 @@ use reqwest::Client;
 use tower_http::{cors::CorsLayer, timeout::TimeoutLayer};
 
 use super::{
-    handlers::{get_currently_listening_to, increment_view_count},
+    handlers::{
+        get_all_view_counts, get_currently_listening_to, get_view_count_for_slug,
+        increment_view_count,
+    },
     spotify::client::SpotifyClient,
     state::AppState,
 };
@@ -48,7 +51,8 @@ pub fn build_router(timeout_duration_seconds: u64, app_state: Arc<AppState>) -> 
     Router::new()
         .route("/spotify", get(get_currently_listening_to))
         .route("/views/:slug", post(increment_view_count))
-        .route("/views/:slug", get(increment_view_count))
+        .route("/views/:slug", get(get_view_count_for_slug))
+        .route("/views", get(get_all_view_counts))
         .layer(TimeoutLayer::new(timeout_duration))
         .layer(
             CorsLayer::new()

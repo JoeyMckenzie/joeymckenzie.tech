@@ -1,4 +1,5 @@
 ---
+import SilentViewCountIncrement from '@/components/blog/SilentViewCountIncrement.svelte';
 import FormattedDate from '@/components/shared/FormattedDate.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon';
@@ -16,6 +17,7 @@ export async function getStaticPaths() {
     }));
 }
 
+const apiBaseUrl = `${import.meta.env.API_BASE_URL}/views`;
 const post = Astro.props;
 const { Content } = await post.render();
 ---
@@ -39,6 +41,11 @@ const { Content } = await post.render();
     </div>
     <img width={540} height={280} src={post.data.heroImage} alt="" />
     <Content />
+    <SilentViewCountIncrement
+      client:load
+      slug={post.slug}
+      apiBaseUrl={apiBaseUrl}
+    />
   </article>
 
   <a

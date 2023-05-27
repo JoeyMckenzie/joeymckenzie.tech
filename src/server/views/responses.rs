@@ -2,12 +2,12 @@ use serde::Serialize;
 
 #[derive(Serialize, Debug)]
 pub struct ViewCountResponse {
-    count: u32,
+    count: i32,
     slug: String,
 }
 
 impl ViewCountResponse {
-    pub fn new(count: u32, slug: String) -> Self {
+    pub fn new(count: i32, slug: String) -> Self {
         Self { count, slug }
     }
 }

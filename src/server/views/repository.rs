@@ -3,9 +3,9 @@ use tracing::info;
 
 use crate::server::errors::AppServerError;
 
-#[derive(FromRow, Debug)]
-struct ViewCountQuery {
-    pub id: i32,
+#[derive(FromRow)]
+pub struct ViewCountQuery {
+    id: i32,
     pub view_count: i32,
     pub slug: String,
 }
@@ -20,7 +20,6 @@ impl ViewCountRepository {
         Self { pool }
     }
 
-    #[tracing::instrument]
     pub async fn create_view_count(&self, slug: String) -> Result<(), AppServerError> {
         info!("checking for existing slug {}", slug);
         let existing_view_count = query_as!(
@@ -69,7 +68,46 @@ VALUES ($1::integer, $2::text)
         Ok(())
     }
 
-    pub async fn get_view_count(slug: String) -> Result<ViewCountQuery, AppServerError> {
-        todo!()
+    pub async fn get_view_count(&self, slug: String) -> Result<ViewCountQuery, AppServerError> {
+        info!("retrieving view count for existing slug {}", slug);
+        let existing_view_count = query_as!(
+            ViewCountQuery,
+            r#"
+SELECT *
+FROM view_counts
+WHERE slug = $1::text
+            "#,
+            slug
+        )
+        .fetch_optional(&self.pool)
+        .await?;
+
+        if existing_view_count.is_none() {
+            info!("slug {} not found, creating now", slug);
+            let created_view_count = query_as!(
+                ViewCountQuery,
+                r#"
+INSERT INTO view_counts (view_count, slug)
+VALUES ($1::integer, $2::text)
+RETURNING *
+            "#,
+                0_i32,
+                slug
+            )
+            .fetch_one(&self.pool)
+            .await?;
+
+            return Ok(created_view_count);
+        }
+
+        Ok(existing_view_count.unwrap())
+    }
+
+    pub async fn get_view_counts(&self) -> Result<Vec<ViewCountQuery>, AppServerError> {
+        let view_counts = query_as!(ViewCountQuery, "SELECT * FROM view_counts")
+            .fetch_all(&self.pool)
+            .await?;
+
+        Ok(view_counts)
     }
 }
