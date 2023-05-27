@@ -1,3 +1,101 @@
 {
-  "db": "PostgreSQL"
+  "db": "PostgreSQL",
+  "147fda41e79f75f78bf38efc6bd3f006202f0b96c95bd76a323dbf6d2f4e3b5b": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "slug",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "view_count",
+          "ordinal": 2,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [false, false, false],
+      "parameters": {
+        "Left": ["Text"]
+      }
+    },
+    "query": "\nSELECT *\nFROM view_counts\nWHERE slug = $1::text\n            "
+  },
+  "2295766b94291921691ab43a98455304878418389df449bcf7b814dcf9e0fb1a": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "slug",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "view_count",
+          "ordinal": 2,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [false, false, false],
+      "parameters": {
+        "Left": []
+      }
+    },
+    "query": "SELECT * FROM view_counts"
+  },
+  "51fc434ec5c05e00a5326a1ee6a851a957aac3d4489d4802e1bf2704a4749387": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": ["Int4", "Text"]
+      }
+    },
+    "query": "\nUPDATE view_counts\nSET view_count = $1::integer\nWHERE slug = $2::text\n                "
+  },
+  "79ff47a7bec97771d56fcbc1d3cda024cd0c6f31eda517261dbaf0052cafada2": {
+    "describe": {
+      "columns": [],
+      "nullable": [],
+      "parameters": {
+        "Left": ["Int4", "Text"]
+      }
+    },
+    "query": "\nINSERT INTO view_counts (view_count, slug)\nVALUES ($1::integer, $2::text)\n            "
+  },
+  "7d37308df2aa02ca7f36ff5bbe78c457b01b20036acfe0443ef855a14603076b": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "slug",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "view_count",
+          "ordinal": 2,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [false, false, false],
+      "parameters": {
+        "Left": ["Int4", "Text"]
+      }
+    },
+    "query": "\nINSERT INTO view_counts (view_count, slug)\nVALUES ($1::integer, $2::text)\nRETURNING *\n            "
+  }
 }
