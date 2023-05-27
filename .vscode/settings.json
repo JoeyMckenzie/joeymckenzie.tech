@@ -16,7 +16,6 @@
     "source.fixAll": true,
     "source.organizeImports": true
   },
-  "dotenv.enableAutocloaking": false,
   "grammarly.selectors": [
     {
       "language": "markdown",

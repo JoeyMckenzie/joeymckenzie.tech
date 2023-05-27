@@ -43,10 +43,13 @@ pub async fn get_all_view_counts(
 ) -> Result<Json<ViewCountsResponse>, AppServerError> {
     info!("retrieving all view counts for blogs");
     let view_counts = state.repository.get_view_counts().await?;
+
+    info!("view counts retrieved: {:?}", view_counts);
     let mapped_view_counts = view_counts
         .into_iter()
         .map(|vc| ViewCountResponse::new(vc.view_count, vc.slug))
         .collect();
+
     let response = ViewCountsResponse::new(mapped_view_counts);
     Ok(Json(response))
 }

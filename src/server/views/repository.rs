@@ -3,7 +3,7 @@ use tracing::info;
 
 use crate::server::errors::AppServerError;
 
-#[derive(FromRow)]
+#[derive(Debug, FromRow)]
 pub struct ViewCountQuery {
     id: i32,
     pub view_count: i32,

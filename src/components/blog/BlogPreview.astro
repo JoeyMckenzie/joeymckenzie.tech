@@ -6,9 +6,6 @@ import ViewCount from './ViewCount.svelte';
 type ContentData = CollectionEntry<'blog'>['data'];
 export type Props = Omit<ContentData, 'published'> & { slug: string };
 
-const apiBaseUrl = import.meta.env.API_BASE_URL;
-const viewCountThreshold = +import.meta.env.VIEW_COUNT_SHOW_THRESHOLD;
-
 const { category, title, description, slug, pubDate } = Astro.props;
 ---
 
@@ -19,7 +16,7 @@ const { category, title, description, slug, pubDate } = Astro.props;
       class="relative z-10 rounded-full bg-neutral-700 py-1.5 px-3 font-medium text-neutral-300"
       >{category}</span
     >
-    <ViewCount {slug} {apiBaseUrl} {viewCountThreshold} client:load />
+    <ViewCount {slug} client:load />
   </div>
   <a href={`/blog/${slug}`}>
     <div class="group relative">

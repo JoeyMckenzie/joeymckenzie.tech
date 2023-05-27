@@ -35,4 +35,5 @@ sqlx = { version = "0.6", features = [
   "postgres",
   "migrate",
   "offline",
+  "macros",
 ] }
