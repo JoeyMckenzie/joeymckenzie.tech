@@ -1,7 +1,6 @@
 use anyhow::Context;
-use config::{Config, Environment, File};
+use config::{Config, File};
 use serde_derive::Deserialize;
-use tracing::info;
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
@@ -32,13 +31,9 @@ impl Settings {
 
         let builder = Config::builder()
             .add_source(File::with_name(&format!("config/{}.toml", environment)).required(true))
-            // Add in settings from the environment (with a prefix of APP)
-            // Eg.. `APP_DEBUG=1 ./target/app` would set the `debug` key
-            .add_source(Environment::with_prefix("app"))
             .build()
             .context("configuration was unable to build")?;
 
-        // You can deserialize (and thus freeze) the entire configuration as
         let settings = builder
             .try_deserialize()
             .context("error while attempting set configuration")?;
