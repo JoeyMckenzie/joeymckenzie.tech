@@ -1,28 +1,21 @@
 ---
+import LatestBlogs from '@/components/blog/LatestBlogs.astro';
+import SilentViewCounts from '@/components/blog/SilentViewCounts.svelte';
+import Intro from '@/components/home/Intro.astro';
 import SocialButtons from '@/components/home/SocialButtons.astro';
 import Header from '@/components/layout/Header.astro';
-import InlineBold from '@/components/shared/InlineBold.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const apiBaseUrl = import.meta.env.API_BASE_URL;
 ---
 
 <BaseLayout
   title="Hi, I'm Joey"
   description="My personal slice of the internet."
 >
+  <SilentViewCounts {apiBaseUrl} client:load />
   <Header title="joeymckenzie.tech" />
-  <div class="flex flex-row items-center gap-x-4">
-    <div
-      class="prose mx-auto inline-flex max-w-2xl flex-col text-sm leading-6 text-neutral-400"
-    >
-      <p class="mt-6">
-        Hi, I'm Joey. I'm a
-        <InlineBold>Senior Software Engineer</InlineBold> based in Northern California
-        working in fintech. I enjoy writing about software, design, dad jokes, and
-        cheap beer among a few other things. I like building fast and efficient web
-        services, learning new things, and writing code in the open source ecosystem.
-        If you&apos;d like to get in touch, feel free to reach on on any of my socials.
-      </p>
-    </div>
-  </div>
+  <Intro />
   <SocialButtons />
+  <LatestBlogs />
 </BaseLayout>

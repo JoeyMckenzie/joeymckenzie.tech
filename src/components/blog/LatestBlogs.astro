@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import BlogPreview from './BlogPreview.astro';
+
+const posts = (await getCollection('blog'))
+  .filter((p) => p.data.published)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
+---
+
+<div class="pt-8 pb-4">
+  <h2
+    class="font-mono text-left sm:text-center text-2xl font-semibold tracking-tight text-neutral-400 sm:text-3xl"
+  >
+    Latest posts
+  </h2>
+  <div class="mx-auto">
+    <div
+      class="mx-auto grid max-w-2xl grid-cols-1 gap-y-12 gap-x-8 pt-10 sm:grid-cols-3 lg:mx-0 lg:max-w-none lg:grid-cols-3"
+    >
+      {
+        posts.map(({ data, slug }) => (
+          <BlogPreview
+            slug={slug}
+            pubDate={data.pubDate}
+            category={data.category}
+            description={data.description}
+            title={data.title}
+          />
+        ))
+      }
+    </div>
+  </div>
+</div>

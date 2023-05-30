@@ -5,12 +5,7 @@
   export let artist = '';
 </script>
 
-<a
-  {href}
-  target="_blank"
-  rel="noreferrer"
-  class="flex flex-col space-y-1 pt-6 md:pt-0"
->
+<a {href} target="_blank" rel="noreferrer" class="flex flex-col space-y-1">
   <h2
     class="inline-flex justify-center font-ubuntu text-xs text-neutral-400 md:justify-start"
   >
@@ -25,8 +20,10 @@
       alt="Spotify listenting to"
       class="rounded-sm"
     />
-    <div class="flex flex-col">
-      <h4 class="text-xs font-semibold text-neutral-300">{trackTitle}</h4>
+    <div class="flex flex-col truncate">
+      <h4 class="text-xs font-semibold text-neutral-300">
+        {trackTitle}
+      </h4>
       <p class="text-xs text-neutral-400">{artist}</p>
     </div>
   </div>
