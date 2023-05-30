@@ -6,3 +6,5 @@ heroImage: '/blog/serverless-databases-with-go-planetscale/planetscale_meme.jpg'
 category: 'go'
 published: false
 ---
+
+Another day, another post about something serverless. Keeping true to form over my last few posts, I've been messing around with just about serverless everything for personal projects.
