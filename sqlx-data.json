@@ -97,5 +97,31 @@
       }
     },
     "query": "\nINSERT INTO view_counts (view_count, slug)\nVALUES ($1::integer, $2::text)\nRETURNING *\n            "
+  },
+  "f353abc7fcc5d1eecd757f60dced6540e916b5419259849b496f62dc84f859f6": {
+    "describe": {
+      "columns": [
+        {
+          "name": "id",
+          "ordinal": 0,
+          "type_info": "Int4"
+        },
+        {
+          "name": "slug",
+          "ordinal": 1,
+          "type_info": "Text"
+        },
+        {
+          "name": "view_count",
+          "ordinal": 2,
+          "type_info": "Int4"
+        }
+      ],
+      "nullable": [false, false, false],
+      "parameters": {
+        "Left": ["Int8"]
+      }
+    },
+    "query": "\nSELECT *\nFROM view_counts\nORDER BY view_count DESC\nFETCH FIRST $1 ROWS ONLY\n        "
   }
 }

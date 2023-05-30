@@ -14,6 +14,7 @@ pub struct Server {
     pub timeout_duration_seconds: u8,
     pub port: u16,
     pub cors_origins: Vec<String>,
+    pub top_posts_threshold: u8,
 }
 
 #[derive(Debug, Deserialize)]

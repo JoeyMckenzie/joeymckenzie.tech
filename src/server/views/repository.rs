@@ -110,4 +110,24 @@ RETURNING *
 
         Ok(view_counts)
     }
+
+    pub async fn get_top_view_counts(
+        &self,
+        view_count_threshold: i64,
+    ) -> Result<Vec<ViewCountQuery>, AppServerError> {
+        let view_counts = query_as!(
+            ViewCountQuery,
+            r#"
+SELECT *
+FROM view_counts
+ORDER BY view_count DESC
+FETCH FIRST $1 ROWS ONLY
+        "#,
+            view_count_threshold
+        )
+        .fetch_all(&self.pool)
+        .await?;
+
+        Ok(view_counts)
+    }
 }

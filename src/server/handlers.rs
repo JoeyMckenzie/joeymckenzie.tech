@@ -65,3 +65,22 @@ pub async fn get_view_count_for_slug(
         view_count.slug,
     )))
 }
+
+pub async fn get_top_view_counts(
+    State(state): State<Arc<AppState>>,
+) -> Result<Json<ViewCountsResponse>, AppServerError> {
+    info!("retrieving top view counts");
+    let view_counts = state
+        .repository
+        .get_top_view_counts(state.settings.server.top_posts_threshold.into())
+        .await?;
+
+    info!("top view counts retrieved: {:?}", view_counts);
+    let mapped_view_counts = view_counts
+        .into_iter()
+        .map(|vc| ViewCountResponse::new(vc.view_count, vc.slug))
+        .collect();
+
+    let response = ViewCountsResponse::new(mapped_view_counts);
+    Ok(Json(response))
+}

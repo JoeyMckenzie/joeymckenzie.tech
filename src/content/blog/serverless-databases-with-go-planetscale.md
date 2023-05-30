@@ -7,4 +7,4 @@ category: 'go'
 published: false
 ---
 
-Another day, another post about something serverless. Keeping true to form over my last few posts, I've been messing around with just about serverless everything for personal projects.
+Another day, another post about something serverless. Keeping true to form over my last few posts, I've been messing around with just about everything serverless everything for personal projects.
