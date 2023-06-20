@@ -12,6 +12,11 @@ install_crate = "cargo-watch"
 command = "cargo"
 args = ["watch", "-x", "run"]
 
+[tasks.prepare]
+install_crate = "cargo-chef"
+command = "cargo"
+args = ["+nightly", "chef", "prepare", "--recipe-path", "recipe.json"]
+
 [tasks.docker-build]
 command = "docker"
 env_files = [".env"]

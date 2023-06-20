@@ -3,7 +3,8 @@
 
   export let slug = '';
 
-  $: viewCount = $viewCountStore.find((vc) => vc.slug === slug)?.count ?? 0;
+  $: viewCount =
+    $viewCountStore.allBlogs?.counts.find((vc) => vc.slug === slug)?.count ?? 0;
 </script>
 
 {#if viewCount > 0}

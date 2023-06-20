@@ -4,15 +4,33 @@
   import { viewCountStore } from './view-counts';
 
   export let apiBaseUrl = '';
+  export let includeTopCounts = false;
 
-  async function getViewCounts(): Promise<ViewCountMetadata> {
+  async function getAllViewCounts(): Promise<ViewCountMetadata> {
     const viewCountResponse = await fetch(`${apiBaseUrl}/views`);
     return viewCountResponse.json();
   }
 
+  async function getTopViewCounts(): Promise<ViewCountMetadata> {
+    const viewCountResponse = await fetch(`${apiBaseUrl}/views/top`);
+    return viewCountResponse.json();
+  }
+
   onMount(async () => {
-    const viewCountData = await getViewCounts();
+    const viewCounts = [getAllViewCounts()];
+
+    if (includeTopCounts) {
+      viewCounts.push(getTopViewCounts());
+    }
+
     const { set } = viewCountStore;
-    set(viewCountData.counts);
+    const [allViewCountsData, topViewCountsData] = await Promise.all(
+      viewCounts
+    );
+
+    set({
+      allBlogs: allViewCountsData,
+      topBlogs: topViewCountsData,
+    });
   });
 </script>

@@ -9,6 +9,18 @@ export type ViewCountMetadata = {
   counts: ViewCountMeta[];
 };
 
-const initialViewCountMetadata: ViewCountMeta[] = [];
+export type ViewCountStoreState = {
+  allBlogs?: ViewCountMetadata | undefined;
+  topBlogs?: ViewCountMetadata | undefined;
+};
 
-export const viewCountStore = writable(initialViewCountMetadata);
+const initialViewCountMetadata: ViewCountMetadata = {
+  counts: [],
+};
+
+const initialViewCountStoreState: ViewCountStoreState = {
+  allBlogs: initialViewCountMetadata,
+  topBlogs: initialViewCountMetadata,
+};
+
+export const viewCountStore = writable(initialViewCountStoreState);

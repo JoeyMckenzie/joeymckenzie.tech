@@ -1,5 +1,5 @@
 [package]
-name = "serverless-rust-with-shuttle"
+name = "with-shuttle"
 version = "0.1.0"
 edition = "2021"
 publish = false

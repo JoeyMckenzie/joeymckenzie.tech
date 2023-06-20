@@ -23,13 +23,18 @@ pnpm-debug.log*
 # turbo
 .turbo
 
-# shuttle/rust
+# rust
 Secrets.toml
 /target
 /Cargo.lock
-/samples/**/target
-/samples/**/Cargo.lock
+/examples/**/target
+/examples/**/node_modules
+/examples/**/Cargo.lock
 
 # zig
-/samples/**/zig-cache
-/samples/**/zig-out
+/examples/zig/**/zig-cache
+/examples/zig/**/zig-out
+
+# dotnet
+/examples/dotnet/**/obj
+/examples/dotnet/**/bin

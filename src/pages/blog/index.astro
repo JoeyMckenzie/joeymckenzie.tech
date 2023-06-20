@@ -9,7 +9,7 @@ const apiBaseUrl = import.meta.env.API_BASE_URL;
 ---
 
 <BaseLayout>
-  <SilentViewCounts {apiBaseUrl} client:load />
+  <SilentViewCounts {apiBaseUrl} includeTopCounts={true} client:load />
   <Header title="Blog" />
   <BlogHeader />
   <BlogPreviews />

@@ -2,7 +2,7 @@
   "[*]": {
     "editor.tabSize": 2
   },
-  "[rust,md]": {
+  "[rust,md,cs]": {
     "editor.tabSize": 4
   },
   "eslint.validate": [
@@ -10,7 +10,8 @@
     "javascriptreact",
     "astro", // Enable .astro
     "typescript", // Enable .ts
-    "typescriptreact" // Enable .tsx
+    "typescriptreact", // Enable .tsx,
+    "markdown"
   ],
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
@@ -22,5 +23,6 @@
       "scheme": "file"
     }
   ],
-  "rust-analyzer.linkedProjects": ["./Cargo.toml"]
+  "rust-analyzer.linkedProjects": ["./Cargo.toml"],
+  "dotnet.defaultSolution": "WithNeonFly.sln"
 }

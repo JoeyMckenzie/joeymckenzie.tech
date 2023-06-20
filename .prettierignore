@@ -57,3 +57,18 @@ dist
 
 Cargo.lock
 /target
+
+# turbo
+.turbo
+
+# shuttle/rust
+Secrets.toml
+/target
+/Cargo.lock
+/examples/**/target
+/examples/**/Cargo.lock
+
+# zig
+/examples/zig/**/zig-cache
+/examples/zig/**/zig-out
+
