@@ -14,7 +14,7 @@
     "turbo": "turbo build lint",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check .",
-    "format:watch": "pnpm dlx onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
+    "format:watch": "pnpm exec onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
   },
   "lint-staged": {
     "**/*.{cjs,mjs,ts,svelte,astro,md,json,yaml}": "pnpm format",
