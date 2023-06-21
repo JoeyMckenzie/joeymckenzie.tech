@@ -4,6 +4,7 @@ description: 'Because who wants to manage their database infrastructure in 2023?
 pubDate: 'May 31 2023'
 heroImage: '/blog/serverless-dotnet-planetscale-fly/planetscale_meme.jpg'
 category: '.NET'
+published: false
 ---
 
 Another day, another post about something serverless. Keeping true to form over my last few posts, I've been messing around with just about everything serverless everything for personal projects. I recently delved into yet another implementation of GitHub's [RealWorld](https://github.com/gothinkster/realworld) spec, as I tend to do when exploring new languages and ecosystems, and Go was the language of choice this time around.
