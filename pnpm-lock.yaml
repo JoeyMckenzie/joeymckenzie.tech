@@ -80,11 +80,11 @@ devDependencies:
     specifier: ^0.10.0
     version: 0.10.0
   prettier-plugin-svelte:
-    specifier: ^2.10.0
-    version: 2.10.0(prettier@2.8.4)(svelte@3.59.1)
+    specifier: ^2.10.1
+    version: 2.10.1(prettier@2.8.4)(svelte@3.59.1)
   prettier-plugin-tailwindcss:
     specifier: ^0.3.0
-    version: 0.3.0(prettier-plugin-astro@0.10.0)(prettier-plugin-svelte@2.10.0)(prettier@2.8.4)
+    version: 0.3.0(prettier-plugin-astro@0.10.0)(prettier-plugin-svelte@2.10.1)(prettier@2.8.4)
   turbo:
     specifier: ^1.9.8
     version: 1.9.8
@@ -6526,7 +6526,7 @@ packages:
       }
     peerDependencies:
       prettier: ^1.16.4 || ^2.0.0
-      svelte: ^3.2.0
+      svelte: ^3.2.0 || ^4.0.0-next.0
     dependencies:
       prettier: 2.8.4
       svelte: 3.59.1
@@ -6589,7 +6589,7 @@ packages:
     dependencies:
       prettier: 2.8.4
       prettier-plugin-astro: 0.10.0
-      prettier-plugin-svelte: 2.10.0(prettier@2.8.4)(svelte@3.59.1)
+      prettier-plugin-svelte: 2.10.1(prettier@2.8.4)(svelte@3.59.1)
     dev: true
 
   /prettier@2.8.4:
