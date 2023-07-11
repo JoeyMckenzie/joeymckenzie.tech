@@ -1,4 +1,4 @@
-lockfileVersion: '6.1'
+lockfileVersion: '6.0'
 
 settings:
   autoInstallPeers: true
@@ -9,8 +9,8 @@ dependencies:
     specifier: ^0.19.0
     version: 0.19.0(astro@2.5.1)(rollup@3.22.0)
   '@astrojs/rss':
-    specifier: ^2.1.1
-    version: 2.1.1
+    specifier: ^2.4.3
+    version: 2.4.3
   '@astrojs/sitemap':
     specifier: ^1.1.0
     version: 1.1.0
@@ -33,8 +33,8 @@ dependencies:
     specifier: ^2.5.1
     version: 2.5.1
   astro-icon:
-    specifier: ^0.8.0
-    version: 0.8.0
+    specifier: ^0.8.1
+    version: 0.8.1
   svelte:
     specifier: ^3.54.0
     version: 3.59.1
@@ -86,8 +86,8 @@ devDependencies:
     specifier: ^0.3.0
     version: 0.3.0(prettier-plugin-astro@0.10.0)(prettier-plugin-svelte@2.10.1)(prettier@2.8.4)
   turbo:
-    specifier: ^1.9.8
-    version: 1.9.8
+    specifier: ^1.10.7
+    version: 1.10.7
 
 packages:
   /@ampproject/remapping@2.2.0:
@@ -238,10 +238,10 @@ packages:
       prismjs: 1.29.0
     dev: false
 
-  /@astrojs/rss@2.1.1:
+  /@astrojs/rss@2.4.3:
     resolution:
       {
-        integrity: sha512-3BpCqyCmVWfrGqyc1YXUQf7O3QjORYNmvxzeKvp0E+7KGiKj8ckRzwj90xGYjbKcb/BwKfzYgek4+BrZ1aqQtA==,
+        integrity: sha512-Dc8lxsXiDlnxONVIUuc3ohO1+vV1Hp9fRFdUianOola0S9/xv/6FzIHhkQ62MkaFSlcZm5uIOllRWNKVvuFuoA==,
       }
     dependencies:
       fast-xml-parser: 4.1.3
@@ -2071,10 +2071,10 @@ packages:
       - supports-color
     dev: true
 
-  /astro-icon@0.8.0:
+  /astro-icon@0.8.1:
     resolution:
       {
-        integrity: sha512-sCzhZcl46BIyLJVg89hq5J4uQABn2psmGvK4cUaxib+M/kBI3TrPy1w3g2O5h/WcrTHLVN9LyxjgkD4lEJJFpw==,
+        integrity: sha512-APk+fbFnoyGdIVSPFrdrOW9YBK96/1fYuVe7ULTGW92+z00RKB8GfLJiUvzNVXUAX2rZJCFmruGVF4rrhcTYsg==,
       }
     dependencies:
       node-fetch: 3.3.0
@@ -6451,7 +6451,6 @@ packages:
       nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
-    dev: false
 
   /postcss@8.4.24:
     resolution:
@@ -6463,6 +6462,7 @@ packages:
       nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
+    dev: false
 
   /preferred-pm@3.0.3:
     resolution:
@@ -6510,10 +6510,10 @@ packages:
       synckit: 0.8.5
     dev: false
 
-  /prettier-plugin-svelte@2.10.0(prettier@2.8.4)(svelte@3.59.1):
+  /prettier-plugin-svelte@2.10.1(prettier@2.8.4)(svelte@3.59.1):
     resolution:
       {
-        integrity: sha512-GXMY6t86thctyCvQq+jqElO+MKdB09BkL3hexyGP3Oi8XLKRFaJP1ud/xlWCZ9ZIa2BxHka32zhHfcuU+XsRQg==,
+        integrity: sha512-Wlq7Z5v2ueCubWo0TZzKc9XHcm7TDxqcuzRuGd0gcENfzfT4JZ9yDlCbEgxWgiPmLHkBjfOtpAWkcT28MCDpUQ==,
       }
     peerDependencies:
       prettier: ^1.16.4 || ^2.0.0
@@ -6523,7 +6523,7 @@ packages:
       svelte: 3.59.1
     dev: true
 
-  /prettier-plugin-tailwindcss@0.3.0(prettier-plugin-astro@0.10.0)(prettier-plugin-svelte@2.10.0)(prettier@2.8.4):
+  /prettier-plugin-tailwindcss@0.3.0(prettier-plugin-astro@0.10.0)(prettier-plugin-svelte@2.10.1)(prettier@2.8.4):
     resolution:
       {
         integrity: sha512-009/Xqdy7UmkcTBpwlq7jsViDqXAYSOMLDrHAdTMlVZOrKfM2o9Ci7EMWTMZ7SkKBFTG04UM9F9iM2+4i6boDA==,
@@ -7648,10 +7648,10 @@ packages:
       typescript: 4.9.5
     dev: true
 
-  /turbo-darwin-64@1.9.8:
+  /turbo-darwin-64@1.10.7:
     resolution:
       {
-        integrity: sha512-PkTdBjPfgpj/Dob/6SjkzP0BBP80/KmFjLEocXVEECCLJE6tHKbWLRdvc79B0N6SufdYdZ1uvvoU3KPtBokSPw==,
+        integrity: sha512-N2MNuhwrl6g7vGuz4y3fFG2aR1oCs0UZ5HKl8KSTn/VC2y2YIuLGedQ3OVbo0TfEvygAlF3QGAAKKtOCmGPNKA==,
       }
     cpu: [x64]
     os: [darwin]
@@ -7659,10 +7659,10 @@ packages:
     dev: true
     optional: true
 
-  /turbo-darwin-arm64@1.9.8:
+  /turbo-darwin-arm64@1.10.7:
     resolution:
       {
-        integrity: sha512-sLwqOx3XV57QCEoJM9GnDDnnqidG8wf29ytxssBaWHBdeJTjupyrmzTUrX+tyKo3Q+CjWvbPLyqVqxT4g5NuXQ==,
+        integrity: sha512-WbJkvjU+6qkngp7K4EsswOriO3xrNQag7YEGRtfLoDdMTk4O4QTeU6sfg2dKfDsBpTidTvEDwgIYJhYVGzrz9Q==,
       }
     cpu: [arm64]
     os: [darwin]
@@ -7670,10 +7670,10 @@ packages:
     dev: true
     optional: true
 
-  /turbo-linux-64@1.9.8:
+  /turbo-linux-64@1.10.7:
     resolution:
       {
-        integrity: sha512-AMg6VT6sW7aOD1uOs5suxglXfTYz9T0uVyKGKokDweGOYTWmuTMGU5afUT1tYRUwQ+kVPJI+83Atl5Ob0oBsgw==,
+        integrity: sha512-x1CF2CDP1pDz/J8/B2T0hnmmOQI2+y11JGIzNP0KtwxDM7rmeg3DDTtDM/9PwGqfPotN9iVGgMiMvBuMFbsLhg==,
       }
     cpu: [x64]
     os: [linux]
@@ -7681,10 +7681,10 @@ packages:
     dev: true
     optional: true
 
-  /turbo-linux-arm64@1.9.8:
+  /turbo-linux-arm64@1.10.7:
     resolution:
       {
-        integrity: sha512-tLnxFv+OIklwTjiOZ8XMeEeRDAf150Ry4BCivNwgTVFAqQGEqkFP6KGBy56hb5RRF1frPQpoPGipJNVm7c8m1w==,
+        integrity: sha512-JtnBmaBSYbs7peJPkXzXxsRGSGBmBEIb6/kC8RRmyvPAMyqF8wIex0pttsI+9plghREiGPtRWv/lfQEPRlXnNQ==,
       }
     cpu: [arm64]
     os: [linux]
@@ -7692,10 +7692,10 @@ packages:
     dev: true
     optional: true
 
-  /turbo-windows-64@1.9.8:
+  /turbo-windows-64@1.10.7:
     resolution:
       {
-        integrity: sha512-r3pCjvXTMR7kq2E3iqwFlN1R7pFO/TOsuUjMhOSPP7HwuuUIinAckU4I9foM3q7ZCQd1XXScBUt3niDyHijAqQ==,
+        integrity: sha512-7A/4CByoHdolWS8dg3DPm99owfu1aY/W0V0+KxFd0o2JQMTQtoBgIMSvZesXaWM57z3OLsietFivDLQPuzE75w==,
       }
     cpu: [x64]
     os: [win32]
@@ -7703,10 +7703,10 @@ packages:
     dev: true
     optional: true
 
-  /turbo-windows-arm64@1.9.8:
+  /turbo-windows-arm64@1.10.7:
     resolution:
       {
-        integrity: sha512-CWzRbX2TM5IfHBC6uWM659qUOEDC4h0nn16ocG8yIq1IF3uZMzKRBHgGOT5m1BHom+R08V0NcjTmPRoqpiI0dg==,
+        integrity: sha512-D36K/3b6+hqm9IBAymnuVgyePktwQ+F0lSXr2B9JfAdFPBktSqGmp50JNC7pahxhnuCLj0Vdpe9RqfnJw5zATA==,
       }
     cpu: [arm64]
     os: [win32]
@@ -7714,20 +7714,20 @@ packages:
     dev: true
     optional: true
 
-  /turbo@1.9.8:
+  /turbo@1.10.7:
     resolution:
       {
-        integrity: sha512-dTouGZBm4a2fE0OPafcTQERCp4i3ZOow0Pr0JlOyxKmzJy0JRwXypH013kbZoK6k1ET5tS/g9rwUXIM/AmWXXQ==,
+        integrity: sha512-xm0MPM28TWx1e6TNC3wokfE5eaDqlfi0G24kmeHupDUZt5Wd0OzHFENEHMPqEaNKJ0I+AMObL6nbSZonZBV2HA==,
       }
     hasBin: true
     requiresBuild: true
     optionalDependencies:
-      turbo-darwin-64: 1.9.8
-      turbo-darwin-arm64: 1.9.8
-      turbo-linux-64: 1.9.8
-      turbo-linux-arm64: 1.9.8
-      turbo-windows-64: 1.9.8
-      turbo-windows-arm64: 1.9.8
+      turbo-darwin-64: 1.10.7
+      turbo-darwin-arm64: 1.10.7
+      turbo-linux-64: 1.10.7
+      turbo-linux-arm64: 1.10.7
+      turbo-windows-64: 1.10.7
+      turbo-windows-arm64: 1.10.7
     dev: true
 
   /type-check@0.4.0:
