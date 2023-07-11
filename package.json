@@ -50,6 +50,6 @@
     "prettier-plugin-astro": "^0.10.0",
     "prettier-plugin-svelte": "^2.10.1",
     "prettier-plugin-tailwindcss": "^0.3.0",
-    "turbo": "^1.9.8"
+    "turbo": "^1.10.7"
   }
 }
