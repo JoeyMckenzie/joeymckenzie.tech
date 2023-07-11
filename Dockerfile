@@ -16,24 +16,11 @@ COPY ./Cargo.toml ./
 # note: all the sample crates are required as we're in the context of a workspace
 # though only for the build step as we'll only use the crate that gets deployed
 # to fly as the crate that runs in the runtime container
-COPY ./samples ./samples
+COPY ./examples ./examples
 COPY ./sqlx-data.json ./sqlx-data.json
 COPY ./migrations ./migrations
 COPY ./src/main.rs ./src/main.rs
 COPY ./src/server ./src/server
-COPY ./scripts/install.sh ./
-
-# we need to install a few tools as root, so change the user to root so we can "sudo" commands
-USER root
-
-# install protoc before building our crates, as our examples involve some shuttle samples
-RUN set -eux; \
-    export DEBIAN_FRONTEND=noninteractive; \
-    apt update; \
-    apt install --yes curl unzip pkg-config libssl-dev sudo; \
-    apt clean autoclean; \
-    apt autoremove --yes; \
-    ./install.sh;
 
 # on rebuilds, we explicitly cache our rust build dependencies to speed things up
 RUN --mount=type=cache,target=/app/target \
@@ -41,6 +28,11 @@ RUN --mount=type=cache,target=/app/target \
     --mount=type=cache,target=/usr/local/cargo/git \
     --mount=type=cache,target=/usr/local/rustup \
     set -eux; \
+    export DEBIAN_FRONTEND=noninteractive; \
+    apt update; \
+    apt install --yes pkg-config libssl-dev; \
+    apt clean autoclean; \
+    apt autoremove --yes; \
     rustup install nightly; \
     cargo build --workspace --release; \
     objcopy --compress-debug-sections target/release/joey-mckenzie-tech ./server

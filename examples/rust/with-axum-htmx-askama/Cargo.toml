@@ -9,6 +9,7 @@ edition = "2021"
 anyhow = "1.0.71"
 askama = "0.12"
 axum = "0.6"
+serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
 tower = "0.4"
 tower-http = { version = "0.4", features = ["fs"] }
