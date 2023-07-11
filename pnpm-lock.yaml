@@ -56,8 +56,8 @@ devDependencies:
     specifier: ^8.7.0
     version: 8.7.0(eslint@8.35.0)
   eslint-plugin-astro:
-    specifier: ^0.27.0
-    version: 0.27.0(eslint@8.35.0)
+    specifier: ^0.27.2
+    version: 0.27.2(eslint@8.35.0)
   eslint-plugin-jsx-a11y:
     specifier: ^6.7.1
     version: 6.7.1(eslint@8.35.0)
@@ -3210,10 +3210,10 @@ packages:
       eslint: 8.35.0
     dev: true
 
-  /eslint-plugin-astro@0.27.0(eslint@8.35.0):
+  /eslint-plugin-astro@0.27.2(eslint@8.35.0):
     resolution:
       {
-        integrity: sha512-r3PizFY+xwQMRWcEvRKCWQkfHNl2Q+7ANN1ZIpnvJZP97KUX8F2WUnTvPuk2jJGqnRa+zQ5NgoJ9aenFKcGP9A==,
+        integrity: sha512-MUEkKXvj4onjq9/IyLMfbg8nUjY+SznhHcOvKDnHLgqzGzxUEoaOTR+mPZrDIyqAPC716GxpjsK9MDgoYLPyFA==,
       }
     engines: { node: ^14.18.0 || >=16.0.0 }
     peerDependencies:
@@ -3224,7 +3224,7 @@ packages:
       '@typescript-eslint/types': 5.59.5
       astro-eslint-parser: 0.14.0
       eslint: 8.35.0
-      postcss: 8.4.21
+      postcss: 8.4.23
       postcss-selector-parser: 6.0.11
     transitivePeerDependencies:
       - supports-color
@@ -5836,14 +5836,6 @@ packages:
         integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==,
       }
 
-  /nanoid@3.3.4:
-    resolution:
-      {
-        integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==,
-      }
-    engines: { node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1 }
-    hasBin: true
-
   /nanoid@3.3.6:
     resolution:
       {
@@ -5851,7 +5843,6 @@ packages:
       }
     engines: { node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1 }
     hasBin: true
-    dev: false
 
   /natural-compare-lite@1.4.0:
     resolution:
@@ -6445,9 +6436,10 @@ packages:
       }
     engines: { node: ^10 || ^12 || >=14 }
     dependencies:
-      nanoid: 3.3.4
+      nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
+    dev: false
 
   /postcss@8.4.23:
     resolution:
@@ -6471,7 +6463,6 @@ packages:
       nanoid: 3.3.6
       picocolors: 1.0.0
       source-map-js: 1.0.2
-    dev: false
 
   /preferred-pm@3.0.3:
     resolution:
