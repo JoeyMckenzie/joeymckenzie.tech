@@ -12,8 +12,8 @@ dependencies:
     specifier: ^2.4.3
     version: 2.4.3
   '@astrojs/sitemap':
-    specifier: ^1.1.0
-    version: 1.1.0
+    specifier: ^1.4.0
+    version: 1.4.0
   '@astrojs/svelte':
     specifier: ^2.2.0
     version: 2.2.0(astro@2.5.1)(svelte@3.59.1)(typescript@4.9.5)(vite@4.3.9)
@@ -188,8 +188,8 @@ packages:
       kleur: 4.1.5
     dev: false
 
-  /@astrojs/sitemap@1.1.0:
-    resolution: {integrity: sha512-JnKZcbD0WdFxw2VAj3qXb0cYKuvk6nwBYPfUy+plSa9TC9hikQrDFpd7yapOPTRf3AdmUittzFckoTw/nUilCw==}
+  /@astrojs/sitemap@1.4.0:
+    resolution: {integrity: sha512-uTK77kcg7iTiik+u7rTGG6vK4ZWTfYMaVnFndOVQrLzaE5xivmQgIbVLtlN+xRcME5n/m6vYQFJmogFR+elGCw==}
     dependencies:
       sitemap: 7.1.1
       zod: 3.21.4
