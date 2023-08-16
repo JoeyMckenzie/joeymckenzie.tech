@@ -1,4 +1,4 @@
-ARG RUST_VERSION=1.69.0
+ARG RUST_VERSION=1.70.0
 ARG DEBIAN_VERSION=11.6
 
 # all credit goes to https://fasterthanli.me/articles/remote-development-with-rust-on-fly-io#what-the-heck-is-fly-io-for-even
