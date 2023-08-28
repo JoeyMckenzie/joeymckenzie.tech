@@ -21,33 +21,33 @@ args = ["+nightly", "chef", "prepare", "--recipe-path", "recipe.json"]
 command = "docker"
 env_files = [".env"]
 args = [
-    "build",
-    ".",
-    "--build-arg",
-    "SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}",
-    "--build-arg",
-    "SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}",
-    "--build-arg",
-    "SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}",
-    "--build-arg",
-    "DATABASE_URL=${DATABASE_URL}",
-    "--build-arg",
-    "RUST_ENV=${RUST_ENV}",
-    "-t",
-    "${DOCKER_BUILD_TAG}",
+  "build",
+  ".",
+  "--build-arg",
+  "SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}",
+  "--build-arg",
+  "SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}",
+  "--build-arg",
+  "SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}",
+  "--build-arg",
+  "DATABASE_URL=${DATABASE_URL}",
+  "--build-arg",
+  "RUST_ENV=${RUST_ENV}",
+  "-t",
+  "${DOCKER_BUILD_TAG}",
 ]
 
 [tasks.docker-run]
 command = "docker"
 args = [
-    "run",
-    "-d",
-    "-p",
-    "${PORT}:${PORT}",
-    "--name",
-    "${DOCKER_BUILD_TAG}",
-    "-it",
-    "${DOCKER_BUILD_TAG}",
+  "run",
+  "-d",
+  "-p",
+  "${PORT}:${PORT}",
+  "--name",
+  "${DOCKER_BUILD_TAG}",
+  "-it",
+  "${DOCKER_BUILD_TAG}",
 ]
 
 [tasks.docker-stop]

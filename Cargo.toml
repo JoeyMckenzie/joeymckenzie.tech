@@ -1,39 +1,12 @@
-[workspace]
-members = [".", "examples/rust/*"]
-
 [package]
 name = "joey-mckenzie-tech"
 version = "0.1.0"
 edition = "2021"
-publish = false
-license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-# framework crates
+axum = "0.6"
 tokio = { version = "1", features = ["full"] }
-
-# web crates
-axum = { version = "0.6", features = ["json"] }
-tower-http = { version = "0.4", features = ["limit", "timeout", "cors"] }
-hyper = "0.14"
-reqwest = { version = "0.11", features = ["json"] }
-
-# utility crates
-tracing = "0.1"
-serde = { version = "1.0", features = ["serde_derive"] }
-thiserror = "1"
-tracing-subscriber = { version = "0.3.17", features = ["env-filter"] }
-dotenvy = "0.15.7"
-clap = { version = "4.2.5", features = ["env"] }
-anyhow = "1.0.71"
-config = { version = "0.13", features = ["toml"] }
-serde_derive = "1"
-
-# database crates
-sqlx = { version = "0.6", features = [
-  "runtime-tokio-rustls",
-  "postgres",
-  "migrate",
-  "offline",
-  "macros",
-] }
+sqlx = { version = "0.7", features = ["runtime-tokio", "tls-rustls"] }
+tera = "1"
