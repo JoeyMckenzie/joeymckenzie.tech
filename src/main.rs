@@ -1,13 +1,18 @@
-use std::sync::OnceLock;
+mod blogs;
+mod routes;
+mod state;
+
+use std::{
+    collections::HashMap,
+    sync::{Arc, OnceLock, RwLock},
+};
 
 use anyhow::Context;
-use axum::{
-    extract::Path,
-    response::{Html, IntoResponse},
-    routing::get,
-    Router,
-};
-use tera::{Context as TeraContext, Tera};
+use axum::{routing::get, Router};
+use blogs::BlogCache;
+use routes::{blog, blog_page, home};
+use state::AppState;
+use tera::Tera;
 use tower_http::services::ServeDir;
 
 static TEMPLATES: OnceLock<Tera> = OnceLock::new();
@@ -20,6 +25,10 @@ async fn main() -> anyhow::Result<()> {
     let port = 8000_u16;
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], port));
 
+    let state = Arc::new(AppState {
+        cache: RwLock::new(HashMap::new()),
+    });
+
     let router = Router::new()
         .route("/", get(home))
         .route("/blog", get(blog))
@@ -27,7 +36,8 @@ async fn main() -> anyhow::Result<()> {
         .nest_service(
             "/assets",
             ServeDir::new(format!("{}/src/assets", assets_path.to_str().unwrap())),
-        );
+        )
+        .with_state(state);
 
     axum::Server::bind(&addr)
         .serve(router.into_make_service())
@@ -35,39 +45,6 @@ async fn main() -> anyhow::Result<()> {
         .expect("error while starting server");
 
     Ok(())
-}
-
-async fn home() -> impl IntoResponse {
-    let content = TEMPLATES
-        .get()
-        .unwrap()
-        .render("pages/home.html", &TeraContext::new())
-        .unwrap();
-
-    Html(content)
-}
-
-async fn blog() -> impl IntoResponse {
-    let content = TEMPLATES
-        .get()
-        .unwrap()
-        .render("pages/blog.html", &TeraContext::new())
-        .unwrap();
-
-    Html(content)
-}
-
-async fn blog_page(Path(slug): Path<String>) -> impl IntoResponse {
-    let mut context = TeraContext::new();
-    context.insert("slug", &slug);
-
-    let content = TEMPLATES
-        .get()
-        .unwrap()
-        .render("pages/blog-page.html", &context)
-        .unwrap();
-
-    Html(content)
 }
 
 fn load_templates() -> anyhow::Result<()> {

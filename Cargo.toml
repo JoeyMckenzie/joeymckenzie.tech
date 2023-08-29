@@ -15,3 +15,4 @@ serde = { version = "1.0.188", features = ["derive"] }
 tower = "0.4"
 tower-http = { version = "0.4", features = ["fs"] }
 anyhow = "1.0.75"
+pulldown-cmark = "0.9.3"
