@@ -6,11 +6,15 @@ CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
 [config] ## we want most/all of our tasks to run in the context of a workspace
 default_to_workspace = false
 
+[tasks.dev]
+run_task = { name = ["run", "styles"], parallel = true }
+
 [tasks.run]
 env = { "RUST_ENV" = "development" }
 install_crate = "cargo-watch"
 command = "cargo"
 args = ["watch", "-x", "run"]
+dependencies = ["styles"]
 
 [tasks.styles]
 command = "pnpm"
