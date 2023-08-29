@@ -12,6 +12,18 @@ install_crate = "cargo-watch"
 command = "cargo"
 args = ["watch", "-x", "run"]
 
+[tasks.styles]
+command = "pnpm"
+args = [
+  "dlx",
+  "tailwindcss",
+  "-i",
+  "./src/styles/globals.css",
+  "-o",
+  "./src/assets/main.css",
+  "--watch",
+]
+
 [tasks.prepare]
 install_crate = "cargo-chef"
 command = "cargo"
