@@ -2,10 +2,9 @@ use std::{collections::HashMap, env::current_dir, sync::OnceLock};
 
 use anyhow::Context;
 use gray_matter::{engine::YAML, Matter};
-use pulldown_cmark::{html::push_html, Parser};
 use tera::Tera;
 
-use crate::blogs::{into_context, BlogCache, BlogFrontmatter, BlogMeta};
+use crate::blogs::{into_context, BlogCache, BlogFrontmatter};
 
 pub static TEMPLATE_CACHE: OnceLock<Tera> = OnceLock::new();
 

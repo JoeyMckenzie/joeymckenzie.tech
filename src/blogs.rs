@@ -1,6 +1,5 @@
-use std::{collections::HashMap, env::current_dir, sync::OnceLock};
+use std::collections::HashMap;
 
-use anyhow::Context;
 use gray_matter::ParsedEntityStruct;
 use pulldown_cmark::{html::push_html, Parser};
 use serde::Deserialize;
@@ -23,14 +22,7 @@ pub struct BlogFrontmatter {
     pub tags: Vec<String>,
 }
 
-impl BlogFrontmatter {
-    fn into_context(self, content: String) -> tera::Context {
-        let mut context = tera::Context::new();
-        context.insert("title", &self.title);
-        context
-    }
-}
-
+/// Converts typed frontmatter content, including the markdown content, into a tera context.
 pub fn into_context(parsed_frontmatter: ParsedEntityStruct<BlogFrontmatter>) -> tera::Context {
     // Create parser with example Markdown text.
     let parser = Parser::new(&parsed_frontmatter.content);
@@ -43,12 +35,4 @@ pub fn into_context(parsed_frontmatter: ParsedEntityStruct<BlogFrontmatter>) -> 
     context.insert("title", &parsed_frontmatter.data.title);
     context.insert("content", &html_output);
     context
-}
-
-/// Represents a data container encapsulating a blog's content and associated frontmatter.
-pub struct BlogMeta {
-    /// Parsed and validated frontmatter.
-    pub frontmatter: BlogFrontmatter,
-    /// Parsed content to be converted to HTML.
-    pub content: String,
 }

@@ -1,10 +1,6 @@
-[env] ## tells cargo make that we're in the context of a Cargo workspace
+[env]
 DOCKER_BUILD_TAG = "joey_mckenzie_tech"
 PORT = 8080
-
-CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
-[config] ## we want most/all of our tasks to run in the context of a workspace
-default_to_workspace = false
 
 [tasks.dev]
 run_task = { name = ["run", "styles"], parallel = true }
@@ -32,6 +28,10 @@ args = [
 install_crate = "cargo-chef"
 command = "cargo"
 args = ["+nightly", "chef", "prepare", "--recipe-path", "recipe.json"]
+
+[tasks.hooks]
+command = "precommit"
+args = ["autoupdate"]
 
 [tasks.docker-build]
 command = "docker"

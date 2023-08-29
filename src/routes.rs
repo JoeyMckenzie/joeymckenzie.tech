@@ -1,17 +1,10 @@
-use std::env::current_dir;
-
-use anyhow::Context;
 use axum::{
     extract::Path,
     response::{Html, IntoResponse},
 };
-use gray_matter::{engine::YAML, Matter};
 use tera::Context as TeraContext;
 
-use crate::{
-    blogs::BlogFrontmatter,
-    cache::{BLOG_META_CACHE, TEMPLATE_CACHE},
-};
+use crate::cache::{BLOG_META_CACHE, TEMPLATE_CACHE};
 
 pub async fn home() -> impl IntoResponse {
     let content = TEMPLATE_CACHE
