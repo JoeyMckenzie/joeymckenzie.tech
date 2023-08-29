@@ -1,6 +1,8 @@
 ---
 title: My blog post
-published: 2023-10-10
+description: A short description
+published_date: 2023-10-10
+published: true
 tags:
   - rust
   - services

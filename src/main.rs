@@ -1,33 +1,20 @@
-mod blogs;
-mod routes;
-mod state;
-
-use std::{
-    collections::HashMap,
-    sync::{Arc, OnceLock, RwLock},
-};
-
 use anyhow::Context;
 use axum::{routing::get, Router};
-use blogs::BlogCache;
-use routes::{blog, blog_page, home};
-use state::AppState;
+use joey_mckenzie_tech::{
+    cache::{load_blog_meta_cache, TEMPLATE_CACHE},
+    routes::{blog, blog_page, home},
+};
 use tera::Tera;
 use tower_http::services::ServeDir;
-
-static TEMPLATES: OnceLock<Tera> = OnceLock::new();
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     load_templates()?;
+    load_blog_meta_cache()?;
 
     let assets_path = std::env::current_dir().unwrap();
     let port = 8000_u16;
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], port));
-
-    let state = Arc::new(AppState {
-        cache: RwLock::new(HashMap::new()),
-    });
 
     let router = Router::new()
         .route("/", get(home))
@@ -36,8 +23,7 @@ async fn main() -> anyhow::Result<()> {
         .nest_service(
             "/assets",
             ServeDir::new(format!("{}/src/assets", assets_path.to_str().unwrap())),
-        )
-        .with_state(state);
+        );
 
     axum::Server::bind(&addr)
         .serve(router.into_make_service())
@@ -55,7 +41,7 @@ fn load_templates() -> anyhow::Result<()> {
         tera
     };
 
-    TEMPLATES
+    TEMPLATE_CACHE
         .set(templates)
         .expect("could not initialize templates");
 

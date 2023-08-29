@@ -1,15 +1,20 @@
-use std::sync::Arc;
+use std::env::current_dir;
 
+use anyhow::Context;
 use axum::{
-    extract::{Path, State},
+    extract::Path,
     response::{Html, IntoResponse},
 };
+use gray_matter::{engine::YAML, Matter};
 use tera::Context as TeraContext;
 
-use crate::{blogs::BlogFrontmatter, state::AppState, TEMPLATES};
+use crate::{
+    blogs::BlogFrontmatter,
+    cache::{BLOG_META_CACHE, TEMPLATE_CACHE},
+};
 
 pub async fn home() -> impl IntoResponse {
-    let content = TEMPLATES
+    let content = TEMPLATE_CACHE
         .get()
         .unwrap()
         .render("pages/home.html", &TeraContext::new())
@@ -19,7 +24,7 @@ pub async fn home() -> impl IntoResponse {
 }
 
 pub async fn blog() -> impl IntoResponse {
-    let content = TEMPLATES
+    let content = TEMPLATE_CACHE
         .get()
         .unwrap()
         .render("pages/blog.html", &TeraContext::new())
@@ -28,29 +33,13 @@ pub async fn blog() -> impl IntoResponse {
     Html(content)
 }
 
-pub async fn blog_page(
-    Path(slug): Path<String>,
-    State(state): State<Arc<AppState>>,
-) -> impl IntoResponse {
-    let mut context = TeraContext::new();
-    context.insert("slug", &slug);
+pub async fn blog_page(Path(slug): Path<String>) -> impl IntoResponse {
+    let blog = BLOG_META_CACHE.get().unwrap().get(&slug);
 
-    let cache_lock = state.cache.read().unwrap();
-
-    let front_matter = BlogFrontmatter {
-        title: todo!(),
-        description: todo!(),
-        tags: todo!(),
-    };
-
-    cache_lock
-        .entry(slug)
-        .or_insert_with(|| front_matter.into());
-
-    let content = TEMPLATES
+    let content = TEMPLATE_CACHE
         .get()
         .unwrap()
-        .render("pages/blog-page.html", &context)
+        .render("pages/blog-page.html", blog.unwrap())
         .unwrap();
 
     Html(content)
