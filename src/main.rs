@@ -9,11 +9,13 @@ use tower_http::services::ServeDir;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    dotenvy::dotenv().context("failed to load environment variables")?;
+
     load_templates()?;
     load_blog_meta_cache()?;
 
     let assets_path = std::env::current_dir().unwrap();
-    let port = 8000_u16;
+    let port = std::env::var("PORT").unwrap().parse::<u16>().unwrap();
     let addr = std::net::SocketAddr::from(([0, 0, 0, 0], port));
 
     let router = Router::new()

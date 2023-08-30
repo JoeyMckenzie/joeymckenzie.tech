@@ -1,4 +1,4 @@
 /target
 .env
 /node_modules
-assets/main.css
+/src/assets/main.css

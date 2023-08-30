@@ -1,6 +1,5 @@
 [env]
 DOCKER_BUILD_TAG = "joey_mckenzie_tech"
-PORT = 8080
 
 [tasks.dev]
 run_task = { name = ["run", "styles"], parallel = true }
@@ -10,7 +9,6 @@ env = { "RUST_ENV" = "development" }
 install_crate = "cargo-watch"
 command = "cargo"
 args = ["watch", "-x", "run"]
-dependencies = ["styles"]
 
 [tasks.styles]
 command = "pnpm"
@@ -49,12 +47,15 @@ args = [
   "DATABASE_URL=${DATABASE_URL}",
   "--build-arg",
   "RUST_ENV=${RUST_ENV}",
+  "--build-arg",
+  "PORT=${PORT}",
   "-t",
   "${DOCKER_BUILD_TAG}",
 ]
 
 [tasks.docker-run]
 command = "docker"
+env_files = [".env"]
 args = [
   "run",
   "-d",
