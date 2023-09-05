@@ -18,3 +18,4 @@ anyhow = "1"
 pulldown-cmark = "0.9"
 gray_matter = { version = "0.2", features = ["yaml"] }
 dotenvy = "0.15.7"
+thiserror = "1"

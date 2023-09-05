@@ -6,6 +6,7 @@ use tera::Tera;
 
 use crate::blogs::{into_context, BlogCache, BlogFrontmatter};
 
+/// A read cache containing tera templates.
 pub static TEMPLATE_CACHE: OnceLock<Tera> = OnceLock::new();
 
 /// A read cache containing blog frontmatter, metadata, and content.
@@ -51,12 +52,19 @@ pub fn load_blog_meta_cache() -> anyhow::Result<()> {
             .context("file extension was not valid")?;
         let file_slug = file_with_extension[..trim_at].to_string();
 
-        // TODO: Parse the frontmatter and load the blog context
-        let parsed_markdown = matter
+        // Parse the blog frontmatter into the frontmatter configuration and update the blog cache
+        let parsed_markdown_with_frontmatter = matter
             .parse_with_struct::<BlogFrontmatter>(&file_content)
             .context("unable to parse the blog frontmatter")?;
 
-        blog_cache.insert(file_slug, into_context(parsed_markdown));
+        // Only push blogs meant to be published into the cache
+        if parsed_markdown_with_frontmatter
+            .data
+            .published
+            .unwrap_or(false)
+        {
+            blog_cache.insert(file_slug, into_context(parsed_markdown_with_frontmatter));
+        }
     }
 
     BLOG_META_CACHE

@@ -31,8 +31,12 @@ pub fn into_context(parsed_frontmatter: ParsedEntityStruct<BlogFrontmatter>) -> 
     let mut html_output = String::new();
     push_html(&mut html_output, parser);
 
+    // Build the associated tera context with the converted markdown output
     let mut context = tera::Context::new();
     context.insert("title", &parsed_frontmatter.data.title);
+    context.insert("description", &parsed_frontmatter.data.description);
+    context.insert("tags", &parsed_frontmatter.data.tags);
+    context.insert("published_date", &parsed_frontmatter.data.published_date);
     context.insert("content", &html_output);
     context
 }
