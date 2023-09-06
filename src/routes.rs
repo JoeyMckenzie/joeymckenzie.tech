@@ -7,11 +7,18 @@ use tera::Context as TeraContext;
 use crate::cache::{BLOG_META_CACHE, TEMPLATE_CACHE};
 
 pub async fn home() -> impl IntoResponse {
+    let url = "https://joeymckenzie.tech/";
+    let mut context = tera::Context::new();
+    context.insert("title", "joeymckenzie.tech");
+    context.insert("description", "A guy that likes beer and code.");
+    context.insert("canonicalURL", url);
+    context.insert("openGraphURL", url);
+
     let content = TEMPLATE_CACHE
         .get()
-        .unwrap()
-        .render("pages/home.html", &TeraContext::new())
-        .unwrap();
+        .expect("error")
+        .render("pages/home.html", &context)
+        .expect("error 2");
 
     Html(content)
 }

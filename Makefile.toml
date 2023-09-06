@@ -5,7 +5,7 @@ DOCKER_BUILD_TAG = "joey_mckenzie_tech"
 run_task = { name = ["run", "styles"], parallel = true }
 
 [tasks.run]
-env = { "RUST_ENV" = "development" }
+env_files = [".env"]
 install_crate = "cargo-watch"
 command = "cargo"
 args = ["watch", "-x", "run"]
