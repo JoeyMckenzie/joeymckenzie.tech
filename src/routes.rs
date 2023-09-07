@@ -4,21 +4,23 @@ use axum::{
 };
 use tera::Context as TeraContext;
 
-use crate::cache::{BLOG_META_CACHE, TEMPLATE_CACHE};
+use crate::cache::{BLOG_CONTENT_CACHE, TEMPLATE_CACHE};
 
 pub async fn home() -> impl IntoResponse {
-    let url = "https://joeymckenzie.tech/";
+    let url = std::env::var("BASE_URL").unwrap();
     let mut context = tera::Context::new();
     context.insert("title", "joeymckenzie.tech");
     context.insert("description", "A guy that likes beer and code.");
-    context.insert("canonicalURL", url);
-    context.insert("openGraphURL", url);
+    context.insert("canonicalURL", &url);
+    context.insert("openGraphURL", &url);
+    context.insert("openGraphImage", &url);
+    context.insert("twitterImage", &url);
 
     let content = TEMPLATE_CACHE
         .get()
-        .expect("error")
+        .unwrap()
         .render("pages/home.html", &context)
-        .expect("error 2");
+        .unwrap();
 
     Html(content)
 }
@@ -34,13 +36,19 @@ pub async fn blog() -> impl IntoResponse {
 }
 
 pub async fn blog_page(Path(slug): Path<String>) -> impl IntoResponse {
-    let blog = BLOG_META_CACHE.get().unwrap().get(&slug);
+    // Get the content from cache, where the cache key is the slug and the value is the bundled HTML with content response
+    let blog_content = BLOG_CONTENT_CACHE.get().unwrap().get(&slug);
 
-    let content = TEMPLATE_CACHE
-        .get()
-        .unwrap()
-        .render("pages/blog-page.html", blog.unwrap())
-        .unwrap();
+    match blog_content {
+        Some(content) => content.to_owned(),
+        None => {
+            let not_found_page = TEMPLATE_CACHE
+                .get()
+                .unwrap()
+                .render("pages/not-found.html", &TeraContext::new())
+                .unwrap();
 
-    Html(content)
+            Html(not_found_page)
+        }
+    }
 }
