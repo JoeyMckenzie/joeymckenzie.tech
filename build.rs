@@ -2,10 +2,16 @@ use std::env::current_dir;
 use std::fs::File;
 use std::io::Write;
 use std::path::Path;
+use std::process::Command;
 
 const HTMX_UNPKG_URL: &str = "https://unpkg.com/htmx.org/dist/htmx.min.js";
 
 fn main() {
+    download_htmx();
+    build_styles();
+}
+
+fn download_htmx() {
     // Send an HTTP GET request to the URL and store the response
     let response = reqwest::blocking::get(HTMX_UNPKG_URL).expect("failed to reach unpkg");
 
@@ -37,4 +43,26 @@ fn main() {
         .expect("error while writing htmx to disk");
 
     println!("download completed!");
+}
+
+fn build_styles() {
+    // Define the command you want to run (replace with your actual npx command)
+    let command = "cargo";
+    let args = vec!["make", "styles"]; // Replace with your actual arguments
+
+    // Run the command
+    let status = Command::new(command)
+        .args(args)
+        .status()
+        .expect("failed to compile styles");
+
+    if status.success() {
+        println!("styles successfully compiled!");
+    } else {
+        eprintln!(
+            "error while attempting to compile styles: {:?}",
+            status.code()
+        );
+        std::process::exit(1);
+    }
 }

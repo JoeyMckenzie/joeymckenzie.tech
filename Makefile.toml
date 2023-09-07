@@ -19,7 +19,6 @@ args = [
   "./src/styles/globals.css",
   "-o",
   "./src/assets/css/main.css",
-  "--watch",
 ]
 
 [tasks.prepare]
