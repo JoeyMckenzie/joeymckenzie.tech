@@ -2,7 +2,7 @@ use anyhow::Context;
 use axum::{routing::get, Router};
 use joey_mckenzie_tech::{
     cache::{load_blog_meta_cache, TEMPLATE_CACHE},
-    routes::{blog, blog_page, home},
+    routes::{blog_page, blogs, home, not_found},
 };
 use tera::Tera;
 use tower_http::services::ServeDir;
@@ -20,12 +20,13 @@ async fn main() -> anyhow::Result<()> {
 
     let router = Router::new()
         .route("/", get(home))
-        .route("/blog", get(blog))
+        .route("/blog", get(blogs))
         .route("/blog/:slug", get(blog_page))
         .nest_service(
             "/assets",
             ServeDir::new(format!("{}/src/assets", assets_path.to_str().unwrap())),
-        );
+        )
+        .fallback(not_found);
 
     axum::Server::bind(&addr)
         .serve(router.into_make_service())
