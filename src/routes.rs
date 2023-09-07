@@ -10,7 +10,7 @@ use crate::cache::{BLOG_CONTENT_CACHE, TEMPLATE_CACHE};
 pub async fn home() -> impl IntoResponse {
     let url = std::env::var("BASE_URL").unwrap();
     let mut context = tera::Context::new();
-    context.insert("title", "joeymckenzie.tech");
+    context.insert("title", "Hi, I'm Joe.");
     context.insert("description", "A guy that likes beer and code.");
     context.insert("canonicalURL", &url);
     context.insert("openGraphURL", &url);
@@ -49,7 +49,7 @@ pub async fn blog_page(Path(slug): Path<String>) -> (StatusCode, Html<String>) {
 pub async fn not_found() -> (StatusCode, Html<String>) {
     let url = std::env::var("BASE_URL").unwrap();
     let mut context = tera::Context::new();
-    context.insert("title", "joeymckenzie.tech");
+    context.insert("title", "Gone fishing.");
     context.insert("description", "A guy that likes beer and code.");
     context.insert("canonicalURL", &url);
     context.insert("openGraphURL", &url);
