@@ -8,6 +8,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  BUILD_ENABLED: false
 
 jobs:
   build:

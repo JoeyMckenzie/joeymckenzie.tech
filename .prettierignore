@@ -1,4 +1,5 @@
 src/**/*.rs
+src/assets/
 node_modules/
 target/
 Cargo.*

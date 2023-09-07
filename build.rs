@@ -8,8 +8,9 @@ const HTMX_UNPKG_URL: &str = "https://unpkg.com/htmx.org/dist/htmx.min.js";
 
 fn main() {
     let build_enabled = std::env::var("BUILD_ENABLED")
-        .map(|v| v == "1")
-        .unwrap_or(true); // run by default
+        .unwrap_or("true".to_string())
+        .parse::<bool>()
+        .unwrap_or(true);
 
     if build_enabled {
         download_htmx();
@@ -26,25 +27,27 @@ fn download_htmx() {
         return;
     }
 
-    // Get the file name from the URL and create a local file with that name
-    let file_name = Path::new(HTMX_UNPKG_URL)
-        .file_name()
-        .and_then(|os_str| os_str.to_str())
-        .unwrap_or("htmx.min.js");
-
     // Build the path to our assets directory
-    let out_dir = {
-        let current_dir = current_dir().expect("current directory not traceable");
-        format!("{}/src/assets/js", current_dir.to_str().unwrap())
-    };
+    let current_dir = current_dir().expect("current directory not traceable");
+    let out_dir = format!("{}/src/assets/js", current_dir.to_str().unwrap());
+    let dest_path = Path::new(&out_dir).join("htmx.min.js");
 
-    let dest_path = Path::new(&out_dir).join(file_name);
-    let mut output_file = File::create(dest_path).expect("Failed to create output file");
+    if dest_path.exists() {
+        std::fs::remove_file(&dest_path).expect("failed to remove htmx file from path");
+    }
+
+    std::fs::create_dir_all(&out_dir).expect("failed to create js output directory");
+
+    // Read the htmx
+    let body = response.bytes().expect("failed to read response body");
+    let mut file = File::create(format!(
+        "{}/src/assets/js/htmx.min.js",
+        current_dir.to_str().unwrap()
+    ))
+    .expect("failed to create the htmx output file");
 
     // Copy the response body to the local file
-    let body = response.bytes().expect("Failed to read response body");
-    output_file
-        .write_all(&body)
+    file.write_all(&body)
         .expect("error while writing htmx to disk");
 
     println!("download completed!");

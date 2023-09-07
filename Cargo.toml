@@ -17,7 +17,7 @@ tower-http = { version = "0.4", features = ["fs"] }
 anyhow = "1"
 pulldown-cmark = "0.9"
 gray_matter = { version = "0.2", features = ["yaml"] }
-dotenvy = "0.15.7"
+dotenvy = "0.15"
 thiserror = "1"
 
 [build-dependencies]
