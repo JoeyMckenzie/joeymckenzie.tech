@@ -1,10 +1,20 @@
 ARG RUST_VERSION=1.72.0
+ARG NODE_VERSION=20
 ARG DEBIAN_VERSION=11.7
 
 # all credit goes to https://fasterthanli.me/articles/remote-development-with-rust-on-fly-io#what-the-heck-is-fly-io-for-even
 # for an an awesome walkthrough of docker files for rust, this is more or less a direct copy pasta with a few minor tweaks
 
 # after containerization, this manages to come in at a whopping ~107mb, still a bit to we could optimize but this should do for now
+
+# stage two - next, we'll compile all of our css to copy over into the output container
+FROM node:${NODE_VERSION}-slim as node
+
+WORKDIR /app
+
+COPY ./package.json ./
+
+RUN npm install;
 
 # stage one - copy over our build files for compilation, including workspace and .env files
 FROM rust:${RUST_VERSION}-slim-bullseye AS build
@@ -19,7 +29,9 @@ WORKDIR /app
 # COPY ./migrations ./migrations
 COPY ./rust-toolchain.toml ./
 COPY ./Cargo.toml ./
+COPY ./Makefile.toml ./
 COPY ./build.rs ./
+COPY ./tailwind.config.js ./
 COPY ./src ./src
 
 # on rebuilds, we explicitly cache our rust build dependencies to speed things up
@@ -34,6 +46,7 @@ RUN --mount=type=cache,target=/app/target \
     apt clean autoclean; \
     apt autoremove --yes; \
     rustup install nightly; \
+    cargo install cargo-make; \
     cargo build --release; \
     objcopy --compress-debug-sections target/release/joey-mckenzie-tech ./server
 
@@ -56,7 +69,20 @@ RUN echo "\n\
     BASE_URL=${BASE_URL}\n\
     DATABASE_URL=${DATABASE_URL}" > ./.env
 
-# stage two - we'll utilize a second container to run our built binary from our first container - slim containers!
+# stage two - next, we'll compile all of our css to copy over into the output container
+# FROM node:${NODE_VERSION}-slim as node
+
+# WORKDIR /app
+
+# COPY ./styles/globals.css ./
+# COPY --from=build /app/src/templates ./src/templates
+# COPY ./package.json ./
+# COPY ./tailwind.config.js ./
+
+# RUN npm install; \
+#     npx tailwindcss -i ./globals.css -o ./main.css;
+
+# stage three - we'll utilize a second container to run our built binary from our first container - slim containers!
 FROM debian:${DEBIAN_VERSION}-slim as deploy
 
 RUN set -eux; \

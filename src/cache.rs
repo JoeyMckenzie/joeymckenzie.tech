@@ -25,8 +25,7 @@ pub fn load_cache() -> anyhow::Result<()> {
 
 pub fn load_templates() -> anyhow::Result<()> {
     let templates = {
-        let mut tera =
-            Tera::new("src/templates/**/*").context("template directory was not found")?;
+        let mut tera = Tera::new("templates/**/*").context("template directory was not found")?;
         tera.autoescape_on(vec![".html"]);
         tera
     };
@@ -41,7 +40,7 @@ pub fn load_templates() -> anyhow::Result<()> {
 pub fn load_blog_meta_cache() -> anyhow::Result<()> {
     // Next, grab a reference to all the content files on disk
     let working_dir = current_dir().context("failed to determine current working directory")?;
-    let content_files = std::fs::read_dir(format!("{}/src/content", working_dir.display()))
+    let content_files = std::fs::read_dir(format!("{}/content", working_dir.display()))
         .context("content directory was not found")?;
 
     // We'll initialize the cache and a frontmatter reader provided by gray matter

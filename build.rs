@@ -7,12 +7,12 @@ use std::process::Command;
 const HTMX_UNPKG_URL: &str = "https://unpkg.com/htmx.org/dist/htmx.min.js";
 
 fn main() {
-    let build_enabled = std::env::var("BUILD_ENABLED")
-        .unwrap_or("true".to_string())
+    let build_scripts_enabled = std::env::var("BUILD_SCRIPTS_ENABLED")
+        .unwrap_or("false".to_string())
         .parse::<bool>()
-        .unwrap_or(true);
+        .unwrap_or(false);
 
-    if build_enabled {
+    if build_scripts_enabled {
         download_htmx();
         build_styles();
     }
@@ -29,7 +29,7 @@ fn download_htmx() {
 
     // Build the path to our assets directory
     let current_dir = current_dir().expect("current directory not traceable");
-    let out_dir = format!("{}/src/assets/js", current_dir.to_str().unwrap());
+    let out_dir = format!("{}/assets/js", current_dir.to_str().unwrap());
     let dest_path = Path::new(&out_dir).join("htmx.min.js");
 
     if dest_path.exists() {
@@ -41,7 +41,7 @@ fn download_htmx() {
     // Read the htmx
     let body = response.bytes().expect("failed to read response body");
     let mut file = File::create(format!(
-        "{}/src/assets/js/htmx.min.js",
+        "{}/assets/js/htmx.min.js",
         current_dir.to_str().unwrap()
     ))
     .expect("failed to create the htmx output file");
@@ -56,7 +56,7 @@ fn download_htmx() {
 /// Compiles tailwind styles based on our configuration, removing used styles and reducing the bundle size
 fn build_styles() {
     let command = "cargo";
-    let args = vec!["make", "styles"]; // Replace with your actual arguments
+    let args = vec!["make", "styles"];
 
     let status = Command::new(command)
         .args(args)

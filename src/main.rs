@@ -24,7 +24,7 @@ async fn main() -> anyhow::Result<()> {
         .route("/blog/:slug", get(blog_page))
         .nest_service(
             "/assets",
-            ServeDir::new(format!("{}/src/assets", assets_path.to_str().unwrap())),
+            ServeDir::new(format!("{}/assets", assets_path.to_str().unwrap())),
         )
         .fallback(not_found);
 
@@ -38,8 +38,7 @@ async fn main() -> anyhow::Result<()> {
 
 fn load_templates() -> anyhow::Result<()> {
     let templates = {
-        let mut tera =
-            Tera::new("src/templates/**/*").context("template directory was not found")?;
+        let mut tera = Tera::new("templates/**/*").context("template directory was not found")?;
         tera.autoescape_on(vec![".html"]);
         tera
     };
