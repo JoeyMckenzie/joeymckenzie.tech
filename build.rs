@@ -7,15 +7,20 @@ use std::process::Command;
 const HTMX_UNPKG_URL: &str = "https://unpkg.com/htmx.org/dist/htmx.min.js";
 
 fn main() {
-    download_htmx();
-    build_styles();
+    let build_enabled = std::env::var("BUILD_ENABLED")
+        .map(|v| v == "1")
+        .unwrap_or(true); // run by default
+
+    if build_enabled {
+        download_htmx();
+        build_styles();
+    }
 }
 
+/// Downloads the latest version of htmx and places it in our asset outputs for templates to reference
 fn download_htmx() {
-    // Send an HTTP GET request to the URL and store the response
     let response = reqwest::blocking::get(HTMX_UNPKG_URL).expect("failed to reach unpkg");
 
-    // Check if the request was successful (status code 200)
     if !response.status().is_success() {
         eprintln!("request failed with status: {:?}", response.status());
         return;
@@ -45,12 +50,11 @@ fn download_htmx() {
     println!("download completed!");
 }
 
+/// Compiles tailwind styles based on our configuration, removing used styles and reducing the bundle size
 fn build_styles() {
-    // Define the command you want to run (replace with your actual npx command)
     let command = "cargo";
     let args = vec!["make", "styles"]; // Replace with your actual arguments
 
-    // Run the command
     let status = Command::new(command)
         .args(args)
         .status()

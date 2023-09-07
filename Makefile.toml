@@ -1,5 +1,6 @@
 [env]
 DOCKER_BUILD_TAG = "joey_mckenzie_tech"
+PORT = 8080
 
 [tasks.dev]
 run_task = { name = ["run", "styles"], parallel = true }
