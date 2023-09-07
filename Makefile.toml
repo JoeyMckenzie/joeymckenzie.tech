@@ -1,8 +1,8 @@
 [env]
 DOCKER_BUILD_TAG = "joey_mckenzie_tech"
+PORT = 8080
 
 [tasks.run]
-env = { PORT = 8080 }
 env_files = [".env"]
 install_crate = "cargo-watch"
 command = "cargo"
@@ -14,14 +14,14 @@ command = "cargo"
 args = ["build", "--release"]
 
 [tasks.styles]
-command = "pnpm"
+command = "npx"
 args = [
-  "dlx",
   "tailwindcss",
   "-i",
   "${CARGO_MAKE_WORKING_DIRECTORY}/styles/globals.css",
   "-o",
   "${CARGO_MAKE_WORKING_DIRECTORY}/assets/css/main.css",
+  "--watch",
 ]
 
 [tasks.prepare]
