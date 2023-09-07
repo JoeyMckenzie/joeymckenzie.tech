@@ -18,7 +18,7 @@ args = [
   "-i",
   "./src/styles/globals.css",
   "-o",
-  "./src/assets/main.css",
+  "./src/assets/css/main.css",
   "--watch",
 ]
 
@@ -71,6 +71,16 @@ args = [
 command = "docker"
 args = ["stop", "${DOCKER_BUILD_TAG}"]
 
+[tasks.docker-rm]
+command = "docker"
+args = ["rm", "${DOCKER_BUILD_TAG}"]
+
 [tasks.docker-start]
 command = "docker"
-args = ["stop", "${DOCKER_BUILD_TAG}"]
+args = ["start", "${DOCKER_BUILD_TAG}"]
+
+[tasks.docker-init]
+dependencies = ["docker-build", "docker-run"]
+
+[tasks.docker-reinit]
+dependencies = ["docker-stop", "docker-rm", "docker-init"]
