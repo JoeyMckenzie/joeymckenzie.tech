@@ -5,7 +5,7 @@ use axum::response::Html;
 use gray_matter::{engine::YAML, Matter};
 use tera::Tera;
 
-use crate::blogs::{into_context, BlogFrontmatter};
+use crate::blogs::{try_into_context, BlogFrontmatter};
 
 /// An in-memory cache of blog content keying off the slug of the associated blog post.
 pub type BlogContentCache = HashMap<String, Html<String>>;
@@ -79,7 +79,7 @@ pub fn load_blog_meta_cache() -> anyhow::Result<()> {
             .unwrap_or(false)
         {
             // Extract the tera content
-            let context = into_context(&file_slug, parsed_markdown_with_frontmatter);
+            let context = try_into_context(&file_slug, parsed_markdown_with_frontmatter)?;
 
             // If we have a publishable page, extract the tera context for it
             let template = TEMPLATE_CACHE

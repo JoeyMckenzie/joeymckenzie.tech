@@ -18,10 +18,10 @@ pub struct BlogFrontmatter {
 }
 
 /// Converts typed frontmatter content, including the markdown content, into a tera context.
-pub fn into_context(
+pub fn try_into_context(
     slug: &str,
     parsed_frontmatter: ParsedEntityStruct<BlogFrontmatter>,
-) -> tera::Context {
+) -> anyhow::Result<tera::Context> {
     // Create parser with example Markdown text.
     let parser = Parser::new(&parsed_frontmatter.content);
 
@@ -30,7 +30,7 @@ pub fn into_context(
     push_html(&mut html_output, parser);
 
     // Build an SEO friendly URL
-    let url = format!("{}/blog/{}", std::env::var("BASE_URL").unwrap(), slug);
+    let url = format!("{}/blog/{}", std::env::var("BASE_URL")?, slug);
 
     // Build the associated tera context with the converted markdown output
     let mut context = tera::Context::new();
@@ -43,5 +43,5 @@ pub fn into_context(
     context.insert("openGraphImage", &url);
     context.insert("twitterImage", &url);
     context.insert("content", &html_output);
-    context
+    Ok(context)
 }
