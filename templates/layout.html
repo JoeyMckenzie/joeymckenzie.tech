@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en-US">
   <head>
     <meta charset="utf-8" />
@@ -51,11 +51,10 @@
     <meta property="twitter:description" content="{{ description }}" />
     <meta property="twitter:image" content="{{ twitterImage | safe }}" />
   </head>
-  <body>
-    {% include "components/header.html" %}
-    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-      {% block content %} {% endblock content %}
-    </div>
-    {% include "components/footer.html" %}
+  <body class="h-full bg-neutral-900">
+    <main class="mx-auto max-w-screen-lg px-6 pt-12 lg:px-8">
+      {% include "components/header.html" %} {% block content %} {% endblock
+      content %} {% include "components/footer.html" %}
+    </main>
   </body>
 </html>
