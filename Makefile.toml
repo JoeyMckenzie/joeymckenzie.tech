@@ -14,13 +14,16 @@ command = "cargo"
 args = ["build", "--release"]
 
 [tasks.styles]
+# command = "bash"
+# args = ["-c", "scripts/script.sh watch"]
 command = "npx"
 args = [
   "tailwindcss",
   "-i",
   "${CARGO_MAKE_WORKING_DIRECTORY}/styles/globals.css",
   "-o",
-  "${CARGO_MAKE_WORKING_DIRECTORY}/assets/css/main.css",
+  "${CARGO_MAKE_WORKING_DIRECTORY}/assets/css/main.min.css",
+  "--minify",
   "--watch",
 ]
 
