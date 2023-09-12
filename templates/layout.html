@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en-US">
+<html lang="en-US" class="h-full">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -26,8 +26,9 @@
     <!-- CSS -->
     <link href="/assets/css/main.min.css" type="text/css" rel="stylesheet" />
 
-    <!-- htmx... because Primeagen said so -->
+    <!-- htmx... because Primeagen said so, also include preline while we're at it -->
     <script src="/assets/js/htmx.min.js"></script>
+    <script src="/assets/js/preline.js"></script>
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ canonicalURL | safe }}" />
@@ -51,10 +52,9 @@
     <meta property="twitter:description" content="{{ description }}" />
     <meta property="twitter:image" content="{{ twitterImage | safe }}" />
   </head>
-  <body class="h-full bg-neutral-900">
+  <body class="flex h-full bg-neutral-900">
     <main class="mx-auto max-w-screen-lg px-6 pt-12 lg:px-8">
-      {% include "components/header.html" %} {% block content %} {% endblock
-      content %} {% include "components/footer.html" %}
+      {% block content %} {% endblock content %}
     </main>
   </body>
 </html>

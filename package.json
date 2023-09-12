@@ -11,5 +11,8 @@
     "prettier": "^3.0.2",
     "prettier-plugin-tailwindcss": "^0.5.3",
     "tailwindcss": "^3.3.3"
+  },
+  "dependencies": {
+    "preline": "^1.9.0"
   }
 }

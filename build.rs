@@ -13,7 +13,9 @@ fn main() {
         .unwrap_or(true);
 
     if styles_script_enabled {
+        run_script("install");
         run_script("styles");
+        run_script("preline");
     }
 
     println!("styles successfully compiled!");

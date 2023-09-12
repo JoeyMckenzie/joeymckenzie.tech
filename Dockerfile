@@ -94,6 +94,7 @@ COPY ./assets ./assets
 COPY --from=build /app/server ./
 COPY --from=node /app/templates /deploy/templates
 COPY --from=node /app/main.min.css /deploy/assets/css/main.min.css
+COPY --from=node /app/node_modules/preline/dist/preline.js /deploy/assets/js/preline.js
 
 EXPOSE 80
 EXPOSE 443
