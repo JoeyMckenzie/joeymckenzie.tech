@@ -30,6 +30,7 @@ Secrets.toml
 /examples/**/target
 /examples/**/node_modules
 /examples/**/Cargo.lock
+.sqlx
 
 # zig
 /examples/zig/**/zig-cache

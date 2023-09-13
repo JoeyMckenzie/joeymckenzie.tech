@@ -13,9 +13,9 @@ command = "cargo"
 args = ["watch", "-x", "run"]
 
 [tasks.prepare]
-install_crate = "cargo-chef"
+install_crate = "sqlx-cli"
 command = "cargo"
-args = ["+nightly", "chef", "prepare", "--recipe-path", "recipe.json"]
+args = ["sqlx", "prepare", "--workspace"]
 
 [tasks.docker-build]
 command = "docker"
