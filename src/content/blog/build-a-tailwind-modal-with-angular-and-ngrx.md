@@ -101,7 +101,7 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
   aria-modal="true"
 >
   <div
-    class="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0"
+    class="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0"
   >
     <!--
       Background overlay, show/hide based on modal state.
@@ -138,7 +138,7 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
     <div
       class="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
     >
-      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+      <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
         <div class="sm:flex sm:items-start">
           <div
             class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
@@ -160,7 +160,7 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
               />
             </svg>
           </div>
-          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+          <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
             <h3
               class="text-lg font-medium leading-6 text-gray-900"
               id="modal-title"
@@ -185,7 +185,7 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
         </button>
         <button
           type="button"
-          class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+          class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
         >
           Cancel
         </button>
@@ -238,7 +238,7 @@ const appReducer = createReducer(
   on(fromActions.closeModal, (state) => ({
     ...state,
     modalIsOpen: false,
-  }))
+  })),
 );
 
 export const reducer = (state: LayoutState | undefined, action: Action) =>
@@ -267,7 +267,7 @@ const layoutFeatureSlice = createFeatureSelector<LayoutState>(layoutFeatureKey);
 
 export const selectModalStatus = createSelector(
   layoutFeatureSlice,
-  (state: LayoutState) => state.modalIsOpen
+  (state: LayoutState) => state.modalIsOpen,
 );
 ```
 
@@ -366,7 +366,7 @@ Let's add each of the tags to our markup so that it resembles the following:
   aria-modal="true"
 >
   <div
-    class="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0"
+    class="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0"
   >
     <!--
       Background overlay, show/hide based on modal state.
@@ -406,7 +406,7 @@ Let's add each of the tags to our markup so that it resembles the following:
       @modalContent
       class="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
     >
-      <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+      <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
         <div class="sm:flex sm:items-start">
           <div
             class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
@@ -428,7 +428,7 @@ Let's add each of the tags to our markup so that it resembles the following:
               />
             </svg>
           </div>
-          <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+          <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
             <h3
               class="text-lg font-medium leading-6 text-gray-900"
               id="modal-title"
@@ -455,7 +455,7 @@ Let's add each of the tags to our markup so that it resembles the following:
         <button
           (click)="onClose()"
           type="button"
-          class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+          class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
         >
           Cancel
         </button>
@@ -505,7 +505,7 @@ import { LayoutFacade } from '../+state';
         group([
           query('@modalOverlay', animateChild()),
           query('@modalContent', animateChild()),
-        ])
+        ]),
       ),
     ]),
     // Background overlay, show/hide based on modal state.
@@ -521,13 +521,13 @@ import { LayoutFacade } from '../+state';
         'void',
         style({
           opacity: 0,
-        })
+        }),
       ),
       state(
         '*',
         style({
           opacity: 1,
-        })
+        }),
       ),
       transition(':enter', [animate('300ms ease-out')]),
       transition(':leave', [animate('100ms ease-in')]),
@@ -546,14 +546,14 @@ import { LayoutFacade } from '../+state';
         style({
           opacity: 0,
           transform: 'scale(0.95)',
-        })
+        }),
       ),
       state(
         '*',
         style({
           opacity: 1,
           transform: 'scale(1)',
-        })
+        }),
       ),
       transition(':enter', [animate('300ms ease-out')]),
       transition(':leave', [animate('200ms ease-in')]),
@@ -580,9 +580,9 @@ export class ModalComponent implements OnInit {
       .pipe(
         takeUntil(this.unsubscribe$),
         filter(
-          (event) => event instanceof KeyboardEvent && event.code === 'Escape'
+          (event) => event instanceof KeyboardEvent && event.code === 'Escape',
         ),
-        withLatestFrom(this.modalState$)
+        withLatestFrom(this.modalState$),
       )
       .subscribe(([_, modalIsOpen]) => {
         if (modalIsOpen) {

@@ -75,7 +75,7 @@ const dataSource$ = interval(1000);
 dataSource$
   .pipe(
     take(5),
-    finalize(() => console.log('data captured!'))
+    finalize(() => console.log('data captured!')),
   )
   .subscribe(console.log);
 
@@ -487,7 +487,7 @@ export function fetchRepos(key: string): Observable<GitHubRepoMeta[]> {
     catchError((error) => {
       console.error(error);
       return EMPTY;
-    })
+    }),
   );
 }
 
@@ -551,7 +551,7 @@ export function fetchRepos(key: string): Observable<GitHubRepoMeta[]> {
     catchError((error) => {
       console.error(error);
       return EMPTY;
-    })
+    }),
   );
 }
 ```
@@ -593,7 +593,7 @@ import { fetchFirstReposValue } from '../lib/utilities';
 const WithCSR: NextPage = () => {
   const { data: mappedGitHubRepos } = useSWR(
     githubBaseUrl,
-    fetchFirstReposValue
+    fetchFirstReposValue,
   );
 
   return mappedGitHubRepos ? (

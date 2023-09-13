@@ -234,7 +234,7 @@ Our component code exposes a single method to interact with our dark mode servic
   <button
     (click)="toggleDarkMode()"
     id="dark-mode-toggle"
-    class="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700 dark:bg-blue-800 dark:text-blue-400 dark:hover:bg-blue-900"
+    class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 dark:bg-blue-800 dark:text-blue-400 dark:hover:bg-blue-900"
   >
     Toggle
   </button>
@@ -253,7 +253,7 @@ One last change we'll make is in our `index.html` root markup file to apply back
 #### index.html
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />

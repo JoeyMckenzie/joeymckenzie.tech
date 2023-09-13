@@ -31,7 +31,7 @@ Once we've got Fluxor added to the project, we'll need to add a few references t
 #### index.html
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <!-- Meta and CSS references -->

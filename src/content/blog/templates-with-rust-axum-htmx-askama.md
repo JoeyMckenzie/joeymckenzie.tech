@@ -272,7 +272,7 @@ Let's spice up our template now. Back in `hello.html`, let's flesh this page out
 to be more of a fully functional HTML file we'd expect to serve to the browser, including assets:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <link href="/assets/main.css" rel="stylesheet" />
@@ -393,7 +393,7 @@ axum to serve an `/assets` route with all the files underneath that directory lo
 We've got Inter font! Let's spice this up even more with some colored text. In our `hello.html` template, let's add a text color class:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <link href="/assets/main.css" rel="stylesheet" />
@@ -421,7 +421,7 @@ a `base.html` file:
 ### templates/base.html
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <link href="/assets/main.css" rel="stylesheet" />
@@ -589,7 +589,7 @@ to our base layout so all pages have access to it:
 ### templates/base.html
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <link href="/assets/main.css" rel="stylesheet" />

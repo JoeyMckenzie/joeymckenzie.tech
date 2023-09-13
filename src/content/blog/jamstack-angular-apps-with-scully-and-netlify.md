@@ -160,7 +160,7 @@ export class PingService {
       catchError((error) => {
         console.log(error);
         return of('Whoops... an error occurred :(');
-      })
+      }),
     );
   }
 }
@@ -197,7 +197,7 @@ export class DataService {
         catchError((error) => {
           console.log(error);
           return EMPTY;
-        })
+        }),
       );
   }
 }
@@ -220,7 +220,7 @@ export class DocumentService {
 
   constructor(
     @Inject(DOCUMENT) private readonly document: Document,
-    private meta: Meta
+    private meta: Meta,
   ) {}
 
   resetTitle(): void {
@@ -270,7 +270,7 @@ export class PingComponent implements OnInit {
   constructor(
     private documentService: DocumentService,
     private pingService: PingService,
-    private unsubscribe$: UnsubscribeService
+    private unsubscribe$: UnsubscribeService,
   ) {}
 
   ngOnInit(): void {
@@ -286,7 +286,7 @@ export class PingComponent implements OnInit {
       .pingServer()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(
-        (message) => (this.message = `response from server: ${message}`)
+        (message) => (this.message = `response from server: ${message}`),
       );
   }
 }
@@ -320,7 +320,7 @@ export class DataComponent implements OnInit {
   constructor(
     private documentService: DocumentService,
     private dataService: DataService,
-    private unsubscribe$: UnsubscribeService
+    private unsubscribe$: UnsubscribeService,
   ) {}
 
   ngOnInit(): void {
@@ -334,7 +334,7 @@ export class DataComponent implements OnInit {
       .sendDataToServer('Joey')
       .pipe(
         takeUntil(this.unsubscribe$),
-        finalize(() => (this.loading = false))
+        finalize(() => (this.loading = false)),
       )
       .subscribe((response) => (this.response = response));
   }
@@ -539,7 +539,7 @@ function getHeaders(origin: string): { [key: string]: string } {
 }
 
 function isNullOrUndefined(
-  objectToValidate?: unknown | null | undefined
+  objectToValidate?: unknown | null | undefined,
 ): boolean {
   return objectToValidate === null || objectToValidate === undefined;
 }

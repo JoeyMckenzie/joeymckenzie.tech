@@ -246,7 +246,7 @@ import { RouterModule } from '@angular/router';
         path: '',
         loadChildren: () =>
           import('@exploring-nx/shared/ui/pages').then(
-            (m) => m.SharedUiPagesModule
+            (m) => m.SharedUiPagesModule,
           ),
       },
     ]),
@@ -359,7 +359,7 @@ export class TodosComponent implements OnInit {
 
   constructor(
     private todosFacade: TodosFacade,
-    private settingsFacade: SettingsFacade
+    private settingsFacade: SettingsFacade,
   ) {}
 
   ngOnInit() {

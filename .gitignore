@@ -38,3 +38,6 @@ Secrets.toml
 # dotnet
 /examples/dotnet/**/obj
 /examples/dotnet/**/bin
+
+# vscode files
+.vscode/launch.json

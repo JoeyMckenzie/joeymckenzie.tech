@@ -24,5 +24,8 @@
     }
   ],
   "rust-analyzer.linkedProjects": ["./Cargo.toml"],
-  "dotnet.defaultSolution": "WithNeonFly.sln"
+  "prettier.documentSelectors": ["**/*.astro"],
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  }
 }

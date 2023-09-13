@@ -16,7 +16,7 @@ export type TechnologyPreference = {
 };
 
 export function getPreferencesForCategory(
-  category: TechnologyPreferenceCategory
+  category: TechnologyPreferenceCategory,
 ): TechnologyPreference[] {
   switch (category) {
     case 'infrastructure & devops':
