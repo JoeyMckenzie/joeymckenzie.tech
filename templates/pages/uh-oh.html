@@ -1,11 +1,4 @@
-{% extends "layout.html" %}
-
-<!-- prettier-ignore -->
-{% block title %}
-    {{ title }}
-{% endblock title %}
-
-{% block content %}
+{% extends "layout.html" %} {% block title %} {{ title }} {% endblock title %} {% block content %}
 <div class="max-w-[50rem] flex flex-col mx-auto w-full h-full">
   <!-- ========== HEADER ========== -->
   <header class="mb-auto flex flex-wrap sm:justify-start sm:flex-nowrap z-50 w-full text-sm py-4">
@@ -102,18 +95,7 @@
   <!-- ========== END MAIN CONTENT ========== -->
 
   <!-- ========== FOOTER ========== -->
-  <footer class="mt-auto text-center py-5">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <p class="text-sm text-gray-400">
-        Cover template for
-        <a
-          class="text-white decoration-2 underline underline-offset-2 font-medium hover:text-gray-200 hover:decoration-gray-400"
-          href="/"
-          >Preline</a
-        >
-      </p>
-    </div>
-  </footer>
+  {% include "components/footer.html" %}
   <!-- ========== END FOOTER ========== -->
 </div>
 {% endblock content %}

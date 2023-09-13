@@ -3,11 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "fmt": "prettier --write --ignore-unknown ./templates"
+    "fmt": "prettier --write --ignore-unknown ./templates",
+    "prepare": "git config core.hookspath .githooks"
   },
   "author": "Joey McKenzie",
+  "lint-staged": {
+    "**/*.{html,js,json}": "npm run fmt"
+  },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.6",
+    "lint-staged": "^14.0.1",
     "prettier": "^3.0.2",
     "prettier-plugin-tailwindcss": "^0.5.3",
     "tailwindcss": "^3.3.3"

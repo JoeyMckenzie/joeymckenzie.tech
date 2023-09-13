@@ -8,7 +8,7 @@ use tera::Context as TeraContext;
 use crate::cache::{BLOG_CONTENT_CACHE, TEMPLATE_CACHE};
 
 pub async fn home() -> impl IntoResponse {
-    let url = std::env::var("BASE_URL").unwrap();
+    let url = std::env::var("BASE_URL")?;
     let mut context = tera::Context::new();
     context.insert("title", "Hi, I'm Joe.");
     context.insert("description", "A guy that likes beer and code.");

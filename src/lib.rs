@@ -13,4 +13,5 @@
 
 pub mod blogs;
 pub mod cache;
+mod errors;
 pub mod routes;
