@@ -40,7 +40,10 @@
   </head>
   <body class="flex h-full bg-neutral-900">
     <main class="mx-auto max-w-screen-lg px-6 pt-12 lg:px-8">
-      {% block content %} {% endblock content %} {% include"components/footer.html" %}
+      <!-- prettier-ignore -->
+      {% include "components/header.html" %}
+        {% block content %} {% endblock content %}
+      {% include "components/footer.html" %}
     </main>
   </body>
 </html>
