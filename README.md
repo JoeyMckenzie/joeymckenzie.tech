@@ -1,5 +1,9 @@
 # joeymckenzie.tech
 
+[![Astro CI](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/build-static-site.yml/badge.svg)](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/build-static-site.yml)
+[![Rust CI](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/build-rust-crates.yml/badge.svg)](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/build-rust-crates.yml)
+[![Deploy to Fly](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/deploy-to-fly.yml/badge.svg)](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/deploy-to-fly.yml)
+
 Welcome to my slice of the internet! This repository contains all the source code and content used on my blog. The project leverages:
 
 - [Astro](https://astro.build) as the framework of choice as the site is primarily static content

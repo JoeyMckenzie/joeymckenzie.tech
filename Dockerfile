@@ -11,7 +11,7 @@ FROM rust:${RUST_VERSION}-slim-bullseye AS build
 
 WORKDIR /app
 
-COPY ./rust-toolchain ./
+COPY ./rust-toolchain.toml ./
 COPY ./Cargo.toml ./
 # note: all the sample crates are required as we're in the context of a workspace
 # though only for the build step as we'll only use the crate that gets deployed
