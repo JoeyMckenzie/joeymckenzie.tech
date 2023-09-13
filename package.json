@@ -5,11 +5,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build -o test",
+    "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
     "prepare": "git config core.hookspath .githooks",
     "lint": "eslint .",
+    "ci": "bun run build && bun run lint",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
     "fmt:watch": "bunx onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
