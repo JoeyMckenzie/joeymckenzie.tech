@@ -7,34 +7,32 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:astro/recommended',
     'plugin:astro/jsx-a11y-recommended',
+    'plugin:svelte/recommended',
     'prettier',
   ],
   plugins: ['@typescript-eslint'],
   parser: '@typescript-eslint/parser',
   overrides: [
     {
-      // Define the configuration for `.astro` file.
       files: ['*.astro'],
-      // Allows Astro components to be parsed.
       parser: 'astro-eslint-parser',
-      // Parse the script in `.astro` as TypeScript by adding the following configuration.
-      // It's the setting you need when using TypeScript.
       parserOptions: {
         extraFileExtensions: ['.astro'],
       },
     },
     {
       files: ['*.svelte'],
-      processor: 'svelte3/svelte3',
-      plugins: ['svelte3'],
-      settings: {
-        'svelte3/typescript': () => require('typescript'),
+      parser: 'svelte-eslint-parser',
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
       },
     },
   ],
   parserOptions: {
     sourceType: 'module',
     ecmaVersion: 'latest',
+    project: './tsconfig.json',
+    extraFileExtensions: ['.svelte'],
   },
   env: {
     browser: true,
