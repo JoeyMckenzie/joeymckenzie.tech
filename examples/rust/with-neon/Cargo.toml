@@ -9,5 +9,5 @@ edition = "2021"
 anyhow = "1.0.71"
 dotenvy = "0.15.7"
 postgres = "0.19.5"
-sqlx = { version = "0.6.3", features = ["runtime-tokio-rustls", "postgres"] }
+sqlx = { version = "0.7.1", features = ["runtime-tokio-rustls", "postgres"] }
 tokio = { version = "1", features = ["full"] }
