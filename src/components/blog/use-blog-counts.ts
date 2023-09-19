@@ -18,11 +18,6 @@ export function useBlogCounts() {
     viewCounts.value = await viewCountsResponse.json();
   };
 
-  const loadViewCount = async (apiBaseUrl: string, slug: string) => {
-    const viewCountResponse = await fetch(`${apiBaseUrl}/views/${slug}`);
-    viewCounts.value = await viewCountResponse.json();
-  };
-
   const getViewCount = (slug: string) =>
     computed(
       () => viewCounts.value?.counts.find((vc) => vc.slug === slug)?.count ?? 0,
