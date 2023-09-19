@@ -58,3 +58,7 @@ Secrets.toml
 # zig
 /examples/zig/**/zig-cache
 /examples/zig/**/zig-out
+
+
+*.xml.js
+env.d.ts

@@ -1,11 +1,12 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from '../shared/FormattedDate.astro';
-import ViewCount from './ViewCount.svelte';
+import ViewCount from './ViewCount.vue';
 
 type ContentData = CollectionEntry<'blog'>['data'];
 export type Props = Omit<ContentData, 'published'> & { slug: string };
 
+const apiBaseUrl = import.meta.env.API_BASE_URL;
 const { category, title, description, slug, pubDate } = Astro.props;
 ---
 
@@ -16,7 +17,7 @@ const { category, title, description, slug, pubDate } = Astro.props;
       class="relative z-10 rounded-full bg-neutral-700 py-1.5 px-3 font-medium text-neutral-300"
       >{category}</span
     >
-    <ViewCount {slug} client:load />
+    <ViewCount {slug} {apiBaseUrl} client:load />
   </div>
   <a href={`/blog/${slug}`}>
     <div class="group relative">

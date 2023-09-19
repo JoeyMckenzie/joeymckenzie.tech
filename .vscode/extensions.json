@@ -2,7 +2,7 @@
   "recommendations": [
     "aaron-bond.better-comments",
     "rust-lang.rust-analyzer",
-    "svelte.svelte-vscode",
+    "Vue.volar",
     "astro-build.astro-vscode",
     "tamasfe.even-better-toml"
   ]

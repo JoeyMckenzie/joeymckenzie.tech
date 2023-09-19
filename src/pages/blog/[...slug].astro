@@ -1,9 +1,9 @@
 ---
-import SilentViewCountIncrement from '@/components/blog/SilentViewCountIncrement.svelte';
+import SilentViewCountIncrement from '@/components/blog/SilentViewCountIncrement.vue';
 import FormattedDate from '@/components/shared/FormattedDate.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { Icon } from 'astro-icon';
-import { CollectionEntry, getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
 
 type Props = CollectionEntry<'blog'>;
 
@@ -54,6 +54,6 @@ const { Content } = await post.render();
     class="mx-auto flex w-40 items-center justify-center gap-x-1.5 rounded-md bg-neutral-800 py-2 px-3 text-sm font-semibold text-neutral-400 shadow-sm hover:bg-neutral-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-600"
   >
     <Icon name="ic:round-arrow-back" class="h-6 w-6" />
-    Back to blogs
+     Back to blogs
   </a>
 </BaseLayout>

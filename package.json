@@ -16,7 +16,7 @@
     "fmt:watch": "bunx onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
   },
   "lint-staged": {
-    "**/*.{cjs,mjs,ts,svelte,astro,md,json,yaml}": "bun fmt",
+    "**/*.{cjs,mjs,ts,vue,astro,md,json,yaml}": "bun fmt",
     "**/*.rs": "cargo fmt -- --emit=files",
     "**/*.zig": "zig fmt"
   },
@@ -24,15 +24,15 @@
     "@astrojs/mdx": "^1.0.3",
     "@astrojs/rss": "^3.0.0",
     "@astrojs/sitemap": "^3.0.0",
-    "@astrojs/svelte": "^4.0.2",
     "@astrojs/tailwind": "^5.0.0",
+    "@astrojs/vue": "^3.0.0",
     "@tailwindcss/forms": "^0.5.6",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.10",
     "astro": "^3.0.13",
     "astro-icon": "^0.8.1",
-    "svelte": "^4.2.0",
-    "tailwindcss": "^3.3.3"
+    "tailwindcss": "^3.3.3",
+    "vue": "^3.2.30"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.7.0",
@@ -42,12 +42,12 @@
     "eslint-plugin-astro": "^0.29.0",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-markdown": "^3.0.1",
-    "eslint-plugin-svelte": "^2.33.1",
+    "eslint-plugin-vue": "^9.17.0",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
     "prettier-plugin-astro": "^0.12.0",
-    "prettier-plugin-svelte": "^3.0.3",
     "prettier-plugin-tailwindcss": "^0.5.4",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vue-eslint-parser": "^9.3.1"
   }
 }

@@ -3,6 +3,7 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "baseUrl": ".",
+    "jsx": "preserve",
     "paths": {
       "@/*": ["./src/*"]
     }
