@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useBlogCounts, type ViewCountMeta } from './use-blog-counts';
+import { ref } from 'vue';
+import type { ViewCountMeta } from './SilentViewCounts.vue';
 
 const props = defineProps<{
   slug: string;
   apiBaseUrl: string;
 }>();
-
-const { viewCounts } = useBlogCounts();
 
 const viewCount = ref(0);
 
@@ -18,13 +16,6 @@ async function loadViewCount(apiBaseUrl: string, slug: string) {
 }
 
 await loadViewCount(props.apiBaseUrl, props.slug);
-
-watch(viewCounts, (updatedViewCounts) => {
-  console.log('updatedViewCounts', updatedViewCounts);
-  viewCount.value =
-    updatedViewCounts?.counts.find(({ slug }) => slug === props.slug)?.count ??
-    0;
-});
 </script>
 
 <template>
