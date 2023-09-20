@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { ViewCountMeta } from './SilentViewCounts.vue';
+
+type ViewCountMeta = {
+  count: number;
+  slug: string;
+};
 
 const props = defineProps<{
   slug: string;

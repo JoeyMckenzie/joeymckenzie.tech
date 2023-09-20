@@ -1,15 +1,11 @@
 ---
 import BlogHeader from '@/components/blog/BlogHeader.astro';
 import BlogPreviews from '@/components/blog/BlogPreviews.astro';
-import SilentViewCounts from '@/components/blog/SilentViewCounts.vue';
 import Header from '@/components/layout/Header.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-
-const apiBaseUrl = import.meta.env.API_BASE_URL;
 ---
 
 <BaseLayout>
-  <SilentViewCounts {apiBaseUrl} includeTopCounts={false} client:load />
   <Header title="Blog" />
   <BlogHeader />
   <BlogPreviews />
