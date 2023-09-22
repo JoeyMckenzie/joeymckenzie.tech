@@ -26,7 +26,7 @@ const props = defineProps<{
     {{ props.display }}
     <Icon
       name="tabler:external-link"
-      class="ml-3 -mr-1 h-5 w-5"
+      class="-mr-1 ml-3 h-5 w-5"
       aria-hidden="true"
     />
   </NuxtLink>

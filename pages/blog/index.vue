@@ -7,10 +7,4 @@ useSeoMeta({
   ogImage: 'https://example.com/image.png',
   twitterCard: 'summary_large_image',
 });
-
-const content = await queryContent().where({});
-// const posts = (await getCollection('blog'))
-//   .filter((p) => p.data.published)
-//   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-console.log('content', content);
 </script>

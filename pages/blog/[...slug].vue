@@ -1,7 +1,4 @@
-<script setup lang="ts">
-const pageContent = await queryContent().findOne();
-console.log('pageContent', pageContent);
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <main>

@@ -5,7 +5,7 @@ const props = defineProps<{ href: string }>();
 <template>
   <NuxtLink
     :href="props.href"
-    class="inline-flex px-2 py-1 font-roboto-mono font-medium text-neutral-400 hover:bg-neutral-700 rounded"
+    class="inline-flex rounded px-2 py-1 font-roboto-mono font-medium text-neutral-400 hover:bg-neutral-700"
     active-class="border border-transparent bg-neutral-800 text-neutral-300 focus:outline-none"
   >
     <slot />
