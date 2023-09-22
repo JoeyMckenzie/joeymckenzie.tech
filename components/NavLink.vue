@@ -1,0 +1,13 @@
+<script setup lang="ts">
+const props = defineProps<{ href: string }>();
+</script>
+
+<template>
+  <NuxtLink
+    :href="props.href"
+    class="inline-flex px-2 py-1 font-roboto-mono font-medium text-neutral-400 hover:bg-neutral-700 rounded"
+    active-class="border border-transparent bg-neutral-800 text-neutral-300 focus:outline-none"
+  >
+    <slot />
+  </NuxtLink>
+</template>

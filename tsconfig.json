@@ -1,18 +1,4 @@
 {
-  "extends": "astro/tsconfigs/strictest",
-  "compilerOptions": {
-    "strictNullChecks": true,
-    "baseUrl": ".",
-    "jsx": "preserve",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  },
-  "exclude": [
-    "./node_modules/**",
-    ".astro/**",
-    ".turbo/**",
-    ".dist/**",
-    "target/**"
-  ]
+  // https://v3.nuxtjs.org/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json"
 }
