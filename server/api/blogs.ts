@@ -4,7 +4,6 @@ import { viewCounts } from '../drizzle/schema';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
-  console.log(query.includeTop);
 
   let viewCountsQuery = db
     .select({
@@ -14,7 +13,7 @@ export default defineEventHandler(async (event) => {
     .from(viewCounts)
     .orderBy(desc(viewCounts.viewCount));
 
-  if (!!query.includeTop) {
+  if (query.includeTop) {
     viewCountsQuery = viewCountsQuery.limit(3);
   }
 

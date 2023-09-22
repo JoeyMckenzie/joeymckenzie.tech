@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { BlogPostProps } from '~/components/blog/PostPreview.vue';
+
 useSeoMeta({
   title: 'joeymckenzie.tech',
   ogTitle: "Hi, I'm Joe | joeymckenzie.tech",
@@ -8,15 +10,37 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 });
 
-const blogs = await useFetch('/api/blogs?includeTop=true');
-console.log('blogs.data.value?.viewCounts', blogs.data.value?.viewCounts);
+const [viewCounts, posts] = await Promise.all([
+  useFetch('/api/blogs'),
+  queryContent('blog').find(),
+]);
 
-const top = await useFetch('/api/blogs');
-console.log('top.data.value?.viewCounts', top.data.value?.viewCounts);
+const viewCountData = computed(() => viewCounts.data.value?.viewCounts);
+
+const previewPosts = posts
+  .sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf())
+  .slice(0, 3)
+  .concat()
+  .map(
+    (p) =>
+      ({
+        slug: p._path!,
+        category: p.category,
+        description: p.description,
+        pubDate: new Date(p.pubDate),
+        title: p.title!,
+        viewCount:
+          viewCountData.value?.find((vc) => p._path?.includes(vc.slug))
+            ?.count ?? 0,
+      }) satisfies BlogPostProps,
+  );
 </script>
 
 <template>
-  <Header title="Hi, I'm Joey" />
-  <HomeIntro />
-  <HomeSocialButtons />
+  <div>
+    <Header title="Hi, I'm Joey" />
+    <HomeIntro />
+    <HomeSocialButtons />
+    <BlogPostPreviews :posts="previewPosts" />
+  </div>
 </template>
