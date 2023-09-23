@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { path } = useRoute();
+
 useSeoMeta({
   title: 'joeymckenzie.tech',
   ogTitle: 'Blog | joeymckenzie.tech',
@@ -7,6 +9,12 @@ useSeoMeta({
   ogImage: 'https://example.com/image.png',
   twitterCard: 'summary_large_image',
 });
+
+const response = await useFetch('/api/blogs/view', {
+  method: 'POST',
+  body: { slug: path },
+});
+console.log(response.data?.value);
 </script>
 
 <template>

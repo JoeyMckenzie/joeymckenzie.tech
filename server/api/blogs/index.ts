@@ -1,6 +1,6 @@
 import { desc } from 'drizzle-orm';
-import db from '../drizzle/db';
-import { viewCounts } from '../drizzle/schema';
+import db from '../../drizzle/db';
+import { viewCounts } from '../../drizzle/schema';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
