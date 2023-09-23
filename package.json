@@ -10,7 +10,7 @@
     "fmt": "prettier --write .",
     "prepare": "git config core.hookspath .githooks",
     "drizzle": "bunx drizzle-kit studio",
-    "ci": "bun run lint && bun run build"
+    "ci": "bun run build && bun run lint"
   },
   "lint-staged": {
     "**/*.{vue,ts,json,md}": "bun run fmt"
