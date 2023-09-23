@@ -1,36 +1,15 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-
-export type NowPlayingResponse = {
-  href: string;
-  albumImageSrc: string;
-  trackTitle: string;
-  artist: string;
-  nowPlaying: boolean;
-};
-
-const loading = ref(true);
-const nowPlaying = reactive<{ response: NowPlayingResponse }>({
-  response: {
-    href: '',
-    albumImageSrc: '',
-    trackTitle: '',
-    artist: '',
-    nowPlaying: false,
-  },
-});
-
 const response = await useFetch('/api/spotify');
 </script>
 
 <template>
-  <div v-if="loading">
+  <div v-if="response.pending.value">
     <SpotifyNotCurrentlyListening text="Loading..."
       ><slot
     /></SpotifyNotCurrentlyListening>
   </div>
-  <div v-else-if="!loading && nowPlaying.response.nowPlaying">
-    <SpotifyCurrentlyPlaying :response="nowPlaying.response"
+  <div v-else-if="!response.pending.value && response.data">
+    <SpotifyCurrentlyPlaying :response="response.data.value!"
       ><slot
     /></SpotifyCurrentlyPlaying>
   </div>

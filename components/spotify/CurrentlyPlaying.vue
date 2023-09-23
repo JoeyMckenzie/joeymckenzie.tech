@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { NowPlayingResponse } from './SpotifyNowPlaying.vue';
+import type { NowPlayingResponse } from '~/types/spotify';
 
 const props = defineProps<{ response: NowPlayingResponse }>();
 </script>
