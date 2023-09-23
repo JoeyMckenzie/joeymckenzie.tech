@@ -14,5 +14,6 @@
     ["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["/\\*ui\\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"]
   ],
-  "tailwindCSS.classAttributes": ["class", "ui"]
+  "tailwindCSS.classAttributes": ["class", "ui"],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
