@@ -27,7 +27,7 @@ export default defineNuxtConfig({
         'https://api.spotify.com/v1/me/player?type=track,episode',
     },
     public: {
-      commitSha: process.env.NUXT_PUBLIC_CF_PAGES_COMMIT_SHA,
+      commitSha: process.env.CF_PAGES_COMMIT_SHA,
     },
   },
   content: {
