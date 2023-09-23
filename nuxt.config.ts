@@ -27,4 +27,9 @@ export default defineNuxtConfig({
       commitSha: process.env.NUXT_PUBLIC_CF_PAGES_COMMIT_SHA,
     },
   },
+  content: {
+    highlight: {
+      theme: 'vitesse-dark',
+    },
+  },
 });

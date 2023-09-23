@@ -20,7 +20,6 @@ const viewCountData = computed(() => viewCounts.data.value?.viewCounts);
 const previewPosts = posts
   .sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf())
   .slice(0, 3)
-  .concat()
   .map(
     (p) =>
       ({

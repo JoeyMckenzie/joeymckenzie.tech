@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { NowPlayingResponse } from '~/types/spotify';
+import type { NowPlaying } from '~/types/spotify';
 
-const props = defineProps<{ response: NowPlayingResponse }>();
+const props = defineProps<{ response: NowPlaying }>();
 </script>
 
 <template>

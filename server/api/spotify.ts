@@ -1,8 +1,8 @@
 // TODO: One of these I'm gonna figure out how to use the Spotify TS SDK, though that day is not today...
 
-import { AccessTokenResponse, NowPlayingResponse } from '~/types/spotify';
+import type { AccessTokenResponse, NowPlaying } from '~/types/spotify';
 
-export default defineEventHandler(async (): Promise<NowPlayingResponse> => {
+export default defineEventHandler(async (): Promise<NowPlaying> => {
   const config = useRuntimeConfig();
 
   const { access_token: accessToken, token_type: tokenType } =

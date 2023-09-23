@@ -9,7 +9,6 @@ export type BlogPostProps = {
 };
 
 const props = defineProps<BlogPostProps>();
-const href = computed(() => `/blog/${props.slug}`);
 </script>
 
 <template>
@@ -22,7 +21,7 @@ const href = computed(() => `/blog/${props.slug}`);
       >
       <BlogPostViewCount :view-count="props.viewCount" />
     </div>
-    <NuxtLink :to="href">
+    <NuxtLink :to="props.slug">
       <div class="group relative">
         <h3
           class="mt-3 font-roboto-mono text-lg leading-6 tracking-tighter text-neutral-300 group-hover:text-neutral-400"

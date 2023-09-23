@@ -3,7 +3,7 @@ export type AccessTokenResponse = {
   token_type: string;
 };
 
-export type NowPlayingResponse = {
+export type NowPlaying = {
   href: string;
   albumImageSrc: string;
   trackTitle: string;

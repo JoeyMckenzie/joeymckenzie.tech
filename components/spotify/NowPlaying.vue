@@ -8,7 +8,7 @@ const response = await useFetch('/api/spotify');
       ><slot
     /></SpotifyNotCurrentlyListening>
   </div>
-  <div v-else-if="!response.pending.value && response.data">
+  <div v-else-if="!response.pending.value && response.data?.value?.nowPlaying">
     <SpotifyCurrentlyPlaying :response="response.data.value!"
       ><slot
     /></SpotifyCurrentlyPlaying>
