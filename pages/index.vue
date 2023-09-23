@@ -38,7 +38,7 @@ const previewPosts = posts
 
 <template>
   <div>
-    <Header title="Hi, I'm Joey" />
+    <SectionHeader title="Hi, I'm Joey" />
     <HomeIntro />
     <HomeSocialButtons />
     <BlogPostPreviews :posts="previewPosts" />

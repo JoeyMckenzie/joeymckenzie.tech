@@ -22,7 +22,7 @@ const href = computed(() => `/blog/${props.slug}`);
       >
       <BlogPostViewCount :view-count="props.viewCount" />
     </div>
-    <a :href="href">
+    <NuxtLink :to="href">
       <div class="group relative">
         <h3
           class="mt-3 font-roboto-mono text-lg leading-6 tracking-tighter text-neutral-300 group-hover:text-neutral-400"
@@ -34,6 +34,6 @@ const href = computed(() => `/blog/${props.slug}`);
           {{ description }}
         </p>
       </div>
-    </a>
+    </NuxtLink>
   </article>
 </template>

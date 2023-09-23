@@ -3,8 +3,9 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 
 export default {
   content: [
-    './components/**/*.{vue,ts}',
+    './components/**/*.vue',
     './pages/**/*.vue',
+    './layouts/*.vue',
     './nuxt.config.ts',
     './app.vue',
   ],
