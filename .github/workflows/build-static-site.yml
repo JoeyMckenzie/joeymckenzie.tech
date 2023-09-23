@@ -1,4 +1,4 @@
-name: Astro CI
+name: CI
 
 on:
   push:
@@ -17,5 +17,5 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Build and lint astro site
+      - name: Build and lint
         run: bun run ci

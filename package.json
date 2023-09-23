@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "fmt": "prettier --write .",
     "prepare": "git config core.hookspath .githooks",
-    "drizzle": "bunx drizzle-kit studio"
+    "drizzle": "bunx drizzle-kit studio",
+    "ci": "bun run lint && bun run build"
   },
   "lint-staged": {
     "**/*.{vue,ts,json,md}": "bun run fmt"
