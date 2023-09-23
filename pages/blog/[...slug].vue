@@ -12,9 +12,8 @@ useSeoMeta({
 
 const response = await useFetch('/api/blogs/view', {
   method: 'POST',
-  body: { slug: path },
+  body: { slug: path.split('/')[2] ?? '' },
 });
-console.log(response.data?.value);
 </script>
 
 <template>

@@ -1,13 +1,23 @@
+import { eq } from 'drizzle-orm';
+import db from '~/server/drizzle/db';
+import { viewCounts } from '~/server/drizzle/schema';
+
 export default defineEventHandler(async (event) => {
-  // const existingViewCount = await db.select().from(viewCounts).where(eq(event.));
+  const { slug } = await readBody<{ slug: string }>(event);
 
-  // const updatedUserId: { updatedId: number }[] = await db
-  //   .update(viewCounts)
-  //   .set({ name: 'Mr. Dan' })
-  //   .where(eq(users.name, 'Dan'))
-  //   .returning({ updatedId: users.id });
+  const currentViewCount = await db
+    .select({
+      viewCount: viewCounts.viewCount,
+    })
+    .from(viewCounts)
+    .where(eq(viewCounts.slug, slug))
+    .limit(1);
 
-  return {
-    foo: 'bar',
-  };
+  if (currentViewCount && currentViewCount.length > 0) {
+    const viewCount = currentViewCount[0].viewCount;
+    await db
+      .update(viewCounts)
+      .set({ viewCount: viewCount + 1 })
+      .where(eq(viewCounts.slug, slug));
+  }
 });
