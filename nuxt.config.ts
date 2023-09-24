@@ -25,6 +25,7 @@ export default defineNuxtConfig({
       spotifyTokenEndpoint: 'https://accounts.spotify.com/api/token',
       spotifyNowPlayingEndpoint:
         'https://api.spotify.com/v1/me/player?type=track,episode',
+      databaseUrl: import.meta.env.DATABASE_URL,
     },
     public: {
       commitSha: import.meta.env.CF_PAGES_COMMIT_SHA,
