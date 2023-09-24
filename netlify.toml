@@ -1,0 +1,7 @@
+[build]
+functions = "netlify/functions"
+command = "./scripts/build.sh"
+publish = "dist"
+
+[build.environment]
+NPM_FLAGS = "--version"
