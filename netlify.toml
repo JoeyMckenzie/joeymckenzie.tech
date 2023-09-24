@@ -1,3 +1,0 @@
-[build]
-command = "chmod +x ./scripts/build.sh && ./scripts/build.sh"
-publish = "dist"
