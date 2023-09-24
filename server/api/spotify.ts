@@ -1,6 +1,10 @@
 // TODO: One of these I'm gonna figure out how to use the Spotify TS SDK, though that day is not today...
 
-import type { AccessTokenResponse, NowPlaying } from '~/types/spotify';
+import type {
+  AccessTokenResponse,
+  NowPlaying,
+  SpotifyNowPlayingResponse,
+} from '~/types/spotify';
 
 export default defineEventHandler(async (): Promise<NowPlaying> => {
   const config = useRuntimeConfig();
@@ -15,7 +19,7 @@ export default defineEventHandler(async (): Promise<NowPlaying> => {
       body: getRequestBody(config.app.spotifyRefreshToken),
     });
 
-  const nowPlayingResponse = await $fetch(
+  const nowPlayingResponse = await $fetch<SpotifyNowPlayingResponse>(
     config.app.spotifyNowPlayingEndpoint,
     {
       method: 'GET',
@@ -28,10 +32,6 @@ export default defineEventHandler(async (): Promise<NowPlaying> => {
   // Spotify returned a 204, so no content === not playing anything
   if (!nowPlayingResponse) {
     return {
-      albumImageSrc: '',
-      artist: '',
-      href: '',
-      trackTitle: '',
       nowPlaying: false,
     };
   }

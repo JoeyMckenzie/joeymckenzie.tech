@@ -3,7 +3,7 @@ import { drizzle } from 'drizzle-orm/neon-http';
 
 neonConfig.fetchConnectionCache = true;
 
-const sql = neon(process.env.DATABASE_URL!);
+const sql = neon(process.env.DATABASE_URL ?? process.exit(1));
 const db = drizzle(sql, { logger: true });
 
 export default db;

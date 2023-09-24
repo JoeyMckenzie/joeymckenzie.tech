@@ -10,7 +10,7 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 });
 
-const response = await useFetch('/api/blogs/view', {
+await useFetch('/api/blogs/view', {
   method: 'POST',
   body: { slug: path.split('/')[2] ?? '' },
 });
