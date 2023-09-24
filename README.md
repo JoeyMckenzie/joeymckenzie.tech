@@ -1,6 +1,6 @@
 # joeymckenzie.tech
 
-[![CI](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/build-static-site.yml/badge.svg)](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/build-static-site.yml)
+[![CI](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/ci.yml)
 
 Welcome to my slice of the internet! This repository contains all the source code and content used on my blog. The project leverages:
 

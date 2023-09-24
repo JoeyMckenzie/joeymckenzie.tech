@@ -19,15 +19,15 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     app: {
-      spotifyClientId: process.env.SPOTIFY_CLIENT_ID,
-      spotifyClientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-      spotifyRefreshToken: process.env.SPOTIFY_REFRESH_TOKEN,
+      spotifyClientId: import.meta.env.SPOTIFY_CLIENT_ID,
+      spotifyClientSecret: import.meta.env.SPOTIFY_CLIENT_SECRET,
+      spotifyRefreshToken: import.meta.env.SPOTIFY_REFRESH_TOKEN,
       spotifyTokenEndpoint: 'https://accounts.spotify.com/api/token',
       spotifyNowPlayingEndpoint:
         'https://api.spotify.com/v1/me/player?type=track,episode',
     },
     public: {
-      commitSha: process.env.CF_PAGES_COMMIT_SHA,
+      commitSha: import.meta.env.CF_PAGES_COMMIT_SHA,
     },
   },
   content: {
