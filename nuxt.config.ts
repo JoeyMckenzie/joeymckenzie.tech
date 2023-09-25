@@ -1,5 +1,9 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  routeRules: {
+    '/blog/**': { isr: true },
+    '/api/**': { cors: true },
+  },
   nitro: {
     preset: 'netlify',
   },
@@ -38,6 +42,7 @@ export default defineNuxtConfig({
     },
   },
   content: {
+    useCache: true,
     highlight: {
       theme: 'vitesse-dark',
     },
