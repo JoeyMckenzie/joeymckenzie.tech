@@ -28,7 +28,7 @@ export default defineNuxtConfig({
       databaseUrl: import.meta.env.DATABASE_URL,
     },
     public: {
-      commitSha: import.meta.env.CF_PAGES_COMMIT_SHA,
+      commitSha: import.meta.env.COMMIT_REF,
     },
   },
   content: {

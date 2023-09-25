@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { BlogPostProps } from '~/components/blog/PostPreview.vue';
-
 useSeoMeta({
   title: 'joeymckenzie.tech',
   ogTitle: 'Blog | joeymckenzie.tech',
@@ -9,32 +7,6 @@ useSeoMeta({
   ogImage: 'https://example.com/image.png',
   twitterCard: 'summary_large_image',
 });
-
-const [viewCounts, posts] = await Promise.all([
-  useFetch('/api/blogs'),
-  queryContent('blog')
-    .only(['_path', 'category', 'description', 'pubDate', 'title'])
-    .find(),
-]);
-
-const viewCountData = computed(() => viewCounts.data.value?.viewCounts);
-
-// TODO: Clean this up, redundant
-const previewPosts = posts
-  .sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf())
-  .map(
-    (p) =>
-      ({
-        slug: p._path!,
-        category: p.category,
-        description: p.description,
-        pubDate: new Date(p.pubDate),
-        title: p.title!,
-        viewCount:
-          viewCountData.value?.find((vc) => p._path?.includes(vc.slug))
-            ?.count ?? 0,
-      }) satisfies BlogPostProps,
-  );
 </script>
 
 <template>
@@ -56,6 +28,11 @@ const previewPosts = posts
         me about any of the writing I do here, or to simply say hello!
       </p>
     </div>
-    <BlogPostPreviews :posts="previewPosts" />
+    <Suspense>
+      <BlogPostPreviews />
+      <template #fallback>
+        <BlogsLoading />
+      </template>
+    </Suspense>
   </div>
 </template>

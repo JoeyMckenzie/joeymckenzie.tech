@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { BlogPostProps } from '~/components/blog/PostPreview.vue';
-
 useSeoMeta({
   title: 'joeymckenzie.tech',
   ogTitle: "Hi, I'm Joe | joeymckenzie.tech",
@@ -9,32 +7,6 @@ useSeoMeta({
   ogImage: 'https://joeymckenzie.tech/favicon-32x32.png',
   twitterCard: 'summary_large_image',
 });
-
-const [viewCounts, posts] = await Promise.all([
-  useFetch('/api/blogs'),
-  queryContent('blog')
-    .only(['_path', 'category', 'description', 'pubDate', 'title'])
-    .find(),
-]);
-
-const viewCountData = computed(() => viewCounts.data.value?.viewCounts);
-
-const previewPosts = posts
-  .sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf())
-  .slice(0, 3)
-  .map(
-    (p) =>
-      ({
-        slug: p._path!,
-        category: p.category,
-        description: p.description,
-        pubDate: new Date(p.pubDate),
-        title: p.title!,
-        viewCount:
-          viewCountData.value?.find((vc) => p._path?.includes(vc.slug))
-            ?.count ?? 0,
-      }) satisfies BlogPostProps,
-  );
 </script>
 
 <template>
@@ -42,6 +14,11 @@ const previewPosts = posts
     <SectionHeader title="Hi, I'm Joey" />
     <HomeIntro />
     <HomeSocialButtons />
-    <BlogPostPreviews :posts="previewPosts" />
+    <Suspense>
+      <BlogPostPreviews :include-latest="true" />
+      <template #fallback>
+        <BlogsLoading />
+      </template>
+    </Suspense>
   </div>
 </template>

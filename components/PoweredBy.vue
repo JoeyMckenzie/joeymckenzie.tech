@@ -15,18 +15,17 @@ const hashDisplay = hash?.substring(0, 6);
 
     <!-- Vue -->
     <NuxtLink :external="true" to="https://vuejs.org">
-      <span class="sr-only">Vercel</span>
+      <span class="sr-only">Vue</span>
       <Icon name="logos:vue" class="h-4 w-4" />
     </NuxtLink>
 
-    <!-- Cloudflare -->
-    <NuxtLink
-      :external="true"
-      to="https://cloudflare.com"
-      class="text-orange-500 hover:text-orange-400"
-    >
-      <span class="sr-only">Vercel</span>
-      <Icon name="simple-icons:cloudflare" class="h-6 w-6" />
+    <!-- Netlify -->
+    <NuxtLink :external="true" to="https://netlify.com">
+      <span class="sr-only">Netlify</span>
+      <Icon
+        name="simple-icons:netlify"
+        class="h-6 w-6 text-teal-400 hover:text-teal-500"
+      />
     </NuxtLink>
 
     <!-- Nuxt -->
