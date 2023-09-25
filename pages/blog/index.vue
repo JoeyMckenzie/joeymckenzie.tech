@@ -31,7 +31,7 @@ useSeoMeta({
     <Suspense>
       <BlogPostPreviews />
       <template #fallback>
-        <BlogsLoading />
+        <BlogPostsLoading />
       </template>
     </Suspense>
   </div>

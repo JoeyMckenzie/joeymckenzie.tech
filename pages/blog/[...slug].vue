@@ -10,7 +10,8 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 });
 
-await useFetch('/api/blogs/view', {
+// Fire and forget, no need to block rendering
+useFetch('/api/blogs/view', {
   method: 'POST',
   body: { slug: path.split('/')[2] ?? '' },
 });

@@ -1,17 +1,17 @@
 <script setup lang="ts">
-const response = await useFetch('/api/spotify');
+import { NowPlaying } from '~/types/spotify';
+
+const { data, pending } = await useFetch<NowPlaying>('/api/spotify');
 </script>
 
 <template>
-  <div v-if="response.pending.value">
+  <div v-if="pending">
     <SpotifyNotCurrentlyListening text="Loading..."
       ><slot
     /></SpotifyNotCurrentlyListening>
   </div>
-  <div v-else-if="!response.pending.value && response.data?.value?.nowPlaying">
-    <SpotifyCurrentlyPlaying :response="response.data.value!"
-      ><slot
-    /></SpotifyCurrentlyPlaying>
+  <div v-else-if="!pending && data?.nowPlaying">
+    <SpotifyCurrentlyPlaying :response="data"><slot /></SpotifyCurrentlyPlaying>
   </div>
   <div v-else>
     <SpotifyNotCurrentlyListening><slot /></SpotifyNotCurrentlyListening>

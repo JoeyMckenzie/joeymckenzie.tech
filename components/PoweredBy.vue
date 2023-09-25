@@ -24,18 +24,17 @@ const hashDisplay = hash?.substring(0, 6);
       <span class="sr-only">Netlify</span>
       <Icon
         name="simple-icons:netlify"
-        class="h-6 w-6 text-teal-400 hover:text-teal-500"
+        class="h-6 w-6 text-teal-500 hover:text-teal-600"
       />
     </NuxtLink>
 
     <!-- Nuxt -->
-    <NuxtLink
-      :external="true"
-      to="https://nuxt.com"
-      class="text-green-500 hover:text-green-400"
-    >
+    <NuxtLink :external="true" to="https://nuxt.com">
       <span class="sr-only">Nuxt</span>
-      <Icon name="simple-icons:nuxtdotjs" class="h-6 w-6" />
+      <Icon
+        name="simple-icons:nuxtdotjs"
+        class="h-6 w-6 text-green-500 hover:text-green-400"
+      />
     </NuxtLink>
 
     <!-- Git info -->

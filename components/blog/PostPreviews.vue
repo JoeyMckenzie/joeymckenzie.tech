@@ -8,30 +8,35 @@ const props = defineProps({
   },
 });
 
-const [viewCounts, posts] = await Promise.all([
+const [{ data: viewCounts }, { data: posts }] = await Promise.all([
   useFetch('/api/blogs'),
-  queryContent('blog')
-    .only(['_path', 'category', 'description', 'pubDate', 'title'])
-    .find(),
+  useAsyncData('blogs', () =>
+    queryContent('blog')
+      .only(['_path', 'category', 'description', 'pubDate', 'title'])
+      .find(),
+  ),
 ]);
 
-const viewCountData = computed(() => viewCounts.data.value?.viewCounts);
-
-let previewPosts = posts
-  .sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf())
-  .map(
-    (p) =>
-      ({
-        slug: p._path!,
-        category: p.category,
-        description: p.description,
-        pubDate: new Date(p.pubDate),
-        title: p.title!,
-        viewCount:
-          viewCountData.value?.find((vc) => p._path?.includes(vc.slug))
-            ?.count ?? 0,
-      }) satisfies BlogPostProps,
-  );
+let previewPosts = posts?.value
+  ? posts.value
+      .sort(
+        (a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf(),
+      )
+      .map(
+        (p) =>
+          ({
+            slug: p._path!,
+            category: p.category,
+            description: p.description,
+            pubDate: new Date(p.pubDate),
+            title: p.title!,
+            viewCount:
+              viewCounts.value?.viewCounts?.find(
+                (vc) => p._path?.includes(vc.slug),
+              )?.count ?? 0,
+          }) satisfies BlogPostProps,
+      )
+  : [];
 
 if (props.includeLatest) {
   previewPosts = previewPosts.slice(0, 3);

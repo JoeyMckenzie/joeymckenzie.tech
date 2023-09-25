@@ -17,7 +17,7 @@ useSeoMeta({
     <Suspense>
       <BlogPostPreviews :include-latest="true" />
       <template #fallback>
-        <BlogsLoading />
+        <BlogPostsLoading />
       </template>
     </Suspense>
   </div>
