@@ -18,7 +18,7 @@ const props = defineProps<{ response: NowPlaying }>();
     </h2>
     <div class="flex flex-row items-center justify-center space-x-2">
       <slot />
-      <NuxtImg
+      <img
         :src="props.response.albumImageSrc"
         width="30"
         height="30"
