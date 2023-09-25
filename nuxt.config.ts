@@ -6,7 +6,13 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
-  modules: ['@nuxt/content', '@nuxtjs/robots', 'nuxt-icon', 'nuxt-feedme'],
+  modules: [
+    '@nuxt/image',
+    '@nuxt/content',
+    '@nuxtjs/robots',
+    'nuxt-icon',
+    'nuxt-feedme',
+  ],
   devtools: {
     enabled: true,
   },

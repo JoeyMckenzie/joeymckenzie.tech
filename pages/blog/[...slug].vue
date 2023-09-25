@@ -31,12 +31,7 @@ await useFetch('/api/blogs/view', {
           <FormattedDate :date="new Date(doc.pubDate)" />
           <span class="font-bold">#{{ doc.category }}</span>
         </div>
-        <img
-          width="540"
-          height="280"
-          :src="doc.heroImage"
-          alt="Blog header image"
-        />
+        <NuxtImg :src="doc.heroImage" alt="Blog header image" />
         <ContentRenderer :value="doc" />
       </article>
       <NuxtLink

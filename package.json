@@ -33,6 +33,9 @@
     "tailwindcss": "^3.3.3",
     "typescript": "^5.2.2"
   },
+  "trustedDependencies": [
+    "sharp"
+  ],
   "dependencies": {
     "@neondatabase/serverless": "^0.6.0",
     "@nuxt/image": "rc",
@@ -41,6 +44,7 @@
     "@tailwindcss/forms": "^0.5.6",
     "@tailwindcss/typography": "^0.5.10",
     "drizzle-orm": "^0.28.6",
-    "postgres": "^3.3.5"
+    "postgres": "^3.3.5",
+    "sharp": "^0.32.6"
   }
 }
