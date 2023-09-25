@@ -12,7 +12,9 @@ useSeoMeta({
 
 const [viewCounts, posts] = await Promise.all([
   useFetch('/api/blogs'),
-  queryContent('blog').find(),
+  queryContent('blog')
+    .only(['_path', 'category', 'description', 'pubDate', 'title'])
+    .find(),
 ]);
 
 const viewCountData = computed(() => viewCounts.data.value?.viewCounts);
