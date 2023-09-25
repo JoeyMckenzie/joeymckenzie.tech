@@ -7,3 +7,6 @@ node_modules
 .data
 .env
 dist
+
+# Local Netlify folder
+.netlify
