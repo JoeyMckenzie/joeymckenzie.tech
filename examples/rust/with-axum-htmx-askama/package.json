@@ -1,0 +1,13 @@
+{
+  "name": "with-axum-htmx-askama",
+  "version": "1.0.0",
+  "license": "ISC",
+  "scripts": {
+    "format": "prettier --write --ignore-unknown ."
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "tailwindcss": "^3.3.2"
+  }
+}

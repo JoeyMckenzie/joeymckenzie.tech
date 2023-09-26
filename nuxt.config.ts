@@ -42,9 +42,9 @@ export default defineNuxtConfig({
     },
   },
   content: {
-    useCache: true,
     highlight: {
       theme: 'vitesse-dark',
+      preload: ['cs', 'csharp', 'rust'],
     },
   },
 });
