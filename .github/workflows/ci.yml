@@ -13,7 +13,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
       - uses: oven-sh/setup-bun@v1
@@ -23,6 +23,9 @@ jobs:
 
       - name: Build and lint
         run: bun run ci
+
+      - name: Link to Netlify
+        run: bunx netlify link --name {{ github.NETLIFY_SITE_ID }}
 
       - name: Deploy to Netlify
         run: bunx netlify deploy --site {{ github.NETLIFY_SITE_ID }} --auth {{ github.NETLIFY_DEPLOY_TOKEN }} --functions {{ env.FUNCTIONS_DIR }} --dir {{ env.PUBLISH_DIR }} --prod
