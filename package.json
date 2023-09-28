@@ -10,12 +10,12 @@
     "lint": "eslint .",
     "fmt": "prettier --write .",
     "prepare": "git config core.hookspath .githooks",
-    "drizzle": "bunx drizzle-kit studio",
-    "ci": "bun run build && bun run lint",
-    "fresh": "rm -rf ./node_modules bun.lockb && bun install"
+    "drizzle": "pnpm dlx drizzle-kit studio",
+    "ci": "pnpm run build && pnpm run lint",
+    "fresh": "rm -rf ./node_modules pnpm.lockb && pnpm install"
   },
   "lint-staged": {
-    "**/*.{vue,ts,json,md}": "bun run fmt"
+    "**/*.{vue,ts,json,md}": "pnpm run fmt"
   },
   "devDependencies": {
     "@nuxt/content": "^2.8.5",
