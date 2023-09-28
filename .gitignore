@@ -10,3 +10,10 @@ dist
 
 # Local Netlify folder
 .netlify
+
+
+# Examples
+
+examples/rust/**/target
+examples/rust/**/node_modules
+examples/zig/**/zig-cache
