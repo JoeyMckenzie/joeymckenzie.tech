@@ -12,7 +12,6 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
-      - uses: oven-sh/setup-bun@v1
       - uses: pnpm/action-setup@v2
         with:
           version: latest
