@@ -1,9 +1,10 @@
 import { eq } from 'drizzle-orm';
 import { viewCounts } from '~/server/utils/schema';
-import db from '~/server/utils/db';
 
 export default defineEventHandler(async (event) => {
   const { slug } = await readBody<{ slug: string }>(event);
+  const config = useRuntimeConfig();
+  const db = useDb(config.app.databaseUrl);
 
   const currentViewCount = await db
     .select({

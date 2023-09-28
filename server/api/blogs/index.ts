@@ -1,9 +1,10 @@
 import { desc } from 'drizzle-orm';
 import { viewCounts } from '~/server/utils/schema';
-import db from '~/server/utils/db';
 
 export default defineEventHandler(async (event) => {
   const query = getQuery(event);
+  const config = useRuntimeConfig();
+  const db = useDb(config.app.databaseUrl);
 
   let viewCountsQuery = db
     .select({
