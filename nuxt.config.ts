@@ -5,13 +5,12 @@ export default defineNuxtConfig({
     '/api/**': { cors: true },
   },
   nitro: {
-    preset: 'netlify',
+    preset: 'cloudflare-pages',
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
   modules: [
-    '@nuxt/image',
     '@nuxt/content',
     '@nuxtjs/robots',
     'nuxt-icon',
