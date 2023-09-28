@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BlogPostProps } from './PostPreview.vue';
+import { usePostStore } from '~/utils/store';
 
 const props = defineProps({
   includeLatest: {
@@ -8,39 +8,13 @@ const props = defineProps({
   },
 });
 
-const [{ data: viewCounts }, { data: posts }] = await Promise.all([
-  useFetch('/api/blogs'),
-  useAsyncData('blogs', () =>
-    queryContent('blog')
-      .only(['_path', 'category', 'description', 'pubDate', 'title'])
-      .find(),
-  ),
-]);
+const { posts, latestsPosts, fetchPosts } = usePostStore();
 
-let previewPosts = posts?.value
-  ? posts.value
-      .sort(
-        (a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf(),
-      )
-      .map(
-        (p) =>
-          ({
-            slug: p._path!,
-            category: p.category,
-            description: p.description,
-            pubDate: new Date(p.pubDate),
-            title: p.title!,
-            viewCount:
-              viewCounts.value?.viewCounts?.find(
-                (vc) => p._path?.includes(vc.slug),
-              )?.count ?? 0,
-          }) satisfies BlogPostProps,
-      )
-  : [];
-
-if (props.includeLatest) {
-  previewPosts = previewPosts.slice(0, 3);
+if (posts.length === 0) {
+  await fetchPosts();
 }
+
+const previewPosts = props.includeLatest ? latestsPosts : posts;
 </script>
 
 <template>

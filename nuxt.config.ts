@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     'nuxt-icon',
     'nuxt-feedme',
+    '@pinia/nuxt',
   ],
   devtools: {
     enabled: true,
@@ -42,9 +43,19 @@ export default defineNuxtConfig({
     },
   },
   content: {
-    useCache: true,
     highlight: {
       theme: 'vitesse-dark',
+      preload: [
+        'rust',
+        'cs',
+        'csharp',
+        'sql',
+        'makefile',
+        'dockerfile',
+        'java',
+        'xml',
+        'go',
+      ],
     },
   },
 });

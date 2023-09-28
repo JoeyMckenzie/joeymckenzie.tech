@@ -307,7 +307,7 @@ PORT = "80"
 
 For production, we want to listen on port 80 as the default API port (versus 8080 locally). While we're at it, let's also expose port 443 in our Dockerfile to satisfy SSL:
 
-```Dockerfile
+```dockerfile
 # Previous setup...
 
 # Let's expose port 80 as we'll need fly's internal port mapping also assumes 80
@@ -512,7 +512,7 @@ Migrations successfully applied!
 
 To sanity check, if we drop the tables (using your DB interface of choice) and spin up the server, we should see the success message again. Now, it's going to be a bit annoying to have to punch in our environment variables, so let's add a `make` task:
 
-```Makefile
+```makefile
 # Existing environment variables...
 CONNECTION_STRING = postgres://postgres:mySuperSecretPassword!@localhost:5432/postgres?sslmode=disable
 

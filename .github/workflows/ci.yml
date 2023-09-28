@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: ['main']
 
+env:
+  FUNCTIONS_DIR: .netlify
+  PUBLISH_DIR: dist
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,3 +23,6 @@ jobs:
 
       - name: Build and lint
         run: bun run ci
+
+      - name: Deploy to Netlify
+        run: bunx netlify deploy --site {{ github.NETLIFY_SITE_ID }} --auth {{ github.NETLIFY_DEPLOY_TOKEN }} --functions {{ env.FUNCTIONS_DIR }} --dir {{ env.PUBLISH_DIR }} --prod

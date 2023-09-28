@@ -1,5 +1,6 @@
 # joeymckenzie.tech
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/8f547f03-f5b6-4c46-9ba8-e658dd9c33d5/deploy-status)](https://app.netlify.com/sites/joeymckenzie/deploys)
 [![CI](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/ci.yml)
 
 Welcome to my slice of the internet! This repository contains all the source code and content used on my blog. The project leverages:
