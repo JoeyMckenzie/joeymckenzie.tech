@@ -3,3 +3,10 @@
 
 export const SITE_TITLE = 'joeymckenzie.tech';
 export const SITE_DESCRIPTION = 'My personal slice of the internet.';
+export const SITE_KEYWORDS = [
+  'Joey McKenzie tech blog',
+  'rust blog',
+  'typescript blog',
+  'code blog',
+  'software engineering blog',
+];

@@ -2,6 +2,7 @@
   "name": "joey-mckenzie-tech",
   "type": "module",
   "version": "1.0.0",
+  "packageManager": "pnpm@8.9.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -10,18 +11,17 @@
     "astro": "astro",
     "prepare": "git config core.hookspath .githooks",
     "lint": "eslint .",
-    "ci": "bun run build && bun run lint",
+    "ci": "pnpm run build && pnpm run lint",
     "fmt": "prettier --write .",
     "fmt:check": "prettier --check .",
-    "fmt:watch": "bunx onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
+    "fmt:watch": "pnpm dlx onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
   },
   "lint-staged": {
-    "**/*.{cjs,mjs,ts,vue,astro,md,json,yaml}": "bun fmt",
+    "**/*.{cjs,mjs,ts,vue,astro,md,json,yaml}": "pnpm run fmt",
     "**/*.rs": "cargo fmt -- --emit=files",
     "**/*.zig": "zig fmt"
   },
   "dependencies": {
-    "@astrojs/mdx": "^1.0.3",
     "@astrojs/rss": "^3.0.0",
     "@astrojs/sitemap": "^3.0.0",
     "@astrojs/tailwind": "^5.0.0",

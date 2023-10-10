@@ -1,25 +1,14 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
-type ViewCountMeta = {
-  count: number;
-  slug: string;
-};
+import { computed } from 'vue';
+import { viewCounts } from './view-counts';
 
 const props = defineProps<{
   slug: string;
-  apiBaseUrl: string;
 }>();
 
-const viewCount = ref(0);
-
-async function loadViewCount(apiBaseUrl: string, slug: string) {
-  const viewCountResponse = await fetch(`${apiBaseUrl}/views/${slug}`);
-  const viewCountMeta: ViewCountMeta = await viewCountResponse.json();
-  viewCount.value = viewCountMeta.count;
-}
-
-await loadViewCount(props.apiBaseUrl, props.slug);
+const viewCount = computed(
+  () => viewCounts.value.find((vc) => vc.slug === props.slug)?.count ?? 0,
+);
 </script>
 
 <template>

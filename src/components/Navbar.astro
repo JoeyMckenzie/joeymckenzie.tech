@@ -1,10 +1,12 @@
 ---
-import HtmlTag from '../shared/HtmlTag.astro';
+import HtmlTag from './HtmlTag.astro';
 import NavbarLink from './NavbarLink.astro';
 ---
 
 <header>
-  <nav class="mt-4 flex flex-row items-center justify-center gap-x-2 px-6">
+  <nav
+    class="pt-0 sm:pt-8 mt-4 flex flex-row items-center justify-center gap-x-2 px-6"
+  >
     <HtmlTag additionalClasses="hidden sm:block" tagName="menu">
       <NavbarLink href="/">Home</NavbarLink>
       <NavbarLink href="/about">About</NavbarLink>

@@ -1,24 +1,26 @@
 ---
+import BaseHead from '@/components/BaseHead.astro';
+import Navbar from '@/components/Navbar.astro';
 import Footer from '@/components/footer/Footer.astro';
-import BaseHead from '@/components/layout/BaseHead.astro';
-import Navbar from '@/components/layout/Navbar.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 type Props = {
   title?: string;
   description?: string;
   image?: string;
+  keywords?: string[] | undefined;
 };
 
-const { title, description, image } = Astro.props;
+const { title, description, image, keywords } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="h-full">
   <head>
     <BaseHead
       title={title ?? SITE_TITLE}
       description={description ?? SITE_DESCRIPTION}
+      keywords={keywords}
       image={image ?? ''}
     />
   </head>

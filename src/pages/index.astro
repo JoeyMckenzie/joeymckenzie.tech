@@ -1,15 +1,19 @@
 ---
+import Header from '@/components/Header.astro';
 import LatestBlogs from '@/components/blog/LatestBlogs.astro';
+import SilentViewCounts from '@/components/blog/SilentViewCounts.vue';
 import Intro from '@/components/home/Intro.astro';
 import SocialButtons from '@/components/home/SocialButtons.astro';
-import Header from '@/components/layout/Header.astro';
-import BaseLayout from '@/layouts/BaseLayout.astro';
+import BaseLayout from '@/layouts/DefaultLayout.astro';
+
+const apiBaseUrl = import.meta.env.API_BASE_URL;
 ---
 
 <BaseLayout
   title="Hi, I'm Joey"
   description="My personal slice of the internet."
 >
+  <SilentViewCounts apiBaseUrl={apiBaseUrl} client:load />
   <Header title="joeymckenzie.tech" />
   <Intro />
   <SocialButtons />

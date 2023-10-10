@@ -1,8 +1,8 @@
 ---
 import {
   getPreferencesForCategory,
-  TechnologyPreference,
-  TechnologyPreferenceCategory,
+  type TechnologyPreference,
+  type TechnologyPreferenceCategory,
 } from './preferences/preferences';
 import TechnologyPreferenceSection from './TechnologyPreferenceSection.astro';
 
@@ -12,7 +12,7 @@ type PreferenceMeta = {
 };
 
 function getPreferenceCategory(
-  category: TechnologyPreferenceCategory
+  category: TechnologyPreferenceCategory,
 ): PreferenceMeta {
   return {
     category,
