@@ -30,7 +30,7 @@
     "@tailwindcss/forms": "^0.5.6",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@tailwindcss/typography": "^0.5.10",
-    "astro": "^3.0.13",
+    "astro": "^3.3.0",
     "astro-icon": "^0.8.1",
     "tailwindcss": "^3.3.3",
     "vue": "^3.2.30"
