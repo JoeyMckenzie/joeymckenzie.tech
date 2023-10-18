@@ -1,1 +1,0 @@
-import{g as a,o,c as n,t as r}from"./entry.f5d3264e.js";const s=["datetime"],p=a({__name:"FormattedDate",props:{date:{}},setup(e){const t=e;return(c,i)=>(o(),n("time",{datetime:t.date.toISOString(),class:"text-neutral-400"},r(t.date.toLocaleDateString("en-us",{year:"numeric",month:"short",day:"numeric"})),9,s))}});export{p as _};

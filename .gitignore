@@ -7,12 +7,7 @@ node_modules
 .data
 .env
 dist
-
-# Local Netlify folder
-.netlify
-
-
-# Examples
+.vercel
 
 examples/rust/**/target
 examples/rust/**/node_modules
