@@ -1,5 +1,8 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  nitro: {
+    preset: 'vercel',
+  },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
@@ -22,16 +25,16 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     app: {
-      spotifyClientId: process.env.SPOTIFY_CLIENT_ID,
-      spotifyClientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-      spotifyRefreshToken: process.env.SPOTIFY_REFRESH_TOKEN,
+      spotifyClientId: import.meta.env.SPOTIFY_CLIENT_ID,
+      spotifyClientSecret: import.meta.env.SPOTIFY_CLIENT_SECRET,
+      spotifyRefreshToken: import.meta.env.SPOTIFY_REFRESH_TOKEN,
       spotifyTokenEndpoint: 'https://accounts.spotify.com/api/token',
       spotifyNowPlayingEndpoint:
         'https://api.spotify.com/v1/me/player?type=track,episode',
-      databaseUrl: process.env.DATABASE_URL,
+      databaseUrl: import.meta.env.DATABASE_URL,
     },
     public: {
-      commitSha: process.env.COMMIT_REF,
+      commitSha: import.meta.env.VERCEL_GIT_COMMIT_SHA,
     },
   },
   content: {

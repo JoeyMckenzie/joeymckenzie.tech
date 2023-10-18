@@ -11,9 +11,7 @@ const props = defineProps<{ response: NowPlaying }>();
     rel="noreferrer"
     class="flex flex-col space-y-1"
   >
-    <h2
-      class="inline-flex justify-center font-ubuntu text-xs text-neutral-400 md:justify-start"
-    >
+    <h2 class="inline-flex justify-center font-ubuntu text-xs text-neutral-400">
       Now listening
     </h2>
     <div class="flex flex-row items-center justify-center space-x-2">

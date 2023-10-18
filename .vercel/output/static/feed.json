@@ -1,0 +1,126 @@
+{
+  "version": "https://jsonfeed.org/version/1",
+  "title": "",
+  "items": [
+    {
+      "title": "Blazor basics - calling external APIs with typed HTTP clients",
+      "summary": "Move over JavaScript, there's a new sheriff in town (not really, we still love you, JS).",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "Build a Tailwind modal with Angular and NgRx",
+      "summary": "Out-of-the-box modals are nice, but often times inflexible and can bring a lot of unnecessary code into a project for something as simple as displaying a message. Let's use Tailwind to build our very own state-based modal instead!",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "Constructing objects with intent",
+      "summary": "Build better object APIs with named constructors and fluent builders!",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "Nullable reference types and designing with intent",
+      "summary": "Null reference exceptions can be a thing of the path, but with great power comes great responsibility.",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "Decoupling controllers with ApiEndpoints",
+      "summary": "No one likes monolithic controllers, and with ApiEndpoints, API design just got a whole lot easier.",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "Hitchhiker's guide to Angular development with Nx",
+      "summary": "The answer is simple... 42 (projects in the same monorepo).",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "Implementing dark mode in Angular with Tailwind",
+      "summary": "Because light mode is so 2018.",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "JAMstack Angular apps with Scully and Netlify",
+      "summary": "Write, build, and deploy Angular applications as fully SEO-optimized static sites with Netlify and Netlify Functions!",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "Learning to fly with Rust and Postgres",
+      "summary": "If it can be Dockerized, it can be deployed.",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "Migrating to Astro",
+      "summary": "Astro, Svelte, and Rust walk into a bar...",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 2)",
+      "summary": "Implement the unit of work and repository patterns with Dapper.",
+      "date_modified": "2023-10-18T17:11:31.647Z"
+    },
+    {
+      "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 3)",
+      "summary": "Testing code with xUnit, Dapper, and Shouldly.",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 4)",
+      "summary": "Write encapsulated business logic with the help of MediatR and the CQRS pattern.",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 1)",
+      "summary": "Build an API using Dapper, MediatR, and clean architecture principles with the help of beer.",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "React data fetching with RxJS",
+      "summary": "Use RxJS to implement simple data fetching, making ALL THE THINGS reactive!",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "Rethinking exceptions in .NET",
+      "summary": "Exceptions... exceptions everywhere!",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "Going serverless with Rust and Shuttle",
+      "summary": "Managing infrastructure is already hard enough, let's write some serverless Rust with Shuttle!",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": ".NET Core service lifetimes in a nutshell",
+      "summary": "Learn to register your lifetimes accordingly with .NET Core's built-in dependency injection and IoC container.",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "State Management with Blazor using Fluxor (Part 1)",
+      "summary": "Manage state in your Blazor applications using the tried-and-true flux pattern with Fluxor.",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "State Management with Blazor using Fluxor (Part 2)",
+      "summary": "Use Fluxor to encapsulate the business logic of our Blazor apps and build clean view components.",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "Back to the server with Rust, Axum, and htmx",
+      "summary": "Insert meme about React devs rediscovering the magic of PHP and ASP.",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "Ziggin' around with linked lists",
+      "summary": "Flashback to detecting loops in a list on a whiteboard...",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "Going serverless with .NET, PlanetScale, and Fly",
+      "summary": "Because who wants to manage their database infrastructure in 2023?",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    },
+    {
+      "title": "Embracing the edge with Go, PlanetScale, and Fly",
+      "summary": "Giving a whole new meaning to living life on the edge.",
+      "date_modified": "2023-10-18T17:11:31.648Z"
+    }
+  ]
+}

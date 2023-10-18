@@ -19,12 +19,12 @@ const hashDisplay = hash?.substring(0, 6);
       <Icon name="logos:vue" class="h-4 w-4" />
     </NuxtLink>
 
-    <!-- Netlify -->
-    <NuxtLink :external="true" to="https://netlify.com">
-      <span class="sr-only">Netlify</span>
+    <!-- Vercel -->
+    <NuxtLink :external="true" to="https://vercel.com">
+      <span class="sr-only">vercel</span>
       <Icon
-        name="simple-icons:netlify"
-        class="h-6 w-6 text-teal-500 hover:text-teal-600"
+        name="simple-icons:vercel"
+        class="h-4 w-4 text-gray-100 hover:text-gray-200"
       />
     </NuxtLink>
 

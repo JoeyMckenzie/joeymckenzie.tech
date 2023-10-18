@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id/>
+    <title/>
+    <updated>2023-10-18T17:11:31.644Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <entry>
+        <title type="html"><![CDATA[Blazor basics - calling external APIs with typed HTTP clients]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.642Z</updated>
+        <summary type="html"><![CDATA[Move over JavaScript, there's a new sheriff in town (not really, we still love you, JS).]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Build a Tailwind modal with Angular and NgRx]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Out-of-the-box modals are nice, but often times inflexible and can bring a lot of unnecessary code into a project for something as simple as displaying a message. Let's use Tailwind to build our very own state-based modal instead!]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Constructing objects with intent]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Build better object APIs with named constructors and fluent builders!]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Nullable reference types and designing with intent]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Null reference exceptions can be a thing of the path, but with great power comes great responsibility.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Decoupling controllers with ApiEndpoints]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[No one likes monolithic controllers, and with ApiEndpoints, API design just got a whole lot easier.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Hitchhiker's guide to Angular development with Nx]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[The answer is simple... 42 (projects in the same monorepo).]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Implementing dark mode in Angular with Tailwind]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Because light mode is so 2018.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[JAMstack Angular apps with Scully and Netlify]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Write, build, and deploy Angular applications as fully SEO-optimized static sites with Netlify and Netlify Functions!]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Learning to fly with Rust and Postgres]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[If it can be Dockerized, it can be deployed.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Migrating to Astro]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Astro, Svelte, and Rust walk into a bar...]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Clean architecture, Dapper, MediatR, and buzzword bingo (part 2)]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Implement the unit of work and repository patterns with Dapper.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Clean architecture, Dapper, MediatR, and buzzword bingo (part 3)]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Testing code with xUnit, Dapper, and Shouldly.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Clean architecture, Dapper, MediatR, and buzzword bingo (part 4)]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Write encapsulated business logic with the help of MediatR and the CQRS pattern.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Clean architecture, Dapper, MediatR, and buzzword bingo (part 1)]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Build an API using Dapper, MediatR, and clean architecture principles with the help of beer.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[React data fetching with RxJS]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Use RxJS to implement simple data fetching, making ALL THE THINGS reactive!]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Rethinking exceptions in .NET]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Exceptions... exceptions everywhere!]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Going serverless with Rust and Shuttle]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Managing infrastructure is already hard enough, let's write some serverless Rust with Shuttle!]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[.NET Core service lifetimes in a nutshell]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.643Z</updated>
+        <summary type="html"><![CDATA[Learn to register your lifetimes accordingly with .NET Core's built-in dependency injection and IoC container.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[State Management with Blazor using Fluxor (Part 1)]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.644Z</updated>
+        <summary type="html"><![CDATA[Manage state in your Blazor applications using the tried-and-true flux pattern with Fluxor.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[State Management with Blazor using Fluxor (Part 2)]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.644Z</updated>
+        <summary type="html"><![CDATA[Use Fluxor to encapsulate the business logic of our Blazor apps and build clean view components.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Back to the server with Rust, Axum, and htmx]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.644Z</updated>
+        <summary type="html"><![CDATA[Insert meme about React devs rediscovering the magic of PHP and ASP.]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Ziggin' around with linked lists]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.644Z</updated>
+        <summary type="html"><![CDATA[Flashback to detecting loops in a list on a whiteboard...]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Going serverless with .NET, PlanetScale, and Fly]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.644Z</updated>
+        <summary type="html"><![CDATA[Because who wants to manage their database infrastructure in 2023?]]></summary>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[Embracing the edge with Go, PlanetScale, and Fly]]></title>
+        <id/>
+        <link/>
+        <updated>2023-10-18T17:11:31.644Z</updated>
+        <summary type="html"><![CDATA[Giving a whole new meaning to living life on the edge.]]></summary>
+    </entry>
+</feed>
