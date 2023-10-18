@@ -1,101 +1,36 @@
-# joeymckenzie.tech
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/8f547f03-f5b6-4c46-9ba8-e658dd9c33d5/deploy-status)](https://app.netlify.com/sites/joeymckenzie/deploys)
-[![CI](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/ci.yml)
+## Getting Started
 
-Welcome to my slice of the internet! This repository contains all the source code and content used on my blog. The project leverages:
-
-- [Astro](https://astro.build) as the framework of choice as the site is primarily static content
-- [Svelte](https://svelte.dev) for dynamic components, bootstrapped by Astro
-- [Turborepo](https://turbo.build/repo) for task running and output caching
-- A few build tools in [prettier](https://prettier.io/), [eslint](https://eslint.org/), [tailwind](https://tailwindcss.com), and [pnpm](https://pnpm.io/)
-- Rust-based serverless functions hosted with [shuttle](https://shuttle.rs)
-
-The code here is freely available for anyone to use. To get started, fork/[degit](https://github.com/Rich-Harris/degit) this repository and install dependencies:
+First, run the development server:
 
 ```bash
-npm install # or pnpm install
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-To start the dev server:
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-npm run dev # or pnpm dev
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-That's it! To run the serverless functions, make sure you have rust installed (preferably via [rustup](https://rustup.rs/)) and build. Before building, make sure to install [mold](https://github.com/rui314/mold) (the successor to [lld](https://lld.llvm.org/)) to swap out the default linker for builds. If you prefer to use the default link, simply remove the `.cargo` directory and build.
+This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## 🪝 Git hooks
+## Learn More
 
-There are two git hooks configured to run:
+To learn more about Next.js, take a look at the following resources:
 
-- pre-commit: will format all JS/TS and rust files with prettier and cargo, respectively, via [lint-staged](https://www.npmjs.com/package/lint-staged)
-- pre-push: runs the build and lint targets to ensure all code is compilable and error-free before pushing to source control via turbo
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-Before pushing code, make sure to install turbo so that subsequent builds and lints are cached for faster task execution:
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-```bash
-npm install -g turbo # or pnpm install turbo --global
-turbo build lint # to initially populate the task execution cache
-```
+## Deploy on Vercel
 
-## 🚀 Project Structure
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-```bash
-├── public/ # for public assets available to all astro pages and svelte components
-├── samples/ # code samples from blog posts
-├── src/
-│   ├── components/ # various page components and svelte integration components
-│   ├── content/ # markdown files powering the blog
-│   ├── layouts/ # parent layouts used by all pages
-│   ├── pages/ # routes available in the application
-│   ├── serverless/ # rust serverless functions
-│   └── styles/ # tailwind styles and fonts
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
-```
-
-## Deploying to shuttle
-
-I leverage serverless functions to retrieve data using rust with the help of [shuttle](https://shuttle.rs), a serverless provider allowing users to write rust for their serverless backends. To get started, first install `cargo-shuttle`:
-
-```bash
-cargo install --locked cargo-shuttle
-```
-
-Next, sign up for an account and authenticate the CLI:
-
-```bash
-cargo shuttle login --api-key {{ your API key here }}
-```
-
-Finally, create a project workspace and deploy
-
-```bash
-cargo shuttle init # follow the prompts
-cargo shuttle deploy
-```
-
-That's it! You should now have a serverless function running at the output URL based on the code found in the `src/serverless` directory.
-
-## Running shuttle functions locally
-
-Shuttle recently made some core infrastructure changes requiring `protoc` to be installed on the target machine. Instructions for installing `protoc` can be found [on the website](https://docs.shuttle.rs/support/installing-protoc) with implementations varying depending on machines and package managers. An example can be found in the rust build/deploy actions, or simply installing `protobuf` with `brew`:
-
-```bash
-brew install protobuf
-```
-
-Verify your installation with:
-
-```bash
-protoc --version
-```
-
-Note that older versions of `protoc` will not work, thus the minor workarounds found in the docs or by simply using `brew`. Once installed, you can start local functions with:
-
-```bash
-cargo shuttle run
-```
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.

@@ -1,24 +1,19 @@
 import type { Config } from 'tailwindcss';
-import defaultTheme from 'tailwindcss/defaultTheme';
 
-export default {
+const config: Config = {
   content: [
-    './components/**/*.vue',
-    './pages/**/*.vue',
-    './layouts/*.vue',
-    './nuxt.config.ts',
-    './app.vue',
+    './src/components/**/*.{ts,tsx,mdx}',
+    './src/app/**/*.{ts,tsx,mdx}',
   ],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-        ubuntu: ['Ubuntu', ...defaultTheme.fontFamily.sans],
-        merriweather: ['Merriweather', ...defaultTheme.fontFamily.serif],
-        'roboto-mono': ['Roboto Mono', ...defaultTheme.fontFamily.sans],
-        'roboto-slab': ['Roboto Slab', ...defaultTheme.fontFamily.serif],
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic':
+          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
     },
   },
-  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')],
-} satisfies Config;
+  plugins: [],
+};
+export default config;
