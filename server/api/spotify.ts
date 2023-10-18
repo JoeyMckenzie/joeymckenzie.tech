@@ -40,7 +40,7 @@ export default defineEventHandler(async (): Promise<NowPlaying> => {
   const item = nowPlayingResponse.item;
   const context = nowPlayingResponse.context;
   const trackTitle = item.name;
-  const href = context.external_urls.spotify;
+  const href = context?.external_urls?.spotify ?? '/';
 
   // The playing type will either be `"show"` or `"track"` based on a podcast or artist song
   // There's _a lot_ of presumptive `unwrap()`ing going here, should probably clean up eventually
