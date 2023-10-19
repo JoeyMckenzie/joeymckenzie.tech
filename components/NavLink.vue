@@ -1,10 +1,10 @@
 <script setup lang="ts">
-const props = defineProps<{ href: string }>();
+defineProps<{ href: string }>();
 </script>
 
 <template>
   <NuxtLink
-    :to="props.href"
+    :to="href"
     class="inline-flex rounded px-2 py-1 font-roboto-mono font-medium text-neutral-400 hover:bg-neutral-700"
     active-class="border border-transparent bg-neutral-800 text-neutral-300 focus:outline-none"
   >

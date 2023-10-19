@@ -1,3 +1,11 @@
+<script setup lang="ts">
+import { usePostStore } from '~/utils/store';
+
+const { fetchPosts } = usePostStore();
+
+await fetchPosts();
+</script>
+
 <template>
   <div>
     <Html class="h-full">

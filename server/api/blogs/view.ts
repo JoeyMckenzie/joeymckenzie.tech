@@ -20,5 +20,10 @@ export default defineEventHandler(async (event) => {
       .update(viewCounts)
       .set({ viewCount: viewCount + 1 })
       .where(eq(viewCounts.slug, slug));
+  } else {
+    await db.insert(viewCounts).values({
+      slug,
+      viewCount: 1,
+    });
   }
 });

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { BlogPostProps } from '~/components/blog/PostPreview.vue';
 
-export const usePostStore = defineStore('counter', () => {
+export const usePostStore = defineStore('posts', () => {
   const posts = ref<BlogPostProps[]>([]);
   const latestsPosts = computed(() => posts.value.slice(0, 3));
 
@@ -11,6 +11,13 @@ export const usePostStore = defineStore('counter', () => {
       useAsyncData('blogs', () =>
         queryContent('blog')
           .only(['_path', 'category', 'description', 'pubDate', 'title'])
+          .where({
+            published: {
+              $not: {
+                $exists: true,
+              },
+            },
+          })
           .find(),
       ),
     ]);

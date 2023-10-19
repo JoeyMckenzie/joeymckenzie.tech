@@ -1,15 +1,6 @@
 <script setup lang="ts">
 const { path } = useRoute();
 
-useSeoMeta({
-  title: 'joeymckenzie.tech',
-  ogTitle: 'Blog | joeymckenzie.tech',
-  description: 'A blog about code, software, and sometimes beer.',
-  ogDescription: 'A blog about code, software, and sometimes beer.',
-  ogImage: 'https://example.com/image.png',
-  twitterCard: 'summary_large_image',
-});
-
 // Fire and forget, no need to block rendering
 useFetch('/api/blogs/view', {
   method: 'POST',

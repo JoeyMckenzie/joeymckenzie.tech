@@ -8,11 +8,7 @@ const props = defineProps({
   },
 });
 
-const { posts, latestsPosts, fetchPosts } = usePostStore();
-
-if (posts.length === 0) {
-  await fetchPosts();
-}
+const { posts, latestsPosts } = usePostStore();
 
 const previewPosts = props.includeLatest ? latestsPosts : posts;
 </script>
