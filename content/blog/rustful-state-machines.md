@@ -4,11 +4,6 @@ description: "A Rustacean's ode to the Gang of Four."
 pubDate: 'May 23 2023'
 heroImage: '/blog/ziggin-around/meme.jpg'
 category: 'rust'
-image:
-  src: '/assets/images/meme.jpg'
-  alt: 'Meme about design patterns and state'
-  width: 400
-  height: 300
 head:
   meta:
     - name: 'keywords'
