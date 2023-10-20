@@ -9,6 +9,9 @@ node_modules
 dist
 .vercel
 
+Cargo.lock
+target/
 examples/rust/**/target
+examples/rust/**/Cargo.lock
 examples/rust/**/node_modules
 examples/zig/**/zig-cache
