@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SocialButtonProps } from './SocialButton.vue';
+import type { SocialButtonProps } from './SocialButton.vue';
 
 const socials: SocialButtonProps[] = [
   {
