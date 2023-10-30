@@ -12,11 +12,11 @@ export function PoweredBy() {
       </p>
       <a href="https://nextjs.org">
         <span className="sr-only">Next.js</span>
-        <SiNextdotjs className="h-4 w-4" />
+        <SiNextdotjs className="h-4 w-4 text-neutral-500 hover:text-neutral-400" />
       </a>
       <a href="https://vercel.com">
         <span className="sr-only">Vercel</span>
-        <SiVercel className="h-4 w-4" />
+        <SiVercel className="h-4 w-4 text-neutral-500 hover:text-neutral-400" />
       </a>
       <a
         href={commitUrl}

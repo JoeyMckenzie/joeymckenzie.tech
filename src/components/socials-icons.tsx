@@ -1,7 +1,11 @@
-'use client';
-
 import { IconBaseProps } from 'react-icons';
-import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import {
+  FaGithub,
+  FaLinkedin,
+  FaTwitch,
+  FaTwitter,
+  FaYoutube,
+} from 'react-icons/fa';
 
 const socials = [
   {
@@ -18,6 +22,16 @@ const socials = [
     href: 'https://x.com/_joeyMcKenzie',
     icon: (props: IconBaseProps) => <FaTwitter {...props} />,
     display: 'Twitter',
+  },
+  {
+    href: 'https://twitch.tv/JoeTheDevMan',
+    icon: (props: IconBaseProps) => <FaTwitch {...props} />,
+    display: 'Twitch',
+  },
+  {
+    href: 'https://www.youtube.com/channel/UCkdpN-mQSyJ_2XJMU1kQ5fA#',
+    icon: (props: IconBaseProps) => <FaYoutube {...props} />,
+    display: 'YouTube',
   },
 ];
 

@@ -12,7 +12,7 @@ export default function Home() {
       <h2 className="text-center text-4xl font-bold tracking-tight">
         Hi, I&apos;m Joe.
       </h2>
-      <p className="mt-6 text-sm leading-8">
+      <p className="prose mt-6 text-sm leading-8 text-neutral-400">
         Hi, I&apos;m Joey. I&apos;m a{' '}
         <span className="font-semibold">Senior Software Engineer</span> based in
         Northern California working in fintech. I enjoy writing about software,
