@@ -1,3 +1,4 @@
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { allPosts } from 'contentlayer/generated';
 import Link from 'next/link';
@@ -41,7 +42,7 @@ export default async function PostPage({
               day: 'numeric',
             })}
           </time>
-          <span className="font-bold">{post.category}</span>
+          <Badge>{post.category}</Badge>
         </div>
         {/* <Image
           width="540"

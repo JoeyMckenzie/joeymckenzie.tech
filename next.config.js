@@ -2,7 +2,7 @@ const { withContentlayer } = require('next-contentlayer');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  pageExtensions: ['mdx', 'ts', 'tsx'],
+  pageExtensions: ['ts', 'tsx'],
   reactStrictMode: true,
   swcMinify: true,
 };
