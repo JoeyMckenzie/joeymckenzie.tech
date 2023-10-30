@@ -42,7 +42,6 @@ export function SocialIcons() {
         <a
           key={`social-icons-${index}`}
           href="https://twitter.com/_joeyMcKenzie"
-          className="text-neutral-400 hover:text-neutral-500"
         >
           <span className="sr-only">{social.display}</span>
           <social.icon className="h-4 w-4" />

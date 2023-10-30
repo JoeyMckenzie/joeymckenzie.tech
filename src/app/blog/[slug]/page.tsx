@@ -29,13 +29,10 @@ export default async function PostPage({
 
   return (
     <>
-      <article className="prose prose-invert mx-auto overflow-hidden pb-6 text-justify text-neutral-400 prose-h2:text-neutral-200 prose-a:text-neutral-200 hover:prose-a:text-neutral-300 prose-code:text-neutral-300 prose-img:mx-auto prose-img:rounded-md">
-        <h1 className="text-center text-2xl text-neutral-300">{post.title}</h1>
+      <article className="prose mx-auto overflow-hidden pb-6 text-justify dark:prose-invert prose-img:mx-auto prose-img:rounded-md">
+        <h1 className="text-center text-2xl">{post.title}</h1>
         <div className="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight">
-          <time
-            dateTime={new Date(post.pubDate).toISOString()}
-            className="text-neutral-400"
-          >
+          <time dateTime={new Date(post.pubDate).toISOString()}>
             {new Date(post.pubDate).toLocaleDateString('en-us', {
               year: 'numeric',
               month: 'short',

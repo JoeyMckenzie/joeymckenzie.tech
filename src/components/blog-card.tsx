@@ -22,7 +22,7 @@ export function BlogCard(post: Post) {
             {post.title}
           </Link>
         </h3>
-        <p className="mt-5 line-clamp-3 text-sm leading-6 text-stone-400">
+        <p className="mt-5 line-clamp-3 text-sm leading-6">
           {post.description}
         </p>
       </div>

@@ -1,5 +1,6 @@
 import { Footer } from '@/components/footer';
 import { Navbar } from '@/components/navbar';
+import { ThemeProvider } from '@/components/theme-provider';
 import type { Metadata } from 'next';
 import { Figtree } from 'next/font/google';
 import './globals.css';
@@ -19,9 +20,18 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={figtree.className}>
-        <Navbar />
-        <div className="mx-auto max-w-screen-2xl px-6 lg:px-8">{children}</div>
-        <Footer />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Navbar />
+          <div className="mx-auto max-w-screen-2xl px-6 lg:px-8">
+            {children}
+          </div>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
