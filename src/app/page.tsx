@@ -19,7 +19,7 @@ export default function Home() {
       <h2 className="text-center text-4xl font-bold tracking-tight">
         Hi, I&apos;m Joey.
       </h2>
-      <p className="prose mt-6 text-justify text-sm leading-8 text-neutral-400">
+      <p className="prose mx-auto mt-6 text-justify text-sm leading-8 text-neutral-400">
         Hi, I&apos;m Joey. I&apos;m a{' '}
         <span className="font-semibold">Senior Software Engineer</span> based in
         Northern California working in fintech. I enjoy writing about software,
