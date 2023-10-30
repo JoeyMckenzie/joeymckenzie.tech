@@ -1,26 +1,31 @@
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
 import { Post } from 'contentlayer/generated';
+import { format } from 'date-fns';
+import Link from 'next/link';
+import { Badge } from './ui/badge';
 
-export function BlogCard({ title, description }: Post) {
+export function BlogCard(post: Post) {
   return (
-    <Card className="w-[350px]">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent></CardContent>
-      <CardFooter className="flex justify-between">
-        <Button variant="outline">Cancel</Button>
-        <Button>Deploy</Button>
-      </CardFooter>
-    </Card>
+    <article
+      key={post._id}
+      className="flex max-w-xl flex-col items-start justify-between"
+    >
+      <div className="flex items-center gap-x-4 text-xs">
+        <time dateTime={post.pubDate}>
+          {format(new Date(post.pubDate), 'PP')}
+        </time>
+        <Badge>{post.category}</Badge>
+      </div>
+      <div className="group relative">
+        <h3 className="mt-3 text-lg font-semibold leading-6">
+          <Link href={post.url}>
+            <span className="absolute inset-0" />
+            {post.title}
+          </Link>
+        </h3>
+        <p className="mt-5 line-clamp-3 text-sm leading-6 text-stone-400">
+          {post.description}
+        </p>
+      </div>
+    </article>
   );
 }

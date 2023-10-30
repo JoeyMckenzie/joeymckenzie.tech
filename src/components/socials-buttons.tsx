@@ -43,8 +43,9 @@ const socials = [
 
 export function SocialsButtons() {
   return (
-    <NavigationMenu className="mx-auto p-8">
-      <NavigationMenuList className="flex flex-col gap-x-2 gap-y-4 sm:flex-row">
+    <NavigationMenu className="mx-auto py-8">
+      {/* <NavigationMenuList className="flex flex-col gap-x-2 gap-y-4 sm:flex-row"> */}
+      <NavigationMenuList className="grid grid-cols-2 gap-x-1 gap-y-2 sm:grid-cols-4">
         {socials.map((social, index) => (
           <NavigationMenuItem key={`social-${index}`}>
             <NavigationMenuLink

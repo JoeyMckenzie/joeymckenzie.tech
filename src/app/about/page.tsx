@@ -2,7 +2,7 @@ export default function About() {
   return (
     <>
       <h2 className="text-center text-4xl font-bold tracking-tight">Bio.</h2>
-      <div className="prose mx-auto flex max-w-2xl flex-col text-sm leading-8 text-neutral-400">
+      <div className="prose mx-auto flex max-w-2xl flex-col text-justify text-sm leading-8 text-neutral-400">
         <p className="mt-6">
           {' '}
           I&apos;m Joey. I&apos;ve got a passion for the web and developing
