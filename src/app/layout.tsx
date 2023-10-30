@@ -20,7 +20,9 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={figtree.className}>
         <Navbar />
-        <div className="mx-auto max-w-screen-2xl px-6 lg:px-8">{children}</div>
+        <div className="mx-auto flex max-w-screen-2xl flex-col items-center justify-center px-6 lg:px-8">
+          {children}
+        </div>
         <Footer />
       </body>
     </html>
