@@ -38,3 +38,5 @@ next-env.d.ts
 examples/rust/**/target
 examples/rust/**/node_modules
 examples/zig/**/zig-cache
+
+.contentlayer
