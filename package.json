@@ -10,11 +10,11 @@
     "lint": "eslint .",
     "fmt": "prettier --write .",
     "prepare": "git config core.hookspath .githooks",
-    "drizzle": "pnpm dlx drizzle-kit studio",
-    "ci": "pnpm run build && pnpm run lint"
+    "drizzle": "bunx drizzle-kit studio",
+    "ci": "bun run build && bun run lint"
   },
   "lint-staged": {
-    "**/*.{vue,ts,json,md}": "pnpm run fmt"
+    "**/*.{vue,ts,json,md}": "bun run fmt"
   },
   "devDependencies": {
     "@nuxt/content": "^2.8.5",
