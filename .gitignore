@@ -15,3 +15,5 @@ examples/rust/**/target
 examples/rust/**/Cargo.lock
 examples/rust/**/node_modules
 examples/zig/**/zig-cache
+
+server/drizzle
