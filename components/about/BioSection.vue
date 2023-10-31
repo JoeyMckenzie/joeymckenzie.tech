@@ -1,6 +1,6 @@
 <template>
   <div
-    class="prose mx-auto flex max-w-2xl flex-col text-sm leading-6 text-neutral-400"
+    class="prose mx-auto flex max-w-2xl flex-col text-justify text-sm leading-6 text-neutral-400"
   >
     <p class="mt-6">
       I&apos;m Joey. I&apos;ve got a passion for the web and developing services

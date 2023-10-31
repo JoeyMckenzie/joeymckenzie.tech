@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { BlogPostProps } from '~/components/blog/PostPreview.vue';
+import type { BlogPostProps } from '~/components/blog/PostPreview.vue';
 
 export const usePostStore = defineStore('posts', () => {
   const posts = ref<BlogPostProps[]>([]);

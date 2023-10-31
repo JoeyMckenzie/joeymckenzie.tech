@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.6.0",
+    "@nuxt/image": "^1.0.0",
     "@nuxtjs/robots": "^3.0.0",
     "@pinia/nuxt": "^0.5.1",
     "@spotify/web-api-ts-sdk": "^1.1.2",

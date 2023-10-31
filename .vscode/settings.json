@@ -1,18 +1,10 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll": true
-  },
-  "files.associations": {
-    "*.css": "tailwindcss"
+    "source.fixAll": true,
+    "source.organizeImports": true
   },
   "editor.quickSuggestions": {
     "strings": true
   },
-  "tailwindCSS.experimental.configFile": "tailwind.config.ts",
-  "tailwindCSS.experimental.classRegex": [
-    ["ui:\\s*{([^)]*)\\s*}", "[\"'`]([^\"'`]*).*?[\"'`]"],
-    ["/\\*ui\\*/\\s*{([^;]*)}", ":\\s*[\"'`]([^\"'`]*).*?[\"'`]"]
-  ],
-  "tailwindCSS.classAttributes": ["class", "ui"],
   "typescript.tsdk": "node_modules/typescript/lib"
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { NowPlaying } from '~/types/spotify';
+import type { NowPlaying } from '~/types/spotify';
 
 const { data, pending } = await useFetch<NowPlaying>('/api/spotify');
 </script>

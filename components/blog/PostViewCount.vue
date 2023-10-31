@@ -1,11 +1,11 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   viewCount: number;
 }>();
 </script>
 
 <template>
-  <div :v-if="props.viewCount > 0" class="font-medium text-neutral-400">
-    {{ props.viewCount }} views
+  <div :v-if="viewCount > 0" class="font-medium text-neutral-400">
+    {{ viewCount }} views
   </div>
 </template>

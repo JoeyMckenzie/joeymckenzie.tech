@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<{ title: string }>();
+defineProps<{ title: string }>();
 </script>
 
 <template>
@@ -10,7 +10,7 @@ const props = defineProps<{ title: string }>();
       <h2
         class="font-mono text-2xl font-semibold tracking-tight text-neutral-400 sm:text-3xl"
       >
-        {{ props.title }}
+        {{ title }}
       </h2>
     </HtmlTag>
   </span>

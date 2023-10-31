@@ -13,7 +13,7 @@ const classes = computed(() =>
 </script>
 
 <template>
-  <span :class="classes">&lt;{{ props.tagName }}&gt;</span>
+  <span :class="classes">&lt;{{ tagName }}&gt;</span>
   <slot />
-  <span :class="classes">&lt;/{{ props.tagName }}&gt;</span>
+  <span :class="classes">&lt;/{{ tagName }}&gt;</span>
 </template>

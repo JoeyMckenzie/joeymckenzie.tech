@@ -12,6 +12,7 @@ head:
       content: 'index, follow'
     - name: 'author'
       content: 'Joey McKenzie'
+published: false
 ---
 
 Back in action, and I'm fresh off a hiatus while raising a little one. I can safely say that I _definitely_ underestimated

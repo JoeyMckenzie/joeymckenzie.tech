@@ -6,7 +6,7 @@ export type SocialButtonProps = {
   icon: string;
 };
 
-const props = defineProps<{
+defineProps<{
   href: string;
   name: string;
   display: string;
@@ -21,9 +21,9 @@ const props = defineProps<{
     type="button"
     class="inline-flex w-full items-center justify-center rounded-md border border-neutral-700 px-6 py-3 text-sm font-medium text-neutral-400 shadow-sm hover:bg-neutral-700 focus:outline-none"
   >
-    <span class="sr-only">{{ props.name }}</span>
-    <Icon class="mr-3 h-5 w-5" :name="props.icon" />
-    {{ props.display }}
+    <span class="sr-only">{{ name }}</span>
+    <Icon class="mr-3 h-5 w-5" :name="icon" />
+    {{ display }}
     <Icon
       name="tabler:external-link"
       class="-mr-1 ml-3 h-5 w-5"

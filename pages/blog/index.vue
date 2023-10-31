@@ -15,7 +15,7 @@ useSeoMeta({
     <div
       class="prose mx-auto flex max-w-2xl flex-col text-sm leading-6 text-neutral-400"
     >
-      <p class="mt-6 sm:text-center">
+      <p class="mt-6 text-justify">
         I write about a lot of things, mainly languages, ecoystems, and software
         design. I consider my writing a journal of technologies I've worked with
         at some point during my career, and I'm always happy to field questions

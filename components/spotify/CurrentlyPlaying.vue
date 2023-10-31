@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { NowPlaying } from '~/types/spotify';
 
-const props = defineProps<{ response: NowPlaying }>();
+defineProps<{ response: NowPlaying }>();
 </script>
 
 <template>
   <a
-    :href="props.response.href"
+    :href="response.href"
     target="_blank"
     rel="noreferrer"
     class="flex flex-col space-y-1"
@@ -16,18 +16,20 @@ const props = defineProps<{ response: NowPlaying }>();
     </h2>
     <div class="flex flex-row items-center justify-center space-x-2">
       <slot />
-      <img
-        :src="props.response.albumImageSrc"
+      <NuxtImg
+        :src="response.albumImageSrc"
         width="30"
         height="30"
         alt="Spotify listenting to"
         class="rounded-sm"
       />
-      <div class="flex flex-col truncate">
-        <h4 class="text-xs font-semibold text-neutral-300">
-          {{ props.response.trackTitle }}
+      <div class="flex max-w-[16rem] flex-col">
+        <h4
+          class="line-clamp-1 overflow-hidden text-ellipsis text-xs font-semibold text-neutral-300"
+        >
+          {{ response.trackTitle }}
         </h4>
-        <p class="text-xs text-neutral-400">{{ props.response.artist }}</p>
+        <p class="text-xs text-neutral-400">{{ response.artist }}</p>
       </div>
     </div>
   </a>

@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     'nuxt-icon',
     'nuxt-feedme',
     '@pinia/nuxt',
+    '@nuxt/image',
   ],
   devtools: {
     enabled: true,

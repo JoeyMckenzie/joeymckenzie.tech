@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   text: {
     type: String,
     default: 'Not currently listening',
@@ -12,7 +12,7 @@ const props = defineProps({
     <div class="flex flex-row items-center justify-center space-x-2">
       <slot />
       <div class="flex flex-col">
-        <h4 class="text-xs text-neutral-500">{{ props.text }}</h4>
+        <h4 class="text-xs text-neutral-500">{{ text }}</h4>
       </div>
     </div>
   </div>

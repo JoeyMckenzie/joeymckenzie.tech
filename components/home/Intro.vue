@@ -3,7 +3,7 @@
     <div
       class="prose mx-auto inline-flex max-w-2xl flex-col text-sm leading-6 text-neutral-400"
     >
-      <p class="mt-6">
+      <p class="mt-6 text-justify">
         Hi, I'm Joey. I'm a
         <InlineBold>Senior Software Engineer</InlineBold> based in Northern
         California working in fintech. I enjoy writing about software, design,

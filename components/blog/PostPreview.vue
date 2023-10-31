@@ -8,20 +8,20 @@ export type BlogPostProps = {
   viewCount: number;
 };
 
-const props = defineProps<BlogPostProps>();
+defineProps<BlogPostProps>();
 </script>
 
 <template>
   <article class="flex max-w-xl flex-col items-start">
     <div class="flex items-center gap-x-4 text-xs">
-      <FormattedDate :date="props.pubDate" />
+      <FormattedDate :date="pubDate" />
       <span
         class="relative z-10 rounded-full bg-neutral-700 px-3 py-1.5 font-medium text-neutral-300"
         >{{ category }}</span
       >
-      <BlogPostViewCount :view-count="props.viewCount" />
+      <BlogPostViewCount :view-count="viewCount" />
     </div>
-    <NuxtLink :to="props.slug">
+    <NuxtLink :to="slug">
       <div class="group relative">
         <h3
           class="mt-3 font-roboto-mono text-lg leading-6 tracking-tighter text-neutral-300 group-hover:text-neutral-400"
