@@ -12,7 +12,7 @@ useSeoMeta({
 <template>
   <div>
     <SectionHeader title="Hi, I'm Joey" />
-    <HomeIntro />
+    <HomeIntroSection />
     <HomeSocialButtons />
     <Suspense>
       <BlogPostPreviews :include-latest="true" />

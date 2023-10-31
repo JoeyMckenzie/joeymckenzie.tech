@@ -11,7 +11,7 @@ useSeoMeta({
 
 <template>
   <div>
-    <SectionHeader title="About" />
+    <SectionHeader title="Bio" />
     <AboutBioSection />
   </div>
 </template>
