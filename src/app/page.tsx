@@ -1,7 +1,10 @@
 import { BlogPreview } from '@/components/blog-preview';
 import { SocialsButtons } from '@/components/socials-buttons';
+import { db } from '@/lib/db';
+import { viewCounts } from '@/lib/schema';
 import { allPosts } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
+import { desc } from 'drizzle-orm';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -13,7 +16,17 @@ const posts = allPosts
   .sort((a, b) => compareDesc(new Date(a.pubDate), new Date(b.pubDate)))
   .slice(0, 3);
 
-export default function Home() {
+export default async function Home() {
+  const viewCountsQuery = await db
+    .select({
+      slug: viewCounts.slug,
+      count: viewCounts.viewCount,
+    })
+    .from(viewCounts)
+    .orderBy(desc(viewCounts.viewCount));
+
+  console.log(viewCountsQuery);
+
   return (
     <>
       <h2 className="text-center text-4xl font-bold tracking-tight">
