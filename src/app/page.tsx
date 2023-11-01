@@ -17,21 +17,13 @@ const posts = allPosts
   .slice(0, 3);
 
 export default async function Home() {
-  async function get() {
-    'use server';
-
-    const viewCountsQuery = await db
-      .select({
-        slug: viewCounts.slug,
-        count: viewCounts.viewCount,
-      })
-      .from(viewCounts)
-      .orderBy(desc(viewCounts.viewCount));
-
-    console.log(viewCountsQuery);
-  }
-
-  await get();
+  const viewCountsQuery = await db
+    .select({
+      slug: viewCounts.slug,
+      count: viewCounts.viewCount,
+    })
+    .from(viewCounts)
+    .orderBy(desc(viewCounts.viewCount));
 
   return (
     <>
