@@ -3,8 +3,8 @@ import rehypePrettyCode from 'rehype-pretty-code';
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
-  filePathPattern: `**/*.mdx`,
-  contentType: 'mdx',
+  filePathPattern: `**/*.md`,
+  contentType: 'markdown',
   fields: {
     title: { type: 'string', required: true },
     description: { type: 'string', required: true },
