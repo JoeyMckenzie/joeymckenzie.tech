@@ -44,7 +44,7 @@ export function SocialIcons() {
           href="https://twitter.com/_joeyMcKenzie"
         >
           <span className="sr-only">{social.display}</span>
-          <social.icon className="h-4 w-4" />
+          <social.icon className="h-4 w-4 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 " />
         </a>
       ))}
     </div>

@@ -2,9 +2,9 @@ import { BlogPreview } from '@/components/blog-preview';
 import { allPosts } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
 
-const posts = allPosts.sort((a, b) =>
-  compareDesc(new Date(a.pubDate), new Date(b.pubDate)),
-);
+const posts = allPosts
+  .filter((p) => p.published)
+  .sort((a, b) => compareDesc(new Date(a.pubDate), new Date(b.pubDate)));
 
 export default function Blog() {
   return (

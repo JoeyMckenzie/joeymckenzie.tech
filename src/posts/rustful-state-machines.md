@@ -4,14 +4,14 @@ description: "A hobbyist Rustacean's ode to the Gang of Four."
 pubDate: 'Oct 23 2023'
 heroImage: '/blog/ziggin-around/meme.jpg'
 category: 'rust'
-head:
-  meta:
-    - name: 'keywords'
-      content: 'rust, state machines, design patterns'
-    - name: 'robots'
-      content: 'index, follow'
-    - name: 'author'
-      content: 'Joey McKenzie'
+# head:
+#   meta:
+#     - name: 'keywords'
+#       content: 'rust, state machines, design patterns'
+#     - name: 'robots'
+#       content: 'index, follow'
+#     - name: 'author'
+#       content: 'Joey McKenzie'
 published: false
 ---
 

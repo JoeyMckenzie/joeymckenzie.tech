@@ -10,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 const posts = allPosts
+  .filter((p) => p.published)
   .sort((a, b) => compareDesc(new Date(a.pubDate), new Date(b.pubDate)))
   .slice(0, 3);
 
