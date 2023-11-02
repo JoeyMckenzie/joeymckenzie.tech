@@ -25,9 +25,9 @@ export default async function Home() {
         <span className="font-semibold">Senior Software Engineer</span> based in
         Northern California working in fintech. I enjoy writing about software,
         design, dad jokes, and cheap beer among a few other things. I like
-        building fast and efficient web services, learning new things, and
-        writing code in the open source ecosystem. If you&apos;d like to get in
-        touch, feel free to reach on on any of my socials.
+        building fast, efficient web services, learning new things, and writing
+        code in the open source ecosystem. If you&apos;d like to get in touch,
+        feel free to reach on on any of my socials.
       </p>
       <SocialsButtons />
       <BlogPreview posts={posts} />
