@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "joeymckenzie.tech site manifest",
+  "short_name": "manifest",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

@@ -5,10 +5,7 @@ import { Badge } from './ui/badge';
 
 export function BlogCard(post: Post) {
   return (
-    <article
-      key={post._id}
-      className="flex max-w-xl flex-col items-start justify-between"
-    >
+    <article key={post._id} className="flex max-w-xl flex-col items-start">
       <div className="flex items-center gap-x-4 text-xs">
         <time dateTime={post.pubDate}>
           {format(new Date(post.pubDate), 'PP')}

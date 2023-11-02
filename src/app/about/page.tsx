@@ -2,7 +2,7 @@ export default function About() {
   return (
     <>
       <h2 className="text-center text-4xl font-bold tracking-tight">Bio.</h2>
-      <div className="prose mx-auto flex max-w-2xl flex-col text-justify dark:prose-invert">
+      <div className="prose mx-auto flex max-w-2xl flex-col leading-6 dark:prose-invert">
         <p className="mt-6">
           I&apos;m Joey. I&apos;ve got a passion for the web and developing
           services and applications with performance in mind. I&apos;ve spent
@@ -43,18 +43,18 @@ export default function About() {
             href="https://www.youtube.com/channel/UCkdpN-mQSyJ_2XJMU1kQ5fA#"
           >
             YouTube
-          </a>
-          or streaming live on
+          </a>{' '}
+          or streaming live on{' '}
           <a
             className="text-indigo-400 hover:text-indigo-500"
             href="https://twitch.tv/JoeTheDevMan"
           >
             Twitch
           </a>
-          . Checkout my
+          . Checkout my{' '}
           <a href="/blog" className="text-indigo-400 hover:text-indigo-500">
             blog
-          </a>
+          </a>{' '}
           for things I publish that mostly deal with my questionable takes on
           development.
         </p>

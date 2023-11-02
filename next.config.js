@@ -5,9 +5,6 @@ const nextConfig = {
   pageExtensions: ['ts', 'tsx'],
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    serverActions: true,
-  },
 };
 
 module.exports = withContentlayer(nextConfig);

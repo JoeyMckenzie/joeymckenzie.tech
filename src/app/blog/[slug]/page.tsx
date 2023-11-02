@@ -1,6 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { allPosts } from 'contentlayer/generated';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export const generateStaticParams = async () =>
@@ -28,8 +29,8 @@ export default async function PostPage({
   }
 
   return (
-    <>
-      <article className="prose mx-auto overflow-hidden pb-6 text-justify dark:prose-invert prose-img:mx-auto prose-img:rounded-md">
+    <div className="flex flex-col justify-center">
+      <article className="prose mx-auto overflow-hidden pb-6 dark:prose-invert prose-img:mx-auto prose-img:rounded-md">
         <h1 className="text-center text-2xl">{post.title}</h1>
         <div className="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight">
           <time dateTime={new Date(post.pubDate).toISOString()}>
@@ -41,21 +42,21 @@ export default async function PostPage({
           </time>
           <Badge>{post.category}</Badge>
         </div>
-        {/* <Image
+        <Image
           width="540"
           height="280"
           src={post.heroImage}
           alt="Blog header image"
-        /> */}
+        />
         <div
           dangerouslySetInnerHTML={{
             __html: post.body.html,
           }}
         />
       </article>
-      <Button asChild>
+      <Button className="mx-auto max-w-md" asChild>
         <Link href="/blog">Back to blogs</Link>
       </Button>
-    </>
+    </div>
   );
 }
