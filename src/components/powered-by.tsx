@@ -6,7 +6,7 @@ const commitUrl = `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${c
 
 export function PoweredBy() {
   return (
-    <div className="mx-auto inline-flex flex-row items-center gap-x-2 md:mx-0">
+    <div className="mx-auto inline-flex flex-row items-center gap-x-4 md:mx-0">
       <p className="font-ubuntu text-center text-xs leading-5">Powered by</p>
       <a href="https://nextjs.org">
         <span className="sr-only">Next.js</span>
