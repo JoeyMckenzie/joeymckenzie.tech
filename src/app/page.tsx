@@ -24,10 +24,10 @@ export default async function Home() {
         Hi, I&apos;m Joey. I&apos;m a{' '}
         <span className="font-semibold">Senior Software Engineer</span> based in
         Northern California working in fintech. I enjoy writing about software,
-        design, dad jokes, and cheap beer among a few other things. I like
-        building fast and efficient web services, learning new things, and
-        writing code in the open source ecosystem. If you&apos;d like to get in
-        touch, feel free to reach on on any of my socials.
+        design, dad jokes, and cheap beer amongst other things. I like building
+        fast and efficient web services, learning new things, and writing code
+        in the open source ecosystem. If you&apos;d like to get in touch, feel
+        free to reach on on any of my socials.
       </p>
       <SocialsButtons />
       <BlogPreview posts={posts} />
