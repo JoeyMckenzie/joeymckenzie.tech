@@ -33,7 +33,7 @@ export default async function PostPage({
 
   return (
     <div className="flex flex-col justify-center">
-      <article className="prose mx-auto overflow-hidden pb-6 dark:prose-invert prose-img:mx-auto prose-img:rounded-md">
+      <article className="prose mx-auto w-full overflow-hidden pb-6 dark:prose-invert prose-img:mx-auto prose-img:rounded-md">
         <h1 className="text-center text-2xl">{post.title}</h1>
         <div className="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight">
           <time dateTime={new Date(post.pubDate).toISOString()}>
