@@ -3,7 +3,9 @@ import { format } from 'date-fns';
 import Link from 'next/link';
 import { Badge } from './ui/badge';
 
-export function BlogCard(post: Post) {
+export type BlogCardProps = Post & { viewCount: number };
+
+export function BlogCard(post: BlogCardProps) {
   return (
     <article
       key={post._id}
@@ -14,6 +16,9 @@ export function BlogCard(post: Post) {
           {format(new Date(post.pubDate), 'PP')}
         </time>
         <Badge>{post.category}</Badge>
+        <div className="font-medium text-neutral-400">
+          {post.viewCount} views
+        </div>
       </div>
       <div className="group relative">
         <h3 className="mt-3 text-lg font-semibold leading-6">

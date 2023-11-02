@@ -1,5 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { addViewCount } from '@/lib/db';
 import { allPosts } from 'contentlayer/generated';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -27,6 +28,8 @@ export default async function PostPage({
   if (!post) {
     throw new Error(`Post not found for slug: ${params.slug}`);
   }
+
+  await addViewCount(params.slug);
 
   return (
     <div className="flex flex-col justify-center">

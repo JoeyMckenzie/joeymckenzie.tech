@@ -6,7 +6,7 @@ const posts = allPosts
   .filter((p) => p.published)
   .sort((a, b) => compareDesc(new Date(a.pubDate), new Date(b.pubDate)));
 
-export default function Blog() {
+export default async function Blog() {
   return (
     <>
       <div className="pb-12">
