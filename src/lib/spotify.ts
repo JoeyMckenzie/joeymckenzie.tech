@@ -6,7 +6,15 @@ const NOW_PLAYING_URL =
   'https://api.spotify.com/v1/me/player?type=track,episode';
 const TOKEN_URL = 'https://accounts.spotify.com/api/token';
 
-export async function getSpotifyNowPlaying() {
+export type NowPlayingResponse = {
+  nowPlaying: boolean;
+  albumImageSrc?: string;
+  artist?: string;
+  href?: string;
+  trackTitle?: string;
+};
+
+export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
   const accessTokenResponse = await fetch(TOKEN_URL, {
     method: 'POST',
     body: getRequestBody(process.env.SPOTIFY_REFRESH_TOKEN!),

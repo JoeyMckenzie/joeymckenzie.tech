@@ -1,4 +1,4 @@
-import { getSpotifyNowPlaying } from '@/lib/spotify';
+import { NowPlayingResponse } from '@/lib/spotify';
 import Image from 'next/image';
 import { Suspense } from 'react';
 
@@ -21,12 +21,16 @@ function NotPlaying({
   );
 }
 
-async function CurrentlyPlaying({ children }: { children: React.ReactNode }) {
-  const response = await getSpotifyNowPlaying();
-
-  return response.nowPlaying ? (
+async function CurrentlyPlaying({
+  nowPlaying,
+  children,
+}: {
+  nowPlaying: NowPlayingResponse;
+  children: React.ReactNode;
+}) {
+  return nowPlaying.nowPlaying ? (
     <a
-      href={response.href}
+      href={nowPlaying.href}
       target="_blank"
       rel="noreferrer"
       className="flex flex-col space-y-1"
@@ -37,7 +41,7 @@ async function CurrentlyPlaying({ children }: { children: React.ReactNode }) {
       <div className="flex flex-row items-center justify-center space-x-2">
         {children}
         <Image
-          src={response.albumImageSrc!}
+          src={nowPlaying.albumImageSrc!}
           width="30"
           height="30"
           alt="Spotify listenting to"
@@ -45,9 +49,9 @@ async function CurrentlyPlaying({ children }: { children: React.ReactNode }) {
         />
         <div className="flex max-w-[16rem] flex-col">
           <h4 className="line-clamp-1 overflow-hidden text-ellipsis text-xs font-semibold">
-            {response.trackTitle}
+            {nowPlaying.trackTitle}
           </h4>
-          <p className="text-xs">{response.artist}</p>
+          <p className="text-xs">{nowPlaying.artist}</p>
         </div>
       </div>
     </a>
@@ -56,10 +60,16 @@ async function CurrentlyPlaying({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function NowPlaying({ children }: { children: React.ReactNode }) {
+export function NowPlaying({
+  nowPlaying,
+  children,
+}: {
+  nowPlaying: NowPlayingResponse;
+  children: React.ReactNode;
+}) {
   return (
     <Suspense fallback={<NotPlaying text="Loading...">{children}</NotPlaying>}>
-      <CurrentlyPlaying>{children}</CurrentlyPlaying>
+      <CurrentlyPlaying nowPlaying={nowPlaying}>{children}</CurrentlyPlaying>
     </Suspense>
   );
 }
