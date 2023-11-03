@@ -1,4 +1,4 @@
-import { NowPlayingResponse } from '@/lib/spotify';
+import { NowPlayingResponse, getSpotifyNowPlaying } from '@/lib/spotify';
 import Image from 'next/image';
 import { Suspense } from 'react';
 
@@ -60,13 +60,9 @@ async function CurrentlyPlaying({
   );
 }
 
-export function NowPlaying({
-  nowPlaying,
-  children,
-}: {
-  nowPlaying: NowPlayingResponse;
-  children: React.ReactNode;
-}) {
+export async function NowPlaying({ children }: { children: React.ReactNode }) {
+  const nowPlaying = await getSpotifyNowPlaying();
+
   return (
     <Suspense fallback={<NotPlaying text="Loading...">{children}</NotPlaying>}>
       <CurrentlyPlaying nowPlaying={nowPlaying}>{children}</CurrentlyPlaying>

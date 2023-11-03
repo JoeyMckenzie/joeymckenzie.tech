@@ -12,7 +12,7 @@ import { ThemeToggle } from './theme-toggle';
 
 export function Navbar() {
   return (
-    <div className="mx-auto flex flex-row  items-center justify-center gap-x-4 p-8">
+    <div className="mx-auto mb-auto flex flex-row  items-center justify-center gap-x-4 p-8">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
