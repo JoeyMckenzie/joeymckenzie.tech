@@ -6,6 +6,7 @@
     "plugin:svelte/recommended",
     "prettier"
   ],
+  "ignorePatterns": ["./src/lib/components/ui"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "parserOptions": {
