@@ -3,7 +3,6 @@ const config = useRuntimeConfig();
 const hash = config.public.commitSha;
 const hashRef = `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${hash}`;
 const hashDisplay = hash?.substring(0, 6);
-
 const poweredBy = [
   {
     href: 'https://vuejs.org',
@@ -11,9 +10,10 @@ const poweredBy = [
     icon: 'logos:vue',
   },
   {
-    href: 'https://netlify.com',
+    href: 'https://vercel.com',
     display: 'Netlify',
-    icon: 'vscode-icons:file-type-light-netlify',
+    icon: 'simple-icons:vercel',
+    classes: 'text-neutral-100',
   },
   {
     href: 'https://nuxt.com',
@@ -31,8 +31,6 @@ const poweredBy = [
     <p class="text-center font-ubuntu text-xs leading-5 text-neutral-500">
       Powered by
     </p>
-
-    <!-- Vue -->
 
     <NuxtLink
       v-for="provider in poweredBy"
