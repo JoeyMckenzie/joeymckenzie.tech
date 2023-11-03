@@ -31,9 +31,10 @@ const socials = [
 <template>
   <div>
     <div class="flex justify-center space-x-6 md:order-2">
-      <a
+      <NuxtLink
         v-for="social in socials"
         :key="social.display"
+        :external="true"
         :href="social.href"
         class="text-neutral-400 hover:text-neutral-500"
       >
@@ -43,7 +44,7 @@ const socials = [
           class="h-6 w-6 transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-110"
           aria-hidden="true"
         />
-      </a>
+      </NuxtLink>
     </div>
   </div>
 </template>
