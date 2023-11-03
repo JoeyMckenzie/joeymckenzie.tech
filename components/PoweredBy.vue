@@ -3,6 +3,25 @@ const config = useRuntimeConfig();
 const hash = config.public.commitSha;
 const hashRef = `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${hash}`;
 const hashDisplay = hash?.substring(0, 6);
+
+const poweredBy = [
+  {
+    href: 'https://vuejs.org',
+    display: 'Vue',
+    icon: 'logos:vue',
+  },
+  {
+    href: 'https://netlify.com',
+    display: 'Netlify',
+    icon: 'vscode-icons:file-type-light-netlify',
+  },
+  {
+    href: 'https://nuxt.com',
+    display: 'Nuxt',
+    icon: 'simple-icons:nuxtdotjs',
+    classes: 'text-green-500 hover:text-green-400',
+  },
+];
 </script>
 
 <template>
@@ -14,26 +33,17 @@ const hashDisplay = hash?.substring(0, 6);
     </p>
 
     <!-- Vue -->
-    <NuxtLink :external="true" to="https://vuejs.org">
-      <span class="sr-only">Vue</span>
-      <Icon name="logos:vue" class="h-4 w-4" />
-    </NuxtLink>
 
-    <!-- Vercel -->
-    <NuxtLink :external="true" to="https://netlify.com">
-      <span class="sr-only">Netlify</span>
+    <NuxtLink
+      v-for="provider in poweredBy"
+      :key="provider.display"
+      :external="true"
+      :to="provider.href"
+    >
+      <span class="sr-only">{{ provider.display }}</span>
       <Icon
-        name="vscode-icons:file-type-light-netlify"
-        class="h-4 w-4 text-gray-100 hover:text-gray-200"
-      />
-    </NuxtLink>
-
-    <!-- Nuxt -->
-    <NuxtLink :external="true" to="https://nuxt.com">
-      <span class="sr-only">Nuxt</span>
-      <Icon
-        name="simple-icons:nuxtdotjs"
-        class="h-6 w-6 text-green-500 hover:text-green-400"
+        :name="provider.icon"
+        :class="`h-6 w-6 transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-110 ${provider.classes}`"
       />
     </NuxtLink>
 

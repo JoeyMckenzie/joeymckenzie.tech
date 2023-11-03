@@ -12,7 +12,9 @@ defineProps<BlogPostProps>();
 </script>
 
 <template>
-  <article class="flex max-w-xl flex-col items-start">
+  <article
+    class="flex max-w-xl flex-col items-start transition duration-150 ease-in-out hover:-translate-y-1 hover:scale-105"
+  >
     <div class="flex items-center gap-x-4 text-xs">
       <FormattedDate :date="pubDate" />
       <span
