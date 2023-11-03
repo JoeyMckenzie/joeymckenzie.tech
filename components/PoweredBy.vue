@@ -20,10 +20,10 @@ const hashDisplay = hash?.substring(0, 6);
     </NuxtLink>
 
     <!-- Vercel -->
-    <NuxtLink :external="true" to="https://vercel.com">
-      <span class="sr-only">vercel</span>
+    <NuxtLink :external="true" to="https://netlify.com">
+      <span class="sr-only">Netlify</span>
       <Icon
-        name="simple-icons:vercel"
+        name="vscode-icons:file-type-light-netlify"
         class="h-4 w-4 text-gray-100 hover:text-gray-200"
       />
     </NuxtLink>

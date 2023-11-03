@@ -17,3 +17,4 @@ examples/rust/**/node_modules
 examples/zig/**/zig-cache
 
 server/drizzle
+.netlify

@@ -1,0 +1,5 @@
+[build]
+base = "/"
+publish = "dist"
+command = "bun run build"
+functions = ".netlify/functions-internal"
