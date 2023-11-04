@@ -18,3 +18,4 @@ examples/zig/**/zig-cache
 
 server/drizzle
 .netlify
+.idea
