@@ -1,10 +1,12 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
+import typography from '@tailwindcss/typography';
+import type { Config } from 'tailwindcss';
 
-/** @type {import('tailwindcss').Config} */
-const config = {
+const config: Config = {
   darkMode: ['class'],
   content: ['./src/**/*.{html,js,svelte,ts}'],
   safelist: ['dark'],
+  plugins: [typography],
   theme: {
     container: {
       center: true,
@@ -55,7 +57,7 @@ const config = {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: [...fontFamily.sans],
+        sans: ['Figtree', ...fontFamily.sans],
       },
     },
   },
