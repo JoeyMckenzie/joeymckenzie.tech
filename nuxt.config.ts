@@ -40,7 +40,7 @@ export default defineNuxtConfig({
   },
   content: {
     highlight: {
-      theme: 'vitesse-dark',
+      theme: 'github-dark',
       preload: [
         'rust',
         'cs',

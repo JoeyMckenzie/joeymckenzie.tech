@@ -4,8 +4,8 @@
   >
     <SocialIcons />
     <SpotifyNowPlaying>
-      <Icon class="h-6 w-6" name="logos:spotify-icon"
-    /></SpotifyNowPlaying>
+      <Icon class="h-6 w-6" name="logos:spotify-icon" />
+    </SpotifyNowPlaying>
     <PoweredBy />
   </footer>
 </template>

@@ -8,7 +8,7 @@
     "preview": "nuxt preview",
     "start": "nuxt start",
     "lint": "eslint .",
-    "fmt": "prettier --write .",
+    "fmt": "prettier --write . --plugin prettier-plugin-tailwindcss",
     "prepare": "git config core.hookspath .githooks",
     "drizzle": "bunx drizzle-kit studio",
     "drizzle:generate": "drizzle-kit generate:pg",
