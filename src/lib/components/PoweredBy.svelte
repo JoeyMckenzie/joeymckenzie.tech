@@ -1,6 +1,5 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
-  import { onMount } from 'svelte';
 
   export let commitSha = '';
   const commitShaForDisplay = commitSha.substring(0, 6);
@@ -18,8 +17,6 @@
       classes: 'dark:text-white text-black',
     },
   ];
-
-  onMount(() => console.log(commitSha));
 </script>
 
 <div class="mx-auto inline-flex flex-row items-center gap-x-4 md:mx-0">
