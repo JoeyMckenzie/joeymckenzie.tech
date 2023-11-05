@@ -1,5 +1,10 @@
 // TODO: One of these I'm gonna figure out how to use the Spotify TS SDK, though that day is not today...
 
+import {
+  SPOTIFY_CLIENT_ID,
+  SPOTIFY_CLIENT_SECRET,
+  SPOTIFY_REFRESH_TOKEN,
+} from '$env/static/private';
 import type { AccessTokenResponse, SpotifyNowPlayingResponse } from './types';
 
 const NOW_PLAYING_URL =
@@ -17,11 +22,8 @@ export type NowPlayingResponse = {
 export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
   const accessTokenResponse = await fetch(TOKEN_URL, {
     method: 'POST',
-    body: getRequestBody(process.env.SPOTIFY_REFRESH_TOKEN!),
-    headers: getHeaders(
-      process.env.SPOTIFY_CLIENT_ID!,
-      process.env.SPOTIFY_CLIENT_SECRET!,
-    ),
+    body: getRequestBody(SPOTIFY_REFRESH_TOKEN),
+    headers: getHeaders(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET),
   });
   const accessToken: AccessTokenResponse = await accessTokenResponse.json();
   const nowPlayingResponse = await fetch(NOW_PLAYING_URL, {
@@ -44,7 +46,8 @@ export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
   const item = nowPlaying.item;
   const context = nowPlaying.context;
   const trackTitle = item.name;
-  const href = context?.external_urls?.spotify ?? '/';
+  const href =
+    item.external_urls?.spotify ?? context?.external_urls?.spotify ?? '/';
 
   // The playing type will either be `"show"` or `"track"` based on a podcast or artist song
   // There's _a lot_ of presumptive `unwrap()`ing going here, should probably clean up eventually

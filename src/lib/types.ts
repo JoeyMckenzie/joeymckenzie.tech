@@ -45,6 +45,9 @@ export type Item = {
   album: Album;
   show: Show;
   artists: Artist[];
+  external_urls: {
+    spotify: string;
+  };
 };
 
 export type SpotifyNowPlayingResponse = {
