@@ -8,6 +8,10 @@
   const content = data.post?.body?.html ?? '';
 </script>
 
+<svelte:head>
+  <title>{data.post?.title} | joeymckenzie.tech</title>
+</svelte:head>
+
 <div class="flex flex-col justify-center">
   <article
     class="prose mx-auto w-full overflow-hidden pb-6 dark:prose-invert prose-img:mx-auto prose-img:rounded-md"
