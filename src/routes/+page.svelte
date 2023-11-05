@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { PageData } from './$types';
+  import BlogPreview from '$lib/components/BlogPreview.svelte';
 
   export let data: PageData;
 </script>
@@ -14,3 +15,4 @@
   learning new things, and writing code in the open source ecosystem. If you'd like
   to get in touch, feel free to reach on on any of my socials.
 </p>
+<BlogPreview posts={data.posts} />
