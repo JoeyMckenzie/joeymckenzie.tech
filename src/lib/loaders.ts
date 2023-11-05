@@ -18,12 +18,12 @@ export async function loadPostPreviews(includeLatest = false) {
     )
     .sort((a, b) => compareDesc(new Date(a.pubDate), new Date(b.pubDate)));
 
+  // Only include published posts in production, allowing us to work on posts in a draft status
+  posts = dev ? posts : posts.filter((post) => !post.draft);
+
   if (includeLatest) {
     posts = posts.slice(0, 3);
   }
-
-  // Only include published posts in production, allowing us to work on posts in a draft status
-  posts = dev ? posts : posts.filter((post) => post.published);
 
   return {
     posts,
