@@ -15,7 +15,7 @@ export const load = (async () => {
     .slice(0, 3);
 
   // Filter only NOT DRAFT posts in productive mode
-  posts = dev ? posts : posts.filter((post) => !post.published);
+  posts = dev ? posts : posts.filter((post) => post.published);
 
   return {
     posts,

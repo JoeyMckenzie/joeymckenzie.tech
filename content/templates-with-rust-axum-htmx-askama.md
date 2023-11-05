@@ -6,18 +6,24 @@ heroImage: '/blog/rust-axum-htmx-templates-with-askama/htmx_meme.jpg'
 category: 'rust'
 ---
 
-I'm finally back from paternity leave and I had quite a blast messing around with a few Rust libraries during my time off in an attempt
+I'm finally back from paternity leave and I had quite a blast messing around with a few Rust libraries during my time
+off in an attempt
 to build a website (web app?) going back to basics. I'm somewhat JS'd out as of late and was looking
-for some way to integrate [htmx](https://htmx.org/) with templates in a similar vein to Go's [html templates](https://pkg.go.dev/html/template/).
-I was pleasantly surprised at how easily I was able to duct tape [axum's](https://github.com/tokio-rs/axum/) static file serving leveraging
+for some way to integrate [htmx](https://htmx.org/) with templates in a similar vein to
+Go's [html templates](https://pkg.go.dev/html/template/).
+I was pleasantly surprised at how easily I was able to duct tape [axum's](https://github.com/tokio-rs/axum/) static file
+serving leveraging
 [askama](https://github.com/djc/askama/) as a templating engine of sorts.
 
-Coupled with htmx and [Tailwind](https://tailwindcss.com/), I was able to find a workflow for site building using the tools I wanted, with
-the best part being _entirely_ JS-free (on the surface, at least). I should preface this as **not** an advertisement for JS's demise, but simply an alternative approach to the development of Rust-backed web apps.
+Coupled with htmx and [Tailwind](https://tailwindcss.com/), I was able to find a workflow for site building using the
+tools I wanted, with
+the best part being _entirely_ JS-free (on the surface, at least). I should preface this as **not** an advertisement for
+JS's demise, but simply an alternative approach to the development of Rust-backed web apps.
 
 ## The stack
 
-To kick things off, let's run through the bits we'll utilize to build a relatively straightforward application that serves
+To kick things off, let's run through the bits we'll utilize to build a relatively straightforward application that
+serves
 static HTML but with reactivity powered by htmx. Our sandbox will look something like:
 
 - Rust (for obvious reasons)
@@ -81,8 +87,10 @@ $ cargo run
 2023-06-13T06:21:03.461354Z  INFO with_axum_htmx_askama: hello, web server!
 ```
 
-Sweet, we're up and running with logging! Before we jump into our router, we should probably figure out _what_ exactly we'll be serving.
-For our templates, we'll tap into askama to help axum route endpoints to serve static HTML. Askama defaults to looking for templates
+Sweet, we're up and running with logging! Before we jump into our router, we should probably figure out _what_ exactly
+we'll be serving.
+For our templates, we'll tap into askama to help axum route endpoints to serve static HTML. Askama defaults to looking
+for templates
 in a `/templates` directory at the project root, let's add that now with a bit of markup:
 
 #### templates/hello.html
@@ -170,7 +178,8 @@ the HTML askama will stitch together for us (more on that in a bit).
 We have a simple base route that serves the `hello.html` file we have in our `templates/` directory,
 though askama is also able to pass render-able data to these HTML files in a template-like fashion.
 Luckily for us, askama provides the `#[template(path = "path/to/html")]` macro, assuming your HTML
-files are in the `templates/` directory. This is also configurable, but the defaults will do for now. Running the server locally:
+files are in the `templates/` directory. This is also configurable, but the defaults will do for now. Running the server
+locally:
 
 ```bash
 $ cargo run
@@ -179,7 +188,8 @@ $ cargo run
 2023-06-13T06:47:23.019361Z  INFO with_axum_htmx_askama: router initialized, now listening on port 8000
 ```
 
-We have some basic logs that reassure successful startup, and if we navigate to `localhost:8000` in our favorite browser:
+We have some basic logs that reassure successful startup, and if we navigate to `localhost:8000` in our favorite
+browser:
 
 ![landing page](/blog/rust-axum-htmx-templates-with-askama/landing_page.png)
 
@@ -188,18 +198,25 @@ We've got ourselves a landing page!
 ## Integrating Tailwind
 
 Now, this isn't the most _exciting_ landing page, so let's spruce this up a bit to make it look like it's not from 1996.
-I'm gonna be using [Tailwind](https://tailwindcss.com/) mostly because I'm a CSS sellout and love really, really, really long
+I'm gonna be using [Tailwind](https://tailwindcss.com/) mostly because I'm a CSS sellout and love really, really, really
+long
 class names on my elements.
 
-Tailwind helpfully provides a plethora of integration guides for any number of tech stacks. Unfortunately, Rust-based static
-file serving with axum isn't on the list. The good news, however, is that we can rely on the most basic of Tailwind strategies
+Tailwind helpfully provides a plethora of integration guides for any number of tech stacks. Unfortunately, Rust-based
+static
+file serving with axum isn't on the list. The good news, however, is that we can rely on the most basic of Tailwind
+strategies
 to bring in some sweet styles.
 
-If you're not familiar with Tailwind, take a look at the docs and the philosophy behind its design system. There are some pretty
-neat optimizations we'll tap into, and one of the reasons I love Tailwind is for the [utility tree-shaking/minification](https://tailwindcss.com/docs/optimizing-for-production) of CSS
-that it'll do to ensure our bundled styles are as small as possible. No one needs 70 MB of CSS shipped to their browser (if you're reading this, Rob, you know what you did).
+If you're not familiar with Tailwind, take a look at the docs and the philosophy behind its design system. There are
+some pretty
+neat optimizations we'll tap into, and one of the reasons I love Tailwind is for
+the [utility tree-shaking/minification](https://tailwindcss.com/docs/optimizing-for-production) of CSS
+that it'll do to ensure our bundled styles are as small as possible. No one needs 70 MB of CSS shipped to their
+browser (if you're reading this, Rob, you know what you did).
 
-We're going to rely on a few npm packages, so we'll need to spin up a simple `package.json` file to help us bring in Tailwind and eventually Prettier to make things look nice on our templates. Using pnpm:
+We're going to rely on a few npm packages, so we'll need to spin up a simple `package.json` file to help us bring in
+Tailwind and eventually Prettier to make things look nice on our templates. Using pnpm:
 
 ```bash
 $ pnpm init
@@ -288,11 +305,14 @@ I've added two `link`s to CSS files, one for the Inter font... because why not.
 
 ![inter meme](/blog/rust-axum-htmx-templates-with-askama/inter_meme.jpg)
 
-The other `link` is to a CSS file that doesn't exist (yet). This CSS file will contain the compiled output Tailwind's CLI spits out for us after scanning
+The other `link` is to a CSS file that doesn't exist (yet). This CSS file will contain the compiled output Tailwind's
+CLI spits out for us after scanning
 the HTML files in our `/templates` directory and determining which utility
-classes are not needed helping us reduce the bundled CSS file size that will ship to our users' browsers. Pretty neat, huh?
+classes are not needed helping us reduce the bundled CSS file size that will ship to our users' browsers. Pretty neat,
+huh?
 
-Now as I mentioned, this will be a file that is _generated_ and not necessarily included by default. First, we need to add a CSS file Tailwind
+Now as I mentioned, this will be a file that is _generated_ and not necessarily included by default. First, we need to
+add a CSS file Tailwind
 will use to generate the utilities our HTML templates will use. Let's create a `styles/tailwind.css` file:
 
 #### styles/tailwind.css
@@ -317,7 +337,8 @@ warn - https://tailwindcss.com/docs/content-configuration
 Done in 74ms.
 ```
 
-Nice! Though not very exciting, as Tailwind didn't detect any utility classes to purge as we don't have a configuration file for it to read pointing to the markup. Let's add one:
+Nice! Though not very exciting, as Tailwind didn't detect any utility classes to purge as we don't have a configuration
+file for it to read pointing to the markup. Let's add one:
 
 ```bash
 $ pnpm dlx tailwindcss init
@@ -344,12 +365,15 @@ module.exports = {
 ```
 
 I'm also going to rename the extension to `.cjs` to make eslint happy.
-If you're unfamiliar with Tailwind, essentially this is just a configuration file telling Tailwind where to look for utility classes
-for treeshaking ones we're not using. We're also overriding the default sans font with the Inter font so we can look like a legit Series B startup
+If you're unfamiliar with Tailwind, essentially this is just a configuration file telling Tailwind where to look for
+utility classes
+for treeshaking ones we're not using. We're also overriding the default sans font with the Inter font so we can look
+like a legit Series B startup
 on our landing page.
 
 Now if we run the Tailwind CLI again, we'll get the same message. If we spin up our server,
-nothing has changed either. One last step: we need to tell axum to serve our `assets/` directory so our compiled Tailwind CSS file is available for our template to use.
+nothing has changed either. One last step: we need to tell axum to serve our `assets/` directory so our compiled
+Tailwind CSS file is available for our template to use.
 
 Back in `main.rs`, let's a `tower` service route to serve everything under the `assets/` folder:
 
@@ -386,11 +410,13 @@ async fn main() -> anyhow::Result<()> {
 ```
 
 The key here is the `assets_path` and the chain call to `.nest_service()`, telling
-axum to serve an `/assets` route with all the files underneath that directory locally. Now if we start our server, we should see our `Howdy!` text looks a bit different:
+axum to serve an `/assets` route with all the files underneath that directory locally. Now if we start our server, we
+should see our `Howdy!` text looks a bit different:
 
 ![with Inter font](/blog/rust-axum-htmx-templates-with-askama/with_inter.png)
 
-We've got Inter font! Let's spice this up even more with some colored text. In our `hello.html` template, let's add a text color class:
+We've got Inter font! Let's spice this up even more with some colored text. In our `hello.html` template, let's add a
+text color class:
 
 ```html
 <!doctype html>
@@ -406,15 +432,19 @@ We've got Inter font! Let's spice this up even more with some colored text. In o
 ```
 
 I've been running my processes in the back, both the Tailwind CLI and our
-axum server with the help of [cargo-watch](https://crates.io/crates/cargo-watch), so any changes I make to our Rust code or HTML templates will automatically be detected. Refreshing the page, we should see green text. Sweet!
+axum server with the help of [cargo-watch](https://crates.io/crates/cargo-watch), so any changes I make to our Rust code
+or HTML templates will automatically be detected. Refreshing the page, we should see green text. Sweet!
 
 # Extending templates
 
 Our current template generation is missing one key piece in template
 inheritance. If we were to add additional axum routes that
-served HTML, we would need to include `<head>` tags for each file. Not a great developer experience, as we want to have templates extend a base markup file that includes all of our common head metadata like links, tags, etc.
+served HTML, we would need to include `<head>` tags for each file. Not a great developer experience, as we want to have
+templates extend a base markup file that includes all of our common head metadata like links, tags, etc.
 
-Luckily, askama [has us covered](https://djc.github.io/askama/template_syntax.html#template-inheritance) with what we need. Using template inheritance, we can define base template layouts that our individual route templates will extend. To make
+Luckily, askama [has us covered](https://djc.github.io/askama/template_syntax.html#template-inheritance) with what we
+need. Using template inheritance, we can define base template layouts that our individual route templates will extend.
+To make
 life easier so we can avoid having to write the same boilerplate HTML in each template we'll serve, let's create
 a `base.html` file:
 
@@ -464,8 +494,10 @@ Since we've kept our server running and have Tailwind compiling output assets in
 to navigate back to `localhost:8000` and notice there's no change to our page, still displaying the green "Howdy!" text.
 This is exactly what we expect, though we now have base templates that each of our pages can include!
 
-To prove that we've now got a nice extendable page model, let's add another page with a link on our home page that routes
-to this new page that I'll cleverly name `/another-page` with its even more cleverly associated template `another-page.html`:
+To prove that we've now got a nice extendable page model, let's add another page with a link on our home page that
+routes
+to this new page that I'll cleverly name `/another-page` with its even more cleverly associated
+template `another-page.html`:
 
 ### templates/another-page.html
 
@@ -524,9 +556,7 @@ at the tail end (no pun intended) of the file:
 ### assets/main.css
 
 ```css
-// More classes...
-
-.font-bold {
+/ / More classes... .font-bold {
   font-weight: 700;
 }
 
@@ -569,18 +599,22 @@ Refreshing the home page, we should see a new link pop up:
 
 ![another page](/blog/rust-axum-htmx-templates-with-askama/to_another_page.png)
 
-and clicking the link, we route to our newly added `/another-page` page! More importantly, take note of how we're only including
+and clicking the link, we route to our newly added `/another-page` page! More importantly, take note of how we're only
+including
 the relevant markup for each page. The power of templates compels you!
 
 ## Bringing in the functionality
 
-Okay, so we have a web server serving static HTML, good-looking assets with the help of Tailwind, and an extendable page model... let's fit the last piece of the web dev DX puzzle by bringing interactive functionality to our pages with the
+Okay, so we have a web server serving static HTML, good-looking assets with the help of Tailwind, and an extendable page
+model... let's fit the last piece of the web dev DX puzzle by bringing interactive functionality to our pages with the
 help of htmx. With htmx, we can do all the JavaScript-y things we would normally see as first-class functionality in a
-modern frontend framework, but in the comfort of our HTML. No need to submit form data to our backend and reload the page
+modern frontend framework, but in the comfort of our HTML. No need to submit form data to our backend and reload the
+page
 between transitions, htmx will do the work for us!
 
 Since htmx brings modern UI goodness to standard hypertext, we don't need to worry about writing form handlers, fetching
-data via AJAX, etc. While htmx brings a lot to the plate, let's start small and simply grab some data from an API and replace
+data via AJAX, etc. While htmx brings a lot to the plate, let's start small and simply grab some data from an API and
+replace
 some elements on the screen with it.
 
 Even better, htmx is small in size and easily pluggable into our current setup. Let's bring it in as a `<script>` tag
@@ -612,12 +646,16 @@ to our base layout so all pages have access to it:
 </html>
 ```
 
-With htmx included, we'll add a button on our homepage that will ping one of our server endpoints for some data. We don't have purely backend endpoints yet - all of our axum routes serve HTML. Let's mount
+With htmx included, we'll add a button on our homepage that will ping one of our server endpoints for some data. We
+don't have purely backend endpoints yet - all of our axum routes serve HTML. Let's mount
 a subrouter that will include endpoints that return some JSON data for our UI to consume.
 
-To note, we'll load htmx from unpkg, a handy npm package CDN. Keep in mind you'll probably want to fetch this packages during production deployments to avoid unpkg outages (which happens more than I'm sure the maintainers care to admit).
+To note, we'll load htmx from unpkg, a handy npm package CDN. Keep in mind you'll probably want to fetch this packages
+during production deployments to avoid unpkg outages (which happens more than I'm sure the maintainers care to admit).
 
-If we refresh the landing page, again assuming were still using cargo-watch to run the server and crack open the network tab, we should the htmx JS loaded by the browser. Before we get to our markup, let's add an axum route that returns some text for us to display:
+If we refresh the landing page, again assuming were still using cargo-watch to run the server and crack open the network
+tab, we should the htmx JS loaded by the browser. Before we get to our markup, let's add an axum route that returns some
+text for us to display:
 
 #### main.rs
 
@@ -646,7 +684,8 @@ async fn hello_from_the_server() -> &'static str {
 }
 ```
 
-We've effectively added a subrouter underneath the parent `/api` route. The example here is pretty trivial, and we'll spice things up here shortly. With our server now able to serve data at specific
+We've effectively added a subrouter underneath the parent `/api` route. The example here is pretty trivial, and we'll
+spice things up here shortly. With our server now able to serve data at specific
 endpoints, let's do a quick sanity check. In another terminal:
 
 ```bash
@@ -684,17 +723,26 @@ We're serving data, now let's wire this up to a button click. On our homepage, l
 {% endblock %}
 ```
 
-I've added a button with the `hx-get` htmx directive to signal that when this button is clicked, send a GET to `/api/hello` at the current running domain and `hx-swap` the inner HTML (the button text) with whatever comes back. A quick page refresh and we should see our updated home route:
+I've added a button with the `hx-get` htmx directive to signal that when this button is clicked, send a GET
+to `/api/hello` at the current running domain and `hx-swap` the inner HTML (the button text) with whatever comes back. A
+quick page refresh and we should see our updated home route:
 
 ![with button](/blog/rust-axum-htmx-templates-with-askama/with_button.png)
 
-I'm a bit claustrophobic, so I added some padding to give our UI elements some room to breathe. With the network tab open, if we click the button, we see some magic happen - a GET is fired and our button text is updated with the `Hello!` text returned from the server. Sweet!
+I'm a bit claustrophobic, so I added some padding to give our UI elements some room to breathe. With the network tab
+open, if we click the button, we see some magic happen - a GET is fired and our button text is updated with the `Hello!`
+text returned from the server. Sweet!
 
-Okay... static text returned from the server is fascinating and all, but let's make something a bit more functional. With htmx, we can define
-actions that return HTML and dynamically swap and replace elements on the UI with the retrieved markup (flashback to my JEE days). Let's spit
-some row data back to the homepage from the server using an endpoint that returns another template. Let's add a cool Tailwind'y form so revolutionary in terms of data-driven APIs, it may just get me one of those mythical FAANG jobs everyone keeps talking about.
+Okay... static text returned from the server is fascinating and all, but let's make something a bit more functional.
+With htmx, we can define
+actions that return HTML and dynamically swap and replace elements on the UI with the retrieved markup (flashback to my
+JEE days). Let's spit
+some row data back to the homepage from the server using an endpoint that returns another template. Let's add a cool
+Tailwind'y form so revolutionary in terms of data-driven APIs, it may just get me one of those mythical FAANG jobs
+everyone keeps talking about.
 
-Tailwind has some pretty neat utilities, and I'm gonna go ahead and bring in the forms package to help create some nice looking inputs:
+Tailwind has some pretty neat utilities, and I'm gonna go ahead and bring in the forms package to help create some nice
+looking inputs:
 
 ```bash
 $ pnpm add @tailwindcss/forms
@@ -719,7 +767,8 @@ module.exports = {
 };
 ```
 
-Now that our utility has been added, let's create a `todo-form.html` file in our `templates/` directory with a good looking form input:
+Now that our utility has been added, let's create a `todo-form.html` file in our `templates/` directory with a good
+looking form input:
 
 ```html
 <form class="max-w-md">
@@ -744,7 +793,8 @@ Now that our utility has been added, let's create a `todo-form.html` file in our
 </form>
 ```
 
-Now we're not extending the base layout since we'll take the lazy way out and simply add it to our home page. Again, askama
+Now we're not extending the base layout since we'll take the lazy way out and simply add it to our home page. Again,
+askama
 provides a jinja-like `include` tag we can throw on our `hello.html` template:
 
 ```html
@@ -776,11 +826,13 @@ provides a jinja-like `include` tag we can throw on our `hello.html` template:
 
 A quick page refresh and our home route now includes a single input form and button:
 
-![updated page](/blog/rust-axum-htmx-templates-with-askama/update_home.png)
+![updated page](/blog/rust-axum-htmx-templates-with-askama/updated_home.png)
 
-As we add todos, we'll want them to appear beneath the input box and keep appending to it as we add more. We're not exactly
+As we add todos, we'll want them to appear beneath the input box and keep appending to it as we add more. We're not
+exactly
 building the next Facebook, so we can keep our implementation simple. We need some way to keep track of todos, and we'll
-want to manage that with our axum server so we can maintain a list of todos that will act as our persistence mechanism. Let's
+want to manage that with our axum server so we can maintain a list of todos that will act as our persistence mechanism.
+Let's
 add some state to hold the todo information:
 
 ### main.rs
@@ -812,10 +864,14 @@ async fn main() -> anyhow::Result<()> {
 }
 ```
 
-We add `AppState` that holds a `Vec` of todos as strings locked behind a `Mutex`. Now, this is not exactly a PSA for proper
-state management with axum - we're cutting a lot of corners here to keep things streamlined. Because `AppState` can be shared
-across threads thanks to being wrapped with `Arc`, we'll need to do our due diligence of locking the todo list before attempting
-to add more todays. With our state added as an extension to our API router, let's add the `add_todo` route to do just that:
+We add `AppState` that holds a `Vec` of todos as strings locked behind a `Mutex`. Now, this is not exactly a PSA for
+proper
+state management with axum - we're cutting a lot of corners here to keep things streamlined. Because `AppState` can be
+shared
+across threads thanks to being wrapped with `Arc`, we'll need to do our due diligence of locking the todo list before
+attempting
+to add more todays. With our state added as an extension to our API router, let's add the `add_todo` route to do just
+that:
 
 ```rust
 #[derive(Template)]
@@ -848,7 +904,8 @@ to our `templates/` directory:
 {% endfor %}
 ```
 
-Using askama's templating, we pass in the todos list and iterate over them generating a `<p>` tag for each todo. We'll need
+Using askama's templating, we pass in the todos list and iterate over them generating a `<p>` tag for each todo. We'll
+need
 to paint the HTML returned by our `add_todo` route, so let's append it to the end of our `todo-form.html` markup:
 
 ```html
@@ -884,15 +941,23 @@ I've sprinkled in some htmx directives with `hx-post`, `hx-target`, and `hx-swap
 
 - `hx-post` tells our form submission _where_ to send the form data as a POST request too
 - `hx-target` is the element we want to mutate after we get a response
-- `hx-swap="innerHTML"` means we'll drop the hypertext returned from our `add_todo` handler as a child element of our `<div id="todos" />` tag
+- `hx-swap="innerHTML"` means we'll drop the hypertext returned from our `add_todo` handler as a child element of
+  our `<div id="todos" />` tag
 
-With our Tailwind and axum server processes still running in watch mode, we should be good to start trying things out now.
-With our homepage refreshed, we can start [adding todos](/blog/rust-axum-htmx-templates-with-askama/full_demo.mp4). I've expanded
-the network while we create a few todos to show off htmx making form requests for us and returning the askama templated hypertext back to us.
+With our Tailwind and axum server processes still running in watch mode, we should be good to start trying things out
+now.
+With our homepage refreshed, we can start [adding todos](/blog/rust-axum-htmx-templates-with-askama/full_demo.mp4). I've
+expanded
+the network while we create a few todos to show off htmx making form requests for us and returning the askama templated
+hypertext back to us.
 Badda bing, badda boom, and we've got some todos!
 
 ## Wrapping up
 
-Web dev (for me, at least) just got a lot more fun thanks to Rust, askama, axum and htmx. While our sample here is a bit light on functionality, I've written a more fleshed out version available on [GitHub](https://github.com/JoeyMckenzie/axum-htmx-templates/tree/main) that includes a more opinionated approach to organizing templates, page routes, and ready to host on a provider like [Fly](https://fly.io) with a ready-to-go Dockerfile.
+Web dev (for me, at least) just got a lot more fun thanks to Rust, askama, axum and htmx. While our sample here is a bit
+light on functionality, I've written a more fleshed out version available
+on [GitHub](https://github.com/JoeyMckenzie/axum-htmx-templates/tree/main) that includes a more opinionated approach to
+organizing templates, page routes, and ready to host on a provider like [Fly](https://fly.io) with a ready-to-go
+Dockerfile.
 
 Until next time, friends!
