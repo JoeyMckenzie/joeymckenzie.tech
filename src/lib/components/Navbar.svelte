@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { page } from '$app/stores';
   import { buttonVariants } from '$lib/components/ui/button';
   import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 
@@ -22,8 +21,6 @@
       href: '/blog',
     },
   ];
-
-  $: console.log($page.url.pathname);
 </script>
 
 <header>
