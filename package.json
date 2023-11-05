@@ -13,10 +13,10 @@
     "fmt": "prettier --write --plugin prettier-plugin-svelte --plugin prettier-plugin-tailwindcss .",
     "test:integration": "playwright test",
     "test:unit": "vitest",
-    "ci": "pnpm run build && pnpm run lint"
+    "ci": "bun run build && bun run lint"
   },
   "lint-staged": {
-    "**/*.{svelte,ts,js,json,md}": "pnpm run fmt"
+    "**/*.{svelte,ts,js,json,md}": "bun run fmt"
   },
   "devDependencies": {
     "@iconify/svelte": "^3.1.4",
@@ -27,6 +27,7 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "autoprefixer": "^10.4.16",
+    "concurrently": "^8.2.2",
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-svelte": "^2.30.0",
@@ -47,6 +48,8 @@
   "dependencies": {
     "bits-ui": "^0.9.0",
     "clsx": "^2.0.0",
+    "contentlayer": "^0.3.4",
+    "date-fns": "^2.30.0",
     "lucide-svelte": "^0.292.0",
     "mode-watcher": "^0.0.7",
     "radix-icons-svelte": "^1.2.1",
