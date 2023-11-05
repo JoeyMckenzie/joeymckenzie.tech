@@ -1,8 +1,8 @@
 <script lang="ts">
-  import type { Post } from 'contentlayer/generated';
   import BlogCard from '$lib/components/BlogCard.svelte';
+  import type { PostWithViewCount } from '$lib/types';
 
-  export let posts: Post[];
+  export let posts: PostWithViewCount[];
 </script>
 
 <div

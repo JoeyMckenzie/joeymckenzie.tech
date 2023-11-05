@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { Post } from 'contentlayer/generated';
   import { format } from 'date-fns';
   import { Badge } from '$lib/components/ui/badge';
+  import type { PostWithViewCount } from '$lib/types';
 
   // export let post: Post & { viewCount: number };
-  export let post: Post;
+  export let post: PostWithViewCount;
 </script>
 
 <article
@@ -15,7 +15,7 @@
       {format(new Date(post.pubDate), 'PP')}
     </time>
     <Badge>{post.category}</Badge>
-    <div class="font-medium text-neutral-400">123 views</div>
+    <div class="font-medium text-neutral-400">{post.viewCount} views</div>
   </div>
   <div class="group relative">
     <h3 class="mt-3 text-lg font-semibold leading-6">

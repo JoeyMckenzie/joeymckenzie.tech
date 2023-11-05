@@ -1,3 +1,10 @@
+<script lang="ts">
+  import type { PageServerData } from './$types';
+  import BlogPreview from '$lib/components/BlogPreview.svelte';
+
+  export let data: PageServerData;
+</script>
+
 <div class="pb-12">
   <h2 class="text-center text-4xl font-bold tracking-tight">Blog.</h2>
   <p class="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert">
@@ -9,3 +16,4 @@
     I do here, or to simply say hello!
   </p>
 </div>
+<BlogPreview posts={data.posts} />
