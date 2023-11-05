@@ -1,6 +1,6 @@
 name: CI
 
-on: [push]
+on: [ push ]
 
 jobs:
   build:
@@ -14,4 +14,4 @@ jobs:
         run: bun install
 
       - name: Build and lint
-        run: bun run ci
+        run: pnpm run ci

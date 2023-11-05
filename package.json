@@ -13,10 +13,10 @@
     "fmt": "prettier --write --plugin prettier-plugin-svelte --plugin prettier-plugin-tailwindcss .",
     "test:integration": "playwright test",
     "test:unit": "vitest",
-    "ci": "bun run build && bun run lint"
+    "ci": "pnpm run build && pnpm run lint"
   },
   "lint-staged": {
-    "**/*.{svelte,ts,js,json,md}": "bun run fmt"
+    "**/*.{svelte,ts,js,json,md}": "pnpm run fmt"
   },
   "devDependencies": {
     "@iconify/svelte": "^3.1.4",
