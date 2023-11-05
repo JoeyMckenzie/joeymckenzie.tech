@@ -14,6 +14,7 @@ const config = {
     adapter: adapter(),
     alias: {
       $lib: './src/lib',
+      'contentlayer/generated': './.contentlayer/generated',
     },
   },
 };

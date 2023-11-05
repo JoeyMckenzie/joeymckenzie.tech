@@ -1,3 +1,9 @@
+<script lang="ts">
+  import type { PageData } from './$types';
+
+  export let data: PageData;
+</script>
+
 <h2 class="text-center text-4xl font-bold tracking-tight">
   Hi, I&apos;m Joey.
 </h2>
