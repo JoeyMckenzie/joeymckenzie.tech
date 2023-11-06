@@ -2,10 +2,9 @@ import { allPosts } from 'contentlayer/generated';
 import type { PostWithViewCount } from '$lib/types';
 import { compareDesc } from 'date-fns';
 import { dev } from '$app/environment';
+import type { ViewCountQuery } from './db';
 
-export async function loadInitialPostPreviews(
-  viewCounts: { slug: string; count: number }[],
-) {
+export async function loadInitialPostPreviews(viewCounts: ViewCountQuery[]) {
   let posts = allPosts
     .map(
       (p) =>

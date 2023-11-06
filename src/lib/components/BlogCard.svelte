@@ -3,7 +3,6 @@
   import { Badge } from '$lib/components/ui/badge';
   import type { PostWithViewCount } from '$lib/types';
 
-  // export let post: Post & { viewCount: number };
   export let post: PostWithViewCount;
 </script>
 
@@ -17,7 +16,9 @@
         {format(new Date(post.pubDate), 'PP')}
       </time>
       <Badge>{post.category}</Badge>
-      <div class="font-medium text-neutral-400">{post.viewCount} views</div>
+      {#if post.viewCount > 0}
+        <div class="font-medium text-neutral-400">{post.viewCount} views</div>
+      {/if}
     </div>
     <div class="group relative">
       <h3 class="mt-3 text-lg font-semibold leading-6">

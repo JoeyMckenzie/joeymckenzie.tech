@@ -9,7 +9,14 @@ function getSqlClient() {
   return drizzle(sql);
 }
 
-export async function getViewCounts(topOnly = false) {
+export type ViewCountQuery = {
+  slug: string;
+  count: number;
+};
+
+export async function getViewCounts(
+  topOnly = false,
+): Promise<ViewCountQuery[]> {
   let viewCountsQuery = getSqlClient()
     .select({
       slug: viewCounts.slug,
