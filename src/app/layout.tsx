@@ -18,8 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className={figtree.className}>
+    <html lang="en" className="dark h-full">
+      <body className={`${figtree.className} h-full`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -27,7 +27,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          <div className="mx-auto max-w-screen-2xl px-6 lg:px-8">
+          <div className="mx-auto my-auto max-w-screen-2xl px-6 lg:px-8">
             {children}
           </div>
           <Footer />
