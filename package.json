@@ -21,7 +21,7 @@
     "prepare": "git config core.hookspath .githooks"
   },
   "lint-staged": {
-    "**/*.{svelte,ts,js,json,yml,md}": "bun run fmt",
+    "**/*.{svelte,ts,js,css,json,yml,md}": "bun run fmt",
     "**/*.rs": "cargo fmt -- --emit=files",
     "**/*.zig": "zig fmt"
   },
