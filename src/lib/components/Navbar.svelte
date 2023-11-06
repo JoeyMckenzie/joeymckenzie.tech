@@ -1,6 +1,5 @@
 <script lang="ts">
   import { buttonVariants } from '$lib/components/ui/button';
-  import ThemeToggle from '$lib/components/ThemeToggle.svelte';
 
   type NavLinkProps = {
     href: string;
@@ -30,6 +29,10 @@
         {display}
       </a>
     {/each}
-    <ThemeToggle />
+    <!--
+      Uncomment if you'd like a theme switcher - there's some performance issues
+      with switching themes that I'm too lazy to look into at the moment.
+     -->
+    <!-- <ThemeToggle /> -->
   </nav>
 </header>
