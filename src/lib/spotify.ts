@@ -34,7 +34,7 @@ export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
   });
 
   // Spotify returned a 204, so no content === not playing anything
-  if (nowPlayingResponse.status === 204) {
+  if (nowPlayingResponse.status === 204 || !nowPlayingResponse.ok) {
     return {
       nowPlaying: false,
     };
