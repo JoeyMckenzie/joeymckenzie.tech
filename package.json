@@ -51,7 +51,7 @@
     "typescript": "^5.0.0",
     "url": "^0.11.3",
     "vite": "^4.4.2",
-    "vitest": "^0.32.2"
+    "vitest": "^0.34.6"
   },
   "type": "module",
   "dependencies": {
