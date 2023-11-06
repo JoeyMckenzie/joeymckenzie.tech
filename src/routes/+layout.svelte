@@ -21,7 +21,7 @@
 </script>
 
 <svelte:head>
-  <title>Hi, I'm Joey. | joeymckenzie.tech</title>
+  <title>Bears. Beets. Battlestar Galactiga. | joeymckenzie.tech</title>
 </svelte:head>
 
 <ModeWatcher />
