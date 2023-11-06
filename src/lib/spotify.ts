@@ -20,60 +20,68 @@ export type NowPlayingResponse = {
 };
 
 export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
-  const accessTokenResponse = await fetch(TOKEN_URL, {
-    method: 'POST',
-    body: getRequestBody(SPOTIFY_REFRESH_TOKEN),
-    headers: getHeaders(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET),
-  });
-  const accessToken: AccessTokenResponse = await accessTokenResponse.json();
-  const nowPlayingResponse = await fetch(NOW_PLAYING_URL, {
-    method: 'GET',
-    headers: {
-      Authorization: `${accessToken.token_type} ${accessToken.access_token}`,
-    },
-  });
+  const defaultResponse = {
+    nowPlaying: false,
+  };
 
-  // Spotify returned a 204, so no content === not playing anything
-  if (nowPlayingResponse.status === 204 || !nowPlayingResponse.ok) {
-    return {
-      nowPlaying: false,
-    };
-  }
+  try {
+    const accessTokenResponse = await fetch(TOKEN_URL, {
+      method: 'POST',
+      body: getRequestBody(SPOTIFY_REFRESH_TOKEN),
+      headers: getHeaders(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET),
+    });
+    const accessToken: AccessTokenResponse = await accessTokenResponse.json();
+    const nowPlayingResponse = await fetch(NOW_PLAYING_URL, {
+      method: 'GET',
+      headers: {
+        Authorization: `${accessToken.token_type} ${accessToken.access_token}`,
+      },
+    });
 
-  const nowPlaying: SpotifyNowPlayingResponse = await nowPlayingResponse.json();
+    // Spotify returned a 204, so no content === not playing anything
+    if (nowPlayingResponse.status === 204 || !nowPlayingResponse.ok) {
+      return defaultResponse;
+    }
 
-  // Most of the linking and track/show information come from the `item` and `context` node and we can largely ignore the majority of the response
-  const item = nowPlaying.item;
-  const context = nowPlaying.context;
-  const trackTitle = item.name;
-  const href =
-    item.external_urls?.spotify ?? context?.external_urls?.spotify ?? '/';
+    const nowPlaying: SpotifyNowPlayingResponse =
+      await nowPlayingResponse.json();
 
-  // The playing type will either be `"show"` or `"track"` based on a podcast or artist song
-  // There's _a lot_ of presumptive `unwrap()`ing going here, should probably clean up eventually
-  if (nowPlaying.currently_playing_type === 'track') {
-    const albumImage = item.album.images[0];
-    const artist = item.artists[0].name;
+    // Most of the linking and track/show information come from the `item` and `context` node and we can largely ignore the majority of the response
+    const item = nowPlaying.item;
+    const context = nowPlaying.context;
+    const trackTitle = item.name;
+    const href =
+      item.external_urls?.spotify ?? context?.external_urls?.spotify ?? '/';
 
-    return {
-      albumImageSrc: albumImage.url,
-      artist,
-      href,
-      trackTitle,
-      nowPlaying: true,
-    };
-  } else {
-    const show = item.show;
-    const showImage = show.images[0];
-    const showTitle = show.name;
+    // The playing type will either be `"show"` or `"track"` based on a podcast or artist song
+    // There's _a lot_ of presumptive `unwrap()`ing going here, should probably clean up eventually
+    if (nowPlaying.currently_playing_type === 'track') {
+      const albumImage = item.album.images[0];
+      const artist = item.artists[0].name;
 
-    return {
-      albumImageSrc: showImage.url,
-      artist: showTitle,
-      href,
-      trackTitle,
-      nowPlaying: true,
-    };
+      return {
+        albumImageSrc: albumImage.url,
+        artist,
+        href,
+        trackTitle,
+        nowPlaying: true,
+      };
+    } else {
+      const show = item.show;
+      const showImage = show.images[0];
+      const showTitle = show.name;
+
+      return {
+        albumImageSrc: showImage.url,
+        artist: showTitle,
+        href,
+        trackTitle,
+        nowPlaying: true,
+      };
+    }
+  } catch (e) {
+    console.error('error retrieving spotify now playing', e);
+    return defaultResponse;
   }
 }
 
