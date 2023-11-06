@@ -33,10 +33,6 @@
   }
 </script>
 
-<svelte:head>
-  <title>Bears. Beets. Battlestar Galactiga. | joeymckenzie.tech</title>
-</svelte:head>
-
 <ModeWatcher />
 
 <div class="mx-auto my-auto max-w-screen-2xl px-6 lg:px-8">
