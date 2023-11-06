@@ -6,15 +6,13 @@ Welcome to my personal slice of the internet. This repository contains all the s
 The
 project leverages:
 
-- [Astro](https://astro.build) as the framework of choice as the site is primarily static content
-- [Svelte](https://svelte.dev) for dynamic components, bootstrapped by Astro
-- [Turborepo](https://turbo.build/repo) for task running and output caching
+- [SvelteKit](https://kit.svelte.dev) as the framework of choice as the site is primarily static content
+- [Tailwind](https://tailwindcss.com) for styling
+- [shadcn/ui for Svelte](https://www.shadcn-svelte.com) for components
 - A few build tools
   in [prettier](https://prettier.io/), [eslint](https://eslint.org/), [tailwind](https://tailwindcss.com),
-  and [pnpm](https://pnpm.io/)
-- Rust-based serverless functions hosted with [shuttle](https://shuttle.rs)
-  This is a [Next.js](https://nextjs.org/) project bootstrapped
-  with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+  and [bun](https://bun.sh/)
+- Hosted on [Vercel](https://vercel.com)
 
 The code here is freely available for anyone to use. To get started, fork/[degit](https://github.com/Rich-Harris/degit)
 this repository and install dependencies:
