@@ -11,7 +11,7 @@ export type AnalyticsOptions = {
   debug?: true;
 };
 
-const vitalsUrl = '<https://vitals.vercel-analytics.com/v1/vitals>';
+const vitalsUrl = 'https://vitals.vercel-analytics.com/v1/vitals';
 
 interface NavigatorWithConnection extends Navigator {
   connection?: {
