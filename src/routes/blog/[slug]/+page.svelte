@@ -20,7 +20,7 @@
     <div
       class="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight"
     >
-      <time dateTime={new Date(data.post?.pubDate ?? '').toISOString()}>
+      <time dateTime={new Date(data.post?.pubDate ?? '')?.toISOString() ?? ''}>
         {new Date(data.post?.pubDate ?? '').toLocaleDateString('en-us', {
           year: 'numeric',
           month: 'short',

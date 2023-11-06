@@ -6,8 +6,13 @@
   import type { LayoutServerData } from './$types';
   import { onMount } from 'svelte';
   import { viewCountStore } from '$lib/views';
+  import { browser } from '$app/environment';
+  import { webVitals } from '$lib/vitals';
+  import { page } from '$app/stores';
 
   export let data: LayoutServerData;
+
+  const analyticsId = import.meta.env.VERCEL_ANALYTICS_ID;
 
   onMount(() => {
     const latestPosts = data.postPreviews.slice(0, 3);
@@ -18,6 +23,14 @@
       latest: latestPosts,
     });
   });
+
+  $: if (browser && analyticsId) {
+    webVitals({
+      path: $page.url.pathname,
+      params: $page.params,
+      analyticsId,
+    });
+  }
 </script>
 
 <svelte:head>
