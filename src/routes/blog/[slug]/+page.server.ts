@@ -5,7 +5,9 @@ import { error } from '@sveltejs/kit';
 
 export const load: PageServerLoad = ({ params }) => {
   // No need to block the page from rendering to add a view count, so lose the `await` here
-  addViewCount(params.slug);
+  addViewCount(params.slug).catch((e) => {
+    console.error('error while attempting to add view count', e);
+  });
 
   const post = allPosts.find((post) => post._raw.flattenedPath === params.slug);
 
