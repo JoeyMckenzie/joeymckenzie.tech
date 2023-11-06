@@ -1,6 +1,13 @@
 name: CI
 
-on: [push]
+on: [ push ]
+
+env:
+  SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN}}
+  SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID}}
+  SPOTIFY_CLIENT_SECRET: ${{ secrets.SPOTIFY_CLIENT_SECRET}}
+  VERCEL_GIT_COMMIT_SHA: ${{ secrets.VERCEL_GIT_COMMIT_SHA}}
+  DATABASE_URL: ${{ secrets.DATABASE_URL}}
 
 jobs:
   build:
