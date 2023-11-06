@@ -34,7 +34,7 @@
     "concurrently": "^8.2.2",
     "drizzle-kit": "^0.19.13",
     "eslint": "^8.28.0",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-svelte": "^2.30.0",
     "lint-staged": "^15.0.2",
     "postcss": "^8.4.31",
