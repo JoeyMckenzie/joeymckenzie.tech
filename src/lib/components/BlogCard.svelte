@@ -10,7 +10,8 @@
 <article
   class="hover:scale-102 flex max-w-xl flex-col items-start transition duration-150 ease-in-out hover:-translate-y-1"
 >
-  <a href={post.url}>
+  <!-- TODO: Need a better solution for not triggering views unless the blog page has been landed on -->
+  <a data-sveltekit-preload-data="tap" href={post.url}>
     <div class="flex items-center gap-x-4 text-xs">
       <time dateTime={post.pubDate}>
         {format(new Date(post.pubDate), 'PP')}
