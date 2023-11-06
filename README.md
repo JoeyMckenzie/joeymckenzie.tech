@@ -29,7 +29,7 @@ To start the dev server:
 First, run the development server:
 
 ```bash
-bun run dev # or npm/yarn/pnpm run dev
+pnpm run dev # or npm/yarn/pnpm run dev
 ```
 
 That's it! On build/run with the help of [concurrently](https://www.npmjs.com/package/concurrently), content types and

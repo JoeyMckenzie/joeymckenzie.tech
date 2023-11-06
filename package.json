@@ -2,6 +2,7 @@
   "name": "joey-mckenzie-tech",
   "version": "0.0.1",
   "private": true,
+  "packageManager": "pnpm@8.10.2",
   "scripts": {
     "dev": "concurrently \"bun:dev:content\" \"bun:dev:svelte\"",
     "dev:svelte": "vite dev",
@@ -17,11 +18,11 @@
     "fmt": "prettier --write --plugin prettier-plugin-svelte --plugin prettier-plugin-tailwindcss .",
     "test:integration": "playwright test",
     "test:unit": "vitest",
-    "ci": "bun run build && bun run lint",
+    "ci": "pnpm run build && pnpm run lint",
     "prepare": "git config core.hookspath .githooks"
   },
   "lint-staged": {
-    "**/*.{svelte,ts,js,css,json,yml,md}": "bun run fmt",
+    "**/*.{svelte,ts,js,css,json,yml,md}": "pnpm run fmt",
     "**/*.rs": "cargo fmt -- --emit=files",
     "**/*.zig": "zig fmt"
   },

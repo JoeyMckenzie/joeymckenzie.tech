@@ -1,9 +1,7 @@
 <script lang="ts">
-  import type { PageData } from './$types';
   import BlogPreview from '$lib/components/BlogPreview.svelte';
   import SocialButtons from '$lib/components/SocialButtons.svelte';
-
-  export let data: PageData;
+  import { viewCountStore } from '$lib/views';
 </script>
 
 <h2 class="text-4xl font-bold tracking-tight sm:text-center">Hi, I'm Joey.</h2>
@@ -20,4 +18,4 @@
 >
   Latest thoughts.
 </h2>
-<BlogPreview posts={data.posts} />
+<BlogPreview posts={$viewCountStore.latest} />

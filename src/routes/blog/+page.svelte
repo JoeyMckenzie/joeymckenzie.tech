@@ -1,8 +1,6 @@
 <script lang="ts">
-  import type { PageServerData } from './$types';
   import BlogPreview from '$lib/components/BlogPreview.svelte';
-
-  export let data: PageServerData;
+  import { viewCountStore } from '$lib/views';
 </script>
 
 <div class="pb-12">
@@ -16,4 +14,4 @@
     I do here, or to simply say hello!
   </p>
 </div>
-<BlogPreview posts={data.posts} />
+<BlogPreview posts={$viewCountStore.all} />
