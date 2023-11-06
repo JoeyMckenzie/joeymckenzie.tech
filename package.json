@@ -17,7 +17,8 @@
     "fmt": "prettier --write --plugin prettier-plugin-svelte --plugin prettier-plugin-tailwindcss .",
     "test:integration": "playwright test",
     "test:unit": "vitest",
-    "ci": "bun run build && bun run lint"
+    "ci": "bun run build && bun run lint",
+    "prepare": "git config core.hookspath .githooks"
   },
   "lint-staged": {
     "**/*.{svelte,ts,js,json,yml,md}": "bun run fmt",
