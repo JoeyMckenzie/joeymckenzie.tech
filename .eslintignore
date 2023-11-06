@@ -13,6 +13,7 @@ vite.config.ts.timestamp-*
 .contentlayer
 src/lib/components/ui
 .drizzle
+pnpm-lock.yaml
 
 # rust
 Secrets.toml

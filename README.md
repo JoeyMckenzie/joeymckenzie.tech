@@ -29,7 +29,7 @@ To start the dev server:
 First, run the development server:
 
 ```bash
-pnpm run dev # or npm/yarn/pnpm run dev
+bun run dev # or npm/yarn/bun run dev
 ```
 
 That's it! On build/run with the help of [concurrently](https://www.npmjs.com/package/concurrently), content types and
@@ -42,4 +42,4 @@ There are two git hooks configured to run:
 - pre-commit: will format all JS/TS, including examples, via [lint-staged](https://www.npmjs.com/package/lint-staged)
 - pre-push: lints source files
 
-Of course, you're free to remove these files along side the `prepare` script setting the git hook directory.
+Of course, you're free to remove these files alongside the `prepare` script setting the git hook directory.
