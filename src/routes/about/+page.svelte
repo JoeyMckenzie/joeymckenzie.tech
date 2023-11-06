@@ -6,7 +6,7 @@
   <title>About | joeymckenzie.tech</title>
 </svelte:head>
 
-<h2 class="text-center text-4xl font-bold tracking-tight">Bio.</h2>
+<h2 class="text-4xl font-bold tracking-tight sm:text-center">Bio.</h2>
 <div
   class="prose mx-auto flex max-w-2xl flex-col text-justify leading-6 dark:prose-invert"
 >

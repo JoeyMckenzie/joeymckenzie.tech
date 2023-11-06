@@ -6,7 +6,7 @@
 </script>
 
 <div class="pb-12">
-  <h2 class="text-center text-4xl font-bold tracking-tight">Blog.</h2>
+  <h2 class="text-4xl font-bold tracking-tight sm:text-center">Blog.</h2>
   <p class="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert">
     I write about a lot of things, mainly languages, ecoystems, and software
     design. I consider my writing a journal of technologies I&apos;ve worked
