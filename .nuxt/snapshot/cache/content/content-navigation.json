@@ -1,0 +1,111 @@
+[
+  {
+    "title": "Blog",
+    "_path": "/blog",
+    "children": [
+      {
+        "title": "Blazor basics - calling external APIs with typed HTTP clients",
+        "_path": "/blog/blazor-basics-calling-external-apis"
+      },
+      {
+        "title": "Build a Tailwind modal with Angular and NgRx",
+        "_path": "/blog/build-a-tailwind-modal-with-angular-and-ngrx"
+      },
+      {
+        "title": "Constructing objects with intent",
+        "_path": "/blog/constructing-objects-with-intent"
+      },
+      {
+        "title": "Nullable reference types and designing with intent",
+        "_path": "/blog/csharp-8-nullable-reference-types"
+      },
+      {
+        "title": "Decoupling controllers with ApiEndpoints",
+        "_path": "/blog/decoupling-controllers-with-api-endpoints"
+      },
+      {
+        "title": "Hitchhiker's guide to Angular development with Nx",
+        "_path": "/blog/hitchhikers-guide-to-angular-nx-development"
+      },
+      {
+        "title": "Implementing dark mode in Angular with Tailwind",
+        "_path": "/blog/implementing-tailwind-dark-mode-in-angular"
+      },
+      {
+        "title": "JAMstack Angular apps with Scully and Netlify",
+        "_path": "/blog/jamstack-angular-apps-with-scully-and-netlify"
+      },
+      {
+        "title": "Learning to fly with Rust and Postgres",
+        "_path": "/blog/learning-to-fly-with-rust-postgres"
+      },
+      { "title": "Migrating to Astro", "_path": "/blog/migrating-to-astro" },
+      {
+        "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 2)",
+        "_path": "/blog/net-core-dapper-and-crud-buzzword-bingo-part-2"
+      },
+      {
+        "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 3)",
+        "_path": "/blog/net-core-dapper-and-crud-buzzword-bingo-part-3"
+      },
+      {
+        "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 4)",
+        "_path": "/blog/net-core-dapper-and-crud-buzzword-bingo-part-4"
+      },
+      {
+        "title": "Clean architecture, Dapper, MediatR, and buzzword bingo (part 1)",
+        "_path": "/blog/net-core-dapper-and-crud-buzzword-bingo"
+      },
+      {
+        "title": "React data fetching with RxJS",
+        "_path": "/blog/react-data-fetching-with-rxjs"
+      },
+      {
+        "title": "Rethinking exceptions in .NET",
+        "_path": "/blog/rethinking-exceptions-in-dotnet"
+      },
+      {
+        "title": "Rustful statement machines and event driven design",
+        "_path": "/blog/rustful-state-machines"
+      },
+      {
+        "title": "Going serverless with Rust and Shuttle",
+        "_path": "/blog/serverless-rust-with-shuttle"
+      },
+      {
+        "title": ".NET Core service lifetimes in a nutshell",
+        "_path": "/blog/service-lifetimes-in-plain-english"
+      },
+      {
+        "title": "State Management with Blazor using Fluxor (Part 1)",
+        "_path": "/blog/state-management-with-fluxor-blazor-part-1"
+      },
+      {
+        "title": "State Management with Blazor using Fluxor (Part 2)",
+        "_path": "/blog/state-management-with-fluxor-blazor-part-2"
+      },
+      {
+        "title": "Back to the server with Rust, Axum, and htmx",
+        "_path": "/blog/templates-with-rust-axum-htmx-askama"
+      },
+      {
+        "title": "Ziggin' around with linked lists",
+        "_path": "/blog/ziggin-around-with-linked-lists"
+      }
+    ]
+  },
+  {
+    "title": "Draft",
+    "_path": "/draft",
+    "children": [
+      {
+        "title": "Going serverless with .NET, PlanetScale, and Fly",
+        "_path": "/draft/going-serverless-with-dotnet-planetscale-and-fly"
+      },
+      {
+        "title": "Embracing the edge with Go, PlanetScale, and Fly",
+        "_path": "/draft/serverless-databases-with-go-planetscale"
+      }
+    ]
+  }
+]
