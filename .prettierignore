@@ -12,6 +12,7 @@ vite.config.ts.timestamp-*
 .vercel
 .contentlayer
 .drizzle
+pnpm-lock.yaml
 
 # rust
 Secrets.toml
