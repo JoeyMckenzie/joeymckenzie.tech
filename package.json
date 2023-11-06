@@ -2,7 +2,6 @@
   "name": "joey-mckenzie-tech",
   "version": "0.0.1",
   "private": true,
-  "packageManager": "pnpm@8.10.2",
   "scripts": {
     "dev": "concurrently \"bun:dev:content\" \"bun:dev:svelte\"",
     "dev:svelte": "vite dev",
