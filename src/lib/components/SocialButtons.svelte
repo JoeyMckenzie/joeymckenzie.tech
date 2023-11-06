@@ -23,7 +23,7 @@
     },
     {
       href: 'https://resume.joeymckenzie.tech/JoeyMcKenzie_resume.pdf',
-      icon: 'github',
+      icon: 'carbon:identification',
       display: 'Resume',
       external: 'material-symbols:download-sharp',
     },

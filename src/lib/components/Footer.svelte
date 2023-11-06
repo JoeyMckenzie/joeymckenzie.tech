@@ -10,7 +10,7 @@
 </script>
 
 <div
-  class="mx-auto mt-auto flex w-full max-w-screen-lg flex-col items-center justify-evenly gap-y-8 p-8 sm:flex-row sm:items-end"
+  class="mx-auto mt-auto flex w-full max-w-screen-lg flex-col items-center justify-evenly gap-y-8 p-12 sm:flex-row sm:items-end"
 >
   <SocialIcons />
   <SpotifyNowPlaying {nowPlaying}>

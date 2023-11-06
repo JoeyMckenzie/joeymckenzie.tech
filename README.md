@@ -2,7 +2,8 @@
 
 [![CI](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/ci.yml/badge.svg)](https://github.com/JoeyMckenzie/joey-mckenzie-tech/actions/workflows/ci.yml)
 
-Welcome to my slice of the internet! This repository contains all the source code and content used on my blog. The
+Welcome to my personal slice of the internet. This repository contains all the source code and content used on my blog.
+The
 project leverages:
 
 - [Astro](https://astro.build) as the framework of choice as the site is primarily static content

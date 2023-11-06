@@ -13,3 +13,20 @@ vite.config.ts.timestamp-*
 .contentlayer
 src/lib/components/ui
 .drizzle
+
+# rust
+Secrets.toml
+/target
+/Cargo.lock
+/examples/**/target
+/examples/**/node_modules
+/examples/**/Cargo.lock
+.sqlx
+
+# zig
+/examples/zig/**/zig-cache
+/examples/zig/**/zig-out
+
+# dotnet
+/examples/dotnet/**/obj
+/examples/dotnet/**/bin
