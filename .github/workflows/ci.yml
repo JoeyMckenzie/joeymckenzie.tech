@@ -1,6 +1,6 @@
 name: CI
 
-on: [ push ]
+on: [push]
 
 env:
   SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN}}

@@ -20,7 +20,7 @@
     "ci": "bun run build && bun run lint"
   },
   "lint-staged": {
-    "**/*.{svelte,ts,js,json,md}": "bun run fmt"
+    "**/*.{svelte,ts,js,json,yml,md}": "bun run fmt"
   },
   "devDependencies": {
     "@iconify/svelte": "^3.1.4",
