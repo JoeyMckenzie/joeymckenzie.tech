@@ -2,7 +2,7 @@ import { VERCEL_GIT_COMMIT_SHA } from '$env/static/private';
 import type { LayoutServerLoad } from './$types';
 import { getSpotifyNowPlaying } from '$lib/spotify';
 import { getViewCounts } from '$lib/db';
-import { loadInitialPostPreviews } from '$lib/loaders';
+import { loadInitialPostPreviews } from '$lib/posts';
 
 export const load: LayoutServerLoad = async () => {
   const viewCounts = await getViewCounts();
