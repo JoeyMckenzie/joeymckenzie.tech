@@ -4,6 +4,10 @@
   import { viewCountStore } from '$lib/views';
 </script>
 
+<svelte:head>
+  <title>Bears. Beets. Battlestar Galactiga. | joeymckenzie.tech</title>
+</svelte:head>
+
 <h2 class="text-4xl font-bold tracking-tight sm:text-center">Hi, I'm Joey.</h2>
 <p class="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert">
   I'm a <span class="font-semibold">Senior Software Engineer</span> based in Northern

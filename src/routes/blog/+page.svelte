@@ -3,6 +3,10 @@
   import { viewCountStore } from '$lib/views';
 </script>
 
+<svelte:head>
+  <title>Blog | joeymckenzie.tech</title>
+</svelte:head>
+
 <div class="pb-12">
   <h2 class="text-4xl font-bold tracking-tight sm:text-center">Blog.</h2>
   <p class="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert">
