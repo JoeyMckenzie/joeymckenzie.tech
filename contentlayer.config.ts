@@ -29,7 +29,7 @@ export default makeSource({
       [
         rehypePrettyCode,
         {
-          theme: 'vitesse-dark',
+          theme: 'nord',
         },
       ],
     ],
