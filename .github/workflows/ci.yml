@@ -2,6 +2,8 @@ name: CI
 
 on: [push]
 
+# We won't actually use this explicitly in the CI run for now,
+# the framework requires they're available during compilation
 env:
   SPOTIFY_REFRESH_TOKEN: ${{ secrets.SPOTIFY_REFRESH_TOKEN}}
   SPOTIFY_CLIENT_ID: ${{ secrets.SPOTIFY_CLIENT_ID}}
