@@ -11,7 +11,7 @@ project leverages:
 - [shadcn/ui for Svelte](https://www.shadcn-svelte.com) for components
 - A few build tools
   in [prettier](https://prettier.io/), [eslint](https://eslint.org/), [tailwind](https://tailwindcss.com),
-  and [bun](https://bun.sh/)
+  and [pnpm](pnpm.io)
 - [Contentlayer](https://contentlayer.dev/) for managing content
 - [Neon](https://neon.tech) and [drizzle](https://orm.drizzle.team/) for database stuff
 - Hosted on [Vercel](https://vercel.com)
@@ -22,14 +22,14 @@ this repository and install dependencies:
 ## Getting Started
 
 ```bash
-bun install # or npm/yarn/pnpm install
+pnpm install # or npm/yarn/bun install
 ```
 
 To start the dev server:
 First, run the development server:
 
 ```bash
-bun run dev # or npm/yarn/bun run dev
+pnpm run dev # or npm/yarn/bun run dev
 ```
 
 That's it! On build/run with the help of [concurrently](https://www.npmjs.com/package/concurrently), content types and

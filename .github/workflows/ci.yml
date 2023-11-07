@@ -17,10 +17,19 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'pnpm'
       - uses: oven-sh/setup-bun@v1
 
       - name: Install dependencies
-        run: bun install
+        run: pnpm install
 
       - name: Build and lint
-        run: bun run ci
+        run: pnpm run ci
