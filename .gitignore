@@ -17,9 +17,9 @@ vite.config.ts.timestamp-*
 Secrets.toml
 /target
 /Cargo.lock
-/examples/**/target
-/examples/**/node_modules
-/examples/**/Cargo.lock
+/examples/rust/**/target
+/examples/rust/**/node_modules
+/examples/rust/**/Cargo.lock
 .sqlx
 
 # zig
