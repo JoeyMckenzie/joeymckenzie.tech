@@ -29,7 +29,12 @@
       </time>
       <Badge>{data.post?.category}</Badge>
     </div>
-    <img alt="Blog header" src={data.post?.heroImage} />
+    <img
+      height="400"
+      width="500"
+      alt="Blog header"
+      src={data.post?.heroImage}
+    />
     <!-- eslint-disable-next-line  -->
     {@html content}
   </article>
