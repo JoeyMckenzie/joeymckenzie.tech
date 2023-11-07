@@ -1,5 +1,4 @@
 use anyhow::Context;
-use dotenvy;
 use sqlx::postgres::PgPoolOptions;
 
 #[tokio::main]
