@@ -1,0 +1,26 @@
+alias b := build
+
+default: dev
+
+# build main
+build:
+    cargo lambda build --release --output-format zip
+
+# run the dev server
+dev:
+    cargo watch -x run
+
+# lint rust files
+clippy:
+    cargo clippy
+
+# check rust files format
+check:
+    cargo fmt -v --check
+
+# format rust files
+format:
+    cargo fmt -v
+
+# run code quality tools
+ci: check clippy

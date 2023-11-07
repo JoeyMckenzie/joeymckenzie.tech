@@ -1,0 +1,13 @@
+default: plan
+
+# run the plan
+plan:
+    terraform plan
+
+# apply the plan
+apply:
+    terraform apply
+
+# format files
+fmt:
+    terraform fmt

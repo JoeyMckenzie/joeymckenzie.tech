@@ -1,0 +1,58 @@
+mod quotes;
+
+use anyhow::Context;
+use lambda_http::{run, service_fn, Body, Error, Request, RequestExt, Response};
+use quotes::get_quotes;
+
+/// This is the main body for the function.
+/// Write your code inside it.
+/// There are some code example in the following URLs:
+/// - https://github.com/awslabs/aws-lambda-rust-runtime/tree/main/examples
+async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
+    let quotes = get_quotes()?;
+
+    let quote = match event
+        .query_string_parameters_ref()
+        .and_then(|params| params.first("author"))
+    {
+        Some(author) => quotes.get_quote_by(author),
+        None => Some(quotes.get_random_quote()),
+    };
+
+    match quote {
+        Some(authored_quote) => {
+            let resp = Response::builder()
+                .status(200)
+                .header("content-type", "application/json")
+                .body(
+                    serde_json::to_string(&authored_quote)
+                        .context("unable to serialize the hilarious quote")?
+                        .into(),
+                )
+                .map_err(Box::new)?;
+            Ok(resp)
+        }
+        None => {
+            let resp = Response::builder()
+                .status(404)
+                .header("content-type", "application/json")
+                .body("Quote by that author does not exist.".into())
+                .map_err(Box::new)?;
+
+            Ok(resp)
+        }
+    }
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Error> {
+    tracing_subscriber::fmt()
+        .with_max_level(tracing::Level::INFO)
+        // disable printing the name of the module in every log line.
+        .with_target(false)
+        // disabling time is handy because CloudWatch will add the ingestion time.
+        .without_time()
+        .init();
+
+    run(service_fn(function_handler)).await
+}
