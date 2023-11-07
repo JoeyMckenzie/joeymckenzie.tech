@@ -17,7 +17,7 @@ format:
 
 # refresh dependencies and build artifacts
 refresh:
-    rm -rf node_modules bun.lockb && pnpm install && pnpm run build
+    rm -rf node_modules pnpm-lock.yml && pnpm install && pnpm run build
 
 # lint rust examples
 clippy:
