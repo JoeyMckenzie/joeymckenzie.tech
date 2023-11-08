@@ -4,6 +4,11 @@ description: 'Build better object APIs with named constructors and fluent builde
 pubDate: 'Nov 3 2022'
 heroImage: '/blog/objects-with-intent/constructors_meme.jpg'
 category: 'design'
+keywords:
+  - design
+  - software patterns
+  - .net
+  - rust
 ---
 
 I've been becoming increasingly annoyed, both by legacy code and modern frameworks, with the amount of non-constrained object construction that occurs within a codebase. That's a bunch of developer jargon, so what does all that mean exactly? If a developer is working on a feature within a codebase they might be unfamiliar with, it's far too easy to instantiate objects at will with zero constraints with some process downstream in an area of code tucked away in a dark corner expecting the developer to have _correctly_ constructed said object. To me, this feels a lot like the "read my mind" mentality that occurs between employers and disgruntled employees in the workplace: the employer expects something to happen without communicating to the employee that intent (I think we've all experienced this regardless of industry). How does this translate to code? Let's take a simple example from C#.

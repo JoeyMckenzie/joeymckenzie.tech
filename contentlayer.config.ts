@@ -12,6 +12,11 @@ export const Post = defineDocumentType(() => ({
     category: { type: 'string', required: true },
     heroImage: { type: 'string', required: true },
     draft: { type: 'boolean', required: false, default: false },
+    keywords: {
+      type: 'list',
+      of: { type: 'string' },
+      required: false,
+    },
   },
   computedFields: {
     url: {

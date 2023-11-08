@@ -4,6 +4,11 @@ description: 'Implement the unit of work and repository patterns with Dapper.'
 pubDate: 'Oct 06 2019'
 heroImage: 'https://imgs.xkcd.com/comics/code_quality.png'
 category: '.NET'
+keywords:
+  - .net
+  - c#
+  - dapper
+  - mediatr
 ---
 
 _UPDATE: I've added cancellation token support to each of the database operations below, and encourage readers to checkout the `master` branch to see how things look now. The methods below we're slight altered to use a `CommandDefinition` that utilizes a `CancellationToken` passed down from the core business logic layer, and used in place of the regular string queries we've written below._

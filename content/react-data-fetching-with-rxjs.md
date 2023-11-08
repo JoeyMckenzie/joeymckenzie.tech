@@ -4,6 +4,10 @@ description: 'Use RxJS to implement simple data fetching, making ALL THE THINGS 
 pubDate: 'Mar 3 2022'
 heroImage: '/blog/react-data-fetching/react-data-fetching-meme.jpg'
 category: 'react'
+keywords:
+  - react
+  - nextjs
+  - rxjs
 ---
 
 Data fetching with React offers a wide selection of tools to do the job, from simple promises, to more sophisticated

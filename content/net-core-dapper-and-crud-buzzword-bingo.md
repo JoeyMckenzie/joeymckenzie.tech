@@ -4,6 +4,11 @@ description: 'Build an API using Dapper, MediatR, and clean architecture princip
 pubDate: 'Oct 04 2019'
 heroImage: '/blog/net-core-dapper-and-crud-series/part-1/beer-background-dappery.jpg'
 category: '.NET'
+keywords:
+  - .net
+  - c#
+  - dapper
+  - mediatr
 ---
 
 Welcome to buzzword bingo, a.k.a. how many resume keywords can we fit in one blog post before someone stops reading. If you're like me, you've comfortably relied on Entity Framework Core as your go-to ORM for .NET Core projects. Rightfully so, EF Core serves its purpose, and does its job _very_ well. Primarily as a Java developer, I often daydream about having the ease, convenience, and configuration of EF Core in place of JPA (seriously, toss a few HQL queries in your code base and then tell me how much fun you're having).

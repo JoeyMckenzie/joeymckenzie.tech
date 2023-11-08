@@ -4,6 +4,10 @@ description: "Out-of-the-box modals are nice, but often times inflexible and can
 pubDate: 'Apr 27 2021'
 heroImage: '/blog/tailwind-ngrx-modal/off_the_shelf_modal.jpg'
 category: 'angular'
+keywords:
+  - angular
+  - ngrx
+  - typescript
 ---
 
 Coming off a blogging hiatus, I'm finally making my triumphant return. If you've been following my writing up until now, you'll know that I'm primarily a .NET dude. Lately, I've been wanting to get back to my roots with Angular and see what I could build with everyone's new favorite CSS framework on the block, [Tailwind](https://tailwindcss.com/). I'm going to be dialing back the length in content in place of smaller, bit-sized chunks in an effort to get back to helping the general developer population with the lessons I've learned and things that I think are fire (as the kids say) in the community. With that out of the way, let's dive in!

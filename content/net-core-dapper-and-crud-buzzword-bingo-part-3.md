@@ -4,6 +4,11 @@ description: 'Testing code with xUnit, Dapper, and Shouldly.'
 pubDate: 'Nov 19 2019'
 heroImage: '/blog/net-core-dapper-and-crud-series/part-3/shouldly-xunit-meme.jpeg'
 category: '.NET'
+keywords:
+  - .net
+  - c#
+  - dapper
+  - mediatr
 ---
 
 Two layers down, two to go. While we've made some great progress in our [last post](/blog/net-core-dapper-and-crud-buzzword-bingo-part-2/), I wanted to carve out at least one section in our series discussing testing our application. So far, we've built our domain and persistence layers, but we have yet to actually implement any transactional processes that require the higher up layers that will run the code we've written so far to confirm its correctness. Rather than wait until we've built out our API layer to begin testing our implementation of the data layer (that would be more integration testing, one could argue), a better solution would be to take some time to write some simple and quick unit tests around our persistence layer. With our data layer fully unit tested, we won't have to wait to have an API to interact with via Postman, or some other application testing tool, to ensure he code we have so far is giving us the result sets we expect. With our code unit tested in this fashion, we can use said tests as contracts for our expectation of each operation within our repositories, and grant ourself the ability to safely refactor without fear of unknowingly breaking the application (at least within the persistence layer).

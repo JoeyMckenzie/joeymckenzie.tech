@@ -4,6 +4,11 @@ description: 'Use Fluxor to encapsulate the business logic of our Blazor apps an
 pubDate: 'Jul 26 2020'
 heroImage: '/blog/state-management-with-blazor-using-fluxor/part-2/fluxor_meme_small.jpg'
 category: 'blazor'
+keywords:
+  - state management
+  - flux
+  - c#
+  - .net
 ---
 
 Memes aside, if you've been following along with our flux-ified Blazor project, you may have noticed the plethora of initial, success, and failure action types. While this may seem like overkill to some, by creating this separation of concern between action types, we ensure each action has a _single_ responsibility in the flux workflow. If (read: when) our business requirements change that cause us to modify existing actions, we can do so without fear of unintentionally breaking another workflow that might reuse the same action. It's like I always say, "when in doubt, create a new action."

@@ -4,6 +4,11 @@ description: 'Manage state in your Blazor applications using the tried-and-true 
 pubDate: 'Jun 26 2020'
 heroImage: 'https://imgs.xkcd.com/comics/unreachable_state.png'
 category: 'blazor'
+keywords:
+  - state management
+  - flux
+  - c#
+  - .net
 ---
 
 I'm gonna give it to you straight, uncensored, and off the cuff. Building reactive, fault tolerant, pleasant-to-use frontend single page applications in the modern web-based world is not an easy task; building _stateful_ applications, on top of all that, can be the most difficult part of frontend application engineering. Nowadays in the modern enterprise, frontend applications are more complicated than ever - managing user data, interacting with a plethora of APIs, all while allowing users to navigate from page to page and back again carrying what seems like (from an end user's perspective) a history of all their page interactions and application data they've inherently requested just by clicking buttons.

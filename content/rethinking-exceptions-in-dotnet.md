@@ -4,6 +4,10 @@ description: 'Exceptions... exceptions everywhere!'
 pubDate: 'Sep 21 2022'
 heroImage: '/blog/rethinking-dotnet-exceptions/exceptions_meme.jpg'
 category: '.NET'
+keywords:
+  - .net
+  - exceptions
+  - result
 ---
 
 I've recently undergone a courtship with Go and Rust, diving into each ecosystem in my spare time and even contributing to a few open source projects here and there in each language.

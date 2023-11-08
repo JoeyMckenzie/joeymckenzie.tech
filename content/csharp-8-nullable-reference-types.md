@@ -4,6 +4,11 @@ description: 'Null reference exceptions can be a thing of the path, but with gre
 pubDate: 'Nov 05 2019'
 heroImage: 'https://imgs.xkcd.com/comics/compiler_complaint.png'
 category: '.NET'
+keywords:
+  - C#
+  - .net
+  - .net core
+  - nullable reference types
 ---
 
 It's almost 5 o'clock, you've just deployed the latest API build into your test environment for other teams to start consuming and integrating into their applications, and the weekend is right around the corner. Then, the Slack messages begin.

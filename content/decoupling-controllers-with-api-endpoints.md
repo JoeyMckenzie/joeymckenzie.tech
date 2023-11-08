@@ -4,6 +4,10 @@ description: 'No one likes monolithic controllers, and with ApiEndpoints, API de
 pubDate: 'Sep 23 2020'
 heroImage: '/blog/decoupling-controllers-with-api-endpoints/friends-business-logic.jpg'
 category: '.NET'
+keywords:
+  - c#
+  - .net
+  - api
 ---
 
 Admittedly, or not, we've all worked on projects during our careers that took the above meme's approach of "just put it in the controller and we'll figure it out later". Unfortunately for some, this is a way of life due to project budget constraints, unrealistic product deadlines, and more senior developers refusing to change their ways because it "works." It's like how the old saying goes, you can't teach an old programmer to decouple independent concerns.

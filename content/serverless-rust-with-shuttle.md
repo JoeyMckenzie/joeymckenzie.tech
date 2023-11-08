@@ -4,6 +4,9 @@ description: "Managing infrastructure is already hard enough, let's write some s
 pubDate: 'Mar 30 2023'
 heroImage: '/blog/serverless-rust-with-shuttle/shuttle_meme.jpg'
 category: 'rust'
+keywords:
+  - rust
+  - aws lambda
 ---
 
 In my epic quest to find any excuse to write more Rust in my daily dev life, I stumbled across an incredible platform that allows developers to write serverless functions entirely in Rust.

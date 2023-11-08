@@ -1,12 +1,14 @@
 ---
-title: "Ziggin' around with linked lists"
-description: 'Flashback to detecting loops in a list on a whiteboard...'
-pubDate: 'May 23 2023'
+title: 'Content-driven sites with Svelte and Contentlayer'
+description: 'Why use Astro when you can make things harder on yourself?'
+pubDate: 'Nov 23 2023'
 heroImage: '/blog/ziggin-around/meme.jpg'
-category: 'zig'
+category: 'svelte'
+draft: true
 keywords:
-  - zig
-  - linked lists
+  - svelte
+  - contentlayer
+  - typescript
 ---
 
 So I've been looking for a reason to write code to keep me sane while in the

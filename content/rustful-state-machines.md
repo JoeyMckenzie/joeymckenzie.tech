@@ -13,6 +13,10 @@ category: 'rust'
 #     - name: 'author'
 #       content: 'Joey McKenzie'
 draft: true
+keywords:
+  - rust
+  - state machines
+  - design patterns
 ---
 
 Back in action, and I'm fresh off a hiatus while raising a little one. I can safely say that I _definitely_

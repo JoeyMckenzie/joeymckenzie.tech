@@ -4,6 +4,9 @@ description: 'Astro, Svelte, and Rust walk into a bar...'
 pubDate: 'Mar 15 2023'
 heroImage: '/blog/migrating-to-astro/astro_meme.jpg'
 category: 'astro'
+keywords:
+  - astro
+  - content
 ---
 
 During a recent quarter (third?) life crisis, I decided to do what every developer does when they need something to work on - I rewrote my blog from the ground up. I consider rebuilding personal blogs/portfolios a right of passage and have so far been able to squeeze a rewrite out about once every two years.

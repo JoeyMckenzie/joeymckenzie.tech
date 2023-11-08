@@ -4,6 +4,11 @@
 
 <svelte:head>
   <title>About | joeymckenzie.tech</title>
+  <meta
+    content="A blog about software, technology, and sometimes beer."
+    name="description"
+  />
+  <meta content="software, programming, technology" name="keywords" />
 </svelte:head>
 
 <h2 class="text-4xl font-bold tracking-tight sm:text-center">Bio.</h2>

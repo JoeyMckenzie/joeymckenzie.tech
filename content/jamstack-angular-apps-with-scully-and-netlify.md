@@ -4,6 +4,11 @@ description: 'Write, build, and deploy Angular applications as fully SEO-optimiz
 pubDate: 'Feb 22 2022'
 heroImage: '/blog/jamstack-angular-apps-with-scully/angular-scully-netlify-meme.jpg'
 category: 'angular'
+keywords:
+  - angular
+  - jamstack
+  - scully
+  - netlify
 ---
 
 There's no denying that the [JAMstack](https://jamstack.org/) has taken the traditional web development world by

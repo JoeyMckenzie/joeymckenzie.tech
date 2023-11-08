@@ -4,6 +4,10 @@ description: '(Insert meme about React devs rediscovering the magic of PHP and A
 pubDate: 'July 11 2023'
 heroImage: '/blog/rust-axum-htmx-templates-with-askama/htmx_meme.jpg'
 category: 'rust'
+keywords:
+  - rust
+  - templates
+  - askama
 ---
 
 I'm finally back from paternity leave and I had quite a blast messing around with a few Rust libraries during my time

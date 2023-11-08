@@ -5,6 +5,9 @@ pubDate: 'Nov 2 2023'
 heroImage: '/blog/ziggin-around/meme.jpg'
 category: 'aws'
 draft: true
+keywords:
+  - rust
+  - aws lambda
 ---
 
 So I've been looking for a reason to write code to keep me sane while in the

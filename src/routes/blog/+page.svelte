@@ -5,6 +5,11 @@
 
 <svelte:head>
   <title>Blog | joeymckenzie.tech</title>
+  <meta
+    content="A blog about software, technology, and sometimes beer."
+    name="description"
+  />
+  <meta content="software, programming, technology" name="keywords" />
 </svelte:head>
 
 <div class="pb-12">

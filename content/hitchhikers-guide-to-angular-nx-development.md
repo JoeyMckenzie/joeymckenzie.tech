@@ -4,6 +4,10 @@ description: 'The answer is simple... 42 (projects in the same monorepo).'
 pubDate: 'Nov 11 2021'
 heroImage: '/blog/hitchhikers-guide-to-nx/nx-meme.jpg'
 category: 'angular'
+keywords:
+  - angular
+  - nx
+  - typescript
 ---
 
 As developers, we love reusability: components, modules, CSS, code snippets,

@@ -1,7 +1,7 @@
-import { allPosts } from 'contentlayer/generated';
-import type { PageServerLoad } from './$types';
 import { addViewCount } from '$lib/db';
 import { error } from '@sveltejs/kit';
+import { allPosts } from 'contentlayer/generated';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = ({ params }) => {
   // No need to block the page from rendering to add a view count, so lose the `await` here
@@ -16,6 +16,6 @@ export const load: PageServerLoad = ({ params }) => {
   }
 
   return {
-    post: allPosts.find((post) => post._raw.flattenedPath === params.slug),
+    post,
   };
 };

@@ -4,6 +4,10 @@ description: "Learn to register your lifetimes accordingly with .NET Core's buil
 pubDate: 'Sep 23 2020'
 heroImage: 'https://imgs.xkcd.com/comics/dependencies.png'
 category: '.NET'
+keywords:
+  - c#
+  - .net
+  - service lifetimes
 ---
 
 No matter the side of the dependency injection debate fence you fall, you've probably worked with some .NET code that had some form of object composition through DI at some point, or another. Heck, with libraries in [Autofac](https://autofac.org/) and .NET Core's dependency injection extension namespace, DI and service container registration is a breeze with all the heavy lifting done virtually for us.

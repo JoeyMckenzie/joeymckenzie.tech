@@ -1,14 +1,14 @@
 <script lang="ts">
-  import '../app.css';
-  import { ModeWatcher } from 'mode-watcher';
+  import { browser } from '$app/environment';
+  import { page } from '$app/stores';
   import Footer from '$lib/components/Footer.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
-  import type { LayoutServerData } from './$types';
-  import { onMount } from 'svelte';
   import { viewCountStore } from '$lib/views';
-  import { browser } from '$app/environment';
   import { webVitals } from '$lib/vitals';
-  import { page } from '$app/stores';
+  import { ModeWatcher } from 'mode-watcher';
+  import { onMount } from 'svelte';
+  import '../app.css';
+  import type { LayoutServerData } from './$types';
 
   export let data: LayoutServerData;
 

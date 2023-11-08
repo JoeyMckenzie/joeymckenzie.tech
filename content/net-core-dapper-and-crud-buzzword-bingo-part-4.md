@@ -4,6 +4,11 @@ description: 'Write encapsulated business logic with the help of MediatR and the
 pubDate: 'Feb 02 2020'
 heroImage: '/blog/net-core-dapper-and-crud-series/part-4/use-automapper-meme.jpeg'
 category: '.NET'
+keywords:
+  - .net
+  - c#
+  - dapper
+  - mediatr
 ---
 
 The wait is finally over (sort of). As we recover from the scrupulous amount of Christmas cookies we consumed during our annual holiday bulking season (at least what I tell myself), I figured it's time to jump into the bulk of our fictional brewery app, Dappery. So far, we've:
