@@ -1,5 +1,6 @@
 <script lang="ts">
   import BlogPreview from '$lib/components/BlogPreview.svelte';
+  import Link from '$lib/components/Link.svelte';
   import { viewCountStore } from '$lib/views';
 </script>
 
@@ -19,8 +20,8 @@
     design. I consider my writing a journal of technologies I&apos;ve worked
     with at some point during my career, and I&apos;m always happy to field
     questions and conversations from interested readers. Feel free to
-    <a href="mailto:joey.mckenzie27@gmail.com">contact</a> me about any of the writing
-    I do here, or to simply say hello!
+    <Link href="mailto:joey.mckenzie27@gmail.com">contact</Link> me about any of
+    the writing I do here, or to simply say hello!
   </p>
 </div>
 <BlogPreview posts={$viewCountStore.all} />
