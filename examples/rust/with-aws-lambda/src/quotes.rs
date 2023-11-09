@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Quote {
-    author: String,
+    pub author: String,
     quote: String,
 }
 

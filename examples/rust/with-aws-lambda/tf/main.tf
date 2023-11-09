@@ -1,55 +1,53 @@
-# data "aws_iam_role" "api_gateway_logger_role" {
-#   name = "api-gateway-logger-role"
-# }
-#
-data "aws_api_gateway_domain_name" "this" {
-  domain_name = "api.officequotes.com"
+resource "aws_apigatewayv2_api" "office_quotes_gateway" {
+  name          = "office-quotes-api-gateway"
+  protocol_type = "HTTP"
 }
 
-resource "aws_api_gateway_rest_api" "this" {
-  name        = var.api_gateway_name
-  description = var.api_gateway_description
+resource "aws_apigatewayv2_stage" "office_quotes_gateway" {
+  api_id      = aws_apigatewayv2_api.office_quotes_gateway.id
+  name        = "prod"
+  auto_deploy = true
 
-  endpoint_configuration {
-    types = ["REGIONAL"]
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.office_quotes_gateway.arn
+    format          = jsonencode({
+      requestId               = "$context.requestId"
+      sourceIp                = "$context.identity.sourceIp"
+      requestTime             = "$context.requestTime"
+      protocol                = "$context.protocol"
+      httpMethod              = "$context.httpMethod"
+      resourcePath            = "$context.resourcePath"
+      routeKey                = "$context.routeKey"
+      status                  = "$context.status"
+      responseLength          = "$context.responseLength"
+      integrationErrorMessage = "$context.integrationErrorMessage"
+    }
+    )
   }
 }
 
-# resource "aws_api_gateway_account" "this" {
-#   cloudwatch_role_arn = data.aws_iam_role.api_gateway_logger_role.arn
-# }
-
-resource "aws_api_gateway_deployment" "this" {
-  rest_api_id = aws_api_gateway_rest_api.this.id
+resource "aws_apigatewayv2_integration" "quotes" {
+  api_id             = aws_apigatewayv2_api.office_quotes_gateway.id
+  integration_uri    = aws_lambda_function.quotes_lambda.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
 }
 
-resource "aws_api_gateway_stage" "this" {
-  deployment_id        = aws_api_gateway_deployment.this.id
-  rest_api_id          = aws_api_gateway_rest_api.this.id
-  stage_name           = var.environment
-  xray_tracing_enabled = true
+resource "aws_apigatewayv2_route" "quotes" {
+  api_id    = aws_apigatewayv2_api.office_quotes_gateway.id
+  route_key = "GET /quotes"
+  target    = "integrations/${aws_apigatewayv2_integration.quotes.id}"
 }
 
-resource "aws_api_gateway_method_settings" "all" {
-  rest_api_id = aws_api_gateway_rest_api.this.id
-  stage_name  = aws_api_gateway_stage.this.stage_name
-  method_path = "*/*"
-
-  settings {
-    metrics_enabled        = true
-    logging_level          = "INFO"
-    data_trace_enabled     = false
-    throttling_rate_limit  = 10000
-    throttling_burst_limit = 5000
-  }
+resource "aws_cloudwatch_log_group" "office_quotes_gateway" {
+  name              = "/aws/office_quotes_gateway/${aws_apigatewayv2_api.office_quotes_gateway.name}"
+  retention_in_days = 1
 }
 
-resource "aws_api_gateway_base_path_mapping" "this" {
-  api_id      = aws_api_gateway_rest_api.this.id
-  stage_name  = aws_api_gateway_stage.this.stage_name
-  domain_name = data.aws_api_gateway_domain_name.this.domain_name
-  base_path   = "/"
-  depends_on  = [
-    aws_api_gateway_stage.this
-  ]
+resource "aws_lambda_permission" "office_quotes_gateway" {
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.quotes_lambda.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.office_quotes_gateway.execution_arn}/*/*"
 }
