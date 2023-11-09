@@ -4,7 +4,6 @@ description: 'Identity theft is not joke, Jim!'
 pubDate: 'Nov 2 2023'
 heroImage: '/blog/ziggin-around/meme.jpg'
 category: 'aws'
-draft: true
 keywords:
   - rust
   - aws lambda

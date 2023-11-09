@@ -11,7 +11,6 @@ export const Post = defineDocumentType(() => ({
     pubDate: { type: 'date', required: true },
     category: { type: 'string', required: true },
     heroImage: { type: 'string', required: true },
-    draft: { type: 'boolean', required: false, default: false },
     keywords: {
       type: 'list',
       of: { type: 'string' },
@@ -21,7 +20,11 @@ export const Post = defineDocumentType(() => ({
   computedFields: {
     url: {
       type: 'string',
-      resolve: (post) => `/blog/${post._raw.flattenedPath}`,
+      resolve: (post) => `/blog/${post._raw.flattenedPath.split('/')[1]}`,
+    },
+    slug: {
+      type: 'string',
+      resolve: (post) => post._raw.flattenedPath.split('/')[1],
     },
   },
 }));

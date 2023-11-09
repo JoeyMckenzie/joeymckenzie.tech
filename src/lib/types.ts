@@ -4,7 +4,10 @@
 import type { Post } from 'contentlayer/generated';
 
 // There's a lot content in the body that doesn't need to be in the server payload, so exclude it
-export type PostWithViewCount = Omit<Post, 'body'> & { viewCount: number };
+export type PostWithViewCount = Pick<
+  Post,
+  'category' | 'description' | 'pubDate' | 'title' | 'url'
+> & { viewCount: number };
 
 /**
  * Spotify

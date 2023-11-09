@@ -4,7 +4,6 @@ description: 'Why use Astro when you can make things harder on yourself?'
 pubDate: 'Nov 23 2023'
 heroImage: '/blog/ziggin-around/meme.jpg'
 category: 'svelte'
-draft: true
 keywords:
   - svelte
   - contentlayer

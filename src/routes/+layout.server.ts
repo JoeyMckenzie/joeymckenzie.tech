@@ -24,19 +24,20 @@ export const load: LayoutServerLoad = async () => {
 };
 
 function loadInitialPostPreviews(viewCounts: ViewCountQuery[]) {
-  let posts = allPosts
-    .map(
-      (p) =>
-        ({
-          viewCount:
-            viewCounts.find((vc) => p._id.includes(vc.slug))?.count ?? 0,
-          ...p,
-        }) satisfies PostWithViewCount,
-    )
+  const posts = allPosts
+    .filter((p) => (dev ? true : p._raw.sourceFileDir !== 'draft'))
+    .map((p) => {
+      const { pubDate, title, category, description, url } = p;
+      return {
+        viewCount: viewCounts.find((vc) => p._id.includes(vc.slug))?.count ?? 0,
+        pubDate,
+        title,
+        category,
+        description,
+        url,
+      } satisfies PostWithViewCount;
+    })
     .sort((a, b) => compareDesc(new Date(a.pubDate), new Date(b.pubDate)));
-
-  // Only include published posts in production, allowing us to work on posts in a draft status
-  posts = dev ? posts : posts.filter((post) => !post.draft);
 
   return posts;
 }

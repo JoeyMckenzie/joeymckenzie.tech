@@ -9,7 +9,7 @@ export const load: PageServerLoad = ({ params }) => {
     console.error('error while attempting to add view count', e);
   });
 
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug);
+  const post = allPosts.find((post) => post.slug === params.slug);
 
   if (!post) {
     throw error(404, 'blog not found');
