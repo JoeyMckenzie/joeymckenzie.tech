@@ -25,7 +25,11 @@ export const load: LayoutServerLoad = async () => {
 
 function loadInitialPostPreviews(viewCounts: ViewCountQuery[]) {
   const posts = allPosts
-    .filter((p) => (dev ? true : p._raw.sourceFileDir !== 'draft'))
+    // During local dev, allow all the files including draft to be available
+    // In production, only show the published posts not in the draft directory
+    .filter((p) => (dev ? true : !p.draft))
+    // We don't most of the post data that ContentLayer generates,
+    // just pluck a few things for the displaying the preview card
     .map((p) => {
       const { pubDate, title, category, description, url } = p;
       return {

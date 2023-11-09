@@ -26,6 +26,10 @@ export const Post = defineDocumentType(() => ({
       type: 'string',
       resolve: (post) => post._raw.flattenedPath.split('/')[1],
     },
+    draft: {
+      type: 'boolean',
+      resolve: (post) => post._raw.sourceFileDir === 'draft',
+    },
   },
 }));
 
