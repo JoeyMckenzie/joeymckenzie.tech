@@ -4,7 +4,11 @@ default: dev
 
 # build main
 build:
-    cargo lambda build --release --output-format zip
+    cargo lambda build --release && cp ./quotes.json ./target/lambda/office-quotes
+
+# build main
+build-deploy: build
+    just tf/reapply
 
 # run the dev server
 dev:

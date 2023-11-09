@@ -8,9 +8,12 @@ plan:
 apply:
     terraform apply -auto-approve
 
-# apply the plan
+# destroy the plan
 destroy:
     terraform destroy -auto-approve
+
+# re-apply the plan
+reapply: destroy apply
 
 # format files
 fmt:

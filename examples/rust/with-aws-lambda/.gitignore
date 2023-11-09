@@ -1,2 +1,3 @@
 Cargo.lock
-tf/.terraform
+tf/.terraform*
+tf/bootstrap.zip
