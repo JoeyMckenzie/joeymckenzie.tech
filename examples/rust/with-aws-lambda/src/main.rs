@@ -3,6 +3,7 @@ mod quotes;
 use anyhow::Context;
 use lambda_http::{run, service_fn, Body, Error, Request, RequestExt, Response};
 use quotes::get_quotes;
+use serde_json::json;
 use tracing::info;
 
 /// This is the main body for the function.
@@ -31,6 +32,7 @@ async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
     match quote {
         Some(authored_quote) => {
             info!("quote retrieved by author {}", &authored_quote.author);
+
             let resp = Response::builder()
                 .status(200)
                 .header("content-type", "application/json")
@@ -39,15 +41,22 @@ async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
                         .context("unable to serialize the hilarious quote")?
                         .into(),
                 )
-                .map_err(Box::new)?;
+                .context("error attempting to build response body")?;
+
             Ok(resp)
         }
         None => {
             let resp = Response::builder()
                 .status(404)
                 .header("content-type", "application/json")
-                .body("Quote by that author does not exist.".into())
-                .map_err(Box::new)?;
+                .body(
+                    json!({
+                        "error": "Quote by that author does not exist."
+                    })
+                    .to_string()
+                    .into(),
+                )
+                .context("error attempting build the error response")?;
 
             Ok(resp)
         }
