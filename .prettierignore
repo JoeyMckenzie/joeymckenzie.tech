@@ -30,5 +30,3 @@ Secrets.toml
 # dotnet
 /examples/dotnet/**/obj
 /examples/dotnet/**/bin
-
-.turbo
