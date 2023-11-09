@@ -1,13 +1,10 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { fileURLToPath } from 'url';
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [sveltekit()],
   assetsInclude: ['**/*.md'],
-  test: {
-    include: ['src/**/*.{test,spec}.{js,ts}'],
-  },
   server: {
     fs: {
       strict: false,
