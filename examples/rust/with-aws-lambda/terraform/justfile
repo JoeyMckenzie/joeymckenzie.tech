@@ -6,7 +6,7 @@ plan:
 
 # apply the plan
 apply:
-    terraform apply -auto-approve
+    terraform apply -auto-approve && sed -i '' "s|^QUOTES_BASE_URL=.*|QUOTES_BASE_URL=$(terraform output -raw base_url)|" ../../../../.env
 
 # destroy the plan
 destroy:

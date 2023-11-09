@@ -1,3 +1,5 @@
 #!/bin/bash
 
 just build
+
+QUOTES_BASE_URL=https://4ea10z0zde.execute-api.us-west-1.amazonaws.com/prod
