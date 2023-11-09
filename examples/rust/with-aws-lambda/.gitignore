@@ -1,3 +1,4 @@
 Cargo.lock
 tf/.terraform*
 tf/bootstrap.zip
+tf/terraform.tfstate*
