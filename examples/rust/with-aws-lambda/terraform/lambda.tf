@@ -14,7 +14,7 @@ resource "aws_lambda_function" "office_quotes" {
 
 resource "aws_cloudwatch_log_group" "office_quotes" {
   name              = "/aws/lambda/${aws_lambda_function.office_quotes.function_name}"
-  retention_in_days = 30
+  retention_in_days = 1
 }
 
 resource "aws_iam_role" "lambda_execution_policy" {
@@ -34,6 +34,7 @@ resource "aws_iam_role" "lambda_execution_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
-  role       = aws_iam_role.lambda_execution_policy.name
+  role = aws_iam_role.lambda_execution_policy.name
+
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
