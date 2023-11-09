@@ -3,24 +3,34 @@ mod quotes;
 use anyhow::Context;
 use lambda_http::{run, service_fn, Body, Error, Request, RequestExt, Response};
 use quotes::get_quotes;
+use tracing::info;
 
 /// This is the main body for the function.
 /// Write your code inside it.
 /// There are some code example in the following URLs:
 /// - https://github.com/awslabs/aws-lambda-rust-runtime/tree/main/examples
 async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
+    info!("received request to get office quotes, loading quote data");
+
     let quotes = get_quotes()?;
 
     let quote = match event
         .query_string_parameters_ref()
         .and_then(|params| params.first("author"))
     {
-        Some(author) => quotes.get_quote_by(author),
-        None => Some(quotes.get_random_quote()),
+        Some(author) => {
+            info!("requested to retrieve quotes by author {author}");
+            quotes.get_quote_by(author)
+        }
+        None => {
+            info!("no author specified, retrieving a random quote");
+            Some(quotes.get_random_quote())
+        }
     };
 
     match quote {
         Some(authored_quote) => {
+            info!("quote retrieved by author {}", &authored_quote.author);
             let resp = Response::builder()
                 .status(200)
                 .header("content-type", "application/json")
@@ -53,6 +63,8 @@ async fn main() -> Result<(), Error> {
         // disabling time is handy because CloudWatch will add the ingestion time.
         .without_time()
         .init();
+
+    info!("bootstrapping lambda");
 
     run(service_fn(function_handler)).await
 }

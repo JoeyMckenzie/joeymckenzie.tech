@@ -5,6 +5,7 @@
   "packageManager": "pnpm@8.10.2",
   "scripts": {
     "dev": "concurrently \"pnpm:dev:content\" \"pnpm:dev:svelte\"",
+    "dev:lint": "concurrently \"pnpm:dev:content\" \"pnpm:dev:svelte\" \"pnpm:lint\"",
     "dev:svelte": "vite dev",
     "dev:content": "contentlayer dev",
     "build": "svelte-kit sync && contentlayer build && vite build",

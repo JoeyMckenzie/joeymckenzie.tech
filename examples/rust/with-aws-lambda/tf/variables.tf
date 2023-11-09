@@ -1,13 +1,3 @@
-variable "environment" {
-  type        = string
-  description = "Name of environment (dev|stage|production)"
-  default     = "dev"
-  validation {
-    condition     = can(regex("^(dev|stage|production)$", var.environment))
-    error_message = "Environment must be in [dev, stage, production]."
-  }
-}
-
 variable "aws_region" {
   type    = string
   default = "us-west-1"
