@@ -18,8 +18,7 @@
   I'm a <span class="font-semibold">Senior Software Engineer</span> based in Northern
   California working in fintech. I enjoy writing about software, design, dad jokes,
   and cheap beer among a few other things. I like building fast, efficient web services,
-  learning new things, and writing code in the open source ecosystem. If you'd like
-  to get in touch, feel free to reach on on any of my socials.
+  learning new things, and writing code in the open source ecosystem.
 </p>
 <SocialButtons />
 <h2

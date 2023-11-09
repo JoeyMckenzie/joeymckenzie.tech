@@ -5,11 +5,11 @@ default: dev
 
 # build main
 build:
-    pnpm run build
+    turbo run build lint
 
 # run the Contentlayer and SvelteKit dev servers
 dev:
-    pnpm run dev
+    turbo run dev
 
 # refresh dependencies and build artifacts
 format:
