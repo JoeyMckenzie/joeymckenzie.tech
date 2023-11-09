@@ -1,4 +1,5 @@
 alias b := build
+alias tf := terraform
 
 default: dev
 
