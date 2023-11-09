@@ -1,5 +1,4 @@
 alias b := build
-alias tf := terraform
 
 default: dev
 
@@ -9,7 +8,7 @@ build:
 
 # build main
 build-deploy: build
-    just tf/reapply
+    just terraform/reapply
 
 # run the dev server
 dev:
