@@ -31,12 +31,15 @@ impl QuotesData {
 
 pub fn get_quotes() -> anyhow::Result<QuotesData> {
     let quotes_file_path = current_dir().context("unable to determine current directory")?;
+
     let mut file = File::open(format!(
         "{}/quotes.json",
         quotes_file_path.to_str().unwrap()
     ))
     .context("unable to read quotes file")?;
+
     let mut file_contents = String::new();
+
     file.read_to_string(&mut file_contents)
         .context("unable to read the file contents into buffer")?;
 

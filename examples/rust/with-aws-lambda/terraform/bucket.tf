@@ -20,8 +20,6 @@ resource "aws_s3_bucket_acl" "lambda_bucket" {
   acl    = "private"
 }
 
-### S3
-
 data "archive_file" "lambda_office_quotes" {
   type = "zip"
 

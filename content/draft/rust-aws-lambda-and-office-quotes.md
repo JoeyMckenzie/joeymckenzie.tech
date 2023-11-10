@@ -1,806 +1,523 @@
 ---
-title: 'Rust, Lambda, and too many Office quotes'
+title: 'Rust, AWS Lambda, and too many Office quotes'
 description: 'Identity theft is not joke, Jim!'
 pubDate: 'Nov 2 2023'
-heroImage: '/blog/ziggin-around/meme.jpg'
+heroImage: '/blog/rust-aws-lambda-office-quotes/meme.jpg'
 category: 'aws'
 keywords:
   - rust
   - aws lambda
+  - terraform
 ---
 
-So I've been looking for a reason to write code to keep me sane while in the
-thick of parental leave, and I, like I'm sure most of us have seen on tech bro Twitter, have been seeing a lot of commotion about [Zig](https://Ziglang.org).
-I've been writing quite a bit of Rust, and Zig's model of no hidden memory
-allocation or hidden control flow is fascinating to me.
+Back from a hard fought battle against writer's block, I've been looking for a way to convince my boss to let me use Rust at work.
+Most of our infrastructure is on AWS (:surprised-pikachu-face:) and I've been writing a lot of new system features designed
+to run serverlessly with things like Lambda, Step Functions, SQS, SNS, and all the other band members we know and love.
+We're a .NET shop, so moving to Rust wouldn't exactly be an overnight transition, nor would I want to force my zealotry
+upon my fellow developers.
 
-Much like Rust's upfront model of memory safety first, becoming conscious
-of borrows (with lots of help from the compiler) definitely made me
-more aware of _what_ exactly I was doing in code rather than passing
-objects (and thus, memory) around willy nilly. Those that have read a
-few things around here know that I'm married to .NET during my 8-to-5,
-where corporate .NET developer America is not concerned
-much about zero cost abstractions and memory safety.
+My days are mostly spent raising a newly added member to my family, and I needed a reason to stay up late staring at my laptop
+while watching The Office reruns. Then it dawned on me... what if I could combine my two favorite things in Rust and The Office?
+It might sound crazy, but we're all about technological experimentation around these parts.
 
-I wanted to get down and dirty with some Zig, and what better way to
-than to take a trip down CS-from-college memory lane: implementing a (poor man's)
-linked list! I like to drink from the fire hose, so to speak, when learning
-a new language so I'll treat this blog post as a live look into my trials
-and tribulations of getting started with Zig.
+The outcome of that experiment was a Lambda deployed to AWS fronted by an API Gateway available to make requests to and get
+random quotes from The Office out. A request might look like:
 
-As always, you can find all the sample source code we'll be writing in this blog
-post available on [my blog](https://github.com/JoeyMckenzie/joey-mckenzie-tech/tree/main/samples/zig/with-linked-lists), so feel free to reference it any time.
+```shell
+$ curl -l "https://{{gateway URL}}/quotes" | jq .
+{
+    "author": "Prison Mike",
+    "quote": "The worst thing about prison was the Dementors."
+}
+```
 
-## Getting started with Zig
+With the help [cargo lambda](https://www.cargo-lambda.info/guide/getting-started.html), I was surprised at how easy it was to get up and running with Lambdas that were even more easily deployed to AWS. As an added bonus, I sprinkled in some [Terraform](https://www.terraform.io/) because I'm lazy and don't know which buttons to click in AWS most of the time. If you're following along, it'll help to have the following installed:
 
-Okay, so I want to implement a linked list with Zig. I'm definitely going
-to need a Zig toolchain on my machine. Luckily, the docs have me covered.
-I'm on WSL using Ubuntu 22.04, so I'll use [snap](https://snapcraft.io/) to
-install the Zig toolchain:
+- Cargo and cargo lambda installed (a quick `cargo install cargo-lambda` should do the trick)
+- Terraform CLI
+- An AWS account (I'm still on the free tier, luckily)
+
+We'll touch the surface of a few things here, but won't be going into depth necessarily on any one topic. There's people a lot smarter than myself that are ackshually qualified to talk about Rust, AWS, and Terraform.
+
+## Getting started
+
+First thing's first, we're gonna need some rust code to deploy. Let's spin up a new project with cargo lambda:
 
 ```bash
-sudo snap install Zig --classic --beta
+$ cargo lambda new office-quotes
+> Is this function an HTTP function? Yes
 ```
 
-There's an option to install the latest version of Zig from master using the
-`--edge` flag in place of `--beta`, but I have no idea what I'm doing with Zig
-yet so the latest stable version should do me just fine. Okay, got Zig installed,
-let's check the version:
+We're prompted about the compute context of our Rust-based Lambda, which in our case, will be from an API Gateway request. Lambdas are compute services that can be triggered from any number of things in AWS like events from SNS. I plan to eventually display some random Office quotes for anyone visiting my website, so I'll make it available over the network for my Svelte frontend to call.
 
-```bash
-$ zig version
-0.10.1
-```
+Cracking open our `main.rs` file, we'll see a pretty bare bones scaffolded Rust application:
 
-Nice! Zig was successfully installed, so let's spin up a simple library
-similar to something like `cargo new --lib my-lib`. We'll use a library in this
-case as we don't need really need run anything in the console, writing and running
-a few tests to assert our linked list's behavior is correct should suffice.
+```rust
+use lambda_http::{run, service_fn, Body, Error, Request, RequestExt, Response};
 
-Okay, according to the docs, a `Zig init-lib` should do the trick:
+/// This is the main body for the function.
+/// Write your code inside it.
+/// There are some code example in the following URLs:
+/// - https://github.com/awslabs/aws-lambda-rust-runtime/tree/main/examples
+async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
+    // Extract some useful information from the request
+    let who = event
+        .query_string_parameters_ref()
+        .and_then(|params| params.first("name"))
+        .unwrap_or("world");
+    let message = format!("Hello {who}, this is an AWS Lambda HTTP request");
 
-```bash
-$ mkdir Ziggin-around-with-linked-lists && cd "$_"
-$ zig init-lib
-info: Created build.zig
-info: Created src/main.zig
-info: Next, try `Zig build --help` or `Zig build test`
-```
+    // Return something that implements IntoResponse.
+    // It will be serialized to the right response event automatically by the runtime
+    let resp = Response::builder()
+        .status(200)
+        .header("content-type", "text/html")
+        .body(message.into())
+        .map_err(Box::new)?;
+    Ok(resp)
+}
 
-Sweet! I see two files now, `src/main.zig` and `build.zig`. Let's crack open the
-build file to make some sense of it:
+#[tokio::main]
+async fn main() -> Result<(), Error> {
+    tracing_subscriber::fmt()
+        .with_max_level(tracing::Level::INFO)
+        // disable printing the name of the module in every log line.
+        .with_target(false)
+        // disabling time is handy because CloudWatch will add the ingestion time.
+        .without_time()
+        .init();
 
-## build.zig
-
-```zig
-const std = @import("std");
-
-pub fn build(b: *std.build.Builder) void {
-    // Standard release options allow the person running `Zig build` to select
-    // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall.
-    const mode = b.standardReleaseOptions();
-
-    const lib = b.addStaticLibrary("Zig-test", "src/main.zig");
-    lib.setBuildMode(mode);
-    lib.install();
-
-    const main_tests = b.addTest("src/main.zig");
-    main_tests.setBuildMode(mode);
-
-    const test_step = b.step("test", "Run library tests");
-    test_step.dependOn(&main_tests.step);
+    run(service_fn(function_handler)).await
 }
 ```
 
-Okay, parsing this file a bit, it looks like there are a few things going on:
+The `event` our function receives is an HTTP request from the API gateway that has a bunch of metadata
+about the request, like query strings, path parameters, where the request came from, body of the request, etc. Luckily, I ain't got time for all that noise - I want to simply return some quotes through a `GET` with an optional query parameter `author` to get character specific quotes.
 
-- Zig doesn't have an official package manager yet (at least from what I can see) on the stable branch, though it's coming soon<sup>tm</sup>
-- Zig's build feels a lot like Rust's version of a `build.rs` file you'll see from time to time, so that's neat
-- Since we're in the context of a library, our default build target will just run tests
-  as we're not building an executable
+Next up, we're gonna need some quote data. Through the power of ChatGPT, I was able to generate a `quotes.json` file that'll serve as our data source for quotes. When we eventually (inevitably?) choose to exercise our ability to prematurely optimize our solution, we'll add in connectors to a plethora of different data sources on the off chance we need to support multiple databases, caches, flat files, etc.
 
-Alright, I _think_ I've got the basics down here. Cross-referencing the docs about its [build system](https://Ziglearn.org/chapter-3/)
-seems to confirm what I'm looking here. Next, let's take a look at `main.zig`:
+Our quotes file is pretty standard JSON:
 
-## src/main.zig
+#### quotes.json
 
-```zig
-const std = @import("std");
-const testing = std.testing;
-
-export fn add(a: i32, b: i32) i32 {
-    return a + b;
-}
-
-test "basic add functionality" {
-    try testing.expect(add(3, 7) == 10);
-}
-```
-
-Let's take a swing at parsing this thing while cross-checking with the docs:
-
-- Imports defined at the top with `@import` - pretty cool, feels a lot like other languages
-- We export a single `add` function that returns an `i32` - feels pretty similar to Go and Rust integer types
-- There's a testing block with a short description - pretty neat, feels a bit jest-like
-- We `try` to make an assertion - `try` in Zig is pretty neat
-  - `try` feels a lot like Rust's try operator in `?` or Go's abundant `if err != nil { ... }` you'll see everywhere
-  - In essence: attempt an operation and if it fails, simply return the error back to the caller
-
-Okay, think I've got a hang of this so far. I'm loosely in line with my pontification and the docs, so let's give this thing a go:
-
-```bash
-$ zig build test
-All 1 tests passed.
-```
-
-Nice, our tests passed! Adding two numbers is fun and all,
-but let's kick it up a notch by building a simple linked list.
-
-## Linked lists for fun
-
-There are a thousand other resources for learning about what a linked list is
-and why they are useful. I'm not exactly the person
-to listen to when it comes to that arena, so I'll leave it to the academics
-and the LinkedIn tech influencers to do a much better job than I will
-when discussing linked lists.
-
-Without going too far down the CS rabbit hole, our version of a linked list
-will be fairly straightforward. Our linked list will have:
-
-- A head node
-- A way to keep track of the length
-- A few operations associated to it:
-  - An `insert` method that will attach new nodes to the head
-  - A `pop` method that will detach the most recently inserted node and read out their values
-  - A `traverse` method will walk the linked list and print out values as it goes
-
-There's a lot more to a linked list than the operations we defined above - for example,
-one could insert at _any_ point in the linked list rather than the head, or peek values
-at the tail rather than explicitly removing them. I'll leave those as an exercise for the reader.
-
-Let's get started by scaffolding out a simple `struct` that will be our linked list. Let's create a `linked_list.zig` file adjacent to our `main.zig` in our `src/` directory and get some boilerplate in place:
-
-## src/linked_list.zig
-
-```zig
-const std = @import("std");
-
-pub const LinkedList = struct {
-    // 1. Define a node type
-
-    // 2. Define the linked list properties
-    // There should be three: head, tail, and length
-
-    // 3. Define an insert method that takes a generic type
-
-    // 4. Define a pop method
-
-    // 5. Define a traverse method, printing all the values
-};
-```
-
-Taking a look, Zig has `struct`s much like Go and Rust - nothing new here. Now,
-I _do_ want this to be a generic linked list over some type of my choosing. Skimming
-through the docs, looks like I need to do a bit of higher-order goodness with `comptime`
-types to get this working. Let's adjust this code so our `LinkedList` is actually a function `fn` that will take in a generic `comptime` type and return a `struct` that's generic over it:
-
-```zig
-const std = @import("std");
-
-fn LinkedList(comptime T: type) type {
-    return struct {
-        // 1. Define a node type
-        const Node = struct { value: T, next: ?*Node(T) };
-
-        // 2. Define the linked list properties
-        // There should be three: head, tail, and length
-
-        // 3. Define an insert method that takes a generic type
-
-        // 4. Define a pop method
-
-        // 5. Define a traverse method, printing all the values
-    };
+```json
+{
+  "quotes": [
+    {
+      "quote": "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.",
+      "author": "Michael Scott"
+    },
+    {
+      "quote": "Whenever I'm about to do something, I think, 'Would an idiot do that?' and if they would, I do not do that thing.",
+      "author": "Dwight Schrute"
+    }
+    // And many more...
+  ]
 }
 ```
 
-Cool, I've got a generic struct so far and also defined a new internal `Node` type
-to house the generic type value that we'll use when creating new nodes on the linked list
-that also points to the next node in the list. We'll reach for Zig's `?` operator as a form
-of optional chaining, telling the compiler "hey, this `Node` here could be `null`, so make sure to enforce checking that before dereferencing it" and also slap a `*` afterwards to signal that this is a _pointer_ to another node, not the node itself.
+Placing that at the root of our project directly next to `Cargo.toml` should do the trick so we can read it in, parse it into a `struct` of sorts, and spit out some data on the other side when a request comes in. I'm gonna add a few crates to help me out:
 
-Okay, I'm liking this so far. Zig feels a bit like Go, a bit like Rust, and a bit like C
-(I cut my teach on Fortran starting out, don't judge me). Let's add a few properties
-to our linked list now:
-
-```zig
-fn LinkedList(comptime T: type) type {
-    return struct {
-        // 1. Define a node type
-        const Node = struct { value: T, next: ?*Node };
-
-        // 2a. Define the linked list properties
-        head: ?*Node,
-        length: u32,
-
-        // 2b. Add a constructor/initializer for our linked list
-        pub fn new() LinkedList(T) {
-            return LinkedList(T){ .length = 0, .head = null };
-        }
-
-        // 3. Define an insert method that takes a generic type
-
-        // 4. Define a pop method
-
-        // 5. Define a traverse method, printing all the values
-    };
-}
+```
+$ cargo add anyhow # To make error handling a little easier
+$ cargo add rand # To help us pick random quotes if no author is provided via query param
+$ cargo add serde --features macros # To help us read in JSON quotes to Rust structs
+$ cargo add serde_json # To help us write data out in the response the AWS Rust runtime expects
 ```
 
-Okay, so we added `head` and `length` properties as well as a
-constructor with `fn new()` to initialize our linked list. So far, so good.
-We have the world's most basic linked list that does and contains... absolutely nothing.
-Let's write some tests to verify the nothingness:
+With our crates in place, next let's add a file for parsing quote data from the quotes file:
 
-```zig
-test "initializing builds an empty linked list with no nodes" {
-    const linkedList = LinkedList(u32).new();
-    try std.testing.expect(linkedList.length == 0);
-    try std.testing.expect(linkedList.head == null);
-}
-```
+#### src/quotes.rs
 
-Our test is pretty basic, just asserting there's no length or head when initializing
-our linked list. Let's run this:
+```rust
+use std::{env::current_dir, fs::File, io::Read};
 
-```bash
-$ zig build test
-All 1 tests passed.
-```
+use anyhow::Context;
+use rand::Rng;
+use serde::{Deserialize, Serialize};
 
-Passing tests for our useless linked list, huzzah!
-
-Since my brain is still in Rust-land, I look at `try` keywords in a similar fashion to Rust's `?`,
-simply propagating errors back to the caller. Our linked list isn't anything special (yet), so let's
-start building out some nice functionality to at least let caller's insert new nodes at the head.
-Before we do that, let's channel our inner TDD and write a test that we know will fail, _then_ write
-the code to make inserting nodes pass, firstly adding a bare implementation of `insert()` to our
-`LinkedList` struct:
-
-```zig
-fn LinkedList(comptime T: type) type {
-    return struct {
-        const Self = @This();
-
-        // 1. Define a node type
-        const Node = struct { value: T, next: ?*Node };
-
-        // 2a. Define the linked list properties
-        head: ?*Node,
-        length: u32,
-
-        // 2b. Add a constructor/initializer for our linked list
-        fn new() Self {
-            return .{ .length = 0, .head = null };
-        }
-
-        // 3. Define an insert method that takes a generic type value
-        fn insert(_: *Self, _: T) void {}
-
-        // 4. Define a pop method
-
-        // 5. Define a traverse method, printing all the values
-    };
-}
-```
-
-After a bit of digging, we need to add the line for `const Self = @This()` to signal
-that the internal struct methods are methods associated to the struct itself,
-not static functions callable without an object reference. This feels a lot like
-the `&self` argument you'll see when implementing traits or defining struct
-methods in Rust, so we'll add it to get the same functionality. Now, let's
-write the tests:
-
-```zig
- test "inserting a value appends to the head of the linked list" {
-    // arrange
-    var linkedList = LinkedList(u32).new();
-
-    // act
-    linkedList.insert(69);
-
-    // assert
-    try std.testing.expect(linkedList.length == 1);
-    try std.testing.expect(linkedList.head != null);
-    try std.testing.expect(linkedList.head.?.value != 69);
-}
-```
-
-We're tapping into Zig's optional unwrapping mechanism for struct values
-with `.?.value`. Now if we if we run our tests...
-
-```bash
-$ zig build test
-Test [2/2] test.inserting a value appends to the head of the linked list... FAIL (TestUnexpectedResult)
-/snap/Zig/6352/lib/std/testing.zig:347:14: 0x211627 in expect (test)
-    if (!ok) return error.TestUnexpectedResult;
-             ^
-/home/jmckenzie/projects/Rust/joey-mckenzie-tech/samples/Ziggin-around-with-linked-lists/src/main.zig:51:5: 0x21186e in test.inserting a value appends to the head of the linked list (test)
-    try std.testing.expect(linkedList.length == 2);
-    ^
-1 passed; 0 skipped; 1 failed.
-```
-
-Awesome, our tests failed! But that's okay because that was to be expected.
-Now let's implement our `insert()` method to make them pass:
-
-```zig
-fn LinkedList(comptime T: type) type {
-    return struct {
-        const Self = @This();
-
-        // 1. Define a node type
-        const Node = struct {
-            value: T,
-            next: ?*Node,
-        };
-
-        // 2a. Define the linked list properties
-        head: ?*Node,
-        length: u32,
-        allocator: std.mem.Allocator,
-
-        // 2b. Add a constructor/initializer for our linked list
-        fn new(allocator: std.mem.Allocator) Self {
-            return .{ .length = 0, .head = null, .allocator = allocator };
-        }
-
-        // 3. Define an insert method that takes a generic type value
-        fn insert(self: *Self, value: T) !void {
-            // Allocate the memory and create a `Node` for us to use
-            var newNode = try self.allocator.create(Node);
-
-            // Next, set the node value and point it's next value to the current head
-            const currentHead = self.head;
-            newNode.value = value;
-            newNode.next = currentHead;
-
-            // Finally, repoint our head to the new node and increment the count
-            self.head = newNode;
-            self.length += 1;
-        }
-
-        // 4. Define a pop method
-
-        // 5. Define a traverse method, printing all the values
-
-        // 6. Extra credit: define an insertAt method
-    };
-}
-```
-
-Okay, a few things have changed. We've added an `allocator` property that's
-of type `std.mem.Allocator` - remember how we mentioned Zig's use of no hidden memory allocations?
-Well if we want to create structs, we need to allocate the memory manually to do so. This is
-where a `std.mem.Allocator` comes in handy. There are several different types of allocators
-in Zig's standard library, though we'll use the [arena allocator](https://Ziglearn.org/chapter-2/)
-as skimming the docs seems like the best strategy for now for a Zig noobie like myself. We purposely avoid
-strongly coupling to the allocator type in our linked list and force our callers to provide
-one to make things a bit more flexible, as tomorrow we might wake up and decide
-to use a `GeneralPurposeAllocator` instead. Let's update our tests to use the `ArenaAllocator`:
-
-```zig
-test "initializing builds an empty linked list with no head or tail" {
-    // arrange, setup and allocator for our linked list to create nodes internally
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
-    const allocator = arena.allocator();
-    const linkedList = LinkedList(u32).new(allocator);
-
-    // act/assert
-    try std.testing.expect(linkedList.length == 0);
-    try std.testing.expect(linkedList.head == null);
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct Quote {
+    pub author: String,
+    quote: String,
 }
 
-test "inserting a value appends to the head of the linked list" {
-    // arrange
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
-    const allocator = arena.allocator();
-    var linkedList = LinkedList(u32).new(allocator);
-
-    // act
-    try linkedList.insert(69);
-
-    // assert
-    try std.testing.expect(linkedList.length == 1);
-    try std.testing.expect(linkedList.head != null);
-    try std.testing.expect(linkedList.head.?.value == 69);
-}
-```
-
-Though we're running single process unit tests that aren't long running (they start and stop
-without using much in terms of resources from our machine) and probably don't need to manually free memory
-with the calls to `defer arena.deinit()`, it's a good habit to form to get used to manually
-managing and freeing allocated memory. We might also benefit from being able to free memory
-from within our `LinkedList` as well by adding a wrapping call in the form of `fn free(self: *Self) !void { // Free the memory }`,
-but I'll save that for a rainy day as I still have fairly no clue what I'm doing with Zig.
-
-We also need to slap some `try`s to our `insert()` method
-now that its return signature is `!void` instead of just `void` - errors can occur while
-allocating memory, so we need to explicitly state that in our signature with a prefixed `!` operator before our return type (`void` in this case). Okay, our tests
-are updated to handle/return the errors. Let's run our tests now:
-
-```bash
-$ zig build test
-All 2 tests passed.
-```
-
-Nice, passing tests that are _actually_ somewhat legit now! What happens if
-we insert multiple values into the linked list? Let's write a test
-for this case:
-
-```zig
-test "inserting multiple values correctly updates head" {
-    // arrange
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
-    const allocator = arena.allocator();
-    var linkedList = LinkedList(u32).new(allocator);
-
-    // act
-    try linkedList.insert(69);
-    try linkedList.insert(420);
-    try linkedList.insert(1337);
-
-    // assert
-    try std.testing.expect(linkedList.length == 3);
-    try std.testing.expect(linkedList.head != null);
-    try std.testing.expect(linkedList.head.?.value == 1337);
-}
-```
-
-Running our tests again, and they pass without needing to update our
-implementation, nice! Okay, we're getting the hang of things... let's
-kick it up another notch and flesh out our pop method. Let's flesh out the bare minimum case:
-
-```zig
-fn LinkedList(comptime T: type) type {
-    return struct {
-        // Other stuff...
-
-        // 4. Define a pop method
-        fn pop(_: *Self) ?T {
-            return null;
-        }
-    };
-}
-```
-
-And next, let's add the tests that we know will fail:
-
-```zig
-test "popping nodes off the linked list returns a value" {
-    // arrange
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    const allocator = gpa.allocator();
-    var linkedList = LinkedList(u32).new(allocator);
-
-    // act, with order 1337 -> 420 -> 69 -> null
-    try linkedList.insert(69);
-    try linkedList.insert(420);
-    try linkedList.insert(1337);
-
-    // after popping, our list should be 420 -> 69 -> null
-    const poppedValue = linkedList.pop();
-
-    // assert
-    try std.testing.expect(linkedList.length == 2);
-    try std.testing.expect(linkedList.head != null);
-    try std.testing.expect(linkedList.head.?.value == 420);
-    try std.testing.expect(poppedValue != null);
-    try std.testing.expect(poppedValue.? == 1337);
-}
-```
-
-Our tests fail when we run them, so let's flesh out our `.pop()` implementation
-now to get them passing:
-
-```zig
-fn LinkedList(comptime T: type) type {
-        // Other stuff...
-
-        // 4. Define a pop method
-        fn pop(self: *Self) ?T {
-            // If we don't have a head, there's no value to pop!
-            if (self.head == null) {
-                return null;
-            }
-
-            // Grab a few temporary values of the current head
-            const currentHead = self.head;
-            const updatedHead = self.head.?.next;
-
-            // Update head and decrement the length now that we're freeing ourselves of a node
-            self.head = updatedHead;
-            self.length -= 1;
-
-            return currentHead.?.value;
-        }
-    };
-}
-```
-
-Once again, if we run our tests, we should see four now passing in the console. Sweet!
-But wait... what happens if we `.pop()` on a single-item linked list? In theory, we should
-get the value as it'll be the only node in the list. Let's verify that our implementation
-covers this case with yet another test:
-
-```zig
-test "popping a node off a linked list with one item returns it's value" {
-    // arrange, setup and allocator for our linked list to create nodes internally
-    var arena = std.heap.ArenaAllocator.init(pageAllocator);
-    defer arena.deinit();
-    const allocator = arena.allocator();
-    var linkedList = LinkedList(u32).new(allocator);
-
-    // act
-    try linkedList.insert(69);
-    const poppedValue = linkedList.pop();
-
-    // assert
-    try std.testing.expect(linkedList.length == 0);
-    try std.testing.expect(linkedList.head == null);
-    try std.testing.expect(poppedValue != null);
-    try std.testing.expect(poppedValue.? == 69);
-}
-```
-
-Running the tests again, looks like we're covered for the case of
-a single-item linked list. What happens if we `.pop()` on a linked list
-with no items? In theory, we shouldn't get any values returned, but let's
-verify with a test:
-
-```zig
-test "popping a node off an empty linked list returns null" {
-    // arrange, setup and allocator for our linked list to create nodes internally
-    var arena = std.heap.ArenaAllocator.init(pageAllocator);
-    defer arena.deinit();
-    const allocator = arena.allocator();
-    var linkedList = LinkedList(u32).new(allocator);
-
-    // act
-    const poppedValue = linkedList.pop();
-
-    // assert
-    try std.testing.expect(linkedList.length == 0);
-    try std.testing.expect(linkedList.head == null);
-    try std.testing.expect(poppedValue == null);
-}
-```
-
-Running the tests yet again yields passing results! Okay, only
-one more implementation to flesh out with our `.traverse()` method. For this
-implementation, let's simply print out the values to stdout:
-
-```zig
-const std = @import("std");
-const pageAllocator = std.heap.page_allocator;
-const testing = std.testing;
-
-pub fn LinkedList(comptime T: type) type {
-    return struct {
-        // Other stuff...
-
-        // 5. Define a traverse method, printing all the values
-        pub fn traverse(self: *Self) void {
-            // If we don't have a head, there's nothing traverse!
-            if (self.head == null) {
-                return;
-            }
-
-            // We'll walk our linked list as long as there's a next node available
-            var currentNode = self.head;
-
-            while (currentNode != null) : (currentNode = currentNode.?.next) {
-                std.log.info("value {}", .{currentNode.?.value});
-            }
-        }
-    };
-}
-```
-
-Since we're printing node values out to the stdout, it'll be a bit
-hard to verify with a unit test that the printed values are as we expect.
-Let's refactor our code a bit from a library to an executable binary, that
-way we can run our program and visually assert the printed values are correct.
-To start, let's rename `src/main.zig` to `src/linked_list.zig` and sprinkle
-in a few `pub` keywords to expose the `LinkedList` type itself as well as the
-various methods associated to it:
-
-## src/linked_list.zig
-
-```zig
-const std = @import("std");
-const pageAllocator = std.heap.page_allocator;
-const testing = std.testing;
-
-pub fn LinkedList(comptime T: type) type {
-    return struct {
-        const Self = @This();
-
-        // 1. Define a node type
-        const Node = struct {
-            value: T,
-            next: ?*Node,
-        };
-
-        // 2a. Define the linked list properties
-        // There should be three: head, length, and allocator
-        head: ?*Node,
-        length: u32,
-        allocator: std.mem.Allocator,
-
-        // 2b. Add a constructor/initializer for our linked list
-        pub fn new(allocator: std.mem.Allocator) Self {
-            return .{ .length = 0, .head = null, .allocator = allocator };
-        }
-
-        // 3. Define an insert method that takes a generic type value
-        pub fn insert(self: *Self, value: T) !void {
-            // Allocate the memory and create a `Node` for us to use
-            var newNode = try self.allocator.create(Node);
-
-            // Next, set the node value and point it's next value to the current head
-            const currentHead = self.head;
-            newNode.value = value;
-            newNode.next = currentHead;
-
-            // Finally, repoint our head to the new node and increment the count
-            self.head = newNode;
-            self.length += 1;
-        }
-
-        // 4. Define a pop method that removes the last inserted node
-        pub fn pop(self: *Self) ?T {
-            // If we don't have a head, there's no value to pop!
-            if (self.head == null) {
-                return null;
-            }
-
-            // Grab a few temporary values of the current head
-            const currentHead = self.head;
-            const updatedHead = self.head.?.next;
-
-            // Update head and decrement the length now that we're freeing ourselves of a node
-            self.head = updatedHead;
-            self.length -= 1;
-
-            return currentHead.?.value;
-        }
-
-        // 5. Define a traverse method, printing all the values
-        pub fn traverse(self: *Self) void {
-            // If we don't have a head, there's nothing traverse!
-            if (self.head == null) {
-                return;
-            }
-
-            // We'll walk our linked list as long as there's a next node available
-            var currentNode = self.head;
-
-            while (currentNode != null) : (currentNode = currentNode.?.next) {
-                std.log.info("value {}", .{currentNode.?.value});
-            }
-        }
-    };
+#[derive(Debug, Deserialize)]
+pub struct QuotesData {
+    quotes: Vec<Quote>,
 }
 
-// None of our test code will change...
-```
-
-We can keep our inline unit tests the same, and they should still work. Next,
-let's update our `src/main.zig` file to be just a simple `main()`:
-
-## src/main.zig
-
-```zig
-const std = @import("std");
-const linkedList = @import("./linked_list.zig").LinkedList;
-
-pub fn main() !void {
-    // Assign an arena allocator for our linked list to use for creating nodes
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    const allocator = arena.allocator();
-
-    // Don't forget to free the memory on exit!
-    defer arena.deinit();
-
-    // Declare our linked list and add a few nodes
-    var u32LinkedList = linkedList(u32).new(allocator);
-    try u32LinkedList.insert(2);
-    try u32LinkedList.insert(3);
-    try u32LinkedList.insert(1);
-
-    // Finally, traverse the list with the output:
-    //    1
-    //    3
-    //    2
-    u32LinkedList.traverse();
-}
-```
-
-Okay, if I'm _hopefully_ doing this right, I'll `@import()` our `LinkedList`
-from our local `linked_list.zig` file, spin up an allocator as a linked list dependency,
-insert a few nodes, and walk the list. One last thing we need to change is our `build.zig` file
-as it's expected to build for a library, not an executable binary. Let's update that
-to add an executable target with a little copy-pasta from a fresh `zig init-exe` test
-executable:
-
-## build.zig
-
-```zig
-const std = @import("std");
-
-pub fn build(b: *std.build.Builder) void {
-    // Standard target options allows the person running `zig build` to choose
-    // what target to build for. Here we do not override the defaults, which
-    // means any target is allowed, and the default is native. Other options
-    // for restricting supported target set are available.
-    const target = b.standardTargetOptions(.{});
-
-    // Standard release options allow the person running `zig build` to select
-    // between Debug, ReleaseSafe, ReleaseFast, and ReleaseSmall.
-    const mode = b.standardReleaseOptions();
-
-    const exe = b.addExecutable("ziggin-around-with-linked-lists", "src/main.zig");
-    exe.setTarget(target);
-    exe.setBuildMode(mode);
-    exe.install();
-
-    const run_cmd = exe.run();
-    run_cmd.step.dependOn(b.getInstallStep());
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
+impl QuotesData {
+    pub fn get_random_quote(&self) -> Quote {
+        let random_index = rand::thread_rng().gen_range(0..self.quotes.len());
+        self.quotes[random_index].clone()
     }
 
-    const run_step = b.step("run", "Run the app");
-    run_step.dependOn(&run_cmd.step);
+    pub fn get_quote_by(&self, author: &str) -> Option<Quote> {
+        self.quotes
+            .clone()
+            .into_iter()
+            .find(|q| q.author.to_lowercase().contains(&author.to_lowercase()))
+    }
+}
 
-    const exe_tests = b.addTest("src/main.zig");
-    exe_tests.setTarget(target);
-    exe_tests.setBuildMode(mode);
+pub fn get_quotes() -> anyhow::Result<QuotesData> {
+    let quotes_file_path = current_dir().context("unable to determine current directory")?;
 
-    const test_step = b.step("test", "Run unit tests");
-    test_step.dependOn(&exe_tests.step);
+    let mut file = File::open(format!(
+        "{}/quotes.json",
+        quotes_file_path.to_str().unwrap()
+    ))
+    .context("unable to read quotes file")?;
+
+    let mut file_contents = String::new();
+
+    file.read_to_string(&mut file_contents)
+        .context("unable to read the file contents into buffer")?;
+
+    serde_json::from_str::<QuotesData>(&file_contents).context("unable to parse quotes")
 }
 ```
 
-Note the key changes being our builder calling `.addExecutable()` and running
-the program with `exe.run()`. Let's take this for a spin now and see what we get:
+Nothing too fancy here. We're defining a few `struct`s to hold our quote data in `Quote` and `QuoteData`, while `impl`'ing some functions on `QuoteData` to get us a quote when asked for one either from a specific author, or a random quote.
 
-```bash
-$ zig build run
-info: value 1
-info: value 3
-info: value 2
+Finally, we export a function for parsing the quotes file into our `QuotesData` stuct so we can do some logic with it later. I should note that this isn't exactly the most exciting data, nor the most practical. You're probably already asking yourself "wait... so we're parsing JSON data into Rust structs only to... return JSON data in the response?" Yes, that's _exactly_ what we're doing. Don't ask me why.
+
+Okay, so we have the ability to read the quotes file, now let's update our entrypoint into the function that will determine the context of the request and grab a quote:
+
+```rust
+mod quotes;
+
+use anyhow::Context;
+use lambda_http::{run, service_fn, Body, Error, Request, RequestExt, Response};
+use quotes::get_quotes;
+use serde_json::json;
+use tracing::info;
+
+/// This is the main body for the function.
+/// Write your code inside it.
+/// There are some code example in the following URLs:
+/// - https://github.com/awslabs/aws-lambda-rust-runtime/tree/main/examples
+async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
+    info!("received request to get office quotes, loading quote data");
+
+    // Load the quotes from our JSON file
+    let quotes = get_quotes()?;
+
+    // Grab a quote if an author name was sent along in the query params
+    // If no author is sent, we'll grab a random quote from the JSON
+    let quote = match event
+        .query_string_parameters_ref()
+        .and_then(|params| params.first("author"))
+    {
+        Some(author) => {
+            info!("requested to retrieve quotes by author {author}");
+            quotes.get_quote_by(author)
+        }
+        None => {
+            info!("no author specified, retrieving a random quote");
+            Some(quotes.get_random_quote())
+        }
+    };
+
+    // Fineally, determine the response based on the authored quote we generated
+    // If we successfully generated a quote, wrap it up in a nice JSON response
+    // In the case an author was passed in via query param but no quote was found,
+    // return an error response in JSON format with the help of serde_json's `json!()` macro
+    match quote {
+        Some(authored_quote) => {
+            info!("quote retrieved by author {}", &authored_quote.author);
+
+            let resp = Response::builder()
+                .status(200)
+                .header("content-type", "application/json")
+                .body(
+                    serde_json::to_string(&authored_quote)
+                        .context("unable to serialize the hilarious quote")?
+                        .into(),
+                )
+                .context("error attempting to build response body")?;
+
+            Ok(resp)
+        }
+        None => {
+            let resp = Response::builder()
+                .status(404)
+                .header("content-type", "application/json")
+                .body(
+                    json!({
+                        "error": "Quote by that author does not exist."
+                    })
+                    .to_string()
+                    .into(),
+                )
+                .context("error attempting build the error response")?;
+
+            Ok(resp)
+        }
+    }
+}
+
+#[tokio::main]
+async fn main() -> Result<(), Error> {
+    tracing_subscriber::fmt()
+        .with_max_level(tracing::Level::INFO)
+        // disable printing the name of the module in every log line.
+        .with_target(false)
+        // disabling time is handy because CloudWatch will add the ingestion time.
+        .without_time()
+        .init();
+
+    info!("bootstrapping lambda");
+
+    run(service_fn(function_handler)).await
+}
 ```
 
-Alright, just like we expected! Since we did a bit of refactoring, let's
-make sure our tests still pass. We're building in the context of a runnable
-program, so we can directly test our `linked_list.zig` file with the toolchain:
+Again, nothing too fancy here. At the top level, we're inspecting the request for query parameters and if one was sent, find a quote by that author from the JSON we parsed. If no author sent, generate a random quote. Finally, we'll return JSON the API gateway based on the result of the request, falling back
+to an error if an author was provided but no quote was found. I've sprinkled in some `.context()?` utilities to help us early return from unexpected errors with the help of `anyhow`. In a more robust application, we'd probably want to do some more fine-grained error handling.
+
+Now that we've got our function in place, let's test it out. `cargo lambda` has some sweet utilities to help us out, including a `watch` command:
 
 ```bash
-$ zig test src/linked_list.zig
-All 6 tests passed.
+$ cargo lambda watch
+INFO invoke server listening on [::]:9000
+INFO starting lambda function function="_" manifest="Cargo.toml"
+Compiling office-quotes v0.1.0 (/home/jmckenzie/typescript/joey-mckenzie-tech/examples/rust/with-aws-lambda)
+Finished dev [unoptimized + debuginfo] target(s) in 1.40s
+    Running `target/debug/office-quotes`
+INFO bootstrapping lambda
 ```
 
-And once again, we have passing tests!
+And if we ping `localhost:9000`:
 
-## Wrapping up
+```bash
+$ curl -l "localhost:9000" | jq .
+{
+  "author": "Michael Scott",
+  "quote": "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me."
+}
+```
 
-I'm gonna call that a wrap for now, as our (poor man's) linked
-list is looking pretty good and functioning as we expect. I'll be looking to a bit more Zig to spice up my daily developer life when I can.
-Zig feels a lot like Rust with much of the same safety guarantees and is just plain fun to write.
+Let's verify the query parameters are making it into the request as well:
 
-Until next time, friends!
+```bash
+$ curl -l "localhost:9000?author=kelly" | jq .
+{
+  "author": "Kelly Kapoor",
+  "quote": "I talk a lot, so I've learned to just tune myself out..."
+}
+```
+
+Lastly, let's check the error case where no author is found
+
+```bash
+$ curl -l "localhost:9000?author=ron" | jq .
+{
+  "error": "Quote by that author does not exist."
+}
+```
+
+Nice! We've got ourselves an MVP, time to ship to production.
+
+## Deploying to AWS
+
+With our deployment approach, we'll do something akin to the following:
+
+- Build the output artifact with the help of `cargo lambda`
+- Package up the output into a zip file to store in S3
+- Upload the zip file into a bucket
+- Setup an Lambda function using the zip file as the source executable
+- Setup an API Gateway instance that proxies request through to our Lambda function
+
+Now doing all that stuff manually is not _too_ tedious, but I've been writing a lot Terraform lately and thought it would fun to Terraform-erize this process. If you're not familiar with Terraform, it's a [Hashicorp](https://www.hashicorp.com/) product with the goal of making provisioned infrastructure easier to main through infrastructure as code, or IaC. Terraform using a configuration language called Hashicorp Configuration Language, or HCL, to define the who/what/when/where/why/how of our AWS infrastructure.
+
+I like to think of Terraform as a recipe for what our AWS infrastructure, while also having the ability to plan and apply those infrastructure changes for us, saving us an uncountable amount of mouse clicks navigating through the AWS console.
+
+An example piece of TF configuration might look like:
+
+```hcl
+resource "aws_lambda_function" "office_quotes" {
+  function_name = "office-quotes"
+
+  s3_bucket = aws_s3_bucket.lambda_bucket.id
+  s3_key    = aws_s3_object.lambda_office_quotes.key
+
+  handler = "rust.handler"
+  runtime = "provided.al2"
+
+  source_code_hash = data.archive_file.lambda_office_quotes.output_base64sha256
+
+  role = aws_iam_role.lambda_execution_policy.arn
+}
+```
+
+Here, we're defining a resource that happens to be a Lambda function called `office_quotes`. That Lambda has a function name of `office-quotes`, has its source files located in an S3 bucket (which we'll provision in just a minute), and runs on an EC2 instance with the `provided.al2` runtime. There's some other stuff in there like the role, which defines the execution policy invokers of the function should have, and an MD5 hash of the zip file output. I mentioned earlier that this isn't necessarily a blog post about Terraform, so I'll leave a [link](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/main/examples/rust/with-aws-lambda) to the example code here.
+
+Following the plan above, first thing we need is an S3 bucket we can store our zipped up function code in. I'll create a `bucket.tf` configuration file that will do just that:
+
+```hcl
+resource "random_pet" "lambda_bucket_name" {
+  prefix = "rust-lambda"
+}
+
+resource "aws_s3_bucket" "lambda_bucket" {
+  bucket = random_pet.lambda_bucket_name.id
+}
+
+resource "aws_s3_bucket_ownership_controls" "lambda_bucket" {
+  bucket = aws_s3_bucket.lambda_bucket.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
+resource "aws_s3_bucket_acl" "lambda_bucket" {
+  depends_on = [aws_s3_bucket_ownership_controls.lambda_bucket]
+
+  bucket = aws_s3_bucket.lambda_bucket.id
+  acl    = "private"
+}
+
+data "archive_file" "lambda_office_quotes" {
+  type = "zip"
+
+  source_dir  = "${path.module}/../target/lambda/office-quotes"
+  output_path = "${path.module}/bootstrap.zip"
+}
+
+resource "aws_s3_object" "lambda_office_quotes" {
+  bucket = aws_s3_bucket.lambda_bucket.id
+
+  key    = "bootstrap.zip"
+  source = data.archive_file.lambda_office_quotes.output_path
+
+  etag = filemd5(data.archive_file.lambda_office_quotes.output_path)
+}
+```
+
+The first few `resource`s defined above describe the bucket name with the help of a couple randomly generated names and permissions on the bucket. The last few pieces of configuration define some `data` we're going to work with that happens to be an archive file and an object that will exist in that bucket that's just the zip file of our function code.
+
+You may have noticed that the `source_dir` of our `archive_file` data that we'll need doesn't actually exist yet - let's build it! Within our parent directory (I usually stick all my Terraform specific stuff in a subdirectory of the project I'm working in) let's run a quick `cargo lambda build --release` to build the output we need.
+
+Once the build finishes, you should notice an exectuable file named `bootstrap` should be present in your `target/lambda/office-quotes` folder. `cargo lambda` offers different build configurations as well, allowing output formats to also be specified - we could also run the build with the `--output-format zip` flag to get a ready-to-upload file with `bootstrap.zip`. Since we're leaning on Terraform to do the file zipping for us though, we'll take the default generated executable instead.
+
+With our bucket configuration in place, let's define our Lambda function configuration:
+
+#### lambda.tf
+
+```hcl
+resource "aws_lambda_function" "office_quotes" {
+  function_name = "office-quotes"
+
+  s3_bucket = aws_s3_bucket.lambda_bucket.id
+  s3_key    = aws_s3_object.lambda_office_quotes.key
+
+  handler = "rust.handler"
+  runtime = "provided.al2"
+
+  source_code_hash = data.archive_file.lambda_office_quotes.output_base64sha256
+
+  role = aws_iam_role.lambda_execution_policy.arn
+}
+
+resource "aws_cloudwatch_log_group" "office_quotes" {
+  name = "/aws/lambda/${aws_lambda_function.office_quotes.function_name}"
+
+  retention_in_days = 1
+}
+
+resource "aws_iam_role" "lambda_execution_policy" {
+  name = "office-lambda-execution-role"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Action = "sts:AssumeRole"
+      Effect = "Allow"
+      Sid    = ""
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
+  role = aws_iam_role.lambda_execution_policy.name
+
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+```
+
+As we saw earlier, we'll use the same bit of function configuration and add a few things like CloudWatch logs and an execution policy we'll expect services invoking the function to have.
+
+Let's hookup the final piece of infrastructure we'll need for now in an API Gateway resource:
+
+#### gateway.tf
+
+```hcl
+resource "aws_apigatewayv2_api" "office_gateway" {
+  name = "office-gateway"
+
+  protocol_type = "HTTP"
+}
+
+resource "aws_apigatewayv2_stage" "office_gateway" {
+  api_id = aws_apigatewayv2_api.office_gateway.id
+
+  name        = "prod"
+  auto_deploy = true
+
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.office_gateway.arn
+
+    format = jsonencode({
+      requestId               = "$context.requestId"
+      sourceIp                = "$context.identity.sourceIp"
+      requestTime             = "$context.requestTime"
+      protocol                = "$context.protocol"
+      httpMethod              = "$context.httpMethod"
+      resourcePath            = "$context.resourcePath"
+      routeKey                = "$context.routeKey"
+      status                  = "$context.status"
+      responseLength          = "$context.responseLength"
+      integrationErrorMessage = "$context.integrationErrorMessage"
+      }
+    )
+  }
+}
+
+resource "aws_apigatewayv2_integration" "get_quote" {
+  api_id = aws_apigatewayv2_api.office_gateway.id
+
+  integration_uri    = aws_lambda_function.office_quotes.invoke_arn
+  integration_type   = "AWS_PROXY"
+  integration_method = "POST"
+}
+
+resource "aws_apigatewayv2_route" "get_quote" {
+  api_id = aws_apigatewayv2_api.office_gateway.id
+
+  route_key = "GET /quotes"
+  target    = "integrations/${aws_apigatewayv2_integration.get_quote.id}"
+}
+
+resource "aws_cloudwatch_log_group" "office_gateway" {
+  name = "/aws/api-gateway/${aws_apigatewayv2_api.office_gateway.name}"
+
+  retention_in_days = 1
+}
+
+resource "aws_lambda_permission" "office_gateway" {
+  statement_id = "AllowExecutionFromAPIGateway"
+  action       = "lambda:InvokeFunction"
+
+  function_name = aws_lambda_function.office_quotes.function_name
+  principal     = "apigateway.amazonaws.com"
+
+  source_arn = "${aws_apigatewayv2_api.office_gateway.execution_arn}/*/*"
+}
+```
+
+Our API Gateway configuration is defined as a good ole fashioned HTTP API that has a route integartion under the `/quotes` that will invoke our Lambda function. With the help of Terraform, we can reference bits of infrastructure created in other files without needing to hard code or manually point to things.

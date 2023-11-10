@@ -13,8 +13,11 @@ use tracing::info;
 async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
     info!("received request to get office quotes, loading quote data");
 
+    // Load the quotes from our JSON file
     let quotes = get_quotes()?;
 
+    // Grab a quote if an author name was sent along in the query params
+    // If no author is sent, we'll grab a random quote from the JSON
     let quote = match event
         .query_string_parameters_ref()
         .and_then(|params| params.first("author"))
@@ -29,6 +32,10 @@ async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
         }
     };
 
+    // Fineally, determine the response based on the authored quote we generated
+    // If we successfully generated a quote, wrap it up in a nice JSON response
+    // In the case an author was passed in via query param but no quote was found,
+    // return an error response in JSON format with the help of serde_json's `json!()` macro
     match quote {
         Some(authored_quote) => {
             info!("quote retrieved by author {}", &authored_quote.author);

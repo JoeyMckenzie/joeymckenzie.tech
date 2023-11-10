@@ -13,7 +13,8 @@ resource "aws_lambda_function" "office_quotes" {
 }
 
 resource "aws_cloudwatch_log_group" "office_quotes" {
-  name              = "/aws/lambda/${aws_lambda_function.office_quotes.function_name}"
+  name = "/aws/lambda/${aws_lambda_function.office_quotes.function_name}"
+
   retention_in_days = 1
 }
 
