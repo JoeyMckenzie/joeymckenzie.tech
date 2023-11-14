@@ -17,7 +17,7 @@ If you're unfamiliar with Tailwind, I've [recently written](/<https://joeymckenz
 
 1. Add Tailwind as a dev package dependency with:
 
-```bash
+```shell
 npm install --save-dev tailwindcss
 ```
 
@@ -63,7 +63,7 @@ With our Tailwind setup ceremony out of the way, let's start dark mode-ifying ou
 
 To help us facilitate toggling dark mode in our application, let's add an injectable singleton service that will be responsible for enabling/disabling dark mode styles in our markup. Let's run the service schematic to generate said service:
 
-```bash
+```shell
 ng g service services/dark-mode
 ```
 
@@ -197,7 +197,7 @@ ngOnDestroy(): void {
 
 With the heavy lifting of applying/removing dark mode in our application out of the way, let's go ahead and create a simple component with just a single Tailwind-styled button. Let's run the following schematic:
 
-```bash
+```shell
 ng g component components/theme-toggle
 ```
 

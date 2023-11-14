@@ -10,17 +10,22 @@ keywords:
   - terraform
 ---
 
-Back from a hard fought battle against writer's block, I've been looking for a way to convince my boss to let me use Rust at work.
-Most of our infrastructure is on AWS (:surprised-pikachu-face:) and I've been writing a lot of new system features designed
+Back from a hard fought battle against writer's block, I've been looking for a way to convince my boss to let me use
+Rust at work.
+Most of our infrastructure is on AWS (:surprised-pikachu-face:) and I've been writing a lot of new system features
+designed
 to run serverlessly with things like Lambda, Step Functions, SQS, SNS, and all the other band members we know and love.
 We're a .NET shop, so moving to Rust wouldn't exactly be an overnight transition, nor would I want to force my zealotry
 upon my fellow developers.
 
-My days are mostly spent raising a newly added member to my family, and I needed a reason to stay up late staring at my laptop
-while watching The Office reruns. Then it dawned on me... what if I could combine my two favorite things in Rust and The Office?
+My days are mostly spent raising a newly added member to my family, and I needed a reason to stay up late staring at my
+laptop
+while watching The Office reruns. Then it dawned on me... what if I could combine my two favorite things in Rust and The
+Office?
 It might sound crazy, but we're all about technological experimentation around these parts.
 
-The outcome of that experiment was a Lambda deployed to AWS fronted by an API Gateway available to make requests to and get
+The outcome of that experiment was a Lambda deployed to AWS fronted by an API Gateway available to make requests to and
+get
 random quotes from The Office out. A request might look like:
 
 ```shell
@@ -31,24 +36,31 @@ $ curl -l "https://{{gateway URL}}/quotes" | jq .
 }
 ```
 
-With the help [cargo lambda](https://www.cargo-lambda.info/guide/getting-started.html), I was surprised at how easy it was to get up and running with Lambdas that were even more easily deployed to AWS. As an added bonus, I sprinkled in some [Terraform](https://www.terraform.io/) because I'm lazy and don't know which buttons to click in AWS most of the time. If you're following along, it'll help to have the following installed:
+With the help [cargo lambda](https://www.cargo-lambda.info/guide/getting-started.html), I was surprised at how easy it
+was to get up and running with Lambdas that were even more easily deployed to AWS. As an added bonus, I sprinkled in
+some [Terraform](https://www.terraform.io/) because I'm lazy and don't know which buttons to click in AWS most of the
+time. If you're following along, it'll help to have the following installed:
 
 - Cargo and cargo lambda installed (a quick `cargo install cargo-lambda` should do the trick)
 - Terraform CLI
 - An AWS account (I'm still on the free tier, luckily)
 
-We'll touch the surface of a few things here, but won't be going into depth necessarily on any one topic. There's people a lot smarter than myself that are ackshually qualified to talk about Rust, AWS, and Terraform.
+We'll touch the surface of a few things here, but won't be going into depth necessarily on any one topic. There's people
+a lot smarter than myself that are ackshually qualified to talk about Rust, AWS, and Terraform.
 
 ## Getting started
 
 First thing's first, we're gonna need some rust code to deploy. Let's spin up a new project with cargo lambda:
 
-```bash
+```shell
 $ cargo lambda new office-quotes
 > Is this function an HTTP function? Yes
 ```
 
-We're prompted about the compute context of our Rust-based Lambda, which in our case, will be from an API Gateway request. Lambdas are compute services that can be triggered from any number of things in AWS like events from SNS. I plan to eventually display some random Office quotes for anyone visiting my website, so I'll make it available over the network for my Svelte frontend to call.
+We're prompted about the compute context of our Rust-based Lambda, which in our case, will be from an API Gateway
+request. Lambdas are compute services that can be triggered from any number of things in AWS like events from SNS. I
+plan to eventually display some random Office quotes for anyone visiting my website, so I'll make it available over the
+network for my Svelte frontend to call.
 
 Cracking open our `main.rs` file, we'll see a pretty bare bones scaffolded Rust application:
 
@@ -92,9 +104,14 @@ async fn main() -> Result<(), Error> {
 ```
 
 The `event` our function receives is an HTTP request from the API gateway that has a bunch of metadata
-about the request, like query strings, path parameters, where the request came from, body of the request, etc. Luckily, I ain't got time for all that noise - I want to simply return some quotes through a `GET` with an optional query parameter `author` to get character specific quotes.
+about the request, like query strings, path parameters, where the request came from, body of the request, etc. Luckily,
+I ain't got time for all that noise - I want to simply return some quotes through a `GET` with an optional query
+parameter `author` to get character specific quotes.
 
-Next up, we're gonna need some quote data. Through the power of ChatGPT, I was able to generate a `quotes.json` file that'll serve as our data source for quotes. When we eventually (inevitably?) choose to exercise our ability to prematurely optimize our solution, we'll add in connectors to a plethora of different data sources on the off chance we need to support multiple databases, caches, flat files, etc.
+Next up, we're gonna need some quote data. Through the power of ChatGPT, I was able to generate a `quotes.json` file
+that'll serve as our data source for quotes. When we eventually (inevitably?) choose to exercise our ability to
+prematurely optimize our solution, we'll add in connectors to a plethora of different data sources on the off chance we
+need to support multiple databases, caches, flat files, etc.
 
 Our quotes file is pretty standard JSON:
 
@@ -116,7 +133,9 @@ Our quotes file is pretty standard JSON:
 }
 ```
 
-Placing that at the root of our project directly next to `Cargo.toml` should do the trick so we can read it in, parse it into a `struct` of sorts, and spit out some data on the other side when a request comes in. I'm gonna add a few crates to help me out:
+Placing that at the root of our project directly next to `Cargo.toml` should do the trick so we can read it in, parse it
+into a `struct` of sorts, and spit out some data on the other side when a request comes in. I'm gonna add a few crates
+to help me out:
 
 ```
 $ cargo add anyhow # To make error handling a little easier
@@ -179,11 +198,16 @@ pub fn get_quotes() -> anyhow::Result<QuotesData> {
 }
 ```
 
-Nothing too fancy here. We're defining a few `struct`s to hold our quote data in `Quote` and `QuoteData`, while `impl`'ing some functions on `QuoteData` to get us a quote when asked for one either from a specific author, or a random quote.
+Nothing too fancy here. We're defining a few `struct`s to hold our quote data in `Quote` and `QuoteData`, while `impl`'
+ing some functions on `QuoteData` to get us a quote when asked for one either from a specific author, or a random quote.
 
-Finally, we export a function for parsing the quotes file into our `QuotesData` stuct so we can do some logic with it later. I should note that this isn't exactly the most exciting data, nor the most practical. You're probably already asking yourself "wait... so we're parsing JSON data into Rust structs only to... return JSON data in the response?" Yes, that's _exactly_ what we're doing. Don't ask me why.
+Finally, we export a function for parsing the quotes file into our `QuotesData` stuct so we can do some logic with it
+later. I should note that this isn't exactly the most exciting data, nor the most practical. You're probably already
+asking yourself "wait... so we're parsing JSON data into Rust structs only to... return JSON data in the response?" Yes,
+that's _exactly_ what we're doing. Don't ask me why.
 
-Okay, so we have the ability to read the quotes file, now let's update our entrypoint into the function that will determine the context of the request and grab a quote:
+Okay, so we have the ability to read the quotes file, now let's update our entrypoint into the function that will
+determine the context of the request and grab a quote:
 
 ```rust
 mod quotes;
@@ -274,12 +298,17 @@ async fn main() -> Result<(), Error> {
 }
 ```
 
-Again, nothing too fancy here. At the top level, we're inspecting the request for query parameters and if one was sent, find a quote by that author from the JSON we parsed. If no author sent, generate a random quote. Finally, we'll return JSON the API gateway based on the result of the request, falling back
-to an error if an author was provided but no quote was found. I've sprinkled in some `.context()?` utilities to help us early return from unexpected errors with the help of `anyhow`. In a more robust application, we'd probably want to do some more fine-grained error handling.
+Again, nothing too fancy here. At the top level, we're inspecting the request for query parameters and if one was sent,
+find a quote by that author from the JSON we parsed. If no author sent, generate a random quote. Finally, we'll return
+JSON the API gateway based on the result of the request, falling back
+to an error if an author was provided but no quote was found. I've sprinkled in some `.context()?` utilities to help us
+early return from unexpected errors with the help of `anyhow`. In a more robust application, we'd probably want to do
+some more fine-grained error handling.
 
-Now that we've got our function in place, let's test it out. `cargo lambda` has some sweet utilities to help us out, including a `watch` command:
+Now that we've got our function in place, let's test it out. `cargo lambda` has some sweet utilities to help us out,
+including a `watch` command:
 
-```bash
+```shell
 $ cargo lambda watch
 INFO invoke server listening on [::]:9000
 INFO starting lambda function function="_" manifest="Cargo.toml"
@@ -291,7 +320,7 @@ INFO bootstrapping lambda
 
 And if we ping `localhost:9000`:
 
-```bash
+```shell
 $ curl -l "localhost:9000" | jq .
 {
   "author": "Michael Scott",
@@ -301,7 +330,7 @@ $ curl -l "localhost:9000" | jq .
 
 Let's verify the query parameters are making it into the request as well:
 
-```bash
+```shell
 $ curl -l "localhost:9000?author=kelly" | jq .
 {
   "author": "Kelly Kapoor",
@@ -311,7 +340,7 @@ $ curl -l "localhost:9000?author=kelly" | jq .
 
 Lastly, let's check the error case where no author is found
 
-```bash
+```shell
 $ curl -l "localhost:9000?author=ron" | jq .
 {
   "error": "Quote by that author does not exist."
@@ -330,13 +359,19 @@ With our deployment approach, we'll do something akin to the following:
 - Setup an Lambda function using the zip file as the source executable
 - Setup an API Gateway instance that proxies request through to our Lambda function
 
-Now doing all that stuff manually is not _too_ tedious, but I've been writing a lot Terraform lately and thought it would fun to Terraform-erize this process. If you're not familiar with Terraform, it's a [Hashicorp](https://www.hashicorp.com/) product with the goal of making provisioned infrastructure easier to main through infrastructure as code, or IaC. Terraform using a configuration language called Hashicorp Configuration Language, or HCL, to define the who/what/when/where/why/how of our AWS infrastructure.
+Now doing all that stuff manually is not _too_ tedious, but I've been writing a lot Terraform lately and thought it
+would fun to Terraform-erize this process. If you're not familiar with Terraform, it's
+a [Hashicorp](https://www.hashicorp.com/) product with the goal of making provisioned infrastructure easier to main
+through infrastructure as code, or IaC. Terraform using a configuration language called Hashicorp Configuration
+Language, or HCL, to define the who/what/when/where/why/how of our AWS infrastructure.
 
-I like to think of Terraform as a recipe for what our AWS infrastructure, while also having the ability to plan and apply those infrastructure changes for us, saving us an uncountable amount of mouse clicks navigating through the AWS console.
+I like to think of Terraform as a recipe for what our AWS infrastructure, while also having the ability to plan and
+apply those infrastructure changes for us, saving us an uncountable amount of mouse clicks navigating through the AWS
+console.
 
 An example piece of TF configuration might look like:
 
-```hcl
+```terraform
 resource "aws_lambda_function" "office_quotes" {
   function_name = "office-quotes"
 
@@ -352,11 +387,20 @@ resource "aws_lambda_function" "office_quotes" {
 }
 ```
 
-Here, we're defining a resource that happens to be a Lambda function called `office_quotes`. That Lambda has a function name of `office-quotes`, has its source files located in an S3 bucket (which we'll provision in just a minute), and runs on an EC2 instance with the `provided.al2` runtime. There's some other stuff in there like the role, which defines the execution policy invokers of the function should have, and an MD5 hash of the zip file output. I mentioned earlier that this isn't necessarily a blog post about Terraform, so I'll leave a [link](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/main/examples/rust/with-aws-lambda) to the example code here.
+Here, we're defining a resource that happens to be a Lambda function called `office_quotes`. That Lambda has a function
+name of `office-quotes`, has its source files located in an S3 bucket (which we'll provision in just a minute), and runs
+on an EC2 instance with the `provided.al2` runtime. There's some other stuff in there like the role, which defines the
+execution policy invokers of the function should have, and an MD5 hash of the zip file output. I mentioned earlier that
+this isn't necessarily a blog post about Terraform, so I'll leave
+a [link](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/main/examples/rust/with-aws-lambda) to the example code
+here.
 
-Following the plan above, first thing we need is an S3 bucket we can store our zipped up function code in. I'll create a `bucket.tf` configuration file that will do just that:
+Following the plan above, first thing we need is an S3 bucket we can store our zipped up function code in. I'll create
+a `bucket.tf` configuration file that will do just that:
 
-```hcl
+#### bucket.tf
+
+```terraform
 resource "random_pet" "lambda_bucket_name" {
   prefix = "rust-lambda"
 }
@@ -396,17 +440,25 @@ resource "aws_s3_object" "lambda_office_quotes" {
 }
 ```
 
-The first few `resource`s defined above describe the bucket name with the help of a couple randomly generated names and permissions on the bucket. The last few pieces of configuration define some `data` we're going to work with that happens to be an archive file and an object that will exist in that bucket that's just the zip file of our function code.
+The first few `resource`s defined above describe the bucket name with the help of a couple randomly generated names and
+permissions on the bucket. The last few pieces of configuration define some `data` we're going to work with that happens
+to be an archive file and an object that will exist in that bucket that's just the zip file of our function code.
 
-You may have noticed that the `source_dir` of our `archive_file` data that we'll need doesn't actually exist yet - let's build it! Within our parent directory (I usually stick all my Terraform specific stuff in a subdirectory of the project I'm working in) let's run a quick `cargo lambda build --release` to build the output we need.
+You may have noticed that the `source_dir` of our `archive_file` data that we'll need doesn't actually exist yet - let's
+build it! Within our parent directory (I usually stick all my Terraform specific stuff in a subdirectory of the project
+I'm working in) let's run a quick `cargo lambda build --release` to build the output we need.
 
-Once the build finishes, you should notice an exectuable file named `bootstrap` should be present in your `target/lambda/office-quotes` folder. `cargo lambda` offers different build configurations as well, allowing output formats to also be specified - we could also run the build with the `--output-format zip` flag to get a ready-to-upload file with `bootstrap.zip`. Since we're leaning on Terraform to do the file zipping for us though, we'll take the default generated executable instead.
+Once the build finishes, you should notice an exectuable file named `bootstrap` should be present in
+your `target/lambda/office-quotes` folder. `cargo lambda` offers different build configurations as well, allowing output
+formats to also be specified - we could also run the build with the `--output-format zip` flag to get a ready-to-upload
+file with `bootstrap.zip`. Since we're leaning on Terraform to do the file zipping for us though, we'll take the default
+generated executable instead.
 
 With our bucket configuration in place, let's define our Lambda function configuration:
 
 #### lambda.tf
 
-```hcl
+```terraform
 resource "aws_lambda_function" "office_quotes" {
   function_name = "office-quotes"
 
@@ -428,16 +480,17 @@ resource "aws_cloudwatch_log_group" "office_quotes" {
 }
 
 resource "aws_iam_role" "lambda_execution_policy" {
-  name = "office-lambda-execution-role"
+  name               = "office-lambda-execution-role"
   assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
-      Sid    = ""
-      Principal = {
-        Service = "lambda.amazonaws.com"
-      }
+    Version   = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Sid       = ""
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
       }
     ]
   })
@@ -450,13 +503,14 @@ resource "aws_iam_role_policy_attachment" "lambda_policy_attachment" {
 }
 ```
 
-As we saw earlier, we'll use the same bit of function configuration and add a few things like CloudWatch logs and an execution policy we'll expect services invoking the function to have.
+As we saw earlier, we'll use the same bit of function configuration and add a few things like CloudWatch logs and an
+execution policy we'll expect services invoking the function to have.
 
 Let's hookup the final piece of infrastructure we'll need for now in an API Gateway resource:
 
 #### gateway.tf
 
-```hcl
+```terraform
 resource "aws_apigatewayv2_api" "office_gateway" {
   name = "office-gateway"
 
@@ -483,7 +537,7 @@ resource "aws_apigatewayv2_stage" "office_gateway" {
       status                  = "$context.status"
       responseLength          = "$context.responseLength"
       integrationErrorMessage = "$context.integrationErrorMessage"
-      }
+    }
     )
   }
 }
@@ -520,4 +574,56 @@ resource "aws_lambda_permission" "office_gateway" {
 }
 ```
 
-Our API Gateway configuration is defined as a good ole fashioned HTTP API that has a route integartion under the `/quotes` that will invoke our Lambda function. With the help of Terraform, we can reference bits of infrastructure created in other files without needing to hard code or manually point to things.
+Our API Gateway configuration is defined as a good ole fashioned HTTP API that has a route integration under
+the `/quotes` path that will invoke our Lambda function. With the help of Terraform, we can reference bits of
+infrastructure
+created in other files without needing to hard code or manually point to things.
+
+When we apply all of our Terraform infrastructure, we'll need a way to reference our created API Gateway without having
+to step into the AWS Console and click our way through to the API Gateway dashboard. Let's add an `outputs.tf` file
+that tell Terraform that once all of our infrastructure is created, output it to the console for us. The created
+resources are also saved in our `terraform.tfstate` file as well, so we can also reference them there if need be.
+
+```terraform
+output "base_url" {
+  description = "Base URL for API Gateway stage."
+
+  value = aws_apigatewayv2_stage.office_gateway.invoke_url
+}
+
+output "lambda_bucket_name" {
+  description = "Name of the S3 bucket used to store function code."
+
+  value = aws_s3_bucket.lambda_bucket.id
+}
+```
+
+While we're at it, we'll go ahead and print out our bucket name as well as everytime we'll destroy/apply infrastructure,
+it'll change due to the random module we're leveraging to avoid clashing buckets. Now if we apply this plan, we should
+see the fruits of our labor:
+
+```shell
+$ terraform apply -auto-approve
+
+# A bunch of logs about planned infrastructure...
+
+Apply complete! Resources: 15 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+base_url = "https://dbyhxt543e.execute-api.us-west-1.amazonaws.com/prod"
+lambda_bucket_name = "rust-lambda-choice-cricket"
+```
+
+And if I ping my URL (yours will be different) at the `/quotes` route:
+
+```shell
+$ curl -l "https://dbyhxt543e.execute-api.us-west-1.amazonaws.com/prod/quotes" | jq .
+{
+  "author": "Dwight Schrute",
+  "quote": "Identity theft is not a joke, Jim! Millions of families suffer every year."
+}
+```
+
+Success! Rust, running on Lambda, publicly available through an API Gateway. This is great and all, but we need a way
+to reliably rebuild our infrastructure and apply changes.

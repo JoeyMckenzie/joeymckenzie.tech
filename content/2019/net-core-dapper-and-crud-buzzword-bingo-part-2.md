@@ -30,7 +30,7 @@ Creating these clear boundaries of separation helps to create a modular applicat
 
 With that out of way, let's finally dig into the data access code we'll be writing. From the start, we said we'd be working with Dapper for our database interaction, so let's go ahead and create a new project (a `classlib` in our case). Again, I'll be using the command line, but feel free to spin up the new project in your IDE of choice:
 
-```bash
+```shell
 ~/Dappery/src$ dotnet new classlib -n Dappery.Data
 ~/Dappery/src$ dotnet sln ../Dappery.sln add Dappery.Data/Dappery.Data.csproj
 ```
@@ -47,7 +47,7 @@ With our persistence library wired up, let's go ahead and update our `.csproj` f
 
 Targeting `netstandard2.1` allows us to utilize C# 8 features, and we'll also turn on [nullable reference types](https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references) to allow the compiler to help us catch possible null references. From our dependency graph above, we'll need to create a reference between our data layer and our core layer. For reasons we'll see later, we'll actually need to add just a bit of skeleton code in the core application layer for our data layer to utilize, so let's go ahead and add it now.
 
-```bash
+```shell
 ~/Dappery/src$ dotnet new classlib -n Dappery.Core
 ~/Dappery/src$ dotnet sln ../Dappery.sln add Dappery.Core/Dappery.Core.csproj
 ```

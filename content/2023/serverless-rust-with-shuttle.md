@@ -32,13 +32,13 @@ While the current landscape of tools is small enough for micro-projects, I'd lov
 
 First, let's bootstrap our shuttle project using [`cargo-shuttle`](https://crates.io/crates/cargo-shuttle/):
 
-```bash
+```shell
 cargo install cargo-shuttle # or quickinstall if you prefer
 ```
 
 Quick the shuttle CLI in place, let's scaffold out an [axum](https://crates.io/crates/axum/) server to respond to our requests:
 
-```bash
+```shell
 cargo shuttle init --axum
 ```
 
@@ -138,7 +138,7 @@ So we've set out to build a serverless function that will retrieve stars from va
 
 Luckily, it's rather straightforward to secrets into our serverless function by adding a `Secrets.toml` file, shuttle's version of a `.env` file, and injecting them on startup with the [`shuttle-secrets`](https://crates.io/crates/shuttle-secrets) crate. Let's add that to our cargo dependencies:
 
-```bash
+```shell
 cargo add shuttle-secrets
 ```
 
@@ -180,13 +180,13 @@ async fn axum(#[shuttle_secrets::Secrets] secret_store: SecretStore) -> shuttle_
 
 We'll simply just `.expect()` the token to exist as it's required for us to operate. Using shuttle's CLI, let's spin this function up locally:
 
-```bash
+```shell
 cargo shuttle run
 ```
 
 and after our project is compiled and run, we should see the token's value in our terminal:
 
-```bash
+```shell
 Finished dev [unoptimized + debuginfo] target(s) in 30.18s
 [samples/serverless-rust-with-shuttle/src/main.rs:14] token = "ghp..."
 
@@ -195,7 +195,7 @@ Starting serverless-rust-with-shuttle on http://127.0.0.1:8000
 
 Sweet! We're 90% ready to start writing the _actual_ fun code. Since we'll need to call an external API via HTTP, let's add [`reqwest`](https://crates.io/crates/reqwest) as a dependency to make our lives easier (with the `json` feature):
 
-```bash
+```shell
 cargo add reqwest --features json
 ```
 
@@ -223,20 +223,20 @@ async fn axum(#[shuttle_secrets::Secrets] secret_store: SecretStore) -> shuttle_
 
 and with our server running, let's send through a request:
 
-```bash
+```shell
 curl --location 'localhost:8000/my-repository/stars'
 Hello, world!
 ```
 
 Nice, now we're getting somewhere. Let's add [`cargo-watch`](https://crates.io/crates/cargo-watch) to have our server restart anytime we make changes so we're not bothered to stop/start manually ourselves:
 
-```bash
+```shell
 cargo install cargo-watch # or cargo binstall
 ```
 
 and running our server again:
 
-```bash
+```shell
 cargo watch -x 'shuttle run'
 ```
 
@@ -256,13 +256,13 @@ async fn get_repository_stars() -> Result<Json<StarsResponse>, &'static str> {
 
 Ignoring our errors for just a bit, we'll need to bring in [`serde`](https://crates.io/crates/serde) so we can serialize our responses to JSON with the `derive` flag so we can use it on our struct:
 
-```bash
+```shell
 cargo add serde --features derive
 ```
 
 Compiling and running our server again, let's send another request through:
 
-```bash
+```shell
 curl --location 'localhost:8000/my-repository/stars'
 {"count":9000}
 ```
@@ -310,7 +310,7 @@ We'll get around to adding some branches to our `ApiError` enum eventually, but 
 
 > Handling errors with axum deserves it's on blog post, so I'll gloss over a few of the details for now so we can focus on just getting our function up and running.
 
-```bash
+```shell
 cargo add http
 ```
 
@@ -440,7 +440,7 @@ pub async fn get_repository_stars(
 
 and thanks to `cargo-watch`, our server should be back up and running. Sending through yet another request, we should see our server output something like:
 
-```bash
+```shell
 &state.access_token = "ghp..."
 ```
 
@@ -455,7 +455,7 @@ Before we do so, let's take a look at what we've got so far:
 
 Doesn't seem like much, but we've accomplished quite a bit! Let's go back and add a bit of `tracing` so we can see inside the mind of our function as it processes requests. Recall earlier in the expanded macro just above `main` that shuttle provides we have our application bootstrapped with `tracing` behind the scenes ready to go to start logging. Let's add some trace logging in a few places so we can pretty-print out to the console. First, let's add the `tracing` crate:
 
-```bash
+```shell
 cargo add tracing
 ```
 
@@ -500,7 +500,7 @@ pub async fn get_repository_stars(
 
 Notice that I've added a `Path(repository): Path<String>` to our handler's input - this is axum's way of accessing dynamic route values based on the `:repository` path route from our router. Spinning up our function (or simply waiting if you're still `cargo watch`ing), we should the output in the console (omitting timestamps for brevity):
 
-```bash
+```shell
 INFO serverless_rust_with_shuttle: Bootstrapping function secrets
 INFO serverless_rust_with_shuttle: Secrets successfully read, building server router
 INFO serverless_rust_with_shuttle: Router successfully initialized, now listening on port 8000
@@ -510,7 +510,7 @@ Starting serverless-rust-with-shuttle on http://127.0.0.1:8000
 
 Sending a request through again, we should see the repository name from the route path being logged as well:
 
-```bash
+```shell
 # From another terminal window...
 curl --location 'localhost:8000/my-repository/stars'
 
@@ -537,7 +537,7 @@ name = "github-repository-star-counter"
 
 You'll need to adjust the name as, sadly, I'll be taking this name for myself. Once you're authenticated, simply run the deploy command `cargo shuttle deploy` and we should a bunch of internal logging from shuttle along with a successful deploy message along the lines of:
 
-```bash
+```shell
 These secrets can be accessed by github-repository-star-counter
 ╭─────────────────────╮
 │         Keys        │
@@ -554,7 +554,7 @@ URI:           https://github-repository-star-counter.shuttleapp.rs
 
 Heck yeah! Our function has been deployed and also picked up our key from our `Secrets.toml` file. Let's test it out by `curl`ing to the URI:
 
-```bash
+```shell
 curl --location https://github-repository-star-counter.shuttleapp.rs/my-repository/stars
 {"count":9000}
 ```
@@ -594,7 +594,7 @@ impl HandlerState {
 
 Now that we'll have access to the HTTP client, let's test out a call to the repositories. The URL we'll be calling to retrieve repository information will be in the form of `https://api.github.com/repos/OWNER/REPO` where we'll hard code `OWNER` to be your username for now. Let's test a call out to see what the response looks like:
 
-```bash
+```shell
 curl --request GET \
 --url "https://api.github.com/repos/joeymckenzie/realworld-rust-axum-sqlx" \
 --header "Accept: application/vnd.github+json" \
@@ -682,7 +682,7 @@ impl From<reqwest::Error> for ApiError {
 
 We could do this for any number of errors that will rear their ugly heads at some point while our function is executing, but for now, I'll take the easy way out with [`thiserror`](https://crates.io/crates/thiserror):
 
-```bash
+```shell
 cargo add thiserror
 ```
 
@@ -820,21 +820,21 @@ We'll attempt to deserialize the response into our `GitHubRepositoryResponse` an
 
 We also add a `User-Agent` header to let the GitHub API servers know who we are - this is arbitrary for our purposes, but is important for requests coming from the browser, in Postman, etc. Let's spin up our function and send a request through:
 
-```bash
+```shell
  curl -l http://localhost:8000/realworld-rust-axum-sqlx/stars
 {"count":129}
 ```
 
 We have a response! Now that we've got the core logic in place, let's go ahead and deploy our function with `cargo shuttle deploy`. Once the deployment finishes, let's ping our function at the deployment URL:
 
-```bash
+```shell
 curl -l https://github-repository-star-counter.shuttleapp.rs/realworld-rust-axum-sqlx/stars
 {"count":129}
 ```
 
 Nice! We've got good responses coming back from a serverless function written entirely in Rust. Let's check the logs with a quick `cargo shuttle logs` to trace our request:
 
-```bash
+```shell
 cargo shuttle logs
 # A few other logs that aren't important for now...
  INFO serverless_rust_with_shuttle::handlers: Received request to get start count for repository realworld-rust-axum-sqlx

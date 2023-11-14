@@ -38,7 +38,7 @@ to need a Zig toolchain on my machine. Luckily, the docs have me covered.
 I'm on WSL using Ubuntu 22.04, so I'll use [snap](https://snapcraft.io/) to
 install the Zig toolchain:
 
-```bash
+```shell
 sudo snap install Zig --classic --beta
 ```
 
@@ -47,7 +47,7 @@ There's an option to install the latest version of Zig from master using the
 yet so the latest stable version should do me just fine. Okay, got Zig installed,
 let's check the version:
 
-```bash
+```shell
 $ zig version
 0.10.1
 ```
@@ -59,7 +59,7 @@ a few tests to assert our linked list's behavior is correct should suffice.
 
 Okay, according to the docs, a `Zig init-lib` should do the trick:
 
-```bash
+```shell
 $ mkdir Ziggin-around-with-linked-lists && cd "$_"
 $ zig init-lib
 info: Created build.zig
@@ -128,7 +128,7 @@ Let's take a swing at parsing this thing while cross-checking with the docs:
 
 Okay, think I've got a hang of this so far. I'm loosely in line with my pontification and the docs, so let's give this thing a go:
 
-```bash
+```shell
 $ zig build test
 All 1 tests passed.
 ```
@@ -253,7 +253,7 @@ test "initializing builds an empty linked list with no nodes" {
 Our test is pretty basic, just asserting there's no length or head when initializing
 our linked list. Let's run this:
 
-```bash
+```shell
 $ zig build test
 All 1 tests passed.
 ```
@@ -319,7 +319,7 @@ write the tests:
 We're tapping into Zig's optional unwrapping mechanism for struct values
 with `.?.value`. Now if we if we run our tests...
 
-```bash
+```shell
 $ zig build test
 Test [2/2] test.inserting a value appends to the head of the linked list... FAIL (TestUnexpectedResult)
 /snap/Zig/6352/lib/std/testing.zig:347:14: 0x211627 in expect (test)
@@ -431,7 +431,7 @@ now that its return signature is `!void` instead of just `void` - errors can occ
 allocating memory, so we need to explicitly state that in our signature with a prefixed `!` operator before our return type (`void` in this case). Okay, our tests
 are updated to handle/return the errors. Let's run our tests now:
 
-```bash
+```shell
 $ zig build test
 All 2 tests passed.
 ```
@@ -779,7 +779,7 @@ pub fn build(b: *std.build.Builder) void {
 Note the key changes being our builder calling `.addExecutable()` and running
 the program with `exe.run()`. Let's take this for a spin now and see what we get:
 
-```bash
+```shell
 $ zig build run
 info: value 1
 info: value 3
@@ -790,7 +790,7 @@ Alright, just like we expected! Since we did a bit of refactoring, let's
 make sure our tests still pass. We're building in the context of a runnable
 program, so we can directly test our `linked_list.zig` file with the toolchain:
 
-```bash
+```shell
 $ zig test src/linked_list.zig
 All 6 tests passed.
 ```

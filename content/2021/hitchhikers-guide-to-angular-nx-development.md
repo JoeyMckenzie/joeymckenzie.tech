@@ -69,7 +69,7 @@ we should make it a point to keep our applications as simple as possible, offloa
 libraries and modules each with a designated purpose. What does this mean in practice? Let's look at an example architecture
 we'll emulate while developing our applications within an Nx monorepo:
 
-```bash
+```shell
 \apps
   \todos
 \libs
@@ -88,7 +88,7 @@ in some form.
 
 From an Angular code perspective, this means our todos application will look, at its core, like this:
 
-```bash
+```shell
 \todos
   \src
     \app
@@ -105,7 +105,7 @@ With our precursor to monorepos with Nx out of the way, let's jump into some cod
 
 to kick things off, let's create our Nx workspace, preset to Angular:
 
-```bash
+```shell
 npx create-nx-workspace@latest exploring-nx --preset=angular
 ```
 
@@ -126,7 +126,7 @@ of the box... pretty cool, huh?
 
 Our current workspace structure should look something like the following:
 
-```bash
+```shell
 \apps
   \todos
   \todos-e2e
@@ -166,7 +166,7 @@ domains we'll be working with.
 
 To kick things off, let's generate a couple of libraries to see what this looks like in action:
 
-```bash
+```shell
 # To generate our shared todos state management library
 nx g @nrwl/angular:library todos --directory shared/features
 
@@ -296,7 +296,7 @@ export class SharedUiPagesModule {}
 We see that our `pages` library takes on two additional dependencies in `SharedFeaturesTodosModule`, our state management library for todos, and
 `SharedUiComponentsModule`. Now for my favorite about Nx, and a little surprise for whiteboard meeting guys like myself, go ahead and run the following:
 
-```bash
+```shell
 nx dep-graph
 ```
 
@@ -340,7 +340,7 @@ We'll save a more in-depth post on NgRx for a rainy day.
 
 With our state in place, we're ready to wire everything up to our todos application and finally spit some todo items out on the screen. In the name of keeping everything simple, we'll put our component logic in a single `todos` component that we'll house within our shared `pages` library to open ourselves up for reusability later on. Using Nx, let's generate a component:
 
-```bash
+```shell
 nx g @nrwl/angular:component todos --project shared-ui-pages
 ```
 
@@ -409,7 +409,7 @@ Our `todos` page component takes on the responsibility of loading in todos once 
 
 We'll add a few more components to keep things bite size and avoid component bloat:
 
-```bash
+```shell
 # Generates a wrapper component that will consume todos into a table
 nx g @nrwl/angular:component todos-list --project shared-ui-pages
 
@@ -531,7 +531,7 @@ One thing to note with our component structure here is that we're using a `@Host
 
 Now that we've cranked out all the necessary code to run our application, let's go ahead and spin it up so we can see what loading todos in action looks like. From your favorite command line, go ahead and run the following to boot up the Angular server for our todos app:
 
-```bash
+```shell
 nx serve todos
 ```
 

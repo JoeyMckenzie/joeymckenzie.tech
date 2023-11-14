@@ -20,7 +20,7 @@ Luckily enough, fly offers a hosted [Postgres option](https://fly.io/docs/postgr
 
 To get up and running, fly offers a rather nice [CLI](https://fly.io/docs/hands-on/install-flyctl/) to help manage our app servers and account. Let's start by installing it on our local machine. I'll be using brew with WSL2, so a quick:
 
-```bash
+```shell
 > brew install flyctl
 ```
 
@@ -30,13 +30,13 @@ should do the trick. Now that we've got the CLI installed, go ahead and log in w
 
 Since we'll be building a simple web app with a bit of persistence, let's go ahead and spin up our Postgres instance:
 
-```bash
+```shell
 > fly postgres create
 ```
 
 Follow the prompts, naming your database whatever seems appropriate and choosing the development configuration as we don't necessarily need high availability for a toy project. After fly does a bit of initialization, we should see something like:
 
-```bash
+```shell
 Postgres cluster wandering-cloud-1281 created
   Username:    postgres
   Password:    {{password}}
@@ -51,7 +51,7 @@ Save your credentials in a secure place -- you won't be able to see them again!
 
 in the console. Let's verify we're able to connect. As of this writing, there's a bit more configuration needed [connect to your instance externally](https://fly.io/docs/postgres/connecting/connecting-external/) through a client like pgAdmin, but luckily `flyctl` has us covered allowing us to connect to our internal instance through the CLI. Let's connect and verify we can run some queries:
 
-```bash
+```shell
 > fly postgres connect -a <your instance name>
 Connecting to <ip>... complete
 psql (15.2 (Debian 15.2-1.pgdg110+1))
@@ -76,7 +76,7 @@ Running a quick `\dt *.*`. We should see a list of tables with various bits of m
 
 Next, let's spin up a bare-bones Rust web app. I'll be using [axum](https://docs.rs/axum/latest/axum/) as my framework, but feel free to use your own:
 
-```bash
+```shell
 > cargo new flying-with-rust-and-postgres
 # and once cargo is done with it's thing, let's add axum
 > cargo add axum
@@ -118,7 +118,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 Let's spin this thing up to make sure we've got water flowing through the pipes, so to speak:
 
-```bash
+```shell
 > PORT=8080 cargo run
 
 # in another terminal...
@@ -132,7 +132,7 @@ Nice! We've got the (arguably) world's most simple API ready to roll, now let's 
 
 I'll be the first to admit I'm _far_ from an experience Docker aficionado - most of my daily Docker work is within the .NET realm. With that said, since all fly needs is a Dockerfile to get started, let's add one to the root of our project with a simple configuration, doing what we can to compress the size here and there:
 
-```bash
+```shell
 # All credit goes to https://fasterthanli.me/articles/remote-development-with-rust-on-fly-io#what-the-heck-is-fly-io-for-even
 # for an an awesome walkthrough of Dockerfiles for rust, this is more or less a direct copy pasta with a few minor tweaks
 
@@ -184,13 +184,13 @@ CMD ["./server"]
 
 With our Dockerfile in place, let's build this bad boy:
 
-```bash
+```shell
 > docker build . -t flying_with_rust_and_postgres
 ```
 
 After a lengthy initial build (successive builds will be quicker thanks to the bits of caching we threw in there), we can spin up our container locally and verify we're still looking good from a server perspective:
 
-```bash
+```shell
 > docker run -d \
     -p 8080:8080 \ # expose the container's port to match what our axum server will listen under
     -e PORT=8008 \ # the required env var to configure our axum port
@@ -200,7 +200,7 @@ After a lengthy initial build (successive builds will be quicker thanks to the b
 
 After a few seconds, we should the container ID spit out in the terminal, and if we send through another request:
 
-```bash
+```shell
 > curl -l http://localhost:8080/howdy
 Well, hello there partner!
 ```
@@ -211,7 +211,7 @@ Our app is running in a containerized manner, now let's get this thing deployed!
 
 Alright, I _did_ mention I was using this post as an excuse to learn fly, so let's figure out what the deployment story looks like. There's gotta be _something_ in the CLI, right? Let's do a bit of trial and error:
 
-```bash
+```shell
 > fly
 This is flyctl, the Fly.io command line interface.
 
@@ -231,7 +231,7 @@ Visit https://fly.io/docs for additional documentation & guides
 
 Okay... `fly launch` looks promising, let's check it out:
 
-```bash
+```shell
 > fly help launch
 Create and configure a new app from source code or a Docker image.
 
@@ -244,7 +244,7 @@ Flags:
 
 Alright, this looks like _exactly_ what we need. We have a Dockerfile, and all we need is to put this thing on a fly app server. Let's take it for a spin:
 
-```bash
+```shell
 > fly launch
 ```
 
@@ -293,7 +293,7 @@ processes = []
 
 We wait a bit, and check the console as we sit on the edge of our seats in anticipation of a successful deployment, and... it failed. Well, shoot. Let's take a look at the logs:
 
-```bash
+```shell
 > fly logs
 
 # ...after a bit of sifting, we see something familiar
@@ -324,13 +324,13 @@ CMD ["./server"]
 
 Okay, the second time's a charm:
 
-```bash
+```shell
 > fly deploy
 ```
 
 And after a few seconds (thanks to our layer caching), we should see a message about our app being deployed successfully! A quick `fly logs` confirms it with a bunch of green in the terminal, but let's do a quick sanity check:
 
-```bash
+```shell
 > curl -l https://flying-with-rust-and-postgres.fly.dev/howdy
 Well, hello there partner!
 ```
@@ -341,7 +341,7 @@ Nice! Now anytime we make changes, we can `fly deploy` to have the reflected on 
 
 Now with the hard part out of the way, let's get back to the code. Because we'll be iterating, building docker containers, deploying, etc. _and_ because I can never remember all the docker flags I need to pass when building/running/starting/stopping containers _and_ because I'm lazy, I'm going to add a `Makefile` (pause for audible gasp). There are better alternatives for Rust projects like [`cargo-make`](https://github.com/sagiegurari/cargo-make), but our use case is simple enough here as we only need to manage docker. Let's add one to the root of our project:
 
-```bash
+```shell
 PORT = 8080
 TAG = flying_with_rust_and_postgres
 
@@ -370,7 +370,7 @@ Now, with a simple `make build` or `make run`, we can rebuild and restart our co
 
 Okay, so back to where we left off. We want to explore integrating fly apps with Postgres, but only our _deployed_ fly apps can talk to our Postgres instance, which is a good thing - I don't want to do local development against production data. Let's spin up a local development database with Postgres using docker by adding a few tasks to our `Makefile`:
 
-```bash
+```shell
 DB_PORT = 5432
 
 # Other tasks...
@@ -400,13 +400,13 @@ So we're going to talk to a database from our Rust code. There are _quite_ a few
 
 With that schpiel out of the way, let's add sqlx with the `runtime-tokio-rustls` and `migrate` features along with `postgres`:
 
-```bash
+```shell
 > cargo add sqlx --features runtime-tokio-rustls, migrate, postgres
 ```
 
 Specifically, `migrate` will allow us to use migrations to keep our local development database in sync with our production database, as again, only our fly apps can actually communicate with our Postgres instance (if you're unwilling to pay). To make our migration story even easier, let's add the [`sqlx-cli`](https://crates.io/crates/sqlx-cli) to help us manage migrations.
 
-```bash
+```shell
 # We're only using Postgres, so we need just a subset of all features
 > cargo install sqlx-cli --no-default-features --features rustls, postgres
 ```
@@ -415,7 +415,7 @@ After it's installed, let's add a `.env` file that the sqlx CLI will look for wh
 
 ### .env
 
-```bash
+```shell
 DATABASE_URL=postgres://postgres:mySuperSecretPassword@localhost:5432/postgres?sslmode=disable
 ```
 
@@ -423,7 +423,7 @@ We'll slap a `sslmode=disable` here since we're only using this connection strin
 
 To spice things up a bit, rather than your standard issue `todo` example, let's create a `beer_logs` table to track journal entries of amazing beers we've drunk (somehow, that seems much more grammatically worse than "drank"):
 
-```bash
+```shell
 > sqlx migrate add add_beer_logs_table
 
 Creating migrations/20230403232851_add_beer_logs_table.sql
@@ -456,7 +456,7 @@ CREATE TABLE beer_logs (
 
 I'm using `UUID`s instead of integer-based for a variety of reasons, and whose discussion is out of scope for our purposes, atop the fact that people much smarter than myself can reason about doing so better than I can. Since we'll be using UUIDs for keys, we'll need to add `uuid` as a sqlx feature in our manifest file. Now that we've fleshed out our migration, let's apply it:
 
-```bash
+```shell
 > sqlx migrate run
 Applied 20230403232851/migrate add beer logs table (71.391042ms)
 ```
@@ -527,7 +527,7 @@ run-server:
 
 We could also use [`dotenvy`](https://crates.io/crates/dotenvy), though we only have a couple variables to manage for now. Starting up with a `make run-server` does the trick:
 
-```bash
+```shell
 > make run-server
 
 PORT=8080 DATABASE_URL=postgres://postgres:mySuperSecretPassword!@localhost:5432/postgres?sslmode=disable cargo run
@@ -553,7 +553,7 @@ Again, I'm disabling SSL because I'm ~~cheap~~ not holding possession of a valid
 
 Now, if we deploy our application with a `fly deploy`, we should see some good logs:
 
-```bash
+```shell
 > fly deploy
 
 # A bunch of other logs...
@@ -653,7 +653,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 Now if we rebuild and spin up our server and send a request through:
 
-```bash
+```shell
 > make run-server
 
 PORT=8080 DATABASE_URL=postgres://postgres:mySuperSecretPassword!@localhost:5432/postgres?sslmode=disable cargo run
@@ -721,7 +721,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 Now if we bounce our server and send a request through using the previously created log:
 
-```bash
+```shell
 > curl -l http://localhost:8080/logs/06845f6d-2647-4312-9753-a89ed61cd792
 
 {"id":"06845f6d-2647-4312-9753-a89ed61cd792","name":"Pliny the Elder","notes":"Like drinking the nectar of the gods..."}
@@ -860,14 +860,14 @@ We should now see a `sqlx-data.json` file at the root of our project with some d
 
 We'll go with option one, as there might be environment variables we'll want to load in eventually other than the database URL, so we'll tell sqlx to use the cached metadata when building. Our `.env` file should look something like this:
 
-```bash
+```shell
 DATABASE_URL=postgres://postgres:mySuperSecretPassword!@localhost:5432/postgres?sslmode=disable
 SQLX_OFFLINE=true
 ```
 
 Now if we build our container locally with a `make build` our build should run through successfully, giving us the green light to deploy to fly. Let's do that now:
 
-```bash
+```shell
 > fly deploy
 
 # After a sifting through the build logs, we should see...
@@ -876,7 +876,7 @@ Now if we build our container locally with a `make build` our build should run t
 
 Your version may vary, but we've got fly's stamp of approval that the deployment was successful. Let's verify we're up and running with a few `curl`s:
 
-```bash
+```shell
 > curl --header "Content-Type: application/json" \
 --request POST \
 --data '{"name":"Pliny the Elder","notes":"Like drinking the nectar of the gods..."}' \

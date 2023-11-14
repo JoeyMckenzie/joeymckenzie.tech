@@ -69,7 +69,7 @@ func SomeFallibleFunction(name string) (string, error) {
 
 with output along the lines of:
 
-```bash
+```shell
 Hello, Joey!
 ```
 
@@ -97,7 +97,7 @@ fn some_fallible_function(name: &str) -> Result<&str, &str> {
 
 and running a simple `cargo run` in the command line of your choice produces the following:
 
-```bash
+```shell
 Nice to meet you, Joey!
 ```
 
@@ -204,7 +204,7 @@ async Task<Result<int, string>> DoSomeFallibleProcessingThatFails()
 
 Running our code, we see the following printed out in the console:
 
-```bash
+```shell
 Result of successfulProcessing
 Successful? - True
 Errors? - False

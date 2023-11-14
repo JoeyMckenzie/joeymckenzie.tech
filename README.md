@@ -21,14 +21,14 @@ this repository and install dependencies:
 
 ## Getting Started
 
-```bash
+```shell
 pnpm install # or npm/yarn/bun install
 ```
 
 To start the dev server:
 First, run the development server:
 
-```bash
+```shell
 pnpm run dev # or npm/yarn/bun run dev
 ```
 

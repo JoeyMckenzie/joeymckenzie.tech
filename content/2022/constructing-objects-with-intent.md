@@ -397,7 +397,7 @@ fn main() {
 
 Running our code gives us an output along the lines of"
 
-```bash
+```shell
 Pizza { crust: Regular, toppings: [Cheese, Pepperoni, Pepperoni], sauce: Red }
 Pizza { crust: DeepDish, toppings: [Cheese, Sausage, Mushrooms], sauce: Red }
 Pizza { crust: Thin, toppings: [BellPeppers, Onions, Custom("Anchovies")], sauce: White }... ugh, anchovies...

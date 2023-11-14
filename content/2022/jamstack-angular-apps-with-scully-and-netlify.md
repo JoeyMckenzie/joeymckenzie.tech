@@ -57,13 +57,13 @@ With Scully generating an entirely static version of our application, it becomes
 This all sounds great, but let's jump into some code to see how we can make our Angular JAMstack dream a reality.
 Let's kick things off by creating a new Angular application with routing:
 
-```bash
+```shell
 ng new scully-netlify-angular-example --routing
 ```
 
 Scully utilizes the Angular router to crawl all of our application routes, allowing it to create individual servable HTML files by reading our router configuration. With our code scaffolding in place, let's add some simple components and a few pages:
 
-```bash
+```shell
 cd scully-netlify-angular-example
 ng g c components/home --skip-tests
 ng g c components/ping --skip-tests
@@ -104,20 +104,20 @@ export class AppRoutingModule {}
 With routes in place, let's implement a few services that will help facilitate talking to our Netlify functions
 (more on those in a bit). Let's implement two services: one for the `PingComponent` that will consume a `PingService` to _ping_ the server, and one for `DataComponent` to offload the responsibility of sending and receiving data from the server.
 
-```bash
+```shell
 ng g s services/ping --skip-tests
 ng g s services/data --skip-tests
 ```
 
 Since we'll be utilizing a bit with `Observable`s, let's implement a service to clean up our streams once a component is destroyed:
 
-```bash
+```shell
 ng g s services/unsubscribe --skip-tess
 ```
 
 While we're at it, let's make a quick service to help us with our SEO to set page titles, update `<meta>`s, etc.
 
-```bash
+```shell
 ng g s services/document --skip-tests
 ```
 
@@ -451,7 +451,7 @@ Our serverless functions will _serve_, more or less, as an API-lite for our stat
 
 To get started writing functions, let's go ahead and install the Netlify Functions package and the Netlify CLI to help us write and serve our functions:
 
-```bash
+```shell
 npm install @netlify/functions
 npm install --save-dev netlify-cli # -g if you'd like to install globally
 ```
@@ -470,7 +470,7 @@ Using the CLI, let's add an npm script in our `package.json` we can run to start
 
 If we run:
 
-```bash
+```shell
 npm run functions:serve
 ```
 
@@ -605,13 +605,13 @@ As you might have guessed, the names and pathing of our function `.ts` files _do
 
 Now that we have our first function in place, let's go ahead and start our function server:
 
-```bash
+```shell
 npm run functions:serve
 ```
 
 and in the terminal, we should see a message like the following:
 
-```bash
+```shell
 > scully-netlify-angular-example@0.0.0 netlify:serve
 > netlify functions:serve
 
@@ -702,7 +702,7 @@ We've got ourselves a working solution! So far we've spun up our Angular applica
 To get started, the Scully team has made it dead simple to add static site generation to our
 Angular apps with a simple schematic. With the terminal open, let's run said schematic:
 
-```bash
+```shell
 ng add @scullyio/init
 ```
 
@@ -741,7 +741,7 @@ Tailwind projects targeting version 3 and up. With our scripts in place, let's g
 generate
 a static version of our Angular app:
 
-```bash
+```shell
 npm run scully
 ```
 
@@ -750,7 +750,7 @@ Once the Scully build completes, take a look at your `/dist` output folder. We s
 The Scully dev server will _serve_ these static HTML files with all of our Angular code functionality
 fully intact. Pretty neat, huh? Let's run the dev server:
 
-```bash
+```shell
 npm run scully:serve
 ```
 

@@ -26,21 +26,21 @@ We'll be building a simple CRUD API for our fictional brewery management softwar
 
 In this post, we'll get started with our domain layer. I should mention that we'll also be using .NET Core 3.0 with its new bells and whistles. Let's fire up a terminal (apologies, I'll be working exclusively on a Mac), and get started. If you're using Visual Studio, go ahead and initialize a new solution. In the terminal, let's start a new solution:
 
-```bash
+```shell
 ~$ mkdir Dappery && cd Dappery
 ~/Dappery$ dotnet new sln
 ```
 
 Caveat: it's totally okay to fire up your favorite IDE (I'll be using Rider) and doing all this setup through the GUI. This is just my preference for project setup. Next, let's go ahead and add some `src` and `tests` directories, and spin up our domain layer project within the `src` directory:
 
-```bash
+```shell
 ~/Dappery$ mkdir src && mkdir tests
 ~/Dappery$ cd src && dotnet new classlib -n Dappery.Domain
 ```
 
 Things to note are the fact that this is a `classlib`, which means this is a `netstandard2.0` library that we can reuse in any .NET project that leverages the standard. Now that we've got our project skeleton, let's go ahead and link it to our solution:
 
-```bash
+```shell
 ~/Dappery/src$ dotnet sln ../Dappery.sln add Dappery.Domain/Dappery.Domain.csproj
 Project `src/Dappery.Domain/Dappery.Domain.csproj` added to the solution.
 ```

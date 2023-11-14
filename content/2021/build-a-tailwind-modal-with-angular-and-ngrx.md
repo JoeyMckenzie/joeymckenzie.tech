@@ -44,7 +44,7 @@ With our sermon out of the way, let's get into some code. At any point, you can 
 
 While I'm using an Angular workspace in the example project, this all applies to existing single project workspaces as well. Let's spin up a new application using your terminal of choice:
 
-```bash
+```shell
 ng new ngrx-tailwind-modal
 ```
 
@@ -52,13 +52,13 @@ ng new ngrx-tailwind-modal
 
 With our project in place, let's go ahead and install Tailwind (assuming you're using Angular v11.2 or greater):
 
-```bash
+```shell
 npm install --save-dev tailwindcss
 ```
 
 and if you're using yarn:
 
-```bash
+```shell
 yarn add tailwindcss
 ```
 
@@ -76,19 +76,19 @@ If you're using another CSS library, checkout the [docs](https://tailwindcss.com
 
 With Tailwind in place, let's go ahead and add NgRx to our dependencies:
 
-```bash
+```shell
 npm install @ngrx/store --save
 ```
 
 and for yarn
 
-```bash
+```shell
 yarn add @ngrx/store
 ```
 
 Optionally, you can install NgRx dev tools as well to assist with debugging, but for our simple use case, it's not necessary. With our required dependencies in place, let's go ahead and generate a new modal component. Go ahead and `cd` into your project directory and run the Angular schematic to spin up a new component:
 
-```bash
+```shell
 ng g c modal --skip-tests
 ```
 

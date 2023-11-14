@@ -112,7 +112,7 @@ intricacies of the library as we'll mainly be focusing on fetching data within t
 Okay, enough talk. Let's code! For our demo, we'll tap into the amazing [GitHub API](https://docs.github.com/en/rest)
 to explore repositories. I've spun up a simple next.js app:
 
-```bash
+```shell
 npx create-next-app@latest --ts react-rxjs-data-fetching-demo
 ```
 
@@ -120,7 +120,7 @@ I'm using next.js in this case as we want to showcase data fetching in both the 
 we'll do within the scope of this blog post is similarly applicable to your average react project. With our project
 scaffolded, let's add a few dependencies:
 
-```bash
+```shell
 npm install swr rxjs
 ```
 

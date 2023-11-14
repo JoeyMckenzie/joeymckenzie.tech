@@ -42,14 +42,14 @@ RAAHT-stack? THARA? Not sure, gonna need to workshop the acronym a bit.
 
 Let's start by spinning up a new Rust binary:
 
-```bash
+```shell
 $ cargo new --bin with-axum-htmx-askama && cd with-axum-htmx-askama
      Created binary (application) `with-axum-htmx-askama` package
 ```
 
 Next, let's bring in the stuff we'll need to start building,
 
-```bash
+```shell
 $ cargo add askama # our templating engine
 $ cargo add axum # our web/file server
 $ cargo add tokio --features full # async runtime
@@ -85,7 +85,7 @@ async fn main() {
 
 And running a quick sanity check:
 
-```bash
+```shell
 $ cargo run
 # things compiling...
 2023-06-13T06:21:03.461354Z  INFO with_axum_htmx_askama: hello, web server!
@@ -185,7 +185,7 @@ Luckily for us, askama provides the `#[template(path = "path/to/html")]` macro, 
 files are in the `templates/` directory. This is also configurable, but the defaults will do for now. Running the server
 locally:
 
-```bash
+```shell
 $ cargo run
     # stuff compiling...
 2023-06-13T06:47:23.018937Z  INFO with_axum_htmx_askama: initializing router...
@@ -222,7 +222,7 @@ browser (if you're reading this, Rob, you know what you did).
 We're going to rely on a few npm packages, so we'll need to spin up a simple `package.json` file to help us bring in
 Tailwind and eventually Prettier to make things look nice on our templates. Using pnpm:
 
-```bash
+```shell
 $ pnpm init
 Wrote to ~/with-axum-htmx-askama/package.json
 
@@ -242,7 +242,7 @@ Wrote to ~/with-axum-htmx-askama/package.json
 
 With our package manifest in place, let's add a few things to it. I'm using pnpm, though npm and yarn will suffice:
 
-```bash
+```shell
 pnpm add -D tailwindcss prettier prettier-plugin-tailwindcss
 ```
 
@@ -281,7 +281,7 @@ I'm using Prettier to keep things nicely formatted, so I'll add a quick script t
 
 Now we can format from the terminal to our heart's content:
 
-```bash
+```shell
 $ pnpm format
 
 package.json 340ms
@@ -330,7 +330,7 @@ will use to generate the utilities our HTML templates will use. Let's create a `
 We'll use the CLI to read this file as input, scan which utilities are
 being used by our HTML, and output the optimized stylesheet to be served. Let's run our first pass:
 
-```bash
+```shell
 $ pnpm dlx tailwindcss -i styles/tailwind.css -o assets/main.css --watch
 
 Rebuilding...
@@ -344,7 +344,7 @@ Done in 74ms.
 Nice! Though not very exciting, as Tailwind didn't detect any utility classes to purge as we don't have a configuration
 file for it to read pointing to the markup. Let's add one:
 
-```bash
+```shell
 $ pnpm dlx tailwindcss init
 
 Created Tailwind CSS config file: tailwind.config.js
@@ -692,7 +692,7 @@ We've effectively added a subrouter underneath the parent `/api` route. The exam
 spice things up here shortly. With our server now able to serve data at specific
 endpoints, let's do a quick sanity check. In another terminal:
 
-```bash
+```shell
 $ curl -l https://localhost:8000/api/hello
 Hello!%
 ```
@@ -748,7 +748,7 @@ everyone keeps talking about.
 Tailwind has some pretty neat utilities, and I'm gonna go ahead and bring in the forms package to help create some nice
 looking inputs:
 
-```bash
+```shell
 $ pnpm add @tailwindcss/forms
 ```
 
