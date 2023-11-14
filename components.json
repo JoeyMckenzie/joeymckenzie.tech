@@ -1,13 +1,15 @@
 {
-  "$schema": "https://shadcn-svelte.com/schema.json",
   "style": "new-york",
+  "typescript": true,
   "tailwind": {
-    "config": "tailwind.config.ts",
-    "css": "src/app.css",
-    "baseColor": "neutral"
+    "config": "tailwind.config.js",
+    "css": "resources/css/app.css",
+    "baseColor": "neutral",
+    "cssVariables": true
   },
+  "framework": "laravel",
   "aliases": {
-    "components": "$lib/components",
-    "utils": "$lib/utils"
+    "components": "@/components",
+    "utils": "@/lib/utils"
   }
 }

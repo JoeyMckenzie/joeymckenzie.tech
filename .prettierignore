@@ -1,18 +1,23 @@
-.DS_Store
-node_modules
-/build
-/.svelte-kit
-/package
+/.phpunit.cache
+/bootstrap/ssr
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
 .env
-.env.*
-!.env.example
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
-.idea
-.vercel
-.contentlayer
-.drizzle
-pnpm-lock.yaml
+.env.backup
+.env.production
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+/.fleet
+/.idea
+/.vscode
 
 # rust
 Secrets.toml
@@ -26,7 +31,3 @@ Secrets.toml
 # zig
 /examples/zig/**/zig-cache
 /examples/zig/**/zig-out
-
-# dotnet
-/examples/dotnet/**/obj
-/examples/dotnet/**/bin

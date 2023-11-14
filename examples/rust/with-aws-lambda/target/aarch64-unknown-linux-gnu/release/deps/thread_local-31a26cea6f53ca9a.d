@@ -1,0 +1,10 @@
+/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/aarch64-unknown-linux-gnu/release/deps/thread_local-31a26cea6f53ca9a.rmeta: /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/lib.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/cached.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/thread_id.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/unreachable.rs
+
+/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/aarch64-unknown-linux-gnu/release/deps/libthread_local-31a26cea6f53ca9a.rlib: /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/lib.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/cached.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/thread_id.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/unreachable.rs
+
+/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/aarch64-unknown-linux-gnu/release/deps/thread_local-31a26cea6f53ca9a.d: /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/lib.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/cached.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/thread_id.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/unreachable.rs
+
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/lib.rs:
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/cached.rs:
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/thread_id.rs:
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/thread_local-1.1.7/src/unreachable.rs:

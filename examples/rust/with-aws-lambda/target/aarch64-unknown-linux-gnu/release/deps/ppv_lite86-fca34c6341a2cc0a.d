@@ -1,0 +1,10 @@
+/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/aarch64-unknown-linux-gnu/release/deps/ppv_lite86-fca34c6341a2cc0a.rmeta: /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/lib.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/soft.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/types.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/generic.rs
+
+/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/aarch64-unknown-linux-gnu/release/deps/libppv_lite86-fca34c6341a2cc0a.rlib: /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/lib.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/soft.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/types.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/generic.rs
+
+/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/aarch64-unknown-linux-gnu/release/deps/ppv_lite86-fca34c6341a2cc0a.d: /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/lib.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/soft.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/types.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/generic.rs
+
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/lib.rs:
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/soft.rs:
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/types.rs:
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ppv-lite86-0.2.17/src/generic.rs:

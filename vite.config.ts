@@ -1,28 +1,21 @@
-import { sveltekit } from '@sveltejs/kit/vite';
-import { fileURLToPath } from 'url';
 import { defineConfig } from 'vite';
+import laravel from 'laravel-vite-plugin';
+import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
-  plugins: [sveltekit()],
-  assetsInclude: ['**/*.md'],
-  server: {
-    fs: {
-      strict: false,
-    },
-  },
-  resolve: {
-    alias: [
-      {
-        find: 'contentlayer/generated',
-        replacement: fileURLToPath(
-          new URL('./.contentlayer/generated', import.meta.url),
-        ),
-      },
+    plugins: [
+        laravel({
+            input: 'resources/js/app.ts',
+            ssr: 'resources/js/ssr.ts',
+            refresh: true,
+        }),
+        vue({
+            template: {
+                transformAssetUrls: {
+                    base: null,
+                    includeAbsolute: false,
+                },
+            },
+        }),
     ],
-  },
-  define: {
-    'import.meta.env.VERCEL_ANALYTICS_ID': JSON.stringify(
-      process.env.VERCEL_ANALYTICS_ID,
-    ),
-  },
 });

@@ -1,0 +1,10 @@
+/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/aarch64-unknown-linux-gnu/release/deps/idna-64dbc4c0e9cd2181.rmeta: /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/lib.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/punycode.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46_mapping_table.rs
+
+/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/aarch64-unknown-linux-gnu/release/deps/libidna-64dbc4c0e9cd2181.rlib: /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/lib.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/punycode.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46_mapping_table.rs
+
+/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/aarch64-unknown-linux-gnu/release/deps/idna-64dbc4c0e9cd2181.d: /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/lib.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/punycode.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46.rs /Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46_mapping_table.rs
+
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/lib.rs:
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/punycode.rs:
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46.rs:
+/Users/jmckenzie/.cargo/registry/src/index.crates.io-6f17d22bba15001f/idna-0.4.0/src/uts46_mapping_table.rs:
