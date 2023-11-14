@@ -1,1 +1,0 @@
-/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/debug/office-quotes: /Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/src/main.rs /Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/src/quotes.rs

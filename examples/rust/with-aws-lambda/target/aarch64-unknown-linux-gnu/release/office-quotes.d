@@ -1,1 +1,0 @@
-/Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/target/aarch64-unknown-linux-gnu/release/office-quotes: /Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/src/main.rs /Users/jmckenzie/projects/web/joey-mckenzie-tech/examples/rust/with-aws-lambda/src/quotes.rs
