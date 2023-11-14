@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  ssr: true,
   srcDir: 'src',
   nitro: {
     preset: 'vercel',
@@ -11,7 +10,6 @@ export default defineNuxtConfig({
     'components:dirs': (dirs) => {
       dirs.unshift({
         path: '~/components/ui',
-
         // this is required else Nuxt will autoImport `.ts` file
         extensions: ['.vue'],
         // prefix for your components, eg: UiButton
@@ -26,6 +24,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     'nuxt-icon',
     '@nuxtjs/google-fonts',
+    '@nuxt/content',
   ],
   colorMode: {
     classSuffix: '',

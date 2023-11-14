@@ -6,7 +6,7 @@
 .cache
 dist
 src/components/ui
-src/lib/utils.ts
+src/utils/shad.ts
 
 # Node dependencies
 node_modules

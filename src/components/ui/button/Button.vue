@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { cn } from '@/utils/shad';
 import { buttonVariants } from '.';
-import { cn } from '@/lib/utils';
 
 interface Props {
   variant?: NonNullable<Parameters<typeof buttonVariants>[0]>['variant'];

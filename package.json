@@ -35,10 +35,12 @@
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@nuxt/content": "^2.9.0",
     "@radix-icons/vue": "^1.0.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "radix-vue": "^1.1.3",
+    "sitemap": "^7.1.1",
     "tailwind-merge": "^2.0.0",
     "tailwindcss-animate": "^1.0.7"
   }
