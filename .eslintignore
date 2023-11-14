@@ -5,6 +5,7 @@
 .nitro
 .cache
 dist
+src/components/ui
 
 # Node dependencies
 node_modules
