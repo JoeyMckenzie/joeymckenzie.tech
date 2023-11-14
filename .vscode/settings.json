@@ -1,19 +1,6 @@
 {
-  "[*]": {
-    "editor.tabSize": 2
-  },
-  "[rust,md]": {
-    "editor.tabSize": 4
-  },
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
     "source.organizeImports": true
-  },
-  "grammarly.selectors": [
-    {
-      "language": "markdown",
-      "scheme": "file"
-    }
-  ],
-  "rust-analyzer.linkedProjects": ["./Cargo.toml"]
+  }
 }

@@ -1,6 +1,31 @@
-Cargo.lock
-/target
+.DS_Store
+node_modules
+/build
+/.svelte-kit
+/package
 .env
-/node_modules
-/assets/css/
-/assets/js/
+.env.*
+!.env.example
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+.idea
+.vercel
+.contentlayer
+.drizzle
+
+# rust
+Secrets.toml
+/target
+/Cargo.lock
+/examples/rust/**/target
+/examples/rust/**/node_modules
+/examples/rust/**/Cargo.lock
+.sqlx
+
+# zig
+/examples/zig/**/zig-cache
+/examples/zig/**/zig-out
+
+# dotnet
+/examples/dotnet/**/obj
+/examples/dotnet/**/bin

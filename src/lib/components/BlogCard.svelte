@@ -1,0 +1,33 @@
+<script lang="ts">
+  import { Badge } from '$lib/components/ui/badge';
+  import type { PostWithViewCount } from '$lib/types';
+  import { format } from 'date-fns';
+
+  const { post } = $props<{ post: PostWithViewCount }>();
+</script>
+
+<article
+  class="hover:scale-102 flex max-w-xl flex-col items-start transition duration-150 ease-in-out hover:-translate-y-1"
+>
+  <!-- TODO: Need a better solution for not triggering views unless the blog page has been landed on -->
+  <a data-sveltekit-preload-data="tap" href={post.url}>
+    <div class="flex items-center gap-x-4 text-xs">
+      <time dateTime={post.pubDate}>
+        {format(new Date(post.pubDate), 'PP')}
+      </time>
+      <Badge>{post.category}</Badge>
+      {#if post.viewCount > 0}
+        <div class="font-medium text-neutral-400">{post.viewCount} views</div>
+      {/if}
+    </div>
+    <div class="group relative">
+      <h3 class="mt-3 text-lg font-semibold leading-6">
+        <span class="absolute inset-0" />
+        {post.title}
+      </h3>
+      <p class="mt-5 line-clamp-3 text-sm leading-6">
+        {post.description}
+      </p>
+    </div>
+  </a>
+</article>

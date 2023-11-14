@@ -1,0 +1,33 @@
+.DS_Store
+node_modules
+/build
+/.svelte-kit
+/package
+.env
+.env.*
+!.env.example
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+.idea
+.vercel
+.contentlayer
+src/lib/components/ui
+.drizzle
+pnpm-lock.yaml
+
+# rust
+Secrets.toml
+/target
+/Cargo.lock
+/examples/rust/**/target
+/examples/rust/**/node_modules
+/examples/rust/**/Cargo.lock
+.sqlx
+
+# zig
+/examples/zig/**/zig-cache
+/examples/zig/**/zig-out
+
+# dotnet
+/examples/dotnet/**/obj
+/examples/dotnet/**/bin

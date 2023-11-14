@@ -1,4 +1,3 @@
 #!/bin/bash
 
-npx lint-staged
-pre-commit run
+pnpm dlx lint-staged
