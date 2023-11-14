@@ -1,13 +1,15 @@
 {
-  "$schema": "https://shadcn-svelte.com/schema.json",
   "style": "new-york",
+  "typescript": true,
   "tailwind": {
     "config": "tailwind.config.ts",
-    "css": "src/app.css",
-    "baseColor": "neutral"
+    "css": "src/assets/css/tailwind.css",
+    "baseColor": "neutral",
+    "cssVariables": true
   },
+  "framework": "nuxt",
   "aliases": {
-    "components": "$lib/components",
-    "utils": "$lib/utils"
+    "components": "@/components",
+    "utils": "@/lib/utils"
   }
 }
