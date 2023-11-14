@@ -3,9 +3,8 @@
   import { Button } from '$lib/components/ui/button';
   import type { PageServerData } from './$types';
 
-  export let data: PageServerData;
-
-  const markdownContent = data.post?.body?.html ?? '';
+  const { data } = $props<{ data: PageServerData }>();
+  const markdownContent = $derived(data.post?.body?.html ?? '');
 </script>
 
 <svelte:head>

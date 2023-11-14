@@ -3,37 +3,33 @@
   import { page } from '$app/stores';
   import Footer from '$lib/components/Footer.svelte';
   import Navbar from '$lib/components/Navbar.svelte';
-  import { viewCountStore } from '$lib/views';
+  import ModeWatcher from '$lib/theme/ModeWatcher.svelte';
+  import createViewCounts from '$lib/views';
   import { webVitals } from '$lib/vitals';
-  import { ModeWatcher } from 'mode-watcher';
-  import { onMount } from 'svelte';
+  import { setContext } from 'svelte';
   import '../app.css';
   import type { LayoutServerData } from './$types';
 
-  export let data: LayoutServerData;
-
+  const { data } = $props<{ data: LayoutServerData }>();
   const analyticsId = import.meta.env.VERCEL_ANALYTICS_ID;
 
-  onMount(() => {
-    const latestPosts = data.postPreviews.slice(0, 3);
-    const { set } = viewCountStore;
-
-    set({
-      all: data.postPreviews,
-      latest: latestPosts,
-    });
+  $effect(() => {
+    const viewCounts = createViewCounts(data.postPreviews);
+    setContext('viewCounts', viewCounts);
   });
 
-  $: if (browser && analyticsId) {
-    webVitals({
-      path: $page.url.pathname,
-      params: $page.params,
-      analyticsId,
-    });
-  }
+  $effect(() => {
+    if (browser && analyticsId) {
+      webVitals({
+        path: $page.url.pathname,
+        params: $page.params,
+        analyticsId,
+      });
+    }
+  });
 </script>
 
-<ModeWatcher />
+<ModeWatcher track={true} />
 
 <div class="mx-auto my-auto max-w-screen-2xl px-6 lg:px-8">
   <Navbar />

@@ -1,7 +1,10 @@
 <script lang="ts">
   import BlogPreview from '$lib/components/BlogPreview.svelte';
   import Link from '$lib/components/Link.svelte';
-  import { viewCountStore } from '$lib/views';
+  import type { ViewCountStore } from '$lib/views';
+  import { getContext } from 'svelte';
+
+  const viewCountStore = getContext<ViewCountStore>('viewCounts');
 </script>
 
 <svelte:head>
@@ -24,4 +27,4 @@
     the writing I do here, or to simply say hello!
   </p>
 </div>
-<BlogPreview posts={$viewCountStore.all} />
+<BlogPreview posts={viewCountStore.all} />

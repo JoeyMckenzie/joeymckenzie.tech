@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { NowPlayingResponse } from '$lib/spotify';
 
-  export let nowPlaying: NowPlayingResponse;
+  const { nowPlaying } = $props<{ nowPlaying: NowPlayingResponse }>();
 </script>
 
 <a

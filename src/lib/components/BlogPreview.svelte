@@ -3,9 +3,8 @@
   import type { PostWithViewCount } from '$lib/types';
   import { Skeleton } from './ui/skeleton';
 
-  export let posts: PostWithViewCount[];
-
-  $: loadingPosts = posts.length === 0;
+  const { posts } = $props<{ posts: PostWithViewCount[] }>();
+  const loadingPosts = $derived(posts.length === 0);
 </script>
 
 {#if loadingPosts}

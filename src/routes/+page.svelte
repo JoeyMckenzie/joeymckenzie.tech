@@ -1,7 +1,12 @@
 <script lang="ts">
   import BlogPreview from '$lib/components/BlogPreview.svelte';
   import SocialButtons from '$lib/components/SocialButtons.svelte';
-  import { viewCountStore } from '$lib/views';
+  import type { ViewCountStore } from '$lib/views';
+  import { getContext } from 'svelte';
+
+  const viewCountStore = getContext<ViewCountStore>('viewCounts');
+
+  $effect(() => console.log('viewCountStore', viewCountStore));
 </script>
 
 <svelte:head>
@@ -26,4 +31,4 @@
 >
   Latest thoughts.
 </h2>
-<BlogPreview posts={$viewCountStore.latest} />
+<BlogPreview posts={viewCountStore.latest} />

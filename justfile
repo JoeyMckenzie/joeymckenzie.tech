@@ -1,5 +1,4 @@
 alias b := build
-host := `uname -a`
 
 default: dev
 
@@ -34,11 +33,3 @@ build-rust:
 # run code quality tools
 ci:
     pnpm run ci
-
-# test everything
-test-all: build
-    ./test --all
-
-# run a specific test
-test TEST: build
-    ./test --test {{TEST}}

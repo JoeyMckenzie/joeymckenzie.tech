@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { NowPlayingResponse } from '$lib/spotify';
   import SpotifyCurrentlyPlaying from '$lib/components/SpotifyCurrentlyPlaying.svelte';
   import SpotifyNotPlaying from '$lib/components/SpotifyNotPlaying.svelte';
+  import type { NowPlayingResponse } from '$lib/spotify';
 
-  export let nowPlaying: NowPlayingResponse;
+  const { nowPlaying } = $props<{ nowPlaying: NowPlayingResponse }>();
 </script>
 
 {#if nowPlaying?.nowPlaying}

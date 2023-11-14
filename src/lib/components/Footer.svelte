@@ -1,12 +1,14 @@
 <script lang="ts">
   import PoweredBy from '$lib/components/PoweredBy.svelte';
   import SocialIcons from '$lib/components/SocialIcons.svelte';
-  import type { NowPlayingResponse } from '$lib/spotify';
   import SpotifyNowPlaying from '$lib/components/SpotifyNowPlaying.svelte';
+  import type { NowPlayingResponse } from '$lib/spotify';
   import Icon from '@iconify/svelte';
 
-  export let commitSha = '';
-  export let nowPlaying: NowPlayingResponse;
+  const { commitSha, nowPlaying } = $props<{
+    commitSha: string;
+    nowPlaying: NowPlayingResponse;
+  }>();
 </script>
 
 <div

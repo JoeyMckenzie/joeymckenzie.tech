@@ -1,12 +1,17 @@
-import { writable } from 'svelte/store';
 import type { PostWithViewCount } from './types';
 
-type ViewCountState = {
-  latest: PostWithViewCount[];
-  all: PostWithViewCount[];
-};
+export default function createViewCounts(posts: PostWithViewCount[]) {
+  const viewCounts = $state(posts);
+  const latest = $derived(posts.slice(0, 3));
 
-export const viewCountStore = writable<ViewCountState>({
-  latest: [],
-  all: [],
-});
+  return {
+    get all() {
+      return viewCounts;
+    },
+    get latest() {
+      return latest;
+    },
+  };
+}
+
+export type ViewCountStore = ReturnType<typeof createViewCounts>;

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { format } from 'date-fns';
   import { Badge } from '$lib/components/ui/badge';
   import type { PostWithViewCount } from '$lib/types';
+  import { format } from 'date-fns';
 
-  export let post: PostWithViewCount;
+  const { post } = $props<{ post: PostWithViewCount }>();
 </script>
 
 <article

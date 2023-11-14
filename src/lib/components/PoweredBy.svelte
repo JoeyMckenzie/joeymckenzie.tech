@@ -1,9 +1,11 @@
 <script lang="ts">
   import Icon from '@iconify/svelte';
 
-  export let commitSha = '';
-  const commitShaForDisplay = commitSha.substring(0, 6);
-  const commitUrl = `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${commitSha}`;
+  const { commitSha } = $props<{ commitSha: string }>();
+  const commitShaForDisplay = $derived(commitSha.substring(0, 6));
+  const commitUrl = $derived(
+    `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${commitSha}`,
+  );
   const poweredBy = [
     {
       display: 'Svelte',
