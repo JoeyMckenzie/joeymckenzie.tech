@@ -20,6 +20,7 @@ defineExpose({ focus: () => input.value?.focus() });
 
 <template>
     <input
+        ref="input"
         class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
         :value="modelValue"
         @input="
@@ -28,6 +29,5 @@ defineExpose({ focus: () => input.value?.focus() });
                 ($event.target as HTMLInputElement).value,
             )
         "
-        ref="input"
     />
 </template>

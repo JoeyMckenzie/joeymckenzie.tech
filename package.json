@@ -6,7 +6,9 @@
         "dev": "vite",
         "build": "vue-tsc && vite build && vite build --ssr",
         "fmt": "prettier --write .",
-        "lint": "prettier --check --plugin prettier-plugin-tailwindcss ./resources/js && eslint \"./resources/js/**/*.vue\""
+        "check": "prettier --check --plugin prettier-plugin-tailwindcss ./resources/js",
+        "fix": "pnpm run check && eslint --fix \"./resources/js/**/*.vue\"",
+        "lint": "pnpm run check && eslint \"./resources/js/**/*.vue\""
     },
     "lint-staged": {
         "**/*.{vue,js,ts,json,yml,md}": "pnpm run fmt"

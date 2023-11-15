@@ -18,6 +18,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+resources/js/Components/ui
 
 # rust
 Secrets.toml

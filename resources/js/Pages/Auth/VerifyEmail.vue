@@ -30,8 +30,8 @@ const verificationLinkSent = computed(
         </div>
 
         <div
-            class="mb-4 text-sm font-medium text-green-600"
             v-if="verificationLinkSent"
+            class="mb-4 text-sm font-medium text-green-600"
         >
             A new verification link has been sent to the email address you
             provided during registration.
