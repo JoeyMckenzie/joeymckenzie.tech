@@ -5,10 +5,10 @@ pubDate: 'Nov 05 2019'
 heroImage: 'https://imgs.xkcd.com/comics/compiler_complaint.png'
 category: '.NET'
 keywords:
-  - C#
-  - .net
-  - .net core
-  - nullable reference types
+    - C#
+    - .net
+    - .net core
+    - nullable reference types
 ---
 
 It's almost 5 o'clock, you've just deployed the latest API build into your test environment for other teams to start consuming and integrating into their applications, and the weekend is right around the corner. Then, the Slack messages begin.
@@ -144,9 +144,9 @@ Low and behold, the compiler warnings we hoped for (the good kind, at least) ale
 
 We'll go ahead and address our current compiler warnings using this new concept of nullable reference types, but before we do, let's discuss the different ways we might be able to accomplish this.
 
-- In our `MyObject` class, we could make our `Foo` property a `string?` type rather than just a `string`
-- We could keep our typing of `string` and override the compiler warnings, essentially telling it "hey, I know this could be `null`, and that's okay"
-- We could keep our typing of string `string` and add a single constructor to guarantee the `MyObject` class always has a valid `Foo` string value
+-   In our `MyObject` class, we could make our `Foo` property a `string?` type rather than just a `string`
+-   We could keep our typing of `string` and override the compiler warnings, essentially telling it "hey, I know this could be `null`, and that's okay"
+-   We could keep our typing of string `string` and add a single constructor to guarantee the `MyObject` class always has a valid `Foo` string value
 
 So, what should we do? Well, the answer is simple: **it depends**. Let's think about the context for our `MyObject` class. In the real world, we build applications designed to solve real world problems, usually built around a central domain architecture. What does our `MyObject` class represent? Is there a business-driven reason as to why the `Foo` property might not exist on an instance of `MyObject`? For our use case, let's define a rule that there is a valid reason for `Foo` to be absent of value. So, let's declare it as nullable:
 

@@ -1,21 +1,14 @@
 {
-    "extends": [
-        "plugin:vue/vue3-recommended",
-        "prettier"
-    ],
+    "extends": ["plugin:vue/vue3-recommended", "prettier"],
     "parser": "vue-eslint-parser",
     "parserOptions": {
         "parser": "@typescript-eslint/parser",
         "sourceType": "module"
     },
-    "ignorePatterns": [
-        "*.d.ts"
-    ],
+    "ignorePatterns": ["*.d.ts"],
     "overrides": [
         {
-            "files": [
-                "./resources/js/Pages/**/*.vue"
-            ],
+            "files": ["./resources/js/Pages/**/*.vue"],
             "rules": {
                 "vue/multi-word-component-names": "off"
             }

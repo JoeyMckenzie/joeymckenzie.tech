@@ -5,9 +5,9 @@ pubDate: 'Nov 2 2023'
 heroImage: '/blog/rust-aws-lambda-office-quotes/meme.jpg'
 category: 'aws'
 keywords:
-  - rust
-  - aws lambda
-  - terraform
+    - rust
+    - aws lambda
+    - terraform
 ---
 
 Back from a hard fought battle against writer's block, I've been looking for a way to convince my boss to let me use
@@ -41,9 +41,9 @@ was to get up and running with Lambdas that were even more easily deployed to AW
 some [Terraform](https://www.terraform.io/) because I'm lazy and don't know which buttons to click in AWS most of the
 time. If you're following along, it'll help to have the following installed:
 
-- Cargo and cargo lambda installed (a quick `cargo install cargo-lambda` should do the trick)
-- Terraform CLI
-- An AWS account (I'm still on the free tier, luckily)
+-   Cargo and cargo lambda installed (a quick `cargo install cargo-lambda` should do the trick)
+-   Terraform CLI
+-   An AWS account (I'm still on the free tier, luckily)
 
 We'll touch the surface of a few things here, but won't be going into depth necessarily on any one topic. There's people
 a lot smarter than myself that are ackshually qualified to talk about Rust, AWS, and Terraform.
@@ -119,17 +119,17 @@ Our quotes file is pretty standard JSON:
 
 ```json
 {
-  "quotes": [
-    {
-      "quote": "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.",
-      "author": "Michael Scott"
-    },
-    {
-      "quote": "Whenever I'm about to do something, I think, 'Would an idiot do that?' and if they would, I do not do that thing.",
-      "author": "Dwight Schrute"
-    }
-    // And many more...
-  ]
+    "quotes": [
+        {
+            "quote": "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.",
+            "author": "Michael Scott"
+        },
+        {
+            "quote": "Whenever I'm about to do something, I think, 'Would an idiot do that?' and if they would, I do not do that thing.",
+            "author": "Dwight Schrute"
+        }
+        // And many more...
+    ]
 }
 ```
 
@@ -353,11 +353,11 @@ Nice! We've got ourselves an MVP, time to ship to production.
 
 With our deployment approach, we'll do something akin to the following:
 
-- Build the output artifact with the help of `cargo lambda`
-- Package up the output into a zip file to store in S3
-- Upload the zip file into a bucket
-- Setup an Lambda function using the zip file as the source executable
-- Setup an API Gateway instance that proxies request through to our Lambda function
+-   Build the output artifact with the help of `cargo lambda`
+-   Package up the output into a zip file to store in S3
+-   Upload the zip file into a bucket
+-   Setup an Lambda function using the zip file as the source executable
+-   Setup an API Gateway instance that proxies request through to our Lambda function
 
 Now doing all that stuff manually is not _too_ tedious, but I've been writing a lot Terraform lately and thought it
 would fun to Terraform-erize this process. If you're not familiar with Terraform, it's

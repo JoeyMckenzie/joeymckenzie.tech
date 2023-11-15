@@ -5,17 +5,17 @@ pubDate: 'Feb 02 2020'
 heroImage: '/blog/net-core-dapper-and-crud-series/part-4/use-automapper-meme.jpeg'
 category: '.NET'
 keywords:
-  - .net
-  - c#
-  - dapper
-  - mediatr
+    - .net
+    - c#
+    - dapper
+    - mediatr
 ---
 
 The wait is finally over (sort of). As we recover from the scrupulous amount of Christmas cookies we consumed during our annual holiday bulking season (at least what I tell myself), I figured it's time to jump into the bulk of our fictional brewery app, Dappery. So far, we've:
 
-- Defined our domain layer and business entities used application wide
-- Implemented our data access layer with the help of repositories wrapped in a unit of work
-- Written unit tests for our persistence layer to ensure future proofing our code
+-   Defined our domain layer and business entities used application wide
+-   Implemented our data access layer with the help of repositories wrapped in a unit of work
+-   Written unit tests for our persistence layer to ensure future proofing our code
 
 And with most of the groundwork out of the way, we can finally jump into the core layer of Dappery. Before we dive into the code, let's remind ourselves of _why_ exactly we've split our core business logic layer out into a high level detail of our application, with the lower level details (data access and API layers, in our case) _depending_ on this layer:
 
@@ -28,13 +28,13 @@ Noting the super meta meme at the top, some of you may be asserting through clen
 
 Alright, with the preamble out of the way, let's get a game plan going for how we'll implement this layer:
 
-- We'll use our data access layer contracts (i.e. the interfaces we've defined in this layer) to access our database
-- Using MediatR, we'll break our requests into queries and commands, effectively containing a finite set of application features that will be easier to code to and debug
-- While it may seem a little boilerplate-y, we avoid things like the [God Object](https://en.wikipedia.org/wiki/God_object) anti-pattern, where everything gets shoved into one helper or
-  service class
-- We'll write two custom mappers that will map our beer and brewery entities into DTOs and resource to transport the database entities out of the lower levels
-- Each feature request will be validated using the [FluentValidation](https://github.com/JeremySkinner/FluentValidation) library, acting as a guard between the API layer and core business layer to protect invalid state from making its way to the database
-- We'll handle invalid scenarios in this layer and enforce business rules
+-   We'll use our data access layer contracts (i.e. the interfaces we've defined in this layer) to access our database
+-   Using MediatR, we'll break our requests into queries and commands, effectively containing a finite set of application features that will be easier to code to and debug
+-   While it may seem a little boilerplate-y, we avoid things like the [God Object](https://en.wikipedia.org/wiki/God_object) anti-pattern, where everything gets shoved into one helper or
+    service class
+-   We'll write two custom mappers that will map our beer and brewery entities into DTOs and resource to transport the database entities out of the lower levels
+-   Each feature request will be validated using the [FluentValidation](https://github.com/JeremySkinner/FluentValidation) library, acting as a guard between the API layer and core business layer to protect invalid state from making its way to the database
+-   We'll handle invalid scenarios in this layer and enforce business rules
 
 As we can see, that's a lot of stuff - thus the reason our core business layer is in a layer of its own, independent of the lower level details. Without further ado, let's cut the chit chat and get down to business (pun intended). Let's start off by creating a `Breweries` directory within our `Dappery.Core` project, followed by creating two additional directories of `Queries` and `Commands` nested beneath our newly created `Breweries` directory. Let's add one more folder underneath `Breweries/Commands` called `CreateBrewery`. I know, I know... that's some deep structure we're building, but the architecture will help keep our application flows and paths neatly separated and easy to drill down into. Underneath `Breweries/Commands/CreateBeer`, let's add a new C# file called `CreateBreweryCommand.cs` that will serve as the issuing command MediatR will emit to our application layer to begin the transaction for adding a brewery to the database.
 
@@ -356,11 +356,11 @@ namespace Dappery.Core.Infrastructure
 
 Let's break it down:
 
-- First, we inject from the DI container (which we'll see in the API layer with the help of ASP.NET Core) all of the validations that were found in the assembly that all descended from `AbstractValidator<TCommand>` and retrieves the rules we've defined per instance
-- We retrieve the validators from the request, which we'll know at runtime
-- Using LINQ, we run through each validator, validate the context (whatever the request type may be), flatten the `ValidationResult` enumerable by mapping just the error property with `.SelectMany()`, and collect any that return errors
-- We check to see if there were any violations of our rules, and throw the `ValidationException` that we'll catch within a global exception handler within the API layer so we can return detailed validation messages to the consumers
-- Finally, we let the request thread continue on its merry way throughout the layers of our application (unscathed if there were no errors)
+-   First, we inject from the DI container (which we'll see in the API layer with the help of ASP.NET Core) all of the validations that were found in the assembly that all descended from `AbstractValidator<TCommand>` and retrieves the rules we've defined per instance
+-   We retrieve the validators from the request, which we'll know at runtime
+-   Using LINQ, we run through each validator, validate the context (whatever the request type may be), flatten the `ValidationResult` enumerable by mapping just the error property with `.SelectMany()`, and collect any that return errors
+-   We check to see if there were any violations of our rules, and throw the `ValidationException` that we'll catch within a global exception handler within the API layer so we can return detailed validation messages to the consumers
+-   Finally, we let the request thread continue on its merry way throughout the layers of our application (unscathed if there were no errors)
 
 Whew, that small bit of code is doing _a lot_ of big things for us. Using MediatR and FluentValidator in tandem is a match made in heaven, letting developers customize their application request flow, providing convention to help reduce the complexity of our software. Now that we've gotten our pipeline behavior piece implemented, let's go ahead and extend the `IServiceCollection` from the `Microsoft.Extensions.DependencyInjection` namespace that will do all the leg work of resolving our dependencies. Within our `Extensions` folder, let's add a `StartupExtensions.cs` class. We use `StartupExtensions` here which is a bit specific for my liking, but our use case is just a simple ASP.NET Core application (you may see this with the name `DependencyInjection.cs` or something similar around various .NET libraries on GitHub).
 
@@ -900,11 +900,11 @@ We see that there are quite a few similarities with how we wrote unit tests for 
 
 In an effort to not bore you guys _too much_, I'll snap the chalk line for this post here, as the beer operations share a lot of the same ideas with how we wrote the brewery operations, and [I'll leave this link here](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-3-core-layer/src/Dappery.Core/Beers) for you guys to checkout how, exactly, we might write those commands and queries. For the most part, it'll feel eerily similar in setup, with just a few minor tweaks since we're working within the context of the child in the beer-brewery relationship. While this might seem like a lot of redundant, rather boilerplate-y code, I think we should discuss the tradeoffs of using MediatR with the CQRS pattern:
 
-- Since we've separated commands from queries, we've implicitly created clearly defined boundaries within the core application layer
-- If we want to add additional features, we can easily do so without fear of modifying existing behavior as we've compartmentalized each request in total isolation from one another
-- We've greatly reduced number of states our application could possibly create, with a finite number of logical paths a request thread could take
-- Notice we have no classical service-type classes as we we're deliberate about not creating an all encompassing service that would mix our commands and queries together
-- While all this sounds great, one could also argue that we've complicated the code by adding such convention all over the place
+-   Since we've separated commands from queries, we've implicitly created clearly defined boundaries within the core application layer
+-   If we want to add additional features, we can easily do so without fear of modifying existing behavior as we've compartmentalized each request in total isolation from one another
+-   We've greatly reduced number of states our application could possibly create, with a finite number of logical paths a request thread could take
+-   Notice we have no classical service-type classes as we we're deliberate about not creating an all encompassing service that would mix our commands and queries together
+-   While all this sounds great, one could also argue that we've complicated the code by adding such convention all over the place
 
 At the end of the day, no matter how we implement the core application layer, it will still have just one responsibility - encompass all the business logic. We've seen that using MediatR, FluentValidation, and a few simple mappers, we can build a flexible, modular business logic layer that is easy to extend and modify to fit our business needs and requirements. In our next post, we'll _finally_ finish up our application by slapping an API layer on top of all the code we've written thus far and see if this thing actually works.
 

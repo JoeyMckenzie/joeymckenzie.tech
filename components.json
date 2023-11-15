@@ -1,15 +1,15 @@
 {
-  "style": "new-york",
-  "typescript": true,
-  "tailwind": {
-    "config": "tailwind.config.js",
-    "css": "resources/css/app.css",
-    "baseColor": "neutral",
-    "cssVariables": true
-  },
-  "framework": "laravel",
-  "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils"
-  }
+    "style": "new-york",
+    "typescript": true,
+    "tailwind": {
+        "config": "tailwind.config.ts",
+        "css": "resources/css/app.css",
+        "baseColor": "neutral",
+        "cssVariables": true
+    },
+    "framework": "laravel",
+    "aliases": {
+        "components": "@/components",
+        "utils": "@/shad"
+    }
 }

@@ -5,8 +5,8 @@ pubDate: 'Mar 30 2023'
 heroImage: '/blog/serverless-rust-with-shuttle/shuttle_meme.jpg'
 category: 'rust'
 keywords:
-  - rust
-  - aws lambda
+    - rust
+    - aws lambda
 ---
 
 In my epic quest to find any excuse to write more Rust in my daily dev life, I stumbled across an incredible platform that allows developers to write serverless functions entirely in Rust.
@@ -21,10 +21,10 @@ All managed from the comfort of the command line? _Dear god_... just take my mon
 
 Harkening back to looking for any excuse to write more Rust, my typical deployment workflow for small projects would look something like this:
 
-- Write code (entirely bug-free, obviously)
-- Construct a sensible Dockefile
-- Deploy to some sort managed SaaS infrastructure platform
-- Configure CI, testing pipelines, etc.
+-   Write code (entirely bug-free, obviously)
+-   Construct a sensible Dockefile
+-   Deploy to some sort managed SaaS infrastructure platform
+-   Configure CI, testing pipelines, etc.
 
 While the current landscape of tools is small enough for micro-projects, I'd love to be an even lazier developer than I currently am and remove the middle to bullet points above. With shuttle, I'm able to write code and simply deploy my function - no containerization, no server configurations, simply just running a few commands and I'm able to go from local dev to production in minutes. Let's write a serverless function with shuttle that retrieves GitHub stars from one of our repositories!
 
@@ -79,8 +79,8 @@ tokio = "1.26.0"
 
 A few key notes here:
 
-- Shuttle bootstraps a few dependencies for us in `shuttle-runtime` and `shuttle-axum` (0.12.0 at the time of this writing)
-- These crates allow us to invoke our function as an axum-specific serverless application as we see in our `main.rs` file
+-   Shuttle bootstraps a few dependencies for us in `shuttle-runtime` and `shuttle-axum` (0.12.0 at the time of this writing)
+-   These crates allow us to invoke our function as an axum-specific serverless application as we see in our `main.rs` file
 
 But what's this `#[shuttle_runtime::main]` macro on our `main` function? Let's take a look with a quick [`cargo expand`](https://crates.io/crates/cargo-expand/) if you have it installed:
 
@@ -302,9 +302,9 @@ async fn get_repository_stars() -> Result<Json<StarsResponse>, ApiError> {
 
 Ignoring `clippy` errors for a moment, let's quickly run through our new additions:
 
-- We've added a `HandlerError` struct to give us the ability to transform errors into user-friendly JSON responses with a `message`
-- We've `impl`'d `InotoResponse` for our new `ApiError` type that we'll use to coerce errors that happen during the request into something axum understands how to transform
-- We've updated our handler to return an `ApiError` in our `Result` rather than a static string so we can again help our users out with information about why the request failed
+-   We've added a `HandlerError` struct to give us the ability to transform errors into user-friendly JSON responses with a `message`
+-   We've `impl`'d `InotoResponse` for our new `ApiError` type that we'll use to coerce errors that happen during the request into something axum understands how to transform
+-   We've updated our handler to return an `ApiError` in our `Result` rather than a static string so we can again help our users out with information about why the request failed
 
 We'll get around to adding some branches to our `ApiError` enum eventually, but for now to get our code to compile, let's add the [`http`](https://crates.io/crates/http) crate so we can lean on the `StatusCode` type to map internal handler errors to sensible HTTP status codes.
 
@@ -448,10 +448,10 @@ Nice! We're propagating down our state to our handler leaning on `Arc` to help u
 
 Before we do so, let's take a look at what we've got so far:
 
-- We've got a serverless function spun with axum bootstrapped with shuttle
-- We're handling errors according to axum convention
-- We've separated out our bits of code into logically grouped units
-- We're propagating top-level application state safely down to request handlers
+-   We've got a serverless function spun with axum bootstrapped with shuttle
+-   We're handling errors according to axum convention
+-   We've separated out our bits of code into logically grouped units
+-   We're propagating top-level application state safely down to request handlers
 
 Doesn't seem like much, but we've accomplished quite a bit! Let's go back and add a bit of `tracing` so we can see inside the mind of our function as it processes requests. Recall earlier in the expanded macro just above `main` that shuttle provides we have our application bootstrapped with `tracing` behind the scenes ready to go to start logging. Let's add some trace logging in a few places so we can pretty-print out to the console. First, let's add the `tracing` crate:
 

@@ -5,7 +5,7 @@ pubDate: 'Nov 23 2023'
 heroImage: '/blog/ziggin-around/meme.jpg'
 category: 'svelte'
 keywords:
-  - svelte
-  - contentlayer
-  - typescript
+    - svelte
+    - contentlayer
+    - typescript
 ---

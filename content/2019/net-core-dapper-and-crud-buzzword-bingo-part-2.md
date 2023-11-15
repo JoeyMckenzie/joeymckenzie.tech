@@ -5,10 +5,10 @@ pubDate: 'Oct 06 2019'
 heroImage: 'https://imgs.xkcd.com/comics/code_quality.png'
 category: '.NET'
 keywords:
-  - .net
-  - c#
-  - dapper
-  - mediatr
+    - .net
+    - c#
+    - dapper
+    - mediatr
 ---
 
 _UPDATE: I've added cancellation token support to each of the database operations below, and encourage readers to checkout the `master` branch to see how things look now. The methods below we're slight altered to use a `CommandDefinition` that utilizes a `CancellationToken` passed down from the core business logic layer, and used in place of the regular string queries we've written below._
@@ -21,10 +21,10 @@ Before we jump into the code, let's take a step back and understand _why_ we sep
 
 The good ole fashioned dependency graph, made famous by Robert Martin a.k.a. Dr. Bob, lays out the foundation of domain driven design (DDD). For our relatively simple application, we focus on creating four distinct layers within our application code to ensure that the layers are ultimately, by some chain of dependency, dependent on the domain layer (effectively the 'D' in SOLID, [dependency inversion](https://en.wikipedia.org/wiki/Dependency_inversion_principle)). With our layers pointing inward toward our domain, we create _clear_ boundaries within our application that deal with separate concerns:
 
-- The web and persistence layers directly depend on our core layer
-- Our core layer directly depends on the domain layer
-- By association, our web and persistence, inadvertently, have a dependency on our domain layer
-- The domain layer has **no** dependencies - all it knows, and cares about, are the entities, view models, DTOs, etc. that live inside this project and how each is related
+-   The web and persistence layers directly depend on our core layer
+-   Our core layer directly depends on the domain layer
+-   By association, our web and persistence, inadvertently, have a dependency on our domain layer
+-   The domain layer has **no** dependencies - all it knows, and cares about, are the entities, view models, DTOs, etc. that live inside this project and how each is related
 
 Creating these clear boundaries of separation helps to create a modular application, with each layer isolated from one another in perfect harmony. By creating this inversion of dependency within our application, for example, our core layer _does not_ need to know about ANY of the internal workings of the data layer - all the core layer cares about is that it can get data from a database using this [actor](https://en.wikipedia.org/wiki/Actor_model). How the persistence layer interacts with the database is entirely abstracted from our core layer. Our data layer can change its data interaction mechanism, swap database providers, etc. and our core layer _will not_ care as it does not concern itself with _how_ the persistence layer works.
 
@@ -531,12 +531,12 @@ namespace Dappery.Data
 
 Okay... that's a lot of code, so let's break it down:
 
-- In our constructor, we inject a nullable connection string (since we enabled C# 8, `string`s can now be nullable), and assume that if no connection string is passed, we're probably running unit tests, or just a simple in-memory version of our application. We'll see how this injected connection string will actually be passed into our `UnitOfWork` constructor in our API project in a later post.
-- Once we figure out who our database provider is, we open the connection, initialize our repositories, and seed some test data (if we're opting to use SQLite)
-- We pass a the `rowInsertRetrievalQuery` string into our repositories to tell the repository how to get back the row we just added (we'll see why, exactly, we do this later)
-- We add some public getters to access the repositories through our `UnitOfWork` class
-- We implement our `Commit` method to try and commit the transaction to the database and rollback if anything unexpected happens
-- Finally, we add the disposable pattern to safely release our database resources during each transaction and destruct our instance of the `UnitOfWork`
+-   In our constructor, we inject a nullable connection string (since we enabled C# 8, `string`s can now be nullable), and assume that if no connection string is passed, we're probably running unit tests, or just a simple in-memory version of our application. We'll see how this injected connection string will actually be passed into our `UnitOfWork` constructor in our API project in a later post.
+-   Once we figure out who our database provider is, we open the connection, initialize our repositories, and seed some test data (if we're opting to use SQLite)
+-   We pass a the `rowInsertRetrievalQuery` string into our repositories to tell the repository how to get back the row we just added (we'll see why, exactly, we do this later)
+-   We add some public getters to access the repositories through our `UnitOfWork` class
+-   We implement our `Commit` method to try and commit the transaction to the database and rollback if anything unexpected happens
+-   Finally, we add the disposable pattern to safely release our database resources during each transaction and destruct our instance of the `UnitOfWork`
 
 Taking a step back let's take a look at our project structure so far:
 
@@ -581,9 +581,9 @@ public async Task<IEnumerable<Brewery>> GetAllBreweries()
 
 Let's breakdown what's going on in this query:
 
-- First, we grab a reference to all the beers in our database so we can map each beer up to its corresponding brewery
-- Next, we query the brewery table and do a simple join on the address table
-- Finally, once we have our result set, we set each brewery's address to the joined address, and add all the beers to the data model (if any exist)
+-   First, we grab a reference to all the beers in our database so we can map each beer up to its corresponding brewery
+-   Next, we query the brewery table and do a simple join on the address table
+-   Finally, once we have our result set, we set each brewery's address to the joined address, and add all the beers to the data model (if any exist)
 
 Again, I'm not an expert with Dapper, so I'm sure there's some optimization to be done here. As this is just us exploring Dapper, this will suffice for now. For example, rather than performing two separate queries to get our associated beers that map to their breweries, we could flat query all the beers using some nested sub queries. A few issues arise, however, as there are many beers to one brewery, so this might not be the most viable solution - simply just food for thought.
 

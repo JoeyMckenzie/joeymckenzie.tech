@@ -5,10 +5,10 @@ pubDate: 'Oct 04 2019'
 heroImage: '/blog/net-core-dapper-and-crud-series/part-1/beer-background-dappery.jpg'
 category: '.NET'
 keywords:
-  - .net
-  - c#
-  - dapper
-  - mediatr
+    - .net
+    - c#
+    - dapper
+    - mediatr
 ---
 
 Welcome to buzzword bingo, a.k.a. how many resume keywords can we fit in one blog post before someone stops reading. If you're like me, you've comfortably relied on Entity Framework Core as your go-to ORM for .NET Core projects. Rightfully so, EF Core serves its purpose, and does its job _very_ well. Primarily as a Java developer, I often daydream about having the ease, convenience, and configuration of EF Core in place of JPA (seriously, toss a few HQL queries in your code base and then tell me how much fun you're having).
@@ -355,10 +355,10 @@ Again, nothing special here. We have an `Id` property on each DTO, as we'll need
 
 I promise we're almost done (sort of). That last knot for us to tie up is the media type we'll be presenting to our consumer. To be quite honest, this implementation is _probably_ overkill for our use case, but a good exercise for us to build robust APIs. For our API, our entities and DTOs would suffice. However, in a real world enterprise setting, where our API interacts with tens of microservices all communicating with each other, a transfer data type that represents the media type and domain concern our API will provide to consumers is a good idea. Think of it as layers _within_ our domain layer:
 
-- Our entities represent the source of record stored within our database, that when extracted, are expected to modify and persist their state
-- Our DTOs act as containers to transport that persisted data between layers (e.g. the domain layer and the data layer, and from the data layer to the API layer in the long run)
-- Our API layer should **not** have any knowledge of our entities, as they contain audit properties (timestamps) and relations to other entities that should only be interacted with at lower layers
-- Our resource types will represent the models/media types we will provide to our consumers, as our DTOs are more, or less, internal to our API
+-   Our entities represent the source of record stored within our database, that when extracted, are expected to modify and persist their state
+-   Our DTOs act as containers to transport that persisted data between layers (e.g. the domain layer and the data layer, and from the data layer to the API layer in the long run)
+-   Our API layer should **not** have any knowledge of our entities, as they contain audit properties (timestamps) and relations to other entities that should only be interacted with at lower layers
+-   Our resource types will represent the models/media types we will provide to our consumers, as our DTOs are more, or less, internal to our API
 
 With the semantics out of the way, lets go ahead and create a `Media` folder and place a few resource types within that folder:
 

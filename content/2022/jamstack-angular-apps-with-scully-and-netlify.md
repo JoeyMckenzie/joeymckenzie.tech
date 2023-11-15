@@ -5,10 +5,10 @@ pubDate: 'Feb 22 2022'
 heroImage: '/blog/jamstack-angular-apps-with-scully/angular-scully-netlify-meme.jpg'
 category: 'angular'
 keywords:
-  - angular
-  - jamstack
-  - scully
-  - netlify
+    - angular
+    - jamstack
+    - scully
+    - netlify
 ---
 
 There's no denying that the [JAMstack](https://jamstack.org/) has taken the traditional web development world by
@@ -29,9 +29,9 @@ What I'd wished I found earlier before going down my Angular JAMstack journey is
 
 Yep, the JAMstack: **J**avaScript, **A**PIs, and **M**arkup. There's a thriving [community](https://jamstack.org/) of developers embracing the JAMstack, so defer to them for the nitty gritty details. The JAMstack follows a general artchitecture:
 
-- **M**arkup is pre-rendered at build time and served as static HTML and CSS
-- **J**avaScript still provides all its native interactivity with the browser, while not bogging down the initial rendering of our apps with retrieving JS bundles
-- **A**PIs that provide data, processing, and whatever else we need from a backend server
+-   **M**arkup is pre-rendered at build time and served as static HTML and CSS
+-   **J**avaScript still provides all its native interactivity with the browser, while not bogging down the initial rendering of our apps with retrieving JS bundles
+-   **A**PIs that provide data, processing, and whatever else we need from a backend server
 
 In essence, JAMstack principles align to provide fast, reliable, scalable, and performant web applications for the modern browser.
 
@@ -80,23 +80,23 @@ import { RouterModule, Routes } from '@angular/router';
 import { DataComponent, HomeComponent, PingComponent } from '@components';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: HomeComponent,
-  },
-  {
-    path: 'ping',
-    component: PingComponent,
-  },
-  {
-    path: 'data',
-    component: DataComponent,
-  },
+    {
+        path: '',
+        component: HomeComponent,
+    },
+    {
+        path: 'ping',
+        component: PingComponent,
+    },
+    {
+        path: 'data',
+        component: DataComponent,
+    },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule],
 })
 export class AppRoutingModule {}
 ```
@@ -131,10 +131,10 @@ import { Subject } from 'rxjs';
 
 @Injectable()
 export class UnsubscribeService extends Subject<void> implements OnDestroy {
-  ngOnDestroy(): void {
-    this.next();
-    this.complete();
-  }
+    ngOnDestroy(): void {
+        this.next();
+        this.complete();
+    }
 }
 ```
 
@@ -151,23 +151,23 @@ import { of } from 'rxjs';
 import { environment } from '@environment';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class PingService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  pingServer() {
-    const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`;
+    pingServer() {
+        const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`;
 
-    return this.http.get<ServerResponse>(`${baseUrl}/ping`).pipe(
-      map((response) => response.message),
-      delay(1000),
-      catchError((error) => {
-        console.log(error);
-        return of('Whoops... an error occurred :(');
-      }),
-    );
-  }
+        return this.http.get<ServerResponse>(`${baseUrl}/ping`).pipe(
+            map((response) => response.message),
+            delay(1000),
+            catchError((error) => {
+                console.log(error);
+                return of('Whoops... an error occurred :(');
+            }),
+        );
+    }
 }
 ```
 
@@ -184,27 +184,27 @@ import { catchError, delay, map } from 'rxjs/operators';
 import { ServerResponse } from 'types';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class DataService {
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  sendDataToServer(name: string) {
-    const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`;
+    sendDataToServer(name: string) {
+        const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`;
 
-    return this.http
-      .post<ServerResponse>(`${baseUrl}/data`, {
-        name,
-      })
-      .pipe(
-        delay(1000),
-        map((response) => response.message),
-        catchError((error) => {
-          console.log(error);
-          return EMPTY;
-        }),
-      );
-  }
+        return this.http
+            .post<ServerResponse>(`${baseUrl}/data`, {
+                name,
+            })
+            .pipe(
+                delay(1000),
+                map((response) => response.message),
+                catchError((error) => {
+                    console.log(error);
+                    return EMPTY;
+                }),
+            );
+    }
 }
 ```
 
@@ -218,40 +218,40 @@ import { Inject, Injectable } from '@angular/core';
 import { Meta, MetaDefinition } from '@angular/platform-browser';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class DocumentService {
-  private readonly rootTitle = 'Scully, Angular, and Netlify';
+    private readonly rootTitle = 'Scully, Angular, and Netlify';
 
-  constructor(
-    @Inject(DOCUMENT) private readonly document: Document,
-    private meta: Meta,
-  ) {}
+    constructor(
+        @Inject(DOCUMENT) private readonly document: Document,
+        private meta: Meta,
+    ) {}
 
-  resetTitle(): void {
-    this.document.title = this.rootTitle;
-    this.meta.updateTag({
-      name: 'title',
-      content: this.rootTitle,
-    });
-  }
+    resetTitle(): void {
+        this.document.title = this.rootTitle;
+        this.meta.updateTag({
+            name: 'title',
+            content: this.rootTitle,
+        });
+    }
 
-  updateTitle(pageTitle: string): void {
-    this.document.title = `${this.rootTitle} - ${pageTitle}`;
-    this.meta.updateTag({
-      name: 'title',
-      content: pageTitle,
-    });
-  }
+    updateTitle(pageTitle: string): void {
+        this.document.title = `${this.rootTitle} - ${pageTitle}`;
+        this.meta.updateTag({
+            name: 'title',
+            content: pageTitle,
+        });
+    }
 
-  setMetaTags(tags: MetaDefinition[]) {
-    tags.map((t) => {
-      const existingTag = this.meta.getTag(t.id ?? '');
-      if (!existingTag) {
-        this.meta.addTag(t);
-      }
-    });
-  }
+    setMetaTags(tags: MetaDefinition[]) {
+        tags.map((t) => {
+            const existingTag = this.meta.getTag(t.id ?? '');
+            if (!existingTag) {
+                this.meta.addTag(t);
+            }
+        });
+    }
 }
 ```
 
@@ -266,34 +266,35 @@ import { DocumentService, PingService, UnsubscribeService } from '@services';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-ping',
-  templateUrl: './ping.component.html',
+    selector: 'app-ping',
+    templateUrl: './ping.component.html',
 })
 export class PingComponent implements OnInit {
-  message = 'pinging the server...';
+    message = 'pinging the server...';
 
-  constructor(
-    private documentService: DocumentService,
-    private pingService: PingService,
-    private unsubscribe$: UnsubscribeService,
-  ) {}
+    constructor(
+        private documentService: DocumentService,
+        private pingService: PingService,
+        private unsubscribe$: UnsubscribeService,
+    ) {}
 
-  ngOnInit(): void {
-    this.documentService.updateTitle('ping');
-    this.documentService.setMetaTags([
-      {
-        name: 'author',
-        content: 'Joey McKenzie',
-      },
-    ]);
+    ngOnInit(): void {
+        this.documentService.updateTitle('ping');
+        this.documentService.setMetaTags([
+            {
+                name: 'author',
+                content: 'Joey McKenzie',
+            },
+        ]);
 
-    this.pingService
-      .pingServer()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(
-        (message) => (this.message = `response from server: ${message}`),
-      );
-  }
+        this.pingService
+            .pingServer()
+            .pipe(takeUntil(this.unsubscribe$))
+            .subscribe(
+                (message) =>
+                    (this.message = `response from server: ${message}`),
+            );
+    }
 }
 ```
 
@@ -315,34 +316,34 @@ import { DocumentService, DataService, UnsubscribeService } from '@services';
 import { finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-data',
-  templateUrl: './data.component.html',
+    selector: 'app-data',
+    templateUrl: './data.component.html',
 })
 export class DataComponent implements OnInit {
-  loading = false;
-  response?: string;
+    loading = false;
+    response?: string;
 
-  constructor(
-    private documentService: DocumentService,
-    private dataService: DataService,
-    private unsubscribe$: UnsubscribeService,
-  ) {}
+    constructor(
+        private documentService: DocumentService,
+        private dataService: DataService,
+        private unsubscribe$: UnsubscribeService,
+    ) {}
 
-  ngOnInit(): void {
-    this.documentService.updateTitle('data');
-  }
+    ngOnInit(): void {
+        this.documentService.updateTitle('data');
+    }
 
-  loadData() {
-    this.loading = true;
+    loadData() {
+        this.loading = true;
 
-    this.dataService
-      .sendDataToServer('Joey')
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        finalize(() => (this.loading = false)),
-      )
-      .subscribe((response) => (this.response = response));
-  }
+        this.dataService
+            .sendDataToServer('Joey')
+            .pipe(
+                takeUntil(this.unsubscribe$),
+                finalize(() => (this.loading = false)),
+            )
+            .subscribe((response) => (this.response = response));
+    }
 }
 ```
 
@@ -376,15 +377,15 @@ import { Component, OnInit } from '@angular/core';
 import { DocumentService } from '../../services/document.service';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
+    selector: 'app-home',
+    templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-  constructor(private documentService: DocumentService) {}
+    constructor(private documentService: DocumentService) {}
 
-  ngOnInit(): void {
-    this.documentService.resetTitle();
-  }
+    ngOnInit(): void {
+        this.documentService.resetTitle();
+    }
 }
 ```
 
@@ -394,22 +395,22 @@ and with markup,
 
 ```html
 <div class="flex flex-row space-x-4">
-  <a routerLink="/ping">
-    <button
-      type="button"
-      class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
-    >
-      Ping
-    </button>
-  </a>
-  <a routerLink="/data">
-    <button
-      type="button"
-      class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
-    >
-      Data
-    </button>
-  </a>
+    <a routerLink="/ping">
+        <button
+            type="button"
+            class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+        >
+            Ping
+        </button>
+    </a>
+    <a routerLink="/data">
+        <button
+            type="button"
+            class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+        >
+            Data
+        </button>
+    </a>
 </div>
 ```
 
@@ -420,14 +421,14 @@ While we're at it, let's go ahead and update `app.component.html` with some rout
 ```html
 <router-outlet></router-outlet>
 <div class="flex flex-row justify-center pt-12">
-  <a routerLink="/">
-    <button
-      type="button"
-      class="inline-flex items-center rounded-md border border-transparent bg-red-500 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
-    >
-      Home
-    </button>
-  </a>
+    <a routerLink="/">
+        <button
+            type="button"
+            class="inline-flex items-center rounded-md border border-transparent bg-red-500 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+        >
+            Home
+        </button>
+    </a>
 </div>
 ```
 
@@ -442,10 +443,10 @@ With devtools open, if we click the ping button that routes us to the page with 
 If you're familiar with static site hosting services, [Netlify](https://www.netlify.com/) is another one of those
 with much, much more to offer than simple site hosting. One of my favorite features of Netlify is [Netlify Functions](https://functions.netlify.com/) - Netlify's version of serverless functions that utilize AWS lambda functions behind the scenes to provide an easy way to integrate backend functionality with our statically served web apps. I've found serverless functions helpful in quite a few different ways:
 
-- Sending out emails using email API services
-- Integrating with third-party APIs to do some processing for frontend requests
-- Serving simple data to be consumed from the frontend
-- Heck, even persisting to database based on requests from our frontend applications
+-   Sending out emails using email API services
+-   Integrating with third-party APIs to do some processing for frontend requests
+-   Serving simple data to be consumed from the frontend
+-   Heck, even persisting to database based on requests from our frontend applications
 
 Our serverless functions will _serve_, more or less, as an API-lite for our static served Angular Scully application that will be hosted in Netlify, allowing us to connect our outgoing HTTP calls from the frontend to the backend functions listening for requests. Functions work on the premise of running code at a specified endpoint that receive HTTP events (methods, headers, request body, etc.) and the context of the HTTP request (metadata about the function itself). There's a lot we can customize around the way our functions are detected, served, and ran, but we'll utilize all the defaults for now.
 
@@ -460,11 +461,11 @@ Using the CLI, let's add an npm script in our `package.json` we can run to start
 
 ```json
 {
-  // ...other stuff
-  "scripts": {
-    // ...other scripts
-    "functions:serve": "netlify functions:serve"
-  }
+    // ...other stuff
+    "scripts": {
+        // ...other scripts
+        "functions:serve": "netlify functions:serve"
+    }
 }
 ```
 
@@ -481,34 +482,34 @@ we should see a message in our console along the lines of ready to serve, but no
 ```ts
 import { Handler } from '@netlify/functions';
 import {
-  getErrorResponse,
-  getHeaders,
-  HttpStatus,
-  isWhitelistedDomain,
+    getErrorResponse,
+    getHeaders,
+    HttpStatus,
+    isWhitelistedDomain,
 } from '../lib';
 import { ServerResponse } from 'types';
 
 const handler: Handler = async (event) => {
-  const origin = event.headers.origin ?? '';
+    const origin = event.headers.origin ?? '';
 
-  if (!isWhitelistedDomain(origin)) {
-    return getErrorResponse(HttpStatus.Forbidden);
-  }
+    if (!isWhitelistedDomain(origin)) {
+        return getErrorResponse(HttpStatus.Forbidden);
+    }
 
-  if (event.httpMethod.toLowerCase() !== 'get') {
-    return getErrorResponse(HttpStatus.MethodNotAllowed);
-  }
+    if (event.httpMethod.toLowerCase() !== 'get') {
+        return getErrorResponse(HttpStatus.MethodNotAllowed);
+    }
 
-  const response: ServerResponse = {
-    success: true,
-    message: 'pong',
-  };
+    const response: ServerResponse = {
+        success: true,
+        message: 'pong',
+    };
 
-  return {
-    statusCode: 200,
-    body: JSON.stringify(response),
-    headers: getHeaders(origin),
-  };
+    return {
+        statusCode: 200,
+        body: JSON.stringify(response),
+        headers: getHeaders(origin),
+    };
 };
 
 export { handler };
@@ -523,61 +524,61 @@ import { Response } from '@netlify/functions/dist/function/response';
 import { ServerResponse } from 'types';
 
 enum HttpStatus {
-  Forbidden = '403',
-  MethodNotAllowed = '405',
-  InternalServerError = '500',
+    Forbidden = '403',
+    MethodNotAllowed = '405',
+    InternalServerError = '500',
 }
 
 const WHITELIST_DOMAINS = [
-  '', // Postman doesn't send request from an origin, allow it through (DON'T DO THIS IN PRODUCTION)
-  'http://localhost:4200', // Whitelist our Angular dev serve for local development
-  'http://localhost:1668', // Whitelist our Scully server for local Scully development
-  'https://asdfasdf.netlify.app', // Whitelist our production server deployed to Netlify
+    '', // Postman doesn't send request from an origin, allow it through (DON'T DO THIS IN PRODUCTION)
+    'http://localhost:4200', // Whitelist our Angular dev serve for local development
+    'http://localhost:1668', // Whitelist our Scully server for local Scully development
+    'https://asdfasdf.netlify.app', // Whitelist our production server deployed to Netlify
 ];
 
 function getHeaders(origin: string): { [key: string]: string } {
-  return {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Headers': '*',
-  };
+    return {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Headers': '*',
+    };
 }
 
 function isNullOrUndefined(
-  objectToValidate?: unknown | null | undefined,
+    objectToValidate?: unknown | null | undefined,
 ): boolean {
-  return objectToValidate === null || objectToValidate === undefined;
+    return objectToValidate === null || objectToValidate === undefined;
 }
 
 function isWhitelistedDomain(origin: string): boolean {
-  const existingDomain = WHITELIST_DOMAINS.find((d) => d === origin);
-  return !isNullOrUndefined(existingDomain);
+    const existingDomain = WHITELIST_DOMAINS.find((d) => d === origin);
+    return !isNullOrUndefined(existingDomain);
 }
 
 function getErrorResponse(statusCode: HttpStatus): Response {
-  let message: string;
+    let message: string;
 
-  switch (statusCode) {
-    case HttpStatus.Forbidden:
-      message = 'That method is not allowed for this endpoint.';
-      break;
-    case HttpStatus.MethodNotAllowed:
-      message = 'Domain is forbidden from accessing.';
-      break;
-    default:
-      message = 'An invalid request was made, please try again.';
-  }
+    switch (statusCode) {
+        case HttpStatus.Forbidden:
+            message = 'That method is not allowed for this endpoint.';
+            break;
+        case HttpStatus.MethodNotAllowed:
+            message = 'Domain is forbidden from accessing.';
+            break;
+        default:
+            message = 'An invalid request was made, please try again.';
+    }
 
-  return {
-    statusCode: +statusCode,
-    body: JSON.stringify({
-      success: false,
-      message,
-    } as ServerResponse),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
+    return {
+        statusCode: +statusCode,
+        body: JSON.stringify({
+            success: false,
+            message,
+        } as ServerResponse),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
 }
 
 export { getErrorResponse, getHeaders, isWhitelistedDomain, HttpStatus };
@@ -587,8 +588,8 @@ Nothing too complicated, just a few simple helpers to facilitate validating allo
 
 ```ts
 export type ServerResponse = {
-  message: string;
-  success: boolean;
+    message: string;
+    success: boolean;
 };
 ```
 
@@ -599,9 +600,9 @@ common statically typed-model between the front and backend of our project!
 
 As you might have guessed, the names and pathing of our function `.ts` files _does_ matter in our case. There's a few simple rules to adhere to when creating function endpoints
 
-- `netlify/functions/ping.ts` would receive HTTP request matching the route `/.netlify/functions/ping`
-- `netlify/functions/ping/index.ts` would _also_ receive HTTP request matching the route `/.netlify/functions/ping`
-- `netlify/functions/ping/ping.ts` would, again, _also_ receive HTTP request matching the route `/.netlify/functions/ping`
+-   `netlify/functions/ping.ts` would receive HTTP request matching the route `/.netlify/functions/ping`
+-   `netlify/functions/ping/index.ts` would _also_ receive HTTP request matching the route `/.netlify/functions/ping`
+-   `netlify/functions/ping/ping.ts` would, again, _also_ receive HTTP request matching the route `/.netlify/functions/ping`
 
 Now that we have our first function in place, let's go ahead and start our function server:
 
@@ -632,54 +633,54 @@ We've got a response! Now that our GET endpoint is working, let's add a POST end
 ```ts
 import { Handler } from '@netlify/functions';
 import {
-  getErrorResponse,
-  getHeaders,
-  HttpStatus,
-  isWhitelistedDomain,
+    getErrorResponse,
+    getHeaders,
+    HttpStatus,
+    isWhitelistedDomain,
 } from '../../lib';
 import { ServerResponse } from 'types';
 
 const handler: Handler = async (event) => {
-  const origin = event.headers.origin ?? '';
+    const origin = event.headers.origin ?? '';
 
-  if (!isWhitelistedDomain(origin)) {
-    return getErrorResponse(HttpStatus.Forbidden);
-  }
+    if (!isWhitelistedDomain(origin)) {
+        return getErrorResponse(HttpStatus.Forbidden);
+    }
 
-  const method = event.httpMethod.toLowerCase();
+    const method = event.httpMethod.toLowerCase();
 
-  if (method !== 'options' && method !== 'post') {
-    return getErrorResponse(HttpStatus.MethodNotAllowed);
-  }
+    if (method !== 'options' && method !== 'post') {
+        return getErrorResponse(HttpStatus.MethodNotAllowed);
+    }
 
-  /**
-   * Because we have a more complex request (JSON being sent over the wire),
-   * an options call is made by the Angular HTTP client service to check with our function
-   * that it's okay to receive requests in the current context.
-   */
-  if (method === 'options') {
-    return {
-      statusCode: 200,
-      headers: getHeaders(origin),
-    };
-  }
+    /**
+     * Because we have a more complex request (JSON being sent over the wire),
+     * an options call is made by the Angular HTTP client service to check with our function
+     * that it's okay to receive requests in the current context.
+     */
+    if (method === 'options') {
+        return {
+            statusCode: 200,
+            headers: getHeaders(origin),
+        };
+    }
 
-  if (event.body) {
-    const requestBody: { name: string } = JSON.parse(event.body);
+    if (event.body) {
+        const requestBody: { name: string } = JSON.parse(event.body);
 
-    const response: ServerResponse = {
-      success: true,
-      message: `Hello ${requestBody.name}!`,
-    };
+        const response: ServerResponse = {
+            success: true,
+            message: `Hello ${requestBody.name}!`,
+        };
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify(response),
-      headers: getHeaders(origin),
-    };
-  }
+        return {
+            statusCode: 200,
+            body: JSON.stringify(response),
+            headers: getHeaders(origin),
+        };
+    }
 
-  return getErrorResponse(HttpStatus.InternalServerError);
+    return getErrorResponse(HttpStatus.InternalServerError);
 };
 
 export { handler };
@@ -715,10 +716,10 @@ import { ScullyConfig } from '@scullyio/scully';
 import '@scullyio/scully-plugin-puppeteer';
 
 export const config: ScullyConfig = {
-  projectRoot: './src',
-  projectName: 'scully-netlify-angular-example',
-  outDir: './dist/static',
-  routes: {},
+    projectRoot: './src',
+    projectName: 'scully-netlify-angular-example',
+    outDir: './dist/static',
+    routes: {},
 };
 ```
 
@@ -726,13 +727,13 @@ To make things easy on us, let's add a few build scripts to our `scripts` sectio
 
 ```json
 {
-  "scripts": {
-    // ...other scripts
-    "build:scully": "cross-env NODE_ENV=scully ng build -c scully && npx scully --scanRoutes",
-    "build:production": "cross-env NODE_ENV=production ng build -c production && npx scully --scanRoutes",
-    "scully": "npx scully --",
-    "scully:serve": "npx scully serve --"
-  }
+    "scripts": {
+        // ...other scripts
+        "build:scully": "cross-env NODE_ENV=scully ng build -c scully && npx scully --scanRoutes",
+        "build:production": "cross-env NODE_ENV=production ng build -c production && npx scully --scanRoutes",
+        "scully": "npx scully --",
+        "scully:serve": "npx scully serve --"
+    }
 }
 ```
 
@@ -764,11 +765,11 @@ With our Scully server running, we should still be able to hit our Netlify funct
 running), receiving the same responses we saw from serving the de-Scully'd version of our application. While it may
 not _seem_ like much, let's take a second to realize what's going on:
 
-- We have a serverless backend stood up ready to receive HTTP requests and do any server related processing with
-  _zero_ backend frameworks in place
-- We have a fully static version of our Angular application running in the browser optimized for SEO and indexing by
-  search engines
-- To top it off, we're doing all of this within the same repository code!
+-   We have a serverless backend stood up ready to receive HTTP requests and do any server related processing with
+    _zero_ backend frameworks in place
+-   We have a fully static version of our Angular application running in the browser optimized for SEO and indexing by
+    search engines
+-   To top it off, we're doing all of this within the same repository code!
 
 While we're only scratching the surface of what's possible with Angular, Scully, and Netlify Functions, the DX
 offered by these tools allows us to quickly develop and ship static websites with rich functionality and data fetching

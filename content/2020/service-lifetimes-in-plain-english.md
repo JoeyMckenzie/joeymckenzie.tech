@@ -5,9 +5,9 @@ pubDate: 'Sep 23 2020'
 heroImage: 'https://imgs.xkcd.com/comics/dependencies.png'
 category: '.NET'
 keywords:
-  - c#
-  - .net
-  - service lifetimes
+    - c#
+    - .net
+    - service lifetimes
 ---
 
 No matter the side of the dependency injection debate fence you fall, you've probably worked with some .NET code that had some form of object composition through DI at some point, or another. Heck, with libraries in [Autofac](https://autofac.org/) and .NET Core's dependency injection extension namespace, DI and service container registration is a breeze with all the heavy lifting done virtually for us.
@@ -45,9 +45,9 @@ In our .NET Core applications, we deal with registered service container objects
 
 Alright, back to business. Like we mentioned, there are three service lifetimes we can access through the dependency injection extension namespace in transient, scoped, and singleton. The plain english explanation is as follows:
 
-- **transient** - these services are constructed anew _every_ single time they're request from the service container and will never persist across registered containers (i.e. `ServiceCollection`s that have outlived the scope of one another)
-- **scoped** - services that are constructed once during the lifetime scope of a `ServiceCollection` and persist across service requests each time they're requested within the lifetime scope of a service container
-- **singleton** - services that are constructed only a single time during the lifetime of an application, and persistent across service container lifetime scopes
+-   **transient** - these services are constructed anew _every_ single time they're request from the service container and will never persist across registered containers (i.e. `ServiceCollection`s that have outlived the scope of one another)
+-   **scoped** - services that are constructed once during the lifetime scope of a `ServiceCollection` and persist across service requests each time they're requested within the lifetime scope of a service container
+-   **singleton** - services that are constructed only a single time during the lifetime of an application, and persistent across service container lifetime scopes
 
 That seems like a lot of hoobla, so let's see service lifetimes in action to really try and make sense of all of this.
 
