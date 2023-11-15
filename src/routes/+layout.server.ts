@@ -1,7 +1,7 @@
 import { dev } from '$app/environment';
 import { VERCEL_GIT_COMMIT_SHA } from '$env/static/private';
 import { getViewCounts, type ViewCountQuery } from '$lib/db';
-import { getSpotifyNowPlaying } from '$lib/spotify';
+import { getSpotifyNowPlaying, type NowPlayingResponse } from '$lib/spotify';
 import type { PostWithViewCount } from '$lib/types';
 import { allPosts } from 'contentlayer/generated';
 import { compareDesc } from 'date-fns';
@@ -9,16 +9,20 @@ import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async () => {
   let viewCounts: ViewCountQuery[] = [];
+  let nowPlaying: NowPlayingResponse | undefined;
 
   try {
-    viewCounts = await getViewCounts();
+    [viewCounts, nowPlaying] = await Promise.all([
+      getViewCounts(),
+      getSpotifyNowPlaying(),
+    ]);
   } catch (e) {
     console.error('error while retrieving view counts', e);
   }
 
   return {
     commitSha: VERCEL_GIT_COMMIT_SHA,
-    nowPlaying: await getSpotifyNowPlaying(),
+    nowPlaying,
     postPreviews: loadInitialPostPreviews(viewCounts),
   };
 };
