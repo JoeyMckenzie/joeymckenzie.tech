@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { Head } from '@inertiajs/vue3';
+import MainLayout from '@/Layouts/MainLayout.vue';
 </script>
 <template>
     <Head>
@@ -11,21 +12,24 @@ import { Head } from '@inertiajs/vue3';
         <meta content="software, programming, technology" name="keywords" />
     </Head>
 
-    <h2 class="text-4xl font-bold tracking-tight sm:text-center">
-        Hi, I'm Joey.
-    </h2>
-    <p class="prose dark:prose-invert mx-auto mt-6 text-justify leading-6">
-        I'm a <span class="font-semibold">Senior Software Engineer</span> based
-        in Northern California working in fintech. I enjoy writing about
-        software, design, dad jokes, and cheap beer among a few other things. I
-        like building fast, efficient web services, learning new things, and
-        writing code in the open source ecosystem.
-    </p>
-    <!-- <SocialButtons /> -->
-    <h2
-        class="pb-4 pt-8 text-right text-4xl font-bold tracking-tight sm:text-center"
-    >
-        Latest thoughts.
-    </h2>
-    <!-- <BlogPreview posts={$viewCountStore.latest} /> -->
+    <MainLayout>
+        <h2 class="text-4xl font-bold tracking-tight sm:text-center">
+            Hi, I'm Joey.
+        </h2>
+        <p class="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert">
+            I'm a
+            <span class="font-semibold">Senior Software Engineer</span> based in
+            Northern California working in fintech. I enjoy writing about
+            software, design, dad jokes, and cheap beer among a few other
+            things. I like building fast, efficient web services, learning new
+            things, and writing code in the open source ecosystem.
+        </p>
+        <!-- <SocialButtons /> -->
+        <h2
+            class="pb-4 pt-8 text-right text-4xl font-bold tracking-tight sm:text-center"
+        >
+            Latest thoughts.
+        </h2>
+        <!-- <BlogPreview posts={$viewCountStore.latest} /> -->
+    </MainLayout>
 </template>
