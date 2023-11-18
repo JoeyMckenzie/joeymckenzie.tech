@@ -1,13 +1,4 @@
 <script lang="ts" setup>
-// useSeoMeta({
-//     title: 'About | joeymckenzie.tech',
-//     ogTitle: 'About | joeymckenzie.tech',
-//     description: 'Beers. Beats. Battlestar Galactica.',
-//     ogDescription: 'Beers. Beats. Battlestar Galactica.',
-//     ogImage: 'https://joeymckenzie.tech/favicon-32x32.png',
-//     twitterCard: 'summary_large_image',
-// });
-
 import MainLayout from '@/Layouts/MainLayout.vue';
 </script>
 
