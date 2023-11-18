@@ -8,7 +8,8 @@
         "fmt": "prettier --write .",
         "check": "prettier --check --plugin prettier-plugin-tailwindcss ./resources/js",
         "fix": "pnpm run check && eslint --fix \"./resources/js/**/*.vue\"",
-        "lint": "pnpm run check && eslint \"./resources/js/**/*.vue\""
+        "lint": "pnpm run check && eslint \"./resources/js/**/*.vue\"",
+        "ci": "pnpm run check && pnpm run lint"
     },
     "lint-staged": {
         "**/*.{vue,js,ts,json,yml,md}": "pnpm run fmt"
