@@ -2,7 +2,7 @@ name: Deploy to Fly
 
 on:
     workflow_run:
-        workflows: ['Fly CI']
+        workflows: ['CI']
         types:
             - completed
 
