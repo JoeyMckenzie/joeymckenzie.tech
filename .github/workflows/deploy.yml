@@ -10,8 +10,10 @@ on: [push]
 
 jobs:
     build:
-        name: Deploy application
         runs-on: ubuntu-latest
+        timeout-minutes: 10
+
+        name: Deploy application
         steps:
             - uses: superfly/flyctl-actions/setup-flyctl@master
             - uses: actions/checkout@v3

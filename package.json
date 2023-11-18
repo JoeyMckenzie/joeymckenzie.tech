@@ -12,7 +12,7 @@
         "ci": "pnpm run check && pnpm run lint"
     },
     "lint-staged": {
-        "**/*.{vue,js,ts,json,yml,md}": "pnpm run fmt"
+        "**/*.{vue,js,ts,json,yml,toml,md}": "pnpm run fmt"
     },
     "devDependencies": {
         "@iconify/vue": "^4.1.1",
