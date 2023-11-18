@@ -4,20 +4,20 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 
 <template>
     <MainLayout>
-        <div>
+        <div class="pb-12">
             <h2 class="text-4xl font-bold tracking-tight sm:text-center">
                 Blog.
             </h2>
             <p
                 class="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert"
             >
-                I'm a
-                <span class="font-semibold">Senior Software Engineer</span>
-                based in Northern California working in fintech. I enjoy writing
-                about software, design, dad jokes, and cheap beer among a few
-                other things. I like building fast, efficient web services,
-                learning new things, and writing code in the open source
-                ecosystem.
+                I write about a lot of things, mainly languages, ecoystems, and
+                software design. I consider my writing a journal of technologies
+                I&apos;ve worked with at some point during my career, and
+                I&apos;m always happy to field questions and conversations from
+                interested readers. Feel free to
+                <Link href="mailto:joey.mckenzie27@gmail.com">contact</Link>
+                me about any of the writing I do here, or to simply say hello!
             </p>
         </div>
     </MainLayout>
