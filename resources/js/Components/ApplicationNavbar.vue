@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import Button from '@/Components/ui/button/Button.vue';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
+import { Link } from '@inertiajs/vue3';
 
 type NavLinkProps = {
     href: string;
@@ -28,15 +29,15 @@ const links: NavLinkProps[] = [
         <nav
             class="flex flex-row items-center justify-center gap-x-2 px-6 py-8"
         >
-            <Button
+            <Link
                 v-for="{ display, href } of links"
                 :key="display"
                 :href="href"
-                as="a"
-                variant="outline"
             >
-                {{ display }}
-            </Button>
+                <Button variant="outline">
+                    {{ display }}
+                </Button>
+            </Link>
             <ThemeToggle />
         </nav>
     </header>
