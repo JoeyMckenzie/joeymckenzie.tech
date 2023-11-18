@@ -11,6 +11,7 @@ storage/logs/*
 rr
 vendor
 examples
+justfile
 
 # 2. Ignore common files/directories we don't need
 fly.toml
