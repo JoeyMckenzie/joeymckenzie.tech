@@ -15,6 +15,8 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
+        "league/commonmark": "^2.4",
+        "symfony/yaml": "^6.3",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
