@@ -6,7 +6,7 @@ import MainLayout from '@/Layouts/MainLayout.vue';
     <Head>
         <title>Bears. Beets. Battlestar Galactiga. | joeymckenzie.tech</title>
         <meta
-            content="A blog about software, technology, and sometimes beer."
+            content="A blog about software, technology, and sometimes beer. Mostly beer."
             name="description"
         />
         <meta content="software, programming, technology" name="keywords" />
