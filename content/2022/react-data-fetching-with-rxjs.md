@@ -2,7 +2,7 @@
 title: 'React data fetching with RxJS'
 description: 'Use RxJS to implement simple data fetching, making ALL THE THINGS reactive!'
 pubDate: 'Mar 3 2022'
-heroImage: '/blog/react-data-fetching/react-data-fetching-meme.jpg'
+heroImage: '/images/react-data-fetching/react-data-fetching-meme.jpg'
 category: 'react'
 keywords:
     - react
@@ -333,7 +333,9 @@ Breaking it down:
 -   `utilties.ts` will house some common mapping/retrieving functions to be reused amongst components and pages
 -   `types.ts` houses all the type information we expect back from the API and the prop shapes our pages will expect
 
-Before you ask, no, I didn't manually write out the interface for the GitHub API response, I used [json2ts](http://www.json2ts.com/) to quickly model out the response object to TypeScript based on the JSON data returned
+Before you ask, no, I didn't manually write out the interface for the GitHub API response, I
+used [json2ts](http://www.json2ts.com/) to quickly model out the response object to TypeScript based on the JSON data
+returned
 from calling my username repo endpoint. We also explicitly type our page props using `WithFetchProps` for sanity.
 You can use `InferGetServerSidePropsType` from next.js, but I find intellisense from VS Code lacking so I swapped
 out my own type.
@@ -365,7 +367,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 ```
 
-We're utilizing next.js's mechanism for [server-side data fetching](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props) with `getServerSideProps`, simply calling out to the GH
+We're utilizing next.js's mechanism
+for [server-side data fetching](https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props)
+with `getServerSideProps`, simply calling out to the GH
 API endpoint for our repositories, streaming the JSON response, and mapping the response to a simple object for our
 page to display while appropriately handling any errors that may occur. While this suffices for our need to retrieve
 data, we're using promise resolution in its most primitive form. I'm still `await` the promise to resolve itself
@@ -626,7 +630,8 @@ context, but this time on the client.
 ## Wrapping up
 
 I like RxJS, and love more so RxJS-ifying anything and everything I can. While there are existing RxJS/react
-integration libraries, I prefer simply using RxJS in its natural form, allowing me to fully customize how I `.pipe()` streams of data however I like. RxJS, again, is a _huge_ library of utilities for pub/sub and reactive programming
+integration libraries, I prefer simply using RxJS in its natural form, allowing me to fully customize how I `.pipe()`
+streams of data however I like. RxJS, again, is a _huge_ library of utilities for pub/sub and reactive programming
 with JS, and is not meant to _replace_ promises, but rather offer an alternative, or in our case, complimentary
 functionality that promises provide in the first place. I love RxJS, and will definitely be using it wherever I can
 in my

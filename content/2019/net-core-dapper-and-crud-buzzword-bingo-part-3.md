@@ -2,7 +2,7 @@
 title: 'Clean architecture, Dapper, MediatR, and buzzword bingo (part 3)'
 description: 'Testing code with xUnit, Dapper, and Shouldly.'
 pubDate: 'Nov 19 2019'
-heroImage: '/blog/net-core-dapper-and-crud-series/part-3/shouldly-xunit-meme.jpeg'
+heroImage: '/images/net-core-dapper-and-crud-series/part-3/shouldly-xunit-meme.jpeg'
 category: '.NET'
 keywords:
     - .net
@@ -11,47 +11,103 @@ keywords:
     - mediatr
 ---
 
-Two layers down, two to go. While we've made some great progress in our [last post](/blog/net-core-dapper-and-crud-buzzword-bingo-part-2/), I wanted to carve out at least one section in our series discussing testing our application. So far, we've built our domain and persistence layers, but we have yet to actually implement any transactional processes that require the higher up layers that will run the code we've written so far to confirm its correctness. Rather than wait until we've built out our API layer to begin testing our implementation of the data layer (that would be more integration testing, one could argue), a better solution would be to take some time to write some simple and quick unit tests around our persistence layer. With our data layer fully unit tested, we won't have to wait to have an API to interact with via Postman, or some other application testing tool, to ensure he code we have so far is giving us the result sets we expect. With our code unit tested in this fashion, we can use said tests as contracts for our expectation of each operation within our repositories, and grant ourself the ability to safely refactor without fear of unknowingly breaking the application (at least within the persistence layer).
+Two layers down, two to go. While we've made some great progress in
+our [last post](/blog/net-core-dapper-and-crud-buzzword-bingo-part-2/), I wanted to carve out at least one section in
+our series discussing testing our application. So far, we've built our domain and persistence layers, but we have yet to
+actually implement any transactional processes that require the higher up layers that will run the code we've written so
+far to confirm its correctness. Rather than wait until we've built out our API layer to begin testing our implementation
+of the data layer (that would be more integration testing, one could argue), a better solution would be to take some
+time to write some simple and quick unit tests around our persistence layer. With our data layer fully unit tested, we
+won't have to wait to have an API to interact with via Postman, or some other application testing tool, to ensure he
+code we have so far is giving us the result sets we expect. With our code unit tested in this fashion, we can use said
+tests as contracts for our expectation of each operation within our repositories, and grant ourself the ability to
+safely refactor without fear of unknowingly breaking the application (at least within the persistence layer).
 
-Feel free to checkout the code in this post [here](https://github.com/JoeyMckenzie/Dappery/tree/master/tests/Dappery.Data.Tests). Before we jump into writing the unit tests, let's discuss the tools, approach, and mindset we'll use for writing our tests in each layer of our application (excluding our domain layer, as there is really not much logic there by design):
+Feel free to checkout the code in this
+post [here](https://github.com/JoeyMckenzie/Dappery/tree/master/tests/Dappery.Data.Tests). Before we jump into writing
+the unit tests, let's discuss the tools, approach, and mindset we'll use for writing our tests in each layer of our
+application (excluding our domain layer, as there is really not much logic there by design):
 
--   Within each layer, we'll use a combination of [xUnit](https://xunit.net/) and [Shouldly](https://github.com/shouldly/shouldly), my preferred unit test and assertion frameworks, respectively
--   In our `Dappery.Data` project, we'll write units tests around each operation in our `BeerRepository` and `BreweryRepository` classes, utilizing the seeded database we setup for our in-memory SQLite database provider in our `UnitOfWork` class
--   In our `Dappery.Core` project, which contains all of our business and cross-cutting concern logic, we'll again use xUnit and Shouldly, with unit tests surrounding each query/command action that we will be sending to our MediatR request factory to create the corresponding handlers, as well as verifying proper mappings and responses in each scenario
--   In our `Dappery.Api` project, we'll write a suite of integration tests that will act as our end-to-end spec, effectively testing all of our request transactions from API interface to database interaction, and everything inbetween (creating a _use case_ for our application)
+-   Within each layer, we'll use a combination of [xUnit](https://xunit.net/)
+    and [Shouldly](https://github.com/shouldly/shouldly), my preferred unit test and assertion frameworks, respectively
+-   In our `Dappery.Data` project, we'll write units tests around each operation in our `BeerRepository`
+    and `BreweryRepository` classes, utilizing the seeded database we setup for our in-memory SQLite database provider in
+    our `UnitOfWork` class
+-   In our `Dappery.Core` project, which contains all of our business and cross-cutting concern logic, we'll again use
+    xUnit and Shouldly, with unit tests surrounding each query/command action that we will be sending to our MediatR
+    request factory to create the corresponding handlers, as well as verifying proper mappings and responses in each
+    scenario
+-   In our `Dappery.Api` project, we'll write a suite of integration tests that will act as our end-to-end spec,
+    effectively testing all of our request transactions from API interface to database interaction, and everything
+    inbetween (creating a _use case_ for our application)
 
 ### Testing our Persistence Layer
 
-Before we jump into writing our unit tests for our `Dappery.Data` project, we'll setup just a bit of test infrastructure code that will assist us with creating an in-memory SQLite database to use within the scope of each test and setup our dependencies that our repositories will need. Some of you might be asking the question, however, why use an in-memory database to test, and not the actual database our application will be using? Without launching into a diatribe about which method is best for our application, let me start by saying that _either_ approach is viable; we just so happen to be using the in-memory database for ease of testing and project bootstrapping. There are perfectly valid reasons for using both approaches, for example:
+Before we jump into writing our unit tests for our `Dappery.Data` project, we'll setup just a bit of test infrastructure
+code that will assist us with creating an in-memory SQLite database to use within the scope of each test and setup our
+dependencies that our repositories will need. Some of you might be asking the question, however, why use an in-memory
+database to test, and not the actual database our application will be using? Without launching into a diatribe about
+which method is best for our application, let me start by saying that _either_ approach is viable; we just so happen to
+be using the in-memory database for ease of testing and project bootstrapping. There are perfectly valid reasons for
+using both approaches, for example:
 
--   Within an enterprise environment, one of your team's APIs may contain one, or more, dependencies on another team's API and the persisted data it utilizes, which is good fit for testing against a live non-production (production in the case of live smoke testing) database consumed by all teams
--   Utilizing a common datastore between applications can, however, create a brittle dependency on the physical _data_ you are asserting against - should someone remove an expected record from the database that your dependent API returns, our tests will break (if we are not mocking the API calls)
--   In-memory test databases are great for internal application request transactions and execution paths that have little to no external API dependency - our data can be seeded, manipulated, and scrubbed/removed inbetween tests without fear of another manager yelling at us for deleting test data
--   Although, with the introduction of multiple API dependencies, mocking entire databases and tables from dependent APIs can quickly become unwieldy and introduce complexity in the form of data management that may not be particularly your API's domain concern
+-   Within an enterprise environment, one of your team's APIs may contain one, or more, dependencies on another team's API
+    and the persisted data it utilizes, which is good fit for testing against a live non-production (production in the
+    case of live smoke testing) database consumed by all teams
+-   Utilizing a common datastore between applications can, however, create a brittle dependency on the physical _data_ you
+    are asserting against - should someone remove an expected record from the database that your dependent API returns,
+    our tests will break (if we are not mocking the API calls)
+-   In-memory test databases are great for internal application request transactions and execution paths that have little
+    to no external API dependency - our data can be seeded, manipulated, and scrubbed/removed inbetween tests without fear
+    of another manager yelling at us for deleting test data
+-   Although, with the introduction of multiple API dependencies, mocking entire databases and tables from dependent APIs
+    can quickly become unwieldy and introduce complexity in the form of data management that may not be particularly your
+    API's domain concern
 
-So, what's the answer to our self imposed rhetorical question about which method to use? A good ole fashioned, **it depends**. For our use case, we don't have any external APIs that we rely on and no data dependency that is out of our domain, so we'll roll our own in-memory database that will be seeded, modified, and torn down in between each test to ensure a fresh test fixture. Since we'll be using xUnit, we can leverage the testing library's disposable interfaces, shared contexts, and dependency injection to write our unit test in a clean, simple fashion. Now, since this is not _really_ a detailed how-to article with xUnit, I'll quickly gloss over some of our infrastructure code that will form the basis of each unit test class that we'll write, utilizing the disposable paradigm xUnit encourages us to use, and then we'll jump into each test by repository and action.
+So, what's the answer to our self imposed rhetorical question about which method to use? A good ole fashioned, **it
+depends**. For our use case, we don't have any external APIs that we rely on and no data dependency that is out of our
+domain, so we'll roll our own in-memory database that will be seeded, modified, and torn down in between each test to
+ensure a fresh test fixture. Since we'll be using xUnit, we can leverage the testing library's disposable interfaces,
+shared contexts, and dependency injection to write our unit test in a clean, simple fashion. Now, since this is not
+_really_ a detailed how-to article with xUnit, I'll quickly gloss over some of our infrastructure code that will form
+the basis of each unit test class that we'll write, utilizing the disposable paradigm xUnit encourages us to use, and
+then we'll jump into each test by repository and action.
 
-For our unit tests, we'll be heavily relying on xUnit's concept of [collection fixtures](https://xunit.net/docs/shared-context). From the xUnit documentation for collection fixtures:
+For our unit tests, we'll be heavily relying on xUnit's concept
+of [collection fixtures](https://xunit.net/docs/shared-context). From the xUnit documentation for collection fixtures:
 
-> When to use: when you want to create a single test context and share it among tests in several test classes, and have it cleaned up after all the tests in the test classes have finished.
+> When to use: when you want to create a single test context and share it among tests in several test classes, and have
+> it cleaned up after all the tests in the test classes have finished.
 
-In essence, an xUnit collection fixture allows us to share objects, which our case is the in-memory database, between unit test classes. While our MediatR request handlers will only have a single Unit of Work dependency, collection fixures really shine when we're testing classes with several dependencies that we might want to spread across multiple class files to keep our test domains of a single responsibility. I like to think of a collection fixture as the unit test bootstrapping file, similar to a `Startup.cs` file in an ASP.NET Core web project. In our collection fixture, we'll bootstrap our in-memory database with seeded data and supply implementations for our Unit of Work and repository classes. Since talk is cheap, let's go ahead and start setting things up by creating a unit test project for our `Dappery.Data` project within our `tests` folder:
+In essence, an xUnit collection fixture allows us to share objects, which our case is the in-memory database, between
+unit test classes. While our MediatR request handlers will only have a single Unit of Work dependency, collection
+fixures really shine when we're testing classes with several dependencies that we might want to spread across multiple
+class files to keep our test domains of a single responsibility. I like to think of a collection fixture as the unit
+test bootstrapping file, similar to a `Startup.cs` file in an ASP.NET Core web project. In our collection fixture, we'll
+bootstrap our in-memory database with seeded data and supply implementations for our Unit of Work and repository
+classes. Since talk is cheap, let's go ahead and start setting things up by creating a unit test project for
+our `Dappery.Data` project within our `tests` folder:
 
 ```
 ~/Dappery/tests$ dotnet new xunit -n Dappery.Data.Tests
 ~/Dappery/tests$ dotnet sln ../Dappery.sln add tests/Dappery.Data.Tests/Dappery.Data.Tests.csproj
 ```
 
-Again, I'm one of those weirdos that prefers the command line, so feel free to add the project via your IDE if you want. Next, we'll reference our `Dappery.Data` project in our new test project, which just boils down to adding the package reference in our `Dappery.Data.Tests.csproj` file:
+Again, I'm one of those weirdos that prefers the command line, so feel free to add the project via your IDE if you want.
+Next, we'll reference our `Dappery.Data` project in our new test project, which just boils down to adding the package
+reference in our `Dappery.Data.Tests.csproj` file:
 
 ```xml
+
 <ItemGroup>
-    <ProjectReference Include="..\..\src\Dappery.Core\Dappery.Core.csproj" />
-    <ProjectReference Include="..\..\src\Dappery.Data\Dappery.Data.csproj" />
+    <ProjectReference Include="..\..\src\Dappery.Core\Dappery.Core.csproj"/>
+    <ProjectReference Include="..\..\src\Dappery.Data\Dappery.Data.csproj"/>
 </ItemGroup>
 ```
 
-Notice we've also referenced our `Dappery.Core` project, which we'll see later that we'll require this dependency to access our `IUnitOfWork` and repository interfaces. Let's go ahead and add a `DataCollectionFixture.cs` class within our `tests/Dappery.Data.Tests` project that will serve as our central collection fixture for our persistence tests.
+Notice we've also referenced our `Dappery.Core` project, which we'll see later that we'll require this dependency to
+access our `IUnitOfWork` and repository interfaces. Let's go ahead and add a `DataCollectionFixture.cs` class within
+our `tests/Dappery.Data.Tests` project that will serve as our central collection fixture for our persistence tests.
 
 ### DataCollectionFixture.cs
 
@@ -67,7 +123,8 @@ namespace Dappery.Data.Tests
 }
 ```
 
-Nothing special, mostly just boilerplate code that tells xUnit how to define our collection fixture, which we'll implement with a `TestFixture.cs` file in the same directory:
+Nothing special, mostly just boilerplate code that tells xUnit how to define our collection fixture, which we'll
+implement with a `TestFixture.cs` file in the same directory:
 
 ### TestFixture.cs
 
@@ -103,9 +160,18 @@ namespace Dappery.Data.Tests
 }
 ```
 
-Again, nothing too complicated here. We simply define our `TestFixture` which all unit tests will use as a base, and note that this class inherits from the `IDisposable` interface - this is where the xUnit magic happens. With this inheritance, our `TestFixture` class will be disposed of inbetween unit test runs, tearing down our database (bootstrapped through our `UnitOfWork`), and ensuring we have a fresh test fixture clean from persisted changes made in previous tests. We define a read-only `UnitOfWork` property that each of our inheritors will be able to access, and finish off with a simple resource clean up disposable implementation that will be utilized by xUnit when it disposes of our `TestFixture` between test runs. Notice that we instantiate our `UnitOfWork` using the implementation defined in our `Dappery.Data` project, which we setup to accept a nullable `string?` value that, when `null`, initializes a seeded in-memory SQLite database for us that we'll assert against during our unit tests.
+Again, nothing too complicated here. We simply define our `TestFixture` which all unit tests will use as a base, and
+note that this class inherits from the `IDisposable` interface - this is where the xUnit magic happens. With this
+inheritance, our `TestFixture` class will be disposed of inbetween unit test runs, tearing down our database (
+bootstrapped through our `UnitOfWork`), and ensuring we have a fresh test fixture clean from persisted changes made in
+previous tests. We define a read-only `UnitOfWork` property that each of our inheritors will be able to access, and
+finish off with a simple resource clean up disposable implementation that will be utilized by xUnit when it disposes of
+our `TestFixture` between test runs. Notice that we instantiate our `UnitOfWork` using the implementation defined in
+our `Dappery.Data` project, which we setup to accept a nullable `string?` value that, when `null`, initializes a seeded
+in-memory SQLite database for us that we'll assert against during our unit tests.
 
-With our initial infrastructure out of the way, let's go ahead and create a `BeerRepositoryTest.cs` file and write our first test case:
+With our initial infrastructure out of the way, let's go ahead and create a `BeerRepositoryTest.cs` file and write our
+first test case:
 
 ### BeerRepositoryTest.cs
 
@@ -156,15 +222,29 @@ namespace Dappery.Data.Tests
 
 Alright, let's breakdown this test:
 
--   We're using the AAA pattern - Arrange, Act, Assert - which you'll see me make extensive use of throughout our projects as it encourages us to keep out unit tests _simple_ and not too complex (as they should be, massive and complicated unit test cases are a code smell)
--   We're using the new `using` syntax for disposable classes that shipped with C# 8.0 to grab a reference to our `UnitOfWork` and ensure its resources it creates are properly disposed of once our test is finished - this behavior mimics how we'll inject a scoped instance in our API layer using built-in ASP.NET Core dependency injection
--   We commit our transactions within our unit of work, as our UoW begins a transaction when initialized - while not entirely necessary for our in-memory unit test database, it's always a good practice to end our transactions even the case of read-only queries as to not keep lingering connections that may come back to bite us
--   We dispose of _both_ our `UnitOfWork`, once the reference falls out of scope, and the collection test fixture; while not entirely necessary, it's a good practice to get into (disposing resources at each level)
--   We make use of `async`/`await` to allow for blocking until we receive a response from our in-memory database before continuing onto our assertions
--   We use the `Shouldly` object extension methods to assert the various properties, types, and collection objects we're expecting in the response
--   `Shouldly` natively supports use of LINQ and expression predicates, making assertions fluid and easy to read - one of the many reason I _love_ the library
+-   We're using the AAA pattern - Arrange, Act, Assert - which you'll see me make extensive use of throughout our projects
+    as it encourages us to keep out unit tests _simple_ and not too complex (as they should be, massive and complicated
+    unit test cases are a code smell)
+-   We're using the new `using` syntax for disposable classes that shipped with C# 8.0 to grab a reference to
+    our `UnitOfWork` and ensure its resources it creates are properly disposed of once our test is finished - this
+    behavior mimics how we'll inject a scoped instance in our API layer using built-in ASP.NET Core dependency injection
+-   We commit our transactions within our unit of work, as our UoW begins a transaction when initialized - while not
+    entirely necessary for our in-memory unit test database, it's always a good practice to end our transactions even the
+    case of read-only queries as to not keep lingering connections that may come back to bite us
+-   We dispose of _both_ our `UnitOfWork`, once the reference falls out of scope, and the collection test fixture; while
+    not entirely necessary, it's a good practice to get into (disposing resources at each level)
+-   We make use of `async`/`await` to allow for blocking until we receive a response from our in-memory database before
+    continuing onto our assertions
+-   We use the `Shouldly` object extension methods to assert the various properties, types, and collection objects we're
+    expecting in the response
+-   `Shouldly` natively supports use of LINQ and expression predicates, making assertions fluid and easy to read - one of
+    the many reason I _love_ the library
 
-If we run this unit test, using either the Visual Studio/Rider test runner, or running `dotnet test`, we'll see that this test passes. If we step through this code via a debug session, we can see exactly what is returned within our repository, each query executing and what its result yields, etc. I'll leave that as an exercise for the reader, but always worth while to validate that our unit tests are truly yielding the results we expect. Let's add an empty test for `GetAllBeers()` and a couple of tests for our `GetBeerById()` repository methods:
+If we run this unit test, using either the Visual Studio/Rider test runner, or running `dotnet test`, we'll see that
+this test passes. If we step through this code via a debug session, we can see exactly what is returned within our
+repository, each query executing and what its result yields, etc. I'll leave that as an exercise for the reader, but
+always worth while to validate that our unit tests are truly yielding the results we expect. Let's add an empty test
+for `GetAllBeers()` and a couple of tests for our `GetBeerById()` repository methods:
 
 ```csharp
 // ...previous tests
@@ -226,7 +306,16 @@ public async Task GetBeerById_WhenInvokedAndBeerDoesNotExist_ReturnsNull()
 }
 ```
 
-Nothing too complex here, just some simple positive/negative test cases for finding a beer given an ID from the caller. One thing to note is in our `GetAllBeers_WhenNoBeersExist_ReturnsEmptyListOfBeers` method, we use the `unitOfWork` to remove all the beers in our test database (probably not the most efficient way, quick and dirty for now), and assert against the empty list that gets returned. While this might not seem too interesting, the beauty is that xUnit, alongside the infrastructure code we setup, will clean up this modified database that we've 'dirtied' the context of, and create an entirely fresh database on the next run, disregarding any transactional changes we made in a previous test. We simply retrieve the beer within our test database and assert the properties `Should` be what we expect. One of the reasons I prefer using Shouldly is the response messages we receive when a test fails. Let's take a look at an example be changing our assertion of our `GetBeerById_WhenInvokedAndBeerExists_ReturnsValidBeer()` test method above to expect an incorrect beer name:
+Nothing too complex here, just some simple positive/negative test cases for finding a beer given an ID from the caller.
+One thing to note is in our `GetAllBeers_WhenNoBeersExist_ReturnsEmptyListOfBeers` method, we use the `unitOfWork` to
+remove all the beers in our test database (probably not the most efficient way, quick and dirty for now), and assert
+against the empty list that gets returned. While this might not seem too interesting, the beauty is that xUnit,
+alongside the infrastructure code we setup, will clean up this modified database that we've 'dirtied' the context of,
+and create an entirely fresh database on the next run, disregarding any transactional changes we made in a previous
+test. We simply retrieve the beer within our test database and assert the properties `Should` be what we expect. One of
+the reasons I prefer using Shouldly is the response messages we receive when a test fails. Let's take a look at an
+example be changing our assertion of our `GetBeerById_WhenInvokedAndBeerExists_ReturnsValidBeer()` test method above to
+expect an incorrect beer name:
 
 ```csharp
 [Fact]
@@ -280,7 +369,12 @@ Expected Code  | ...  101  114  32   116  104  97   116  32   100  111  101  115
 Actual Code    | ...  103  101  110  105  97
 ```
 
-Of the many reasons I love using Shouldly in all my unit test projects, this is one of my favorites. Shouldly points out exactly what it expected, what it received, and the index differences in the string. Now, this isn't an infomercial on trying to sell you on using Shouldly, but informative failure messages like this can help you quickly identify inconsistencies in your code and fix things at a faster rate than traditional assertion frameworks. Let's finish out our `BeerRepositoryTest.cs` file by adding the unit tests that will exercise our database commands for our create, update, and delete operations:
+Of the many reasons I love using Shouldly in all my unit test projects, this is one of my favorites. Shouldly points out
+exactly what it expected, what it received, and the index differences in the string. Now, this isn't an infomercial on
+trying to sell you on using Shouldly, but informative failure messages like this can help you quickly identify
+inconsistencies in your code and fix things at a faster rate than traditional assertion frameworks. Let's finish out
+our `BeerRepositoryTest.cs` file by adding the unit tests that will exercise our database commands for our create,
+update, and delete operations:
 
 ```csharp
 // ...previous query tests
@@ -367,7 +461,14 @@ public async Task DeleteBeer_WhenBeerExists_RemovesBeerFromDatabase()
 }
 ```
 
-Notice that our tests are simple and clean, naively testing the happy paths for all three commands since, by design, our persistence layer has one job, and one job only: query and command the database. No (checked) exceptions are thrown in this layer, so we don't need any assertion tests to failure cases, and since our validations/mappings will be done in the core business logic layer (as they should be), we exclude tests of that nature as well. With our unit tests in place, we're free to modify our logic within our persistence layer any way we see fit as a simple `dotnet test` will tell us if we've broken any existing functionality. Our brewery repository tests will be very similar to our beer repository tests, so let's create a `BreweryRepositoryTest.cs` file within our unit test project with the following tests:
+Notice that our tests are simple and clean, naively testing the happy paths for all three commands since, by design, our
+persistence layer has one job, and one job only: query and command the database. No (checked) exceptions are thrown in
+this layer, so we don't need any assertion tests to failure cases, and since our validations/mappings will be done in
+the core business logic layer (as they should be), we exclude tests of that nature as well. With our unit tests in
+place, we're free to modify our logic within our persistence layer any way we see fit as a simple `dotnet test` will
+tell us if we've broken any existing functionality. Our brewery repository tests will be very similar to our beer
+repository tests, so let's create a `BreweryRepositoryTest.cs` file within our unit test project with the following
+tests:
 
 ### BreweryRepositoryTest.cs
 
@@ -603,7 +704,11 @@ namespace Dappery.Data.Tests
 }
 ```
 
-Again, pretty similar to the tests within our beer repository file. We see a few scenarios testing our retrieval methods, and one test each for our commands to create, update, and delete breweries that also exercise the connection between breweries and beers. Toss in a few nullable `?` operators to make the compiler happy, and we've got a working unit test project. Let's run one final `dotnet test` to make sure our tests look good so far now that we've covered all of our operations in either repository:
+Again, pretty similar to the tests within our beer repository file. We see a few scenarios testing our retrieval
+methods, and one test each for our commands to create, update, and delete breweries that also exercise the connection
+between breweries and beers. Toss in a few nullable `?` operators to make the compiler happy, and we've got a working
+unit test project. Let's run one final `dotnet test` to make sure our tests look good so far now that we've covered all
+of our operations in either repository:
 
 ```
 Test run for /path/to/Dappery/tests/Dappery.Data.Tests/bin/Debug/netcoreapp3.0/Dappery.Data.Tests.dll(.NETCoreApp,Version=v3.0)
@@ -620,4 +725,11 @@ Total tests: 15
  Total time: 1.8437 Seconds
 ```
 
-Music to a developer's ears: 15 tests ran, 15 passed. While it is in fact possible to swap out our in-memory SQLite database for disk-based SQL Server, or Postgres, I prefer to use the mock in-memory versions simply because the database context is refreshed easily for us between test runs and ready to go for any need we may be using it for. As a disclaimer, we _will_ be writing more unit tests for our project, both at the unit and functional level, but I'll allude to each test project within the section during that time. [Here's](https://github.com/JoeyMckenzie/Dappery/tree/master/tests/Dappery.Data.Tests) the code we've written so far for our persistence layer. Let's go ahead and leave things here now, and head on to the meat and potatoes of the project: the core business layer!
+Music to a developer's ears: 15 tests ran, 15 passed. While it is in fact possible to swap out our in-memory SQLite
+database for disk-based SQL Server, or Postgres, I prefer to use the mock in-memory versions simply because the database
+context is refreshed easily for us between test runs and ready to go for any need we may be using it for. As a
+disclaimer, we _will_ be writing more unit tests for our project, both at the unit and functional level, but I'll allude
+to each test project within the section during that
+time. [Here's](https://github.com/JoeyMckenzie/Dappery/tree/master/tests/Dappery.Data.Tests) the code we've written so
+far for our persistence layer. Let's go ahead and leave things here now, and head on to the meat and potatoes of the
+project: the core business layer!

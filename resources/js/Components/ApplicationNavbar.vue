@@ -19,7 +19,7 @@ const links: NavLinkProps[] = [
     },
     {
         display: 'Blog',
-        name: route('blogs.all'),
+        name: route('blogs'),
     },
 ];
 </script>

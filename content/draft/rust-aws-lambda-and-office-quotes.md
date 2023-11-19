@@ -2,7 +2,7 @@
 title: 'Rust, AWS Lambda, and too many Office quotes'
 description: 'Identity theft is not joke, Jim!'
 pubDate: 'Nov 2 2023'
-heroImage: '/blog/rust-aws-lambda-office-quotes/meme.jpg'
+heroImage: '/images/rust-aws-lambda-office-quotes/meme.jpg'
 category: 'aws'
 keywords:
     - rust

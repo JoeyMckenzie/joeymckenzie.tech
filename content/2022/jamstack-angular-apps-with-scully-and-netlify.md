@@ -2,7 +2,7 @@
 title: 'JAMstack Angular apps with Scully and Netlify'
 description: 'Write, build, and deploy Angular applications as fully SEO-optimized static sites with Netlify and Netlify Functions!'
 pubDate: 'Feb 22 2022'
-heroImage: '/blog/jamstack-angular-apps-with-scully/angular-scully-netlify-meme.jpg'
+heroImage: '/images/jamstack-angular-apps-with-scully/angular-scully-netlify-meme.jpg'
 category: 'angular'
 keywords:
     - angular
@@ -21,27 +21,44 @@ tools to develop entirely serverless applications that run as static web apps in
 > provider will more than likely dictate just how "serverless" you can be
 
 As Angular developers, we love our framework and everything it provides. Unfortunately, turning your Angular
-application into a static web app is not as simple as one may like. While [Angular Universal](https://angular.io/guide/universal) does give us an officially supported devtool to turn our Angular apps into statically rendered pages, I've found it a bit on the configure-y side and not as simple to use as I'd like compared to other frameworks like Next.js.
+application into a static web app is not as simple as one may like.
+While [Angular Universal](https://angular.io/guide/universal) does give us an officially supported devtool to turn our
+Angular apps into statically rendered pages, I've found it a bit on the configure-y side and not as simple to use as I'd
+like compared to other frameworks like Next.js.
 
-What I'd wished I found earlier before going down my Angular JAMstack journey is [Scully](https://scully.io/), the Angular static site generator I never knew I needed and JAMstack tool that, quite frankly, is just plain fun to use.
+What I'd wished I found earlier before going down my Angular JAMstack journey is [Scully](https://scully.io/), the
+Angular static site generator I never knew I needed and JAMstack tool that, quite frankly, is just plain fun to use.
 
 ## JAMstack?
 
-Yep, the JAMstack: **J**avaScript, **A**PIs, and **M**arkup. There's a thriving [community](https://jamstack.org/) of developers embracing the JAMstack, so defer to them for the nitty gritty details. The JAMstack follows a general artchitecture:
+Yep, the JAMstack: **J**avaScript, **A**PIs, and **M**arkup. There's a thriving [community](https://jamstack.org/) of
+developers embracing the JAMstack, so defer to them for the nitty gritty details. The JAMstack follows a general
+artchitecture:
 
 -   **M**arkup is pre-rendered at build time and served as static HTML and CSS
--   **J**avaScript still provides all its native interactivity with the browser, while not bogging down the initial rendering of our apps with retrieving JS bundles
+-   **J**avaScript still provides all its native interactivity with the browser, while not bogging down the initial
+    rendering of our apps with retrieving JS bundles
 -   **A**PIs that provide data, processing, and whatever else we need from a backend server
 
-In essence, JAMstack principles align to provide fast, reliable, scalable, and performant web applications for the modern browser.
+In essence, JAMstack principles align to provide fast, reliable, scalable, and performant web applications for the
+modern browser.
 
-What this means in practice when you write framework code for say, Next.js, we write our normal React code we'd normally write, with pages being rending in a static context - every element on the page is inspect-able in the browser, which means much more easily indexable by search engines.
+What this means in practice when you write framework code for say, Next.js, we write our normal React code we'd normally
+write, with pages being rending in a static context - every element on the page is inspect-able in the browser, which
+means much more easily indexable by search engines.
 
 ## What is Scully?
 
-Scully is a tool/framework developed by community members for Angular that turns your Angular application into a statically rendered website, with fully indexable HTML allowing for all the SEO optimization your heart desires while still delivering on the development workflow we Angular developers love about the framework. While I claim to be no Scully expert, I've built a few side project client sites using Scully, while having re-written this exact blog you're reading from Next to Scully.
+Scully is a tool/framework developed by community members for Angular that turns your Angular application into a
+statically rendered website, with fully indexable HTML allowing for all the SEO optimization your heart desires while
+still delivering on the development workflow we Angular developers love about the framework. While I claim to be no
+Scully expert, I've built a few side project client sites using Scully, while having re-written this exact blog you're
+reading from Next to Scully.
 
-Scully works on the premise of analyzing your application's routing and compiling a separate build artifact containing all scanned routes as individual `index.html` pages. While there's a lot more that goes on under the hood and a bit out of my knowledge realm, Scully effectively allows us to turn our Angular SPAs into fully static sites that load quickly to the browser, vastly improve SEO, allows improved search engine indexing, and the list goes on.
+Scully works on the premise of analyzing your application's routing and compiling a separate build artifact containing
+all scanned routes as individual `index.html` pages. While there's a lot more that goes on under the hood and a bit out
+of my knowledge realm, Scully effectively allows us to turn our Angular SPAs into fully static sites that load quickly
+to the browser, vastly improve SEO, allows improved search engine indexing, and the list goes on.
 
 The Scully team has great documentation on using the tool, alongside a plethora of build plugins, both from Scully
 and the community, allowing you to tap into the Scully lifecycle at different points in the build process to
@@ -50,7 +67,13 @@ the generated static files to your need.
 
 ## Hosting with Netlify
 
-With Scully generating an entirely static version of our application, it becomes trivial to host such files on any static site hosting service. While there's a lot of great services out there, I prefer Netlify as it allows us to tap into [Netlify Functions](https://functions.netlify.com/), serving as the `A` in JAMstack and giving us the ability to build serverless functions that our static Angular applications can call into, performing any work you'd normally do on the server. Using Netlify, not _only_ are we able to host our Angular apps as fully static sites, but we can also build out a mesh of serverless functions that act as a backend-lite for any of our API-like needs! Who said you can't have your cake and eat it too?
+With Scully generating an entirely static version of our application, it becomes trivial to host such files on any
+static site hosting service. While there's a lot of great services out there, I prefer Netlify as it allows us to tap
+into [Netlify Functions](https://functions.netlify.com/), serving as the `A` in JAMstack and giving us the ability to
+build serverless functions that our static Angular applications can call into, performing any work you'd normally do on
+the server. Using Netlify, not _only_ are we able to host our Angular apps as fully static sites, but we can also build
+out a mesh of serverless functions that act as a backend-lite for any of our API-like needs! Who said you can't have
+your cake and eat it too?
 
 ## Getting started with Scully
 
@@ -61,7 +84,9 @@ Let's kick things off by creating a new Angular application with routing:
 ng new scully-netlify-angular-example --routing
 ```
 
-Scully utilizes the Angular router to crawl all of our application routes, allowing it to create individual servable HTML files by reading our router configuration. With our code scaffolding in place, let's add some simple components and a few pages:
+Scully utilizes the Angular router to crawl all of our application routes, allowing it to create individual servable
+HTML files by reading our router configuration. With our code scaffolding in place, let's add some simple components and
+a few pages:
 
 ```shell
 cd scully-netlify-angular-example
@@ -70,7 +95,8 @@ ng g c components/ping --skip-tests
 ng g c components/data --skip-tests
 ```
 
-We're skipping testing for the purposes of this post. With our components in place, let's add them to our `app-routing.module.ts`:
+We're skipping testing for the purposes of this post. With our components in place, let's add them to
+our `app-routing.module.ts`:
 
 #### app-routing.module.ts
 
@@ -102,14 +128,17 @@ export class AppRoutingModule {}
 ```
 
 With routes in place, let's implement a few services that will help facilitate talking to our Netlify functions
-(more on those in a bit). Let's implement two services: one for the `PingComponent` that will consume a `PingService` to _ping_ the server, and one for `DataComponent` to offload the responsibility of sending and receiving data from the server.
+(more on those in a bit). Let's implement two services: one for the `PingComponent` that will consume a `PingService` to
+_ping_ the server, and one for `DataComponent` to offload the responsibility of sending and receiving data from the
+server.
 
 ```shell
 ng g s services/ping --skip-tests
 ng g s services/data --skip-tests
 ```
 
-Since we'll be utilizing a bit with `Observable`s, let's implement a service to clean up our streams once a component is destroyed:
+Since we'll be utilizing a bit with `Observable`s, let's implement a service to clean up our streams once a component is
+destroyed:
 
 ```shell
 ng g s services/unsubscribe --skip-tess
@@ -121,7 +150,8 @@ While we're at it, let's make a quick service to help us with our SEO to set pag
 ng g s services/document --skip-tests
 ```
 
-With our services in place and having no further dependencies (outside the standard Angular library), let's implement their code. First, our `UnsubscribeService`:
+With our services in place and having no further dependencies (outside the standard Angular library), let's implement
+their code. First, our `UnsubscribeService`:
 
 #### unsubscribe.service.ts
 
@@ -138,7 +168,9 @@ export class UnsubscribeService extends Subject<void> implements OnDestroy {
 }
 ```
 
-As we can see, our `UnsubscribeService` is no more than a glorified injectable `Subject` that emits nothing and simply closes itself on service destruction. This will be helpful to close connections to `Observable`s we're `.subscribe()`ing to within our components. Next, let's put our `PingService` code in place:
+As we can see, our `UnsubscribeService` is no more than a glorified injectable `Subject` that emits nothing and simply
+closes itself on service destruction. This will be helpful to close connections to `Observable`s we're `.subscribe()`ing
+to within our components. Next, let's put our `PingService` code in place:
 
 #### ping.service.ts
 
@@ -306,7 +338,8 @@ and the markup:
 <p>{{ message }}</p>
 ```
 
-`PingComponent` uses `PingService` to _ping_ the server for a response, then display said response in our browser. Next, `data.component.ts`:
+`PingComponent` uses `PingService` to _ping_ the server for a response, then display said response in our browser.
+Next, `data.component.ts`:
 
 #### data.component.ts
 
@@ -347,7 +380,8 @@ export class DataComponent implements OnInit {
 }
 ```
 
-I'm using alias imports in `@environment`, `@services`, and `@components` to make my import paths look tolerable. We do so by adding a `paths` node to `compilerOptions`:
+I'm using alias imports in `@environment`, `@services`, and `@components` to make my import paths look tolerable. We do
+so by adding a `paths` node to `compilerOptions`:
 
 #### tsconfig.json
 
@@ -366,9 +400,11 @@ I'm using alias imports in `@environment`, `@services`, and `@components` to mak
 }
 ```
 
-Where each `index.ts` file `exports` out either services or components in their relative directories and exports our application environment configuration.
+Where each `index.ts` file `exports` out either services or components in their relative directories and exports our
+application environment configuration.
 
-With that out of the way, let's wire up our components in the `HomeComponent` and add some links to navigate between pages:
+With that out of the way, let's wire up our components in the `HomeComponent` and add some links to navigate between
+pages:
 
 #### home.component.ts
 
@@ -432,32 +468,47 @@ While we're at it, let's go ahead and update `app.component.html` with some rout
 </div>
 ```
 
-I'm using Tailwind out of habit, and not required for the purposes of this example by any means. Let's kick off our dev server and we should see after navigating to `localhost:4200` a page in our browser with three buttons: ping, data, and home.
+I'm using Tailwind out of habit, and not required for the purposes of this example by any means. Let's kick off our dev
+server and we should see after navigating to `localhost:4200` a page in our browser with three buttons: ping, data, and
+home.
 
 ![Home page](/blog/jamstack-angular-apps-with-scully/home_page.png)
 
-With devtools open, if we click the ping button that routes us to the page with our `PingComponent`, we get an error due to a failed HTTP request to `http://localhost:9999/.netlify/functions/ping`, and the same happens when we click the data button to navigate to the page with our `DataComponent` and click the `Load data` button. Our services are correctly calling out to our serverless functions, but there's one problem: we don't have any functions!
+With devtools open, if we click the ping button that routes us to the page with our `PingComponent`, we get an error due
+to a failed HTTP request to `http://localhost:9999/.netlify/functions/ping`, and the same happens when we click the data
+button to navigate to the page with our `DataComponent` and click the `Load data` button. Our services are correctly
+calling out to our serverless functions, but there's one problem: we don't have any functions!
 
 ## Going serverless with Netlify Functions
 
 If you're familiar with static site hosting services, [Netlify](https://www.netlify.com/) is another one of those
-with much, much more to offer than simple site hosting. One of my favorite features of Netlify is [Netlify Functions](https://functions.netlify.com/) - Netlify's version of serverless functions that utilize AWS lambda functions behind the scenes to provide an easy way to integrate backend functionality with our statically served web apps. I've found serverless functions helpful in quite a few different ways:
+with much, much more to offer than simple site hosting. One of my favorite features of Netlify
+is [Netlify Functions](https://functions.netlify.com/) - Netlify's version of serverless functions that utilize AWS
+lambda functions behind the scenes to provide an easy way to integrate backend functionality with our statically served
+web apps. I've found serverless functions helpful in quite a few different ways:
 
 -   Sending out emails using email API services
 -   Integrating with third-party APIs to do some processing for frontend requests
 -   Serving simple data to be consumed from the frontend
 -   Heck, even persisting to database based on requests from our frontend applications
 
-Our serverless functions will _serve_, more or less, as an API-lite for our static served Angular Scully application that will be hosted in Netlify, allowing us to connect our outgoing HTTP calls from the frontend to the backend functions listening for requests. Functions work on the premise of running code at a specified endpoint that receive HTTP events (methods, headers, request body, etc.) and the context of the HTTP request (metadata about the function itself). There's a lot we can customize around the way our functions are detected, served, and ran, but we'll utilize all the defaults for now.
+Our serverless functions will _serve_, more or less, as an API-lite for our static served Angular Scully application
+that will be hosted in Netlify, allowing us to connect our outgoing HTTP calls from the frontend to the backend
+functions listening for requests. Functions work on the premise of running code at a specified endpoint that receive
+HTTP events (methods, headers, request body, etc.) and the context of the HTTP request (metadata about the function
+itself). There's a lot we can customize around the way our functions are detected, served, and ran, but we'll utilize
+all the defaults for now.
 
-To get started writing functions, let's go ahead and install the Netlify Functions package and the Netlify CLI to help us write and serve our functions:
+To get started writing functions, let's go ahead and install the Netlify Functions package and the Netlify CLI to help
+us write and serve our functions:
 
 ```shell
 npm install @netlify/functions
 npm install --save-dev netlify-cli # -g if you'd like to install globally
 ```
 
-Using the CLI, let's add an npm script in our `package.json` we can run to start our function server that will detect any code changes we apply while writing our functions, recompile them, and serve them up for our frontend to call into:
+Using the CLI, let's add an npm script in our `package.json` we can run to start our function server that will detect
+any code changes we apply while writing our functions, recompile them, and serve them up for our frontend to call into:
 
 ```json
 {
@@ -475,7 +526,10 @@ If we run:
 npm run functions:serve
 ```
 
-we should see a message in our console along the lines of ready to serve, but no functions available. Since we've haven't provided any customized configuration for our functions, the CLI assumes your functions exist under a `/netlify/functions` folder at the root of your project. Let's implement a `/ping` GET endpoint using TypeScript that will tap into the functionality provided by the `@netlify/functions` package to start listening for requests:
+we should see a message in our console along the lines of ready to serve, but no functions available. Since we've haven'
+t provided any customized configuration for our functions, the CLI assumes your functions exist under
+a `/netlify/functions` folder at the root of your project. Let's implement a `/ping` GET endpoint using TypeScript that
+will tap into the functionality provided by the `@netlify/functions` package to start listening for requests:
 
 #### netlify/functions/ping.ts
 
@@ -515,7 +569,8 @@ const handler: Handler = async (event) => {
 export { handler };
 ```
 
-I've added some common code that I'll be sharing between functions and have moved that to a `lib` folder with a single `index.ts` file:
+I've added some common code that I'll be sharing between functions and have moved that to a `lib` folder with a
+single `index.ts` file:
 
 #### netlify/lib/index.ts
 
@@ -584,7 +639,9 @@ function getErrorResponse(statusCode: HttpStatus): Response {
 export { getErrorResponse, getHeaders, isWhitelistedDomain, HttpStatus };
 ```
 
-Nothing too complicated, just a few simple helpers to facilitate validating allowed origins for CORS, some common response generators, and a method to grab some default headers for each response. I've also reused the `ServerResponse` type under the `types.ts` file at the root of our project:
+Nothing too complicated, just a few simple helpers to facilitate validating allowed origins for CORS, some common
+response generators, and a method to grab some default headers for each response. I've also reused the `ServerResponse`
+type under the `types.ts` file at the root of our project:
 
 ```ts
 export type ServerResponse = {
@@ -598,11 +655,13 @@ we can import any `.ts` files into our serverless functions, given it runs in th
 to reference any `@angular/*` imports, for obvious reasons. With our `ServerResponse` in place, we've created a
 common statically typed-model between the front and backend of our project!
 
-As you might have guessed, the names and pathing of our function `.ts` files _does_ matter in our case. There's a few simple rules to adhere to when creating function endpoints
+As you might have guessed, the names and pathing of our function `.ts` files _does_ matter in our case. There's a few
+simple rules to adhere to when creating function endpoints
 
 -   `netlify/functions/ping.ts` would receive HTTP request matching the route `/.netlify/functions/ping`
 -   `netlify/functions/ping/index.ts` would _also_ receive HTTP request matching the route `/.netlify/functions/ping`
--   `netlify/functions/ping/ping.ts` would, again, _also_ receive HTTP request matching the route `/.netlify/functions/ping`
+-   `netlify/functions/ping/ping.ts` would, again, _also_ receive HTTP request matching the
+    route `/.netlify/functions/ping`
 
 Now that we have our first function in place, let's go ahead and start our function server:
 
@@ -626,7 +685,8 @@ To test out that our functions are working correctly, let's startup Postman and 
 
 ![Postman ping response](/blog/jamstack-angular-apps-with-scully/postman_ping.png)
 
-We've got a response! Now that our GET endpoint is working, let's add a POST endpoint that will receive requests with data in the body and return data based on it:
+We've got a response! Now that our GET endpoint is working, let's add a POST endpoint that will receive requests with
+data in the body and return data based on it:
 
 #### netlify/functions/data/index.ts
 
@@ -688,15 +748,22 @@ export { handler };
 
 Utilizing our helper methods again, since this is a POST request with more complex request headers (as we can
 inspect in the network tab attached for us using `HttpClient`), the client will make a pre-flight OPTIONS call to our
-function endpoint to essentially ask the question, "hey, this client application wants to make a request to you, is that cool?". We kick out any requests that are not POSTs or OPTIONs (again, normal HTTP framework code would take care of this for you, but we're running a bare bones server here) and accept the POST request body, returning the value of the `name` attribute given to us in a simple greeting. By adding this function with our server still running, Netlify recognizes a new function was added, and then compiles the output and serves it up under the `/.netlify/functions/data` endpoint. Let's give it a try with Postman:
+function endpoint to essentially ask the question, "hey, this client application wants to make a request to you, is that
+cool?". We kick out any requests that are not POSTs or OPTIONs (again, normal HTTP framework code would take care of
+this for you, but we're running a bare bones server here) and accept the POST request body, returning the value of
+the `name` attribute given to us in a simple greeting. By adding this function with our server still running, Netlify
+recognizes a new function was added, and then compiles the output and serves it up under the `/.netlify/functions/data`
+endpoint. Let's give it a try with Postman:
 
 ![Postman data response](/blog/jamstack-angular-apps-with-scully/postman_data.png)
 
-Nice! Now with our functions fully operational and our server running, let's start our Angular server (if it wasn't already running), and watch the magic happen:
+Nice! Now with our functions fully operational and our server running, let's start our Angular server (if it wasn't
+already running), and watch the magic happen:
 
 [Angular Netlify functions](/blog/jamstack-angular-apps-with-scully/scully-jamstack-running.webm)
 
-We've got ourselves a working solution! So far we've spun up our Angular application that calls into our serverless functions, but we're missing one final piece to _truly_ be considered JAMstack: Scully.
+We've got ourselves a working solution! So far we've spun up our Angular application that calls into our serverless
+functions, but we're missing one final piece to _truly_ be considered JAMstack: Scully.
 
 ## Adding Scully to the project
 
@@ -707,7 +774,8 @@ Angular apps with a simple schematic. With the terminal open, let's run said sch
 ng add @scullyio/init
 ```
 
-The schematic will add a few Scully dependencies to our project, as well as generate a `scully.{{projectName}}. config.ts` file with the following:
+The schematic will add a few Scully dependencies to our project, as well as generate
+a `scully.{{projectName}}. config.ts` file with the following:
 
 ```ts
 import { ScullyConfig } from '@scullyio/scully';

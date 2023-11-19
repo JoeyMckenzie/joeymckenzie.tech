@@ -2,7 +2,7 @@
 title: 'Back to the server with Rust, Axum, and htmx'
 description: '(Insert meme about React devs rediscovering the magic of PHP and ASP)'
 pubDate: 'July 11 2023'
-heroImage: '/blog/rust-axum-htmx-templates-with-askama/htmx_meme.jpg'
+heroImage: '/images/rust-axum-htmx-templates-with-askama/htmx_meme.jpg'
 category: 'rust'
 keywords:
     - rust

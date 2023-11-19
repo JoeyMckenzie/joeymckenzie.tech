@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -16,17 +18,17 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', fn () => Inertia::render('Home'))
+Route::get('', fn () => Inertia::render('Home'))
     ->name('home');
 
-Route::get('/about', fn () => Inertia::render('About'))
+Route::get('about', fn () => Inertia::render('About'))
     ->name('about');
 
-Route::get('/blog', [BlogController::class, 'all'])
-    ->name('blogs.all');
+Route::get('blog', [BlogController::class, 'all'])
+    ->name('blogs');
 
-Route::get('/blog/{slug}', [BlogController::class, 'post'])
-    ->name('blogs.post');
+Route::get('blog/{slug}', [BlogController::class, 'post'])
+    ->name('post');
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [

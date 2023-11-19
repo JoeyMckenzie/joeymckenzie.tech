@@ -59,7 +59,7 @@ const formattedDate = computed(() =>
                 <div v-html="content" />
             </article>
             <Button class="mx-auto max-w-md">
-                <Link :href="route('blogs.all')">Back to blogs</Link>
+                <Link :href="route('blogs')">Back to blogs</Link>
             </Button>
         </div>
     </MainLayout>

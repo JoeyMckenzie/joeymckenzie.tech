@@ -18,6 +18,8 @@ class BlogController
 
     public function all(Request $request): Response
     {
+        ddd($this->contentCache->getContentMetas());
+
         return Inertia::render('Blog/Index');
     }
 
@@ -26,14 +28,11 @@ class BlogController
         $contentMeta = $this->contentCache->getContentMeta($slug);
 
         if (isset($contentMeta)) {
-            return Inertia::render('Blog/Post/Index', [
-                'content' => $contentMeta->content,
-                'frontMatter' => $contentMeta->frontMatter,
+            return Inertia::render('Blog/Pos    t/Index', [
+                'contentMeta' => $contentMeta,
             ]);
         }
 
-        return Inertia::render('Blog/Post/Index', [
-            'slug' => $slug,
-        ]);
+        abort(404);
     }
 }

@@ -2,7 +2,7 @@
 title: 'Rustful statement machines and event driven design'
 description: "A hobbyist Rustacean's ode to the Gang of Four."
 pubDate: 'Oct 23 2023'
-heroImage: '/blog/ziggin-around/meme.jpg'
+heroImage: '/images/ziggin-around/meme.jpg'
 category: 'rust'
 keywords:
     - rust

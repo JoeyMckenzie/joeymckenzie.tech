@@ -2,7 +2,7 @@
 title: "Ziggin' around with linked lists"
 description: 'Flashback to detecting loops in a list on a whiteboard...'
 pubDate: 'May 23 2023'
-heroImage: '/blog/ziggin-around/meme.jpg'
+heroImage: '/images/ziggin-around/meme.jpg'
 category: 'zig'
 keywords:
     - zig
@@ -10,7 +10,8 @@ keywords:
 ---
 
 So I've been looking for a reason to write code to keep me sane while in the
-thick of parental leave, and I, like I'm sure most of us have seen on tech bro Twitter, have been seeing a lot of commotion about [Zig](https://Ziglang.org).
+thick of parental leave, and I, like I'm sure most of us have seen on tech bro Twitter, have been seeing a lot of
+commotion about [Zig](https://Ziglang.org).
 I've been writing quite a bit of Rust, and Zig's model of no hidden memory
 allocation or hidden control flow is fascinating to me.
 
@@ -29,7 +30,8 @@ a new language so I'll treat this blog post as a live look into my trials
 and tribulations of getting started with Zig.
 
 As always, you can find all the sample source code we'll be writing in this blog
-post available on [my blog](https://github.com/JoeyMckenzie/joey-mckenzie-tech/tree/main/samples/zig/with-linked-lists), so feel free to reference it any time.
+post available on [my blog](https://github.com/JoeyMckenzie/joey-mckenzie-tech/tree/main/samples/zig/with-linked-lists),
+so feel free to reference it any time.
 
 ## Getting started with Zig
 
@@ -94,12 +96,14 @@ pub fn build(b: *std.build.Builder) void {
 
 Okay, parsing this file a bit, it looks like there are a few things going on:
 
--   Zig doesn't have an official package manager yet (at least from what I can see) on the stable branch, though it's coming soon<sup>tm</sup>
+-   Zig doesn't have an official package manager yet (at least from what I can see) on the stable branch, though it's
+    coming soon<sup>tm</sup>
 -   Zig's build feels a lot like Rust's version of a `build.rs` file you'll see from time to time, so that's neat
 -   Since we're in the context of a library, our default build target will just run tests
     as we're not building an executable
 
-Alright, I _think_ I've got the basics down here. Cross-referencing the docs about its [build system](https://Ziglearn.org/chapter-3/)
+Alright, I _think_ I've got the basics down here. Cross-referencing the docs about
+its [build system](https://Ziglearn.org/chapter-3/)
 seems to confirm what I'm looking here. Next, let's take a look at `main.zig`:
 
 ## src/main.zig
@@ -126,7 +130,8 @@ Let's take a swing at parsing this thing while cross-checking with the docs:
     -   `try` feels a lot like Rust's try operator in `?` or Go's abundant `if err != nil { ... }` you'll see everywhere
     -   In essence: attempt an operation and if it fails, simply return the error back to the caller
 
-Okay, think I've got a hang of this so far. I'm loosely in line with my pontification and the docs, so let's give this thing a go:
+Okay, think I've got a hang of this so far. I'm loosely in line with my pontification and the docs, so let's give this
+thing a go:
 
 ```shell
 $ zig build test
@@ -158,7 +163,8 @@ There's a lot more to a linked list than the operations we defined above - for e
 one could insert at _any_ point in the linked list rather than the head, or peek values
 at the tail rather than explicitly removing them. I'll leave those as an exercise for the reader.
 
-Let's get started by scaffolding out a simple `struct` that will be our linked list. Let's create a `linked_list.zig` file adjacent to our `main.zig` in our `src/` directory and get some boilerplate in place:
+Let's get started by scaffolding out a simple `struct` that will be our linked list. Let's create a `linked_list.zig`
+file adjacent to our `main.zig` in our `src/` directory and get some boilerplate in place:
 
 ## src/linked_list.zig
 
@@ -182,7 +188,8 @@ pub const LinkedList = struct {
 Taking a look, Zig has `struct`s much like Go and Rust - nothing new here. Now,
 I _do_ want this to be a generic linked list over some type of my choosing. Skimming
 through the docs, looks like I need to do a bit of higher-order goodness with `comptime`
-types to get this working. Let's adjust this code so our `LinkedList` is actually a function `fn` that will take in a generic `comptime` type and return a `struct` that's generic over it:
+types to get this working. Let's adjust this code so our `LinkedList` is actually a function `fn` that will take in a
+generic `comptime` type and return a `struct` that's generic over it:
 
 ```zig
 const std = @import("std");
@@ -207,7 +214,9 @@ fn LinkedList(comptime T: type) type {
 Cool, I've got a generic struct so far and also defined a new internal `Node` type
 to house the generic type value that we'll use when creating new nodes on the linked list
 that also points to the next node in the list. We'll reach for Zig's `?` operator as a form
-of optional chaining, telling the compiler "hey, this `Node` here could be `null`, so make sure to enforce checking that before dereferencing it" and also slap a `*` afterwards to signal that this is a _pointer_ to another node, not the node itself.
+of optional chaining, telling the compiler "hey, this `Node` here could be `null`, so make sure to enforce checking that
+before dereferencing it" and also slap a `*` afterwards to signal that this is a _pointer_ to another node, not the node
+itself.
 
 Okay, I'm liking this so far. Zig feels a bit like Go, a bit like Rust, and a bit like C
 (I cut my teach on Fortran starting out, don't judge me). Let's add a few properties
@@ -423,12 +432,14 @@ Though we're running single process unit tests that aren't long running (they st
 without using much in terms of resources from our machine) and probably don't need to manually free memory
 with the calls to `defer arena.deinit()`, it's a good habit to form to get used to manually
 managing and freeing allocated memory. We might also benefit from being able to free memory
-from within our `LinkedList` as well by adding a wrapping call in the form of `fn free(self: *Self) !void { // Free the memory }`,
+from within our `LinkedList` as well by adding a wrapping call in the form
+of `fn free(self: *Self) !void { // Free the memory }`,
 but I'll save that for a rainy day as I still have fairly no clue what I'm doing with Zig.
 
 We also need to slap some `try`s to our `insert()` method
 now that its return signature is `!void` instead of just `void` - errors can occur while
-allocating memory, so we need to explicitly state that in our signature with a prefixed `!` operator before our return type (`void` in this case). Okay, our tests
+allocating memory, so we need to explicitly state that in our signature with a prefixed `!` operator before our return
+type (`void` in this case). Okay, our tests
 are updated to handle/return the errors. Let's run our tests now:
 
 ```shell
@@ -800,7 +811,8 @@ And once again, we have passing tests!
 ## Wrapping up
 
 I'm gonna call that a wrap for now, as our (poor man's) linked
-list is looking pretty good and functioning as we expect. I'll be looking to a bit more Zig to spice up my daily developer life when I can.
+list is looking pretty good and functioning as we expect. I'll be looking to a bit more Zig to spice up my daily
+developer life when I can.
 Zig feels a lot like Rust with much of the same safety guarantees and is just plain fun to write.
 
 Until next time, friends!
