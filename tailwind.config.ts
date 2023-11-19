@@ -1,6 +1,7 @@
 import animate from 'tailwindcss-animate';
 import typography from '@tailwindcss/typography';
 import { Config } from 'tailwindcss';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 export default {
     darkMode: ['class'],
@@ -21,6 +22,9 @@ export default {
             },
         },
         extend: {
+            fontFamily: {
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            },
             colors: {
                 border: 'hsl(var(--border))',
                 input: 'hsl(var(--input))',

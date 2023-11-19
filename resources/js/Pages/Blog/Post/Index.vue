@@ -1,43 +1,66 @@
 <script lang="ts" setup>
 import Badge from '@/Components/ui/badge/Badge.vue';
 import { Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
+import MainLayout from '@/Layouts/MainLayout.vue';
 
-defineProps<{
-    slug: string;
+const props = defineProps<{
+    contentMeta: {
+        content: string;
+        frontMatter: {
+            heroImage: string;
+            title: string;
+            pubDate: string;
+            category: string;
+            keywords: string[];
+        };
+    };
 }>();
+
+const content = computed(() => props.contentMeta.content);
+const frontMatter = computed(() => props.contentMeta.frontMatter);
+const formattedDate = computed(() =>
+    new Date(frontMatter.value.pubDate ?? '').toLocaleDateString('en-us', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+    }),
+);
 </script>
 
 <template>
-    <div class="flex flex-col justify-center">
-        <article
-            class="prose mx-auto w-full overflow-hidden pb-6 dark:prose-invert prose-img:mx-auto prose-img:rounded-md"
-        >
-            <h1 class="text-center text-2xl">{{ slug }}</h1>
-            <div
-                class="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight"
+    <MainLayout>
+        <div class="flex flex-col justify-center">
+            <article
+                class="prose mx-auto w-full overflow-hidden pb-6 dark:prose-invert prose-img:mx-auto prose-img:rounded-md"
             >
-                <!--                <time dateTime={new Date(data.post.pubDate ?? '')?.toISOString() ?? ''}>
-                                {new Date(data.post.pubDate ?? '').toLocaleDateString('en-us', {
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                                })}
-                                </time>-->
-                <Badge>category</Badge>
-            </div>
-            <!--            <img
-                            height="400"
-                            width="500"
-                            alt={`${data.post.title} hero image`}
-                            src={data.post.heroImage}
-                        />
-                        &lt;!&ndash; eslint-disable-next-line  &ndash;&gt;
-                        {@html markdownContent}-->
-        </article>
-        <Button class="mx-auto max-w-md">
-            <Link href="/blog">Back to blogs</Link>
-        </Button>
-    </div>
+                <h1 class="text-center text-2xl">{{ frontMatter.title }}</h1>
+                <div
+                    class="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight"
+                >
+                    <time
+                        :datetime="
+                            new Date(
+                                frontMatter.pubDate ?? '',
+                            )?.toISOString() ?? ''
+                        "
+                    >
+                        {{ formattedDate }}
+                    </time>
+                    <Badge>{{ frontMatter.category }}</Badge>
+                </div>
+                <img
+                    :alt="`${frontMatter.title} hero image`"
+                    :src="frontMatter.heroImage"
+                    height="400"
+                    width="500"
+                />
+                <!-- eslint-disable-next-line vue/no-v-html -->
+                <div v-html="content" />
+            </article>
+            <Button class="mx-auto max-w-md">
+                <Link :href="route('blogs.all')">Back to blogs</Link>
+            </Button>
+        </div>
+    </MainLayout>
 </template>
-
-<style scoped></style>

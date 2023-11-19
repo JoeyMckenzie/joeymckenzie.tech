@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Utilities\ContentCache;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(ContentCache::class);
     }
 
     /**
@@ -19,6 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        ContentCache::initContentCache();
     }
 }

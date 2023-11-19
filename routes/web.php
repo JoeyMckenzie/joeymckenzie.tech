@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\BlogPostController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,17 +22,11 @@ Route::get('/', fn () => Inertia::render('Home'))
 Route::get('/about', fn () => Inertia::render('About'))
     ->name('about');
 
-Route::get('/blog', fn () => Inertia::render('Blog'))
-    ->name('blog');
+Route::get('/blog', [BlogController::class, 'all'])
+    ->name('blogs.all');
 
-Route::get('/blog/{slug}', [BlogPostController::class, 'show'])
-    ->name('post');
-
-Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-
-Route::get('/user/{id}', function (Request $request, string $id) {
-    return 'User '.$id;
-});
+Route::get('/blog/{slug}', [BlogController::class, 'post'])
+    ->name('blogs.post');
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [

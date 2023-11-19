@@ -47,7 +47,7 @@ import MainLayout from '@/Layouts/MainLayout.vue';
                     or streaming live on
                     <a href="https://twitch.tv/JoeTheDevMan">Twitch </a>
                     . Checkout my
-                    <Link :href="route('blog')">blog</Link>
+                    <Link :href="route('blogs.all')">blog</Link>
                     for things I publish that mostly deal with my questionable
                     takes on development.
                 </p>

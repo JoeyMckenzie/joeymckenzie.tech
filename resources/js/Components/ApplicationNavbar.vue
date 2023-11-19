@@ -4,22 +4,22 @@ import ThemeToggle from '@/Components/ThemeToggle.vue';
 import { Link } from '@inertiajs/vue3';
 
 type NavLinkProps = {
-    href: string;
+    name: string;
     display: string;
 };
 
 const links: NavLinkProps[] = [
     {
         display: 'Home',
-        href: '/',
+        name: route('home'),
     },
     {
         display: 'About',
-        href: '/about',
+        name: route('about'),
     },
     {
         display: 'Blog',
-        href: '/blog',
+        name: route('blogs.all'),
     },
 ];
 </script>
@@ -30,9 +30,9 @@ const links: NavLinkProps[] = [
             class="flex flex-row items-center justify-center gap-x-2 px-6 py-8"
         >
             <Link
-                v-for="{ display, href } of links"
+                v-for="{ display, name } of links"
                 :key="display"
-                :href="href"
+                :href="name"
             >
                 <Button variant="outline">
                     {{ display }}
