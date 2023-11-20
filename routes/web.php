@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ProfileController;
+use App\Utilities\ContentCache;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -24,20 +24,15 @@ Route::get('', fn () => Inertia::render('Home'))
 Route::get('about', fn () => Inertia::render('About'))
     ->name('about');
 
-Route::get('blog', [BlogController::class, 'all'])
+Route::get('blog', fn (ContentCache $contentCache) => Inertia::render('Blog/Index', [
+    'contentMetas' => $contentCache->getContentMetas(),
+]))
     ->name('blogs');
 
-Route::get('blog/{slug}', [BlogController::class, 'post'])
+Route::get('blog/{slug}', fn (string $slug, ContentCache $contentCache) => Inertia::render('Blog/Post/Index', [
+    'contentMeta' => $contentCache->getContentMeta($slug),
+]))
     ->name('post');
-
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

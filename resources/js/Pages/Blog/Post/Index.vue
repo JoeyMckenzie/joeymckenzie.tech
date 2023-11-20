@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import Badge from '@/Components/ui/badge/Badge.vue';
-import { Link } from '@inertiajs/vue3';
+import Button from '@/Components/ui/button/Button.vue';
+import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
+import Badge from '@/Components/ui/badge/Badge.vue';
 
 const props = defineProps<{
     contentMeta: {
@@ -29,6 +30,8 @@ const formattedDate = computed(() =>
 </script>
 
 <template>
+    <Head :title="`${frontMatter.title} | joeymckenzie.tech`" />
+
     <MainLayout>
         <div class="flex flex-col justify-center">
             <article
@@ -58,9 +61,9 @@ const formattedDate = computed(() =>
                 <!-- eslint-disable-next-line vue/no-v-html -->
                 <div v-html="content" />
             </article>
-            <Button class="mx-auto max-w-md">
-                <Link :href="route('blogs')">Back to blogs</Link>
-            </Button>
+            <Link :href="route('blogs')" class="mx-auto max-w-md">
+                <Button variant="secondary"> Back to blogs</Button>
+            </Link>
         </div>
     </MainLayout>
 </template>

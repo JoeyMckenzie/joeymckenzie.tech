@@ -6,10 +6,13 @@ final readonly class ContentMeta
 {
     public FrontMatter $frontMatter;
 
+    public string $content;
+
     public function __construct(
         mixed $rawFrontMatter,
-        public string $content
+        string $convertedContent
     ) {
         $this->frontMatter = new FrontMatter($rawFrontMatter);
+        $this->content = $convertedContent;
     }
 }

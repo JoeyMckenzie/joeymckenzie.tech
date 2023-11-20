@@ -6,55 +6,72 @@ namespace App\Utilities;
 
 use App\Models\ContentMeta;
 use App\Models\FrontMatter;
+use DateTime;
 use Illuminate\Support\Facades\Cache;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
+use League\CommonMark\Extension\SmartPunct\SmartPunctExtension;
+use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
 use League\CommonMark\MarkdownConverter;
+use Spatie\LaravelMarkdown\MarkdownRenderer;
 
 final readonly class ContentCache
 {
     public static function initContentCache(): void
     {
-        logger('loading content cache');
+        // logger('loading content cache');
 
-        $environment = new Environment();
-        $environment->addExtension(new CommonMarkCoreExtension());
-        $environment->addExtension(new FrontMatterExtension());
-
-        $converter = new MarkdownConverter($environment);
+        $converter = self::initMarkdownConverter();
         $basePath = base_path();
         $contentPath = "$basePath".'/content';
-        $files = glob("$contentPath/**/*.md", GLOB_BRACE);
 
-        /**
-         * @var string[] $fileNames
-         */
+        /** @var string[] $files */
+        $files = app()->environment() === 'local'
+            ? glob("$contentPath/**/*.md", GLOB_BRACE)
+            : glob("$contentPath/*[!draft]/*.md", GLOB_BRACE);
+
+        /** @var string[] $fileNames */
         $fileNames = [];
 
         foreach ($files as $filePath) {
-            $info = pathinfo($filePath);
-            $fileName = basename($filePath, '.'.$info['extension']);
-            $fileNames[] = $fileName;
-
-            logger("parsing content for $fileName");
-
-            $contents = file_get_contents($filePath);
-            $frontMatterParser = new FrontMatterParser(new SymfonyYamlFrontMatterParser());
-            $parsedContent = $frontMatterParser->parse($contents);
-
-            $frontMatter = $parsedContent->getFrontMatter();
-            $documentContent = $parsedContent->getContent();
-            $contentMeta = new ContentMeta($frontMatter, $converter->convert($documentContent)->getContent());
-
-            Cache::forever($fileName, $contentMeta);
-
-            logger('file successfully parsed and added to cache');
+            $fileNames[] = self::cacheMarkdownFile($filePath, $converter);
         }
 
         Cache::forever('fileNames', $fileNames);
+    }
+
+    private static function initMarkdownConverter(): MarkdownConverter
+    {
+        $environment = (new Environment())
+            ->addExtension(new CommonMarkCoreExtension())
+            ->addExtension(new FrontMatterExtension())
+            ->addExtension(new SmartPunctExtension())
+            ->addExtension(new StrikethroughExtension());
+
+        return new MarkdownConverter($environment);
+    }
+
+    private static function cacheMarkdownFile(string $filePath, MarkdownConverter $converter): string
+    {
+        $info = pathinfo($filePath);
+        $fileName = basename($filePath, '.'.$info['extension']);
+
+        /** @var string $contents */
+        $contents = file_get_contents($filePath);
+        $frontMatterParser = new FrontMatterParser(new SymfonyYamlFrontMatterParser());
+        $parsedContent = $frontMatterParser->parse($contents);
+        $frontMatter = $parsedContent->getFrontMatter();
+        $html = app(MarkdownRenderer::class)
+            ->highlightTheme('github-dark')
+            ->toHtml($parsedContent->getContent());
+        $contentMeta = new ContentMeta($frontMatter, $html);
+
+        Cache::forever($fileName, $contentMeta);
+
+        return $fileName;
     }
 
     public function getContentMeta(string $slug): ?ContentMeta
@@ -65,7 +82,10 @@ final readonly class ContentCache
             return null;
         }
 
-        return Cache::get($slug);
+        /** @var ContentMeta $contentMeta */
+        $contentMeta = Cache::get($slug);
+
+        return $contentMeta;
     }
 
     /**
@@ -78,19 +98,15 @@ final readonly class ContentCache
          */
         $files = Cache::get('fileNames');
 
-        /**
-         * @var FrontMatter[] $frontMatters
-         */
+        /** @var FrontMatter[] $frontMatters */
         $frontMatters = collect($files)
-            ->map(function (string $fileName) {
-                /**
-                 * @var ContentMeta $fileMeta
-                 */
-                $fileMeta = Cache::get($fileName);
+            ->map(function (string $fileName): FrontMatter {
+                /** @var ContentMeta $contentMeta */
+                $contentMeta = Cache::get($fileName);
 
-                return $fileMeta->frontMatter;
+                return $contentMeta->frontMatter;
             })
-            // TODO: Sort by date
+            ->sortByDesc(fn (FrontMatter $frontMatter) => new DateTime($frontMatter->pubDate))
             ->toArray();
 
         return $frontMatters;
