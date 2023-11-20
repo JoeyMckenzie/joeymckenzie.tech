@@ -67,7 +67,7 @@ final readonly class ContentCache
         $html = app(MarkdownRenderer::class)
             ->highlightTheme('github-dark')
             ->toHtml($parsedContent->getContent());
-        $contentMeta = new ContentMeta($frontMatter, $html);
+        $contentMeta = new ContentMeta($frontMatter, $html, $fileName);
 
         Cache::forever($fileName, $contentMeta);
 
@@ -91,14 +91,10 @@ final readonly class ContentCache
     /**
      * @return FrontMatter[]
      */
-    public function getContentMetas(): array
+    public function getContentMetas(bool $includeLatest = false): array
     {
-        /**
-         * @var string[] $files
-         */
+        /** @var string[] $files */
         $files = Cache::get('fileNames');
-
-        /** @var FrontMatter[] $frontMatters */
         $frontMatters = collect($files)
             ->map(function (string $fileName): FrontMatter {
                 /** @var ContentMeta $contentMeta */
@@ -106,9 +102,15 @@ final readonly class ContentCache
 
                 return $contentMeta->frontMatter;
             })
-            ->sortByDesc(fn (FrontMatter $frontMatter) => new DateTime($frontMatter->pubDate))
-            ->toArray();
+            ->sortByDesc(fn (FrontMatter $frontMatter) => new DateTime($frontMatter->pubDate));
 
-        return $frontMatters;
+        if ($includeLatest) {
+            $frontMatters = $frontMatters->slice(0, 3);
+        }
+
+        /** @var FrontMatter[] $asFrontMatterArray */
+        $asFrontMatterArray = $frontMatters->toArray();
+
+        return $asFrontMatterArray;
     }
 }

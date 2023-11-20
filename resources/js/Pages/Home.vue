@@ -1,6 +1,12 @@
 <script lang="ts" setup>
 import { Head } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
+import BlogPreviews from '@/Components/BlogPreviews.vue';
+import { ContentMeta } from '@/models';
+
+defineProps<{
+    contentMetas: ContentMeta[];
+}>();
 </script>
 <template>
     <Head>
@@ -30,6 +36,6 @@ import MainLayout from '@/Layouts/MainLayout.vue';
         >
             Latest thoughts.
         </h2>
-        <!-- <BlogPreview posts={$viewCountStore.latest} /> -->
+        <BlogPreviews :content-metas="contentMetas" />
     </MainLayout>
 </template>

@@ -1,8 +1,17 @@
 <script lang="ts" setup>
 import MainLayout from '@/Layouts/MainLayout.vue';
+import { ContentMeta } from '@/models';
+import BlogPreviews from '@/Components/BlogPreviews.vue';
+import { Head } from '@inertiajs/vue3';
+
+defineProps<{
+    contentMetas: ContentMeta[];
+}>();
 </script>
 
 <template>
+    <Head title="Blog | joeymckenzie.tech" />
+
     <MainLayout>
         <div class="pb-12">
             <h2 class="text-4xl font-bold tracking-tight sm:text-center">
@@ -20,5 +29,6 @@ import MainLayout from '@/Layouts/MainLayout.vue';
                 me about any of the writing I do here, or to simply say hello!
             </p>
         </div>
+        <BlogPreviews :content-metas="contentMetas" />
     </MainLayout>
 </template>

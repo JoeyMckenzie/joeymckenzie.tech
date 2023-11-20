@@ -14,12 +14,10 @@ final readonly class FrontMatter
 
     public string $category;
 
-    /**
-     * @var array<string>
-     */
+    /** @var string[] */
     public array $keywords;
 
-    public function __construct(mixed $frontMatter)
+    public function __construct(mixed $frontMatter, public string $slug)
     {
         $this->title = $frontMatter['title'];
         $this->description = $frontMatter['description'];

@@ -18,7 +18,9 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('', fn () => Inertia::render('Home'))
+Route::get('', fn (ContentCache $contentCache) => Inertia::render('Home', [
+    'contentMetas' => $contentCache->getContentMetas(true),
+]))
     ->name('home');
 
 Route::get('about', fn () => Inertia::render('About'))

@@ -4,22 +4,14 @@ import { Head, Link } from '@inertiajs/vue3';
 import { computed } from 'vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import Badge from '@/Components/ui/badge/Badge.vue';
+import { ContentMeta } from '@/models';
 
 const props = defineProps<{
-    contentMeta: {
-        content: string;
-        frontMatter: {
-            heroImage: string;
-            title: string;
-            pubDate: string;
-            category: string;
-            keywords: string[];
-        };
-    };
+    contentMeta: ContentMeta;
 }>();
 
 const content = computed(() => props.contentMeta.content);
-const frontMatter = computed(() => props.contentMeta.frontMatter);
+const frontMatter = computed(() => props.contentMeta);
 const formattedDate = computed(() =>
     new Date(frontMatter.value.pubDate ?? '').toLocaleDateString('en-us', {
         year: 'numeric',
