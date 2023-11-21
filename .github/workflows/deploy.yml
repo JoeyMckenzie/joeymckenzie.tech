@@ -20,4 +20,4 @@ jobs:
         run: flyctl deploy --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_TOKEN }}
-          BUILD_GIT_COMMIT_SHA: ${{ github.sha }}
+          BUILD_COMMIT_SHA: ${{ github.sha }}
