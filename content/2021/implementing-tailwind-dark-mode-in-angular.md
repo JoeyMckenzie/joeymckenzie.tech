@@ -320,7 +320,7 @@ In our `body` tag, we add some background colors corresponding to which mode we'
 strapped together, if we fire up our application and navigate to `localhost:4200`, we'll be able to see our masterpiece
 in action:
 
-[Tailwind dark mode toggle example](/blog/tailwind-dark-mode/dark-mode-toggle.webm)
+[Tailwind dark mode toggle example](/images/tailwind-dark-mode/dark-mode-toggle.webm)
 
 With dev tools open, you'll see the class list on the `html` tag update each time we click the button, as well as seeing
 the value updated in local storage. If we refresh the page as well, we'll keep our dark mode in tact if we have that

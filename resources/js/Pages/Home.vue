@@ -2,10 +2,11 @@
 import { Head } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import BlogPreviews from '@/Components/BlogPreviews.vue';
-import { ContentMeta } from '@/models';
+import { FrontMatter } from '@/models';
+import SocialButtons from '@/Components/SocialButtons.vue';
 
 defineProps<{
-    contentMetas: ContentMeta[];
+    frontMatters: FrontMatter[];
 }>();
 </script>
 <template>
@@ -30,12 +31,12 @@ defineProps<{
             things. I like building fast, efficient web services, learning new
             things, and writing code in the open source ecosystem.
         </p>
-        <!-- <SocialButtons /> -->
+        <SocialButtons />
         <h2
             class="pb-4 pt-8 text-right text-4xl font-bold tracking-tight sm:text-center"
         >
             Latest thoughts.
         </h2>
-        <BlogPreviews :content-metas="contentMetas" />
+        <BlogPreviews :front-matters="frontMatters" />
     </MainLayout>
 </template>

@@ -11,31 +11,56 @@ keywords:
     - mediatr
 ---
 
-_UPDATE: I've added cancellation token support to each of the database operations below, and encourage readers to checkout the `master` branch to see how things look now. The methods below we're slight altered to use a `CommandDefinition` that utilizes a `CancellationToken` passed down from the core business logic layer, and used in place of the regular string queries we've written below._
+_UPDATE: I've added cancellation token support to each of the database operations below, and encourage readers to
+checkout the `master` branch to see how things look now. The methods below we're slight altered to use
+a `CommandDefinition` that utilizes a `CancellationToken` passed down from the core business logic layer, and used in
+place of the regular string queries we've written below._
 
-We finally made it... our domain layer is ready to roll, and it's now time to spin up some actual application code. In our [last post](/blog/net-core-dapper-and-crud-buzzword-bingo/), we setup our initial domain layer for our favorite fictional brewery, Dappery ([source code](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-1-domain-layer) for reference). In this post, we'll build out the data access layer that will be our primary persistence mechanism into our database. We'll make use of SQL server (or Postgres) with Docker and SQLite running our unit tests within this layer. Feel free to checkout the [source code](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-2-data-layer) on GitHub for this section for those following along.
+We finally made it... our domain layer is ready to roll, and it's now time to spin up some actual application code. In
+our [last post](/images/net-core-dapper-and-crud-buzzword-bingo/), we setup our initial domain layer for our favorite
+fictional brewery, Dappery ([source code](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-1-domain-layer) for
+reference). In this post, we'll build out the data access layer that will be our primary persistence mechanism into our
+database. We'll make use of SQL server (or Postgres) with Docker and SQLite running our unit tests within this layer.
+Feel free to checkout the [source code](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-2-data-layer) on
+GitHub for this section for those following along.
 
-Before we jump into the code, let's take a step back and understand _why_ we separate our our data access layer (DAL) from the rest of our code.
+Before we jump into the code, let's take a step back and understand _why_ we separate our our data access layer (DAL)
+from the rest of our code.
 
-![Inward_Facing_Dependencies](/blog/net-core-dapper-and-crud-series/part-2/inward_dependencies.png)
+![Inward_Facing_Dependencies](/images/net-core-dapper-and-crud-series/part-2/inward_dependencies.png)
 
-The good ole fashioned dependency graph, made famous by Robert Martin a.k.a. Dr. Bob, lays out the foundation of domain driven design (DDD). For our relatively simple application, we focus on creating four distinct layers within our application code to ensure that the layers are ultimately, by some chain of dependency, dependent on the domain layer (effectively the 'D' in SOLID, [dependency inversion](https://en.wikipedia.org/wiki/Dependency_inversion_principle)). With our layers pointing inward toward our domain, we create _clear_ boundaries within our application that deal with separate concerns:
+The good ole fashioned dependency graph, made famous by Robert Martin a.k.a. Dr. Bob, lays out the foundation of domain
+driven design (DDD). For our relatively simple application, we focus on creating four distinct layers within our
+application code to ensure that the layers are ultimately, by some chain of dependency, dependent on the domain layer (
+effectively the 'D' in SOLID, [dependency inversion](https://en.wikipedia.org/wiki/Dependency_inversion_principle)).
+With our layers pointing inward toward our domain, we create _clear_ boundaries within our application that deal with
+separate concerns:
 
--   The web and persistence layers directly depend on our core layer
--   Our core layer directly depends on the domain layer
--   By association, our web and persistence, inadvertently, have a dependency on our domain layer
--   The domain layer has **no** dependencies - all it knows, and cares about, are the entities, view models, DTOs, etc. that live inside this project and how each is related
+- The web and persistence layers directly depend on our core layer
+- Our core layer directly depends on the domain layer
+- By association, our web and persistence, inadvertently, have a dependency on our domain layer
+- The domain layer has **no** dependencies - all it knows, and cares about, are the entities, view models, DTOs, etc.
+  that live inside this project and how each is related
 
-Creating these clear boundaries of separation helps to create a modular application, with each layer isolated from one another in perfect harmony. By creating this inversion of dependency within our application, for example, our core layer _does not_ need to know about ANY of the internal workings of the data layer - all the core layer cares about is that it can get data from a database using this [actor](https://en.wikipedia.org/wiki/Actor_model). How the persistence layer interacts with the database is entirely abstracted from our core layer. Our data layer can change its data interaction mechanism, swap database providers, etc. and our core layer _will not_ care as it does not concern itself with _how_ the persistence layer works.
+Creating these clear boundaries of separation helps to create a modular application, with each layer isolated from one
+another in perfect harmony. By creating this inversion of dependency within our application, for example, our core layer
+_does not_ need to know about ANY of the internal workings of the data layer - all the core layer cares about is that it
+can get data from a database using this [actor](https://en.wikipedia.org/wiki/Actor_model). How the persistence layer
+interacts with the database is entirely abstracted from our core layer. Our data layer can change its data interaction
+mechanism, swap database providers, etc. and our core layer _will not_ care as it does not concern itself with _how_ the
+persistence layer works.
 
-With that out of way, let's finally dig into the data access code we'll be writing. From the start, we said we'd be working with Dapper for our database interaction, so let's go ahead and create a new project (a `classlib` in our case). Again, I'll be using the command line, but feel free to spin up the new project in your IDE of choice:
+With that out of way, let's finally dig into the data access code we'll be writing. From the start, we said we'd be
+working with Dapper for our database interaction, so let's go ahead and create a new project (a `classlib` in our case).
+Again, I'll be using the command line, but feel free to spin up the new project in your IDE of choice:
 
 ```shell
 ~/Dappery/src$ dotnet new classlib -n Dappery.Data
 ~/Dappery/src$ dotnet sln ../Dappery.sln add Dappery.Data/Dappery.Data.csproj
 ```
 
-With our persistence library wired up, let's go ahead and update our `.csproj` file within `Dappery.Data` to utilize some of the new features of C# 8. Let's replace the `PropertyGroup` section with the following:
+With our persistence library wired up, let's go ahead and update our `.csproj` file within `Dappery.Data` to utilize
+some of the new features of C# 8. Let's replace the `PropertyGroup` section with the following:
 
 ```xml
 <PropertyGroup>
@@ -45,14 +70,21 @@ With our persistence library wired up, let's go ahead and update our `.csproj` f
 </PropertyGroup>
 ```
 
-Targeting `netstandard2.1` allows us to utilize C# 8 features, and we'll also turn on [nullable reference types](https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references) to allow the compiler to help us catch possible null references. From our dependency graph above, we'll need to create a reference between our data layer and our core layer. For reasons we'll see later, we'll actually need to add just a bit of skeleton code in the core application layer for our data layer to utilize, so let's go ahead and add it now.
+Targeting `netstandard2.1` allows us to utilize C# 8 features, and we'll also turn
+on [nullable reference types](https://docs.microsoft.com/en-us/dotnet/csharp/nullable-references) to allow the compiler
+to help us catch possible null references. From our dependency graph above, we'll need to create a reference between our
+data layer and our core layer. For reasons we'll see later, we'll actually need to add just a bit of skeleton code in
+the core application layer for our data layer to utilize, so let's go ahead and add it now.
 
 ```shell
 ~/Dappery/src$ dotnet new classlib -n Dappery.Core
 ~/Dappery/src$ dotnet sln ../Dappery.sln add Dappery.Core/Dappery.Core.csproj
 ```
 
-With the project added, go ahead and replace the `PropertyGroup` with the above for all the aforementioned reasons. Now, back in our `.csproj` file in our data project, let's add the core layer as a dependency. Feel free to create the reference using Visual Studio/Rider, as it really only boils down to adding the following line beneath the `PropertyGroup` tag:
+With the project added, go ahead and replace the `PropertyGroup` with the above for all the aforementioned reasons. Now,
+back in our `.csproj` file in our data project, let's add the core layer as a dependency. Feel free to create the
+reference using Visual Studio/Rider, as it really only boils down to adding the following line beneath
+the `PropertyGroup` tag:
 
 ```xml
 <ItemGroup>
@@ -60,7 +92,8 @@ With the project added, go ahead and replace the `PropertyGroup` with the above 
 </ItemGroup>
 ```
 
-As we mentioned above, the data layer will also implicitly rely on the domain layer _through_ its dependency on the core layer. What this means for us, code-wise, is to add the following reference in our `.csproj` file in the core project:
+As we mentioned above, the data layer will also implicitly rely on the domain layer _through_ its dependency on the core
+layer. What this means for us, code-wise, is to add the following reference in our `.csproj` file in the core project:
 
 ```xml
 <ItemGroup>
@@ -68,13 +101,28 @@ As we mentioned above, the data layer will also implicitly rely on the domain la
 </ItemGroup>
 ```
 
-With the core project referencing the domain layer, our data project will _also_ have a reference to the domain layer without explicitly adding the reference in our data layer. Adding the domain project as a direct reference in our data project would actually have created a _symmetric dependency_, which we'll want to try and avoid. With the ceremony out of the way, let's talk about what we'll be adding in this layer.
+With the core project referencing the domain layer, our data project will _also_ have a reference to the domain layer
+without explicitly adding the reference in our data layer. Adding the domain project as a direct reference in our data
+project would actually have created a _symmetric dependency_, which we'll want to try and avoid. With the ceremony out
+of the way, let's talk about what we'll be adding in this layer.
 
 ### The Data Layer
 
-As this is a project revolving around Dapper for our database persistence, it's probably a good idea to bring in some patterns to help us define our intent within this layer. Rather that writing raw Dapper queries within this layer, we'll wrap our interaction with Dapper within beer and brewery repositories that will, in turn, be wrapped in a unit of work. In plain english, we'll effectively be using the [Repository and Unit of Work Patterns](https://www.c-sharpcorner.com/UploadFile/b1df45/unit-of-work-in-repository-pattern/). Alongside bringing in these patterns, a side effect of our clear application layer separation will be the creation of a [ports and adapters architecture](<https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)>) (also known as hexagonal architecture).
+As this is a project revolving around Dapper for our database persistence, it's probably a good idea to bring in some
+patterns to help us define our intent within this layer. Rather that writing raw Dapper queries within this layer, we'll
+wrap our interaction with Dapper within beer and brewery repositories that will, in turn, be wrapped in a unit of work.
+In plain english, we'll effectively be using
+the [Repository and Unit of Work Patterns](https://www.c-sharpcorner.com/UploadFile/b1df45/unit-of-work-in-repository-pattern/).
+Alongside bringing in these patterns, a side effect of our clear application layer separation will be the creation of
+a [ports and adapters architecture](<https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)>) (also known as
+hexagonal architecture).
 
-For our use case, our core project will offer a port in the form of data access that our data project will then fill as the adapter. If you're unfamiliar with the repository and unit of work patterns, the specific problems they solve, and their pros and cons, it's well worth it to take the afternoon to read up on them. For now, we'll assume you're somewhat familiar with the pattern. With all the technical jargon out of the way, let's go ahead and create a port (effectively an `interface`) within our core project, that our data project will provide the adapter for (fancy term for implementing the `interface`). In `Dappery.Core`, go ahead and add a `Data` folder and the following classes:
+For our use case, our core project will offer a port in the form of data access that our data project will then fill as
+the adapter. If you're unfamiliar with the repository and unit of work patterns, the specific problems they solve, and
+their pros and cons, it's well worth it to take the afternoon to read up on them. For now, we'll assume you're somewhat
+familiar with the pattern. With all the technical jargon out of the way, let's go ahead and create a port (effectively
+an `interface`) within our core project, that our data project will provide the adapter for (fancy term for implementing
+the `interface`). In `Dappery.Core`, go ahead and add a `Data` folder and the following classes:
 
 #### Data/IBeerRepository.cs
 
@@ -148,13 +196,31 @@ namespace Dappery.Core.Data
 
 &nbsp;
 
-In our repositories, we've got all the ingredients for a pretty basic CRUD application. Notice that our `IUnitOfWork` interface inherits from `IDisposable`, as it will be in charge of the database resources that we'll need to clean up once we're finished with our data operations.
+In our repositories, we've got all the ingredients for a pretty basic CRUD application. Notice that our `IUnitOfWork`
+interface inherits from `IDisposable`, as it will be in charge of the database resources that we'll need to clean up
+once we're finished with our data operations.
 
-For our database provider, feel free to use whatever your preferred provider happens to be. I lay three options for us: SQL Server, Postgres, and SQLite. I'll be spinning up both a SQL Server and Postgres database, as an exercise of abstraction to really drive home the point of agnostic data access, using [Postgres](https://hub.docker.com/_/postgres) and [SQL Server](https://hub.docker.com/_/microsoft-mssql-server) Docker images. For our unit tests, we'll be using an in-memory version of SQLite to run our tests against. If you don't feel like setting up a database for this application, don't worry... I got you. We'll generalize our database layer just enough that you'll be able to use the in-memory version of SQLite for the application as well. Since this isn't _really_ a post about setting up database providers via Docker images, so I'll defer to this [article](https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver15&pivots=cs1-bash) on the official Microsoft docs on how to do so for SQL Server, and the aforementioned Docker hub for Postgres. The beauty of the architecture we've laid out so far is that no matter the database provider, our application will work with just a simple connection string change.
+For our database provider, feel free to use whatever your preferred provider happens to be. I lay three options for us:
+SQL Server, Postgres, and SQLite. I'll be spinning up both a SQL Server and Postgres database, as an exercise of
+abstraction to really drive home the point of agnostic data access, using [Postgres](https://hub.docker.com/_/postgres)
+and [SQL Server](https://hub.docker.com/_/microsoft-mssql-server) Docker images. For our unit tests, we'll be using an
+in-memory version of SQLite to run our tests against. If you don't feel like setting up a database for this application,
+don't worry... I got you. We'll generalize our database layer just enough that you'll be able to use the in-memory
+version of SQLite for the application as well. Since this isn't _really_ a post about setting up database providers via
+Docker images, so I'll defer to
+this [article](https://docs.microsoft.com/en-us/sql/linux/quickstart-install-connect-docker?view=sql-server-ver15&pivots=cs1-bash)
+on the official Microsoft docs on how to do so for SQL Server, and the aforementioned Docker hub for Postgres. The
+beauty of the architecture we've laid out so far is that no matter the database provider, our application will work with
+just a simple connection string change.
 
-Before we get started implementing our repository operations, let's go ahead and setup our database. Once you've got your SQL Server, or Postgres, instance up and running, take a look at our [initialization files](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-2-data-layer/src/Dappery.Data/Scripts) to help create, link, and seed some test data for either provider. Go ahead and drop into a console and run the SQL for which ever provider you decide to roll with.
+Before we get started implementing our repository operations, let's go ahead and setup our database. Once you've got
+your SQL Server, or Postgres, instance up and running, take a look at
+our [initialization files](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-2-data-layer/src/Dappery.Data/Scripts)
+to help create, link, and seed some test data for either provider. Go ahead and drop into a console and run the SQL for
+which ever provider you decide to roll with.
 
-With our database ready to roll, let's go ahead and implement the `IBeerRepository.cs` and `IBreweryRepository.cs` interfaces. Within `Dappery.Data`, let's create a `Repositories` folder with the following implementation classes:
+With our database ready to roll, let's go ahead and implement the `IBeerRepository.cs` and `IBreweryRepository.cs`
+interfaces. Within `Dappery.Data`, let's create a `Repositories` folder with the following implementation classes:
 
 #### Repositories/BeerRepository.cs
 
@@ -270,7 +336,8 @@ namespace Dappery.Data.Repositories
 
 &nbsp;
 
-For now, some of our imported namespaces are unused, but will be needed later when we start implementing these methods. Next, let's add the `UnitOfWork.cs` implementation at the root of our `Dappery.Data` project:
+For now, some of our imported namespaces are unused, but will be needed later when we start implementing these methods.
+Next, let's add the `UnitOfWork.cs` implementation at the root of our `Dappery.Data` project:
 
 #### UnitOfWork.cs
 
@@ -531,18 +598,26 @@ namespace Dappery.Data
 
 Okay... that's a lot of code, so let's break it down:
 
--   In our constructor, we inject a nullable connection string (since we enabled C# 8, `string`s can now be nullable), and assume that if no connection string is passed, we're probably running unit tests, or just a simple in-memory version of our application. We'll see how this injected connection string will actually be passed into our `UnitOfWork` constructor in our API project in a later post.
--   Once we figure out who our database provider is, we open the connection, initialize our repositories, and seed some test data (if we're opting to use SQLite)
--   We pass a the `rowInsertRetrievalQuery` string into our repositories to tell the repository how to get back the row we just added (we'll see why, exactly, we do this later)
--   We add some public getters to access the repositories through our `UnitOfWork` class
--   We implement our `Commit` method to try and commit the transaction to the database and rollback if anything unexpected happens
--   Finally, we add the disposable pattern to safely release our database resources during each transaction and destruct our instance of the `UnitOfWork`
+- In our constructor, we inject a nullable connection string (since we enabled C# 8, `string`s can now be nullable), and
+  assume that if no connection string is passed, we're probably running unit tests, or just a simple in-memory version
+  of our application. We'll see how this injected connection string will actually be passed into our `UnitOfWork`
+  constructor in our API project in a later post.
+- Once we figure out who our database provider is, we open the connection, initialize our repositories, and seed some
+  test data (if we're opting to use SQLite)
+- We pass a the `rowInsertRetrievalQuery` string into our repositories to tell the repository how to get back the row we
+  just added (we'll see why, exactly, we do this later)
+- We add some public getters to access the repositories through our `UnitOfWork` class
+- We implement our `Commit` method to try and commit the transaction to the database and rollback if anything unexpected
+  happens
+- Finally, we add the disposable pattern to safely release our database resources during each transaction and destruct
+  our instance of the `UnitOfWork`
 
 Taking a step back let's take a look at our project structure so far:
 
-![Structure_So_far](/blog/net-core-dapper-and-crud-series/part-2/structure_as_of.png)
+![Structure_So_far](/images/net-core-dapper-and-crud-series/part-2/structure_as_of.png)
 
-With our `UnitOfWork` class implemented, let's finally crank out some of our repository operations. In our `BreweryRepository.cs` class, let's implement our `GetAllBreweries` query:
+With our `UnitOfWork` class implemented, let's finally crank out some of our repository operations. In
+our `BreweryRepository.cs` class, let's implement our `GetAllBreweries` query:
 
 #### BreweryRepository.cs
 
@@ -581,13 +656,23 @@ public async Task<IEnumerable<Brewery>> GetAllBreweries()
 
 Let's breakdown what's going on in this query:
 
--   First, we grab a reference to all the beers in our database so we can map each beer up to its corresponding brewery
--   Next, we query the brewery table and do a simple join on the address table
--   Finally, once we have our result set, we set each brewery's address to the joined address, and add all the beers to the data model (if any exist)
+- First, we grab a reference to all the beers in our database so we can map each beer up to its corresponding brewery
+- Next, we query the brewery table and do a simple join on the address table
+- Finally, once we have our result set, we set each brewery's address to the joined address, and add all the beers to
+  the data model (if any exist)
 
-Again, I'm not an expert with Dapper, so I'm sure there's some optimization to be done here. As this is just us exploring Dapper, this will suffice for now. For example, rather than performing two separate queries to get our associated beers that map to their breweries, we could flat query all the beers using some nested sub queries. A few issues arise, however, as there are many beers to one brewery, so this might not be the most viable solution - simply just food for thought.
+Again, I'm not an expert with Dapper, so I'm sure there's some optimization to be done here. As this is just us
+exploring Dapper, this will suffice for now. For example, rather than performing two separate queries to get our
+associated beers that map to their breweries, we could flat query all the beers using some nested sub queries. A few
+issues arise, however, as there are many beers to one brewery, so this might not be the most viable solution - simply
+just food for thought.
 
-Syntactically, Dapper offers some nice ADO.NET-like methods to help us write our queries and commands. We see that the `QueryAsync<Brewery, Address, Brewery>` method sets up the expectation of what this query returns - the first two generic types tell Dapper that this is a joined query that will contain two of our entities, with the third being the entity Dapper should perform the mapping for and ultimately return. We see that one of the parameters in this call is an expression function (the `Func<Brewery, Address>`) that we use to add the reference to the address for the brewery and add all the beers.
+Syntactically, Dapper offers some nice ADO.NET-like methods to help us write our queries and commands. We see that
+the `QueryAsync<Brewery, Address, Brewery>` method sets up the expectation of what this query returns - the first two
+generic types tell Dapper that this is a joined query that will contain two of our entities, with the third being the
+entity Dapper should perform the mapping for and ultimately return. We see that one of the parameters in this call is an
+expression function (the `Func<Brewery, Address>`) that we use to add the reference to the address for the brewery and
+add all the beers.
 
 Let's jump over to our beer repository and implement the `GetAllBeers` method:
 
@@ -617,7 +702,9 @@ public async Task<IEnumerable<Beer>> GetAllBeers()
 
 &nbsp;
 
-Again, taking a look at what we've done above, this query is pretty straight forward: we retrieve the brewery addresses, and then separately query the beers table with the breweries table and map each brewery's address during iteration over our result set. Looking good so far, let's bust out those retrieve by ID methods for both entities:
+Again, taking a look at what we've done above, this query is pretty straight forward: we retrieve the brewery addresses,
+and then separately query the beers table with the breweries table and map each brewery's address during iteration over
+our result set. Looking good so far, let's bust out those retrieve by ID methods for both entities:
 
 #### BreweryRepository.cs
 
@@ -708,7 +795,12 @@ public async Task<Beer> GetBeerById(int id)
 
 &nbsp;
 
-Pretty straight forward - the only addition here is the use of Dapper's `QueryFirstOrDefaultAsync<Beer>()` method, which we conveniently use to retrieve the address of the beer's brewery in question, set the brewery address, and finally attach all the beers we have in the database to the brewery. Again, I'm no Dapper expert by any means, so I'm sure we could optimize this query quite a bit. For the EF Core fellows in the crowd, the above would be equivalent to a `.Include().ThenInclude()` query, and while I'm sure we could combine some of the above queries, I break up each query for readability, as well as debug-ability. Next, let's add our create and update commands for each repository:
+Pretty straight forward - the only addition here is the use of Dapper's `QueryFirstOrDefaultAsync<Beer>()` method, which
+we conveniently use to retrieve the address of the beer's brewery in question, set the brewery address, and finally
+attach all the beers we have in the database to the brewery. Again, I'm no Dapper expert by any means, so I'm sure we
+could optimize this query quite a bit. For the EF Core fellows in the crowd, the above would be equivalent to
+a `.Include().ThenInclude()` query, and while I'm sure we could combine some of the above queries, I break up each query
+for readability, as well as debug-ability. Next, let's add our create and update commands for each repository:
 
 #### BeerRepository.cs
 
@@ -839,17 +931,37 @@ public async Task UpdateBrewery(Brewery brewery, bool updateAddress)
 
 &nbsp;
 
-In our commands above, notice the absence of checking the entities passed in for validity and the absence of exceptions - that's intentional! Our data access layer is responsible for one thing, and one thing only: **database interaction**. That's it; no more, no less. Any checking for request data, throwing exceptions, mapping entities, etc. will _all_ be done in our core business layer, as that is its intended purpose. By keeping our persistence layer as simple as possible and giving it a [single responsibility](https://en.wikipedia.org/wiki/Single_responsibility_principle) in the form of database access, we've create a boundary in this layer and between all other cross-cutting concerns.
+In our commands above, notice the absence of checking the entities passed in for validity and the absence of
+exceptions - that's intentional! Our data access layer is responsible for one thing, and one thing only: **database
+interaction**. That's it; no more, no less. Any checking for request data, throwing exceptions, mapping entities, etc.
+will _all_ be done in our core business layer, as that is its intended purpose. By keeping our persistence layer as
+simple as possible and giving it
+a [single responsibility](https://en.wikipedia.org/wiki/Single_responsibility_principle) in the form of database access,
+we've create a boundary in this layer and between all other cross-cutting concerns.
 
-In our create operations above, we also pass back the last effected row ID (in the case of SQLite and SQL Server) so that we can pass that back to the business layer. There's a few reasons for doing this:
+In our create operations above, we also pass back the last effected row ID (in the case of SQLite and SQL Server) so
+that we can pass that back to the business layer. There's a few reasons for doing this:
 
-1. By passing back the row ID to the core business layer, we allow our callers to simply query the database again with the inserted entity's row ID for a lightning fast retrieve, should the layer see a need for it (we will be doing this, for example)
-2. With the row ID being returned, the business layer can simply go about its business doing any business logic it needs to validate entities, link relations, etc.
-3. Performing this passing of the last effected row ID in the persistence layer is (arguably) the easiest way to do this type of operation, as we are talking directly to the database in the layer and can easily access the row via SQL rather than having our callers perform a more intensive text based search, for example, in our database
+1. By passing back the row ID to the core business layer, we allow our callers to simply query the database again with
+   the inserted entity's row ID for a lightning fast retrieve, should the layer see a need for it (we will be doing
+   this, for example)
+2. With the row ID being returned, the business layer can simply go about its business doing any business logic it needs
+   to validate entities, link relations, etc.
+3. Performing this passing of the last effected row ID in the persistence layer is (arguably) the easiest way to do this
+   type of operation, as we are talking directly to the database in the layer and can easily access the row via SQL
+   rather than having our callers perform a more intensive text based search, for example, in our database
 
-So why wouldn't we want to do this? Well, there's one big reason where this may become an issue - concurrency. In a real world production database, there are hundreds of thousands (even millions at the enterprise scale) transactions being performed against database everyday. In doing so, there _is_ a non-zero probability that when retrieving the last effected row ID, we _could_ get back the ID of another entity that just so happened to be inserted, or updated, at that very moment as well. In practice, our implementation may not be the best approach in a high traffic production environment, but for our relatively simple application, it'll make do.
+So why wouldn't we want to do this? Well, there's one big reason where this may become an issue - concurrency. In a real
+world production database, there are hundreds of thousands (even millions at the enterprise scale) transactions being
+performed against database everyday. In doing so, there _is_ a non-zero probability that when retrieving the last
+effected row ID, we _could_ get back the ID of another entity that just so happened to be inserted, or updated, at that
+very moment as well. In practice, our implementation may not be the best approach in a high traffic production
+environment, but for our relatively simple application, it'll make do.
 
-I should mention that, again, as we're simply just exploring Dapper in our example application, there's still _a ton_ of room for improvement here. Between our query optimization and testability of this layer, there's a lot of refactoring we could do here to make our code faster and more reliable. For our use case, we'll keep our queries and commands simple for now (as I'm in the same boat as many you - in **no** way a Dapper expert).
+I should mention that, again, as we're simply just exploring Dapper in our example application, there's still _a ton_ of
+room for improvement here. Between our query optimization and testability of this layer, there's a lot of refactoring we
+could do here to make our code faster and more reliable. For our use case, we'll keep our queries and commands simple
+for now (as I'm in the same boat as many you - in **no** way a Dapper expert).
 
 Lastly, we'll top off our CRUD operations with the implementation of each delete method:
 
@@ -885,14 +997,26 @@ public async Task<int> DeleteBeer(int beerId)
 }
 ```
 
-Our delete operations are simple as can be, just deleting rows from our database (with no validation being performed, as that is an exercise for the business layer). No magic here.
+Our delete operations are simple as can be, just deleting rows from our database (with no validation being performed, as
+that is an exercise for the business layer). No magic here.
 
-And with that... we've _finally_ completed our persistence layer! We've laid the foundation for our core business layer to now tap into a database to persist and query data, alongside allowing the option for three difference database providers. Not a bad day's work, if I do say so myself. As a side note, that was _a lot_ of code we just cranked out. Let's recap exactly what we did in this post:
+And with that... we've _finally_ completed our persistence layer! We've laid the foundation for our core business layer
+to now tap into a database to persist and query data, alongside allowing the option for three difference database
+providers. Not a bad day's work, if I do say so myself. As a side note, that was _a lot_ of code we just cranked out.
+Let's recap exactly what we did in this post:
 
 1. We bootstrapped our `Dappery.Data` and `Dappery.Core` projects
-2. We implemented CRUD operations using Dapper wrapped within a couple repositories, and all brought together by a unit of work
-3. We kickstarted our databases in the form of SQLite, SQL Server, and Postgres, leaving the choice up to the consumer by simply changing a connection string
+2. We implemented CRUD operations using Dapper wrapped within a couple repositories, and all brought together by a unit
+   of work
+3. We kickstarted our databases in the form of SQLite, SQL Server, and Postgres, leaving the choice up to the consumer
+   by simply changing a connection string
 
-On a rainy day, I'll sit down and guide us through setting up Docker images for database providers and integrating them with our .NET Core applications. For now, I'll leave it as an exercise for the reader on how to do so.
+On a rainy day, I'll sit down and guide us through setting up Docker images for database providers and integrating them
+with our .NET Core applications. For now, I'll leave it as an exercise for the reader on how to do so.
 
-In our next post, we'll create a simple test project that will help bulletproof our code within this layer, so that any change we decide to make in the future, we'll be able to safely validate that it's still doing its job. After that, we'll implement our business layer that will contain our core CQRS architecture with the help of libraries in MediatR and FluentValidation. Check out the source code [here](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-2-data-layer) to see where we're at so far. Until next time, amigos!
+In our next post, we'll create a simple test project that will help bulletproof our code within this layer, so that any
+change we decide to make in the future, we'll be able to safely validate that it's still doing its job. After that,
+we'll implement our business layer that will contain our core CQRS architecture with the help of libraries in MediatR
+and FluentValidation. Check out the source
+code [here](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-2-data-layer) to see where we're at so far. Until
+next time, amigos!

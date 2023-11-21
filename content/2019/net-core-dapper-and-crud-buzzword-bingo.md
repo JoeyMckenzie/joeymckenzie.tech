@@ -204,7 +204,7 @@ namespace Dappery.Domain.Entities
 For the scope of this series, we'll keep things simple and stick with these properties for our entities. Our project
 should look a little something like this:
 
-![Project](/blog/net-core-dapper-and-crud-series/part-1/project-setup.png)
+![Project](/images/net-core-dapper-and-crud-series/part-1/project-setup.png)
 
 With our entities in place, let's go ahead add our DTOs. Before we do that, let's talk about what exactly we should be
 _putting_ in these DTOs.
@@ -426,7 +426,7 @@ for our delete operation, we'll be relying on the user to pass in an ID associat
 it. No need to include anything in the body, as long as we have the ID, we're good to. Let's take a minute to grab a
 beer and take a look at where we're at so far. Our project structure should look more, or less, like this:
 
-![Project_thus_far](/blog/net-core-dapper-and-crud-series/part-1/project-dtos-in-place.png)
+![Project_thus_far](/images/net-core-dapper-and-crud-series/part-1/project-dtos-in-place.png)
 
 I promise we're almost done (sort of). That last knot for us to tie up is the media type we'll be presenting to our
 consumer. To be quite honest, this implementation is _probably_ overkill for our use case, but a good exercise for us to
@@ -435,14 +435,14 @@ our API interacts with tens of microservices all communicating with each other, 
 media type and domain concern our API will provide to consumers is a good idea. Think of it as layers _within_ our
 domain layer:
 
--   Our entities represent the source of record stored within our database, that when extracted, are expected to modify
-    and persist their state
--   Our DTOs act as containers to transport that persisted data between layers (e.g. the domain layer and the data layer,
-    and from the data layer to the API layer in the long run)
--   Our API layer should **not** have any knowledge of our entities, as they contain audit properties (timestamps) and
-    relations to other entities that should only be interacted with at lower layers
--   Our resource types will represent the models/media types we will provide to our consumers, as our DTOs are more, or
-    less, internal to our API
+- Our entities represent the source of record stored within our database, that when extracted, are expected to modify
+  and persist their state
+- Our DTOs act as containers to transport that persisted data between layers (e.g. the domain layer and the data layer,
+  and from the data layer to the API layer in the long run)
+- Our API layer should **not** have any knowledge of our entities, as they contain audit properties (timestamps) and
+  relations to other entities that should only be interacted with at lower layers
+- Our resource types will represent the models/media types we will provide to our consumers, as our DTOs are more, or
+  less, internal to our API
 
 With the semantics out of the way, lets go ahead and create a `Media` folder and place a few resource types within that
 folder:
@@ -553,7 +553,7 @@ based on the model implmentation as we wish. Our `ResourceList` type has a few b
 for our consumers to always expect on a list type response, for example. With everything all said and done, our project
 structure should look like the following:
 
-![Domain_layer_finished](/blog/net-core-dapper-and-crud-series/part-1/finished-domain-layer.png)
+![Domain_layer_finished](/images/net-core-dapper-and-crud-series/part-1/finished-domain-layer.png)
 
 For those following along, [here's](https://github.com/JoeyMckenzie/Dappery/tree/dappery-part-1-domain-layer) the
 repository of what we've done so far.

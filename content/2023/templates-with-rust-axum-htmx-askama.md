@@ -30,11 +30,11 @@ To kick things off, let's run through the bits we'll utilize to build a relative
 serves
 static HTML but with reactivity powered by htmx. Our sandbox will look something like:
 
--   Rust (for obvious reasons)
--   Axum for serving static assets and powering the backend API
--   Askama for HTML templating - think shared layouts, scripts, CSS, etc.
--   htmx for reactivity on the UI
--   Tailwind, because my brain is too smooth now to do CSS myself
+- Rust (for obvious reasons)
+- Axum for serving static assets and powering the backend API
+- Askama for HTML templating - think shared layouts, scripts, CSS, etc.
+- htmx for reactivity on the UI
+- Tailwind, because my brain is too smooth now to do CSS myself
 
 RAAHT-stack? THARA? Not sure, gonna need to workshop the acronym a bit.
 
@@ -195,7 +195,7 @@ $ cargo run
 We have some basic logs that reassure successful startup, and if we navigate to `localhost:8000` in our favorite
 browser:
 
-![landing page](/blog/rust-axum-htmx-templates-with-askama/landing_page.png)
+![landing page](/images/rust-axum-htmx-templates-with-askama/landing_page.png)
 
 We've got ourselves a landing page!
 
@@ -307,7 +307,7 @@ to be more of a fully functional HTML file we'd expect to serve to the browser, 
 
 I've added two `link`s to CSS files, one for the Inter font... because why not.
 
-![inter meme](/blog/rust-axum-htmx-templates-with-askama/inter_meme.jpg)
+![inter meme](/images/rust-axum-htmx-templates-with-askama/inter_meme.jpg)
 
 The other `link` is to a CSS file that doesn't exist (yet). This CSS file will contain the compiled output Tailwind's
 CLI spits out for us after scanning
@@ -353,7 +353,7 @@ Created Tailwind CSS config file: tailwind.config.js
 And let's adjust the `tailwind.config.js` file that was generated for us:
 
 ```js
-const { fontFamily } = require('tailwindcss/defaultTheme');
+const {fontFamily} = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -417,7 +417,7 @@ The key here is the `assets_path` and the chain call to `.nest_service()`, telli
 axum to serve an `/assets` route with all the files underneath that directory locally. Now if we start our server, we
 should see our `Howdy!` text looks a bit different:
 
-![with Inter font](/blog/rust-axum-htmx-templates-with-askama/with_inter.png)
+![with Inter font](/images/rust-axum-htmx-templates-with-askama/with_inter.png)
 
 We've got Inter font! Let's spice this up even more with some colored text. In our `hello.html` template, let's add a
 text color class:
@@ -457,21 +457,21 @@ a `base.html` file:
 ```html
 <!doctype html>
 <html lang="en">
-    <head>
-        <link href="/assets/main.css" rel="stylesheet" />
-        <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
-        <!-- Allow any inheriting page to set it's own title -->
-        <title>{% block title %}{{ title }}{% endblock %}</title>
+<head>
+    <link href="/assets/main.css" rel="stylesheet"/>
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet"/>
+    <!-- Allow any inheriting page to set it's own title -->
+    <title>{% block title %}{{ title }}{% endblock %}</title>
 
-        <!-- Allow any inheriting page to extend head with additional assets -->
-        {% block head %}{% endblock %}
-    </head>
-    <body>
-        <div id="content">
-            <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
-            {% block content %}{% endblock %}
-        </div>
-    </body>
+    <!-- Allow any inheriting page to extend head with additional assets -->
+    {% block head %}{% endblock %}
+</head>
+<body>
+<div id="content">
+    <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
+    {% block content %}{% endblock %}
+</div>
+</body>
 </html>
 ```
 
@@ -552,7 +552,7 @@ struct AnotherPageTemplate;
 
 If we manually route to this page, we should it in the browser:
 
-![another page](/blog/rust-axum-htmx-templates-with-askama/another_page.png)
+![another page](/images/rust-axum-htmx-templates-with-askama/another_page.png)
 
 As another sanity check, take a look at the CSS Tailwind is outputting in our `assets/` directory, namely taking a look
 at the tail end (no pun intended) of the file:
@@ -592,7 +592,7 @@ Let's spice our templates up with some routes. In our `hello.html` let's add a l
     <a
         href="/another-page"
         class="text-indigo-500 underline hover:text-indigo-300"
-        >Another page</a
+    >Another page</a
     >
 </div>
 {% endblock %}
@@ -601,7 +601,7 @@ Let's spice our templates up with some routes. In our `hello.html` let's add a l
 Nothing special going on here, just spicing up the look of our link and adding some padding between the two elements.
 Refreshing the home page, we should see a new link pop up:
 
-![another page](/blog/rust-axum-htmx-templates-with-askama/to_another_page.png)
+![another page](/images/rust-axum-htmx-templates-with-askama/to_another_page.png)
 
 and clicking the link, we route to our newly added `/another-page` page! More importantly, take note of how we're only
 including
@@ -629,24 +629,24 @@ to our base layout so all pages have access to it:
 ```html
 <!doctype html>
 <html lang="en">
-    <head>
-        <link href="/assets/main.css" rel="stylesheet" />
-        <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
-        <!-- Allow any inheriting page to set it's own title -->
-        <title>{% block title %}{{ title }}{% endblock %}</title>
+<head>
+    <link href="/assets/main.css" rel="stylesheet"/>
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet"/>
+    <!-- Allow any inheriting page to set it's own title -->
+    <title>{% block title %}{{ title }}{% endblock %}</title>
 
-        <!-- htmx from the unpkg CDN - your mileage may vary -->
-        <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <!-- htmx from the unpkg CDN - your mileage may vary -->
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
 
-        <!-- Allow any inheriting page to extend head with additional assets -->
-        {% block head %}{% endblock %}
-    </head>
-    <body>
-        <div id="content">
-            <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
-            {% block content %}{% endblock %}
-        </div>
-    </body>
+    <!-- Allow any inheriting page to extend head with additional assets -->
+    {% block head %}{% endblock %}
+</head>
+<body>
+<div id="content">
+    <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
+    {% block content %}{% endblock %}
+</div>
+</body>
 </html>
 ```
 
@@ -713,7 +713,7 @@ We're serving data, now let's wire this up to a button click. On our homepage, l
     <a
         href="/another-page"
         class="text-indigo-500 underline hover:text-indigo-300"
-        >Another page</a
+    >Another page</a
     >
     <button
         type="button"
@@ -731,7 +731,7 @@ I've added a button with the `hx-get` htmx directive to signal that when this bu
 to `/api/hello` at the current running domain and `hx-swap` the inner HTML (the button text) with whatever comes back. A
 quick page refresh and we should see our updated home route:
 
-![with button](/blog/rust-axum-htmx-templates-with-askama/with_button.png)
+![with button](/images/rust-axum-htmx-templates-with-askama/with_button.png)
 
 I'm a bit claustrophobic, so I added some padding to give our UI elements some room to breathe. With the network tab
 open, if we click the button, we see some magic happen - a GET is fired and our button text is updated with the `Hello!`
@@ -755,7 +755,7 @@ $ pnpm add @tailwindcss/forms
 Once that's installed, let's update our `tailwind.config.cjs` file:
 
 ```js
-const { fontFamily } = require('tailwindcss/defaultTheme');
+const {fontFamily} = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -813,7 +813,7 @@ provides a jinja-like `include` tag we can throw on our `hello.html` template:
     <a
         href="/another-page"
         class="text-indigo-500 underline hover:text-indigo-300"
-        >Another page</a
+    >Another page</a
     >
     <button
         type="button"
@@ -830,7 +830,7 @@ provides a jinja-like `include` tag we can throw on our `hello.html` template:
 
 A quick page refresh and our home route now includes a single input form and button:
 
-![updated page](/blog/rust-axum-htmx-templates-with-askama/updated_home.png)
+![updated page](/images/rust-axum-htmx-templates-with-askama/updated_home.png)
 
 As we add todos, we'll want them to appear beneath the input box and keep appending to it as we add more. We're not
 exactly
@@ -913,6 +913,7 @@ need
 to paint the HTML returned by our `add_todo` route, so let's append it to the end of our `todo-form.html` markup:
 
 ```html
+
 <form
     hx-post="/api/todos"
     hx-target="#todos"
@@ -920,7 +921,7 @@ to paint the HTML returned by our `add_todo` route, so let's append it to the en
     class="max-w-md"
 >
     <label for="todo" class="block text-sm font-medium leading-6 text-gray-900"
-        >Todo</label
+    >Todo</label
     >
     <div class="mt-2 inline-flex flex-row space-x-2">
         <input
@@ -938,19 +939,20 @@ to paint the HTML returned by our `add_todo` route, so let's append it to the en
         </button>
     </div>
 </form>
-<div id="todos" />
+<div id="todos"/>
 ```
 
 I've sprinkled in some htmx directives with `hx-post`, `hx-target`, and `hx-swap` as well:
 
--   `hx-post` tells our form submission _where_ to send the form data as a POST request too
--   `hx-target` is the element we want to mutate after we get a response
--   `hx-swap="innerHTML"` means we'll drop the hypertext returned from our `add_todo` handler as a child element of
-    our `<div id="todos" />` tag
+- `hx-post` tells our form submission _where_ to send the form data as a POST request too
+- `hx-target` is the element we want to mutate after we get a response
+- `hx-swap="innerHTML"` means we'll drop the hypertext returned from our `add_todo` handler as a child element of
+  our `<div id="todos" />` tag
 
 With our Tailwind and axum server processes still running in watch mode, we should be good to start trying things out
 now.
-With our homepage refreshed, we can start [adding todos](/blog/rust-axum-htmx-templates-with-askama/full_demo.mp4). I've
+With our homepage refreshed, we can start [adding todos](/images/rust-axum-htmx-templates-with-askama/full_demo.mp4).
+I've
 expanded
 the network while we create a few todos to show off htmx making form requests for us and returning the askama templated
 hypertext back to us.

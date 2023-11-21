@@ -3,15 +3,15 @@ import Badge from '@/Components/ui/badge/Badge.vue';
 import { Link } from '@inertiajs/vue3';
 import { format } from 'date-fns';
 import { computed } from 'vue';
-import { ContentMeta } from '@/models';
+import { FrontMatter } from '@/models';
 
 const props = defineProps<{
-    post: ContentMeta;
+    frontMatter: FrontMatter;
     viewCount: number;
 }>();
 
 const formattedDate = computed(() =>
-    format(new Date(props.post.pubDate), 'PP'),
+    format(new Date(props.frontMatter.pubDate), 'PP'),
 );
 </script>
 
@@ -22,15 +22,15 @@ const formattedDate = computed(() =>
         <Link
             :href="
                 route('post', {
-                    slug: post.slug,
+                    slug: frontMatter.slug,
                 })
             "
         >
             <div class="flex items-center gap-x-4 text-xs">
-                <time :datetime="post.pubDate">
+                <time :datetime="frontMatter.pubDate">
                     {{ formattedDate }}
                 </time>
-                <Badge>{{ post.category }}</Badge>
+                <Badge>{{ frontMatter.category }}</Badge>
                 <div v-if="viewCount > 0" class="font-medium text-neutral-400">
                     {{ viewCount }} views
                 </div>
@@ -38,10 +38,10 @@ const formattedDate = computed(() =>
             <div class="group relative">
                 <h3 class="mt-3 text-lg font-semibold leading-6">
                     <span class="absolute inset-0" />
-                    {{ post.title }}
+                    {{ frontMatter.title }}
                 </h3>
                 <p class="mt-5 line-clamp-3 text-sm leading-6">
-                    {{ post.description }}
+                    {{ frontMatter.description }}
                 </p>
             </div>
         </Link>

@@ -48,13 +48,13 @@ our site.
 Getting started, let's run through the list of what we'll be building and the tools we'll utilize as we embark on our
 modal-based journey:
 
--   We'll utilize Tailwind as our style provider to give our modal a modern look and feel
--   Instead of using an injectable service to dynamically render DOM that contains our modal markup and content using
-    something like Angular's [Renderer2](https://angular.io/api/core/Renderer2), we'll lean on a flux-based state approach
-    using [NgRx](https://ngrx.io) to help us manage the displaying of our modal with custom content (more on this in a
-    minute)
--   Using a state-based approach, we'll expose actions that will allow any of our components to call into the modal and
-    display it based on any set of criteria
+- We'll utilize Tailwind as our style provider to give our modal a modern look and feel
+- Instead of using an injectable service to dynamically render DOM that contains our modal markup and content using
+  something like Angular's [Renderer2](https://angular.io/api/core/Renderer2), we'll lean on a flux-based state approach
+  using [NgRx](https://ngrx.io) to help us manage the displaying of our modal with custom content (more on this in a
+  minute)
+- Using a state-based approach, we'll expose actions that will allow any of our components to call into the modal and
+  display it based on any set of criteria
 
 With our approach lined out, let's defer to the second bullet point of the aforementioned list.
 
@@ -309,10 +309,10 @@ include any number of layout specific concerns.
 
 Breaking down the code above, we:
 
--   Define our layout feature slice with `LayoutState` that will serve as the source of truth for our current modal
-    displaying
--   Create a reducer to facilitate _what_ our state should look like when the modal actions are dispatched
--   Create an identifying `const` key to declare our layout feature slice with `layoutFeatureKey`
+- Define our layout feature slice with `LayoutState` that will serve as the source of truth for our current modal
+  displaying
+- Create a reducer to facilitate _what_ our state should look like when the modal actions are dispatched
+- Create an identifying `const` key to declare our layout feature slice with `layoutFeatureKey`
 
 While we could easily set singular state on each reducer type to simply set the modal state according, as our
 application grows, so will our need to only change single, or a handful at most, pieces of state at time. For these
@@ -429,9 +429,9 @@ transitions to our modal for flare.
 Speaking of transitions, let's go ahead and add a few animations in our `modal.component.ts` to add the pleasing
 appearing/fading of the modal onto page. In our `modal.component.ts`, we'll add three simple animation attribute:
 
--   `@modalContainer`
--   `@modalOverlay`
--   `@modalContent`
+- `@modalContainer`
+- `@modalOverlay`
+- `@modalContent`
 
 Let's add each of the tags to our markup so that it resembles the following:
 
@@ -686,26 +686,26 @@ export class ModalComponent implements OnInit {
 
 Let's breakdown what our modal component is doing behind the scenes:
 
--   First, we define three animation `trigger`s that will run when our component is rendered into and out of the DOM (I've
-    loosely translated the suggested Tailwind transition classes that should apply to the modal)
-    -   Our first `trigger` is applied to the wrapping `div` element that houses the entirety of our modal component, and
-        it's job is to coordinate running the nested child transitions when it is rendered into/out of the DOM (driven by
-        the `*ngIf="(modalState$ | async) === true"` directive) with the assistance of the `group` and `query` Angular
-        animation helper methods to signify which child transitions to run
-    -   Our second `trigger` is the fading in and out of the background overlay using a simple opacity transition
-    -   Our third `trigger` is the displaying of the modal content using a combination of opacity and scaling transition
-        animations
-    -   You'll notice each `trigger` transitions using the `:enter`/`:leave` aliases which represent the transitioning
-        of `void` state (i.e. not in the rendered DOM), to `*` state (i.e. any state existing in the markup)
--   Next, we pull through a reference from the state facade to the current modal status with `modalStatus$` observable
-    that listens for values based on our selector stream
--   We define an emission `Subject` to help facilitate the closing of our streams when our component is destroyed, i.e.
-    removed from the DOM, in order to avoid memory leaks that can be pretty common in `rxjs` without proper `Observable`
-    management
--   Finally, inside of our mounting lifecycle hook:
-    -   We listen on modal state changes and fire off the action to open the modal anytime on first render using `take(1)`
-    -   We hook into the hot document observable and listen for `esc` keydown strokes to provide a bit of nice UX to close
-        the modal anytime it's open and the key is pressed
+- First, we define three animation `trigger`s that will run when our component is rendered into and out of the DOM (I've
+  loosely translated the suggested Tailwind transition classes that should apply to the modal)
+    - Our first `trigger` is applied to the wrapping `div` element that houses the entirety of our modal component, and
+      it's job is to coordinate running the nested child transitions when it is rendered into/out of the DOM (driven by
+      the `*ngIf="(modalState$ | async) === true"` directive) with the assistance of the `group` and `query` Angular
+      animation helper methods to signify which child transitions to run
+    - Our second `trigger` is the fading in and out of the background overlay using a simple opacity transition
+    - Our third `trigger` is the displaying of the modal content using a combination of opacity and scaling transition
+      animations
+    - You'll notice each `trigger` transitions using the `:enter`/`:leave` aliases which represent the transitioning
+      of `void` state (i.e. not in the rendered DOM), to `*` state (i.e. any state existing in the markup)
+- Next, we pull through a reference from the state facade to the current modal status with `modalStatus$` observable
+  that listens for values based on our selector stream
+- We define an emission `Subject` to help facilitate the closing of our streams when our component is destroyed, i.e.
+  removed from the DOM, in order to avoid memory leaks that can be pretty common in `rxjs` without proper `Observable`
+  management
+- Finally, inside of our mounting lifecycle hook:
+    - We listen on modal state changes and fire off the action to open the modal anytime on first render using `take(1)`
+    - We hook into the hot document observable and listen for `esc` keydown strokes to provide a bit of nice UX to close
+      the modal anytime it's open and the key is pressed
 
 With all of our modal details in place, let's finally add the component to our `app.component.html` by replacing all the
 placeholder markup with the modal selector:
@@ -718,7 +718,7 @@ With everything wired up, let's go ahead and punch in a `ng serve` in the termin
 to `localhost:4200`. Clicking on either of the buttons now closes the modal, and if we take a look at our Redux DevTools
 in the console, we can see the actions being dispatched:
 
-[Our full Ngrx-based Tailwind modal](/blog/tailwind-ngrx-modal/screen_grab.webm)
+[Our full Ngrx-based Tailwind modal](/images/tailwind-ngrx-modal/screen_grab.webm)
 
 You'll see in the above screencast I interact with the modal in a few ways:
 

@@ -8,23 +8,14 @@ use App\Models\ContentMeta;
 use App\Models\FrontMatter;
 use DateTime;
 use Illuminate\Support\Facades\Cache;
-use League\CommonMark\Environment\Environment;
-use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
-use League\CommonMark\Extension\FrontMatter\FrontMatterExtension;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
-use League\CommonMark\Extension\SmartPunct\SmartPunctExtension;
-use League\CommonMark\Extension\Strikethrough\StrikethroughExtension;
-use League\CommonMark\MarkdownConverter;
 use Spatie\LaravelMarkdown\MarkdownRenderer;
 
 final readonly class ContentCache
 {
     public static function initContentCache(): void
     {
-        // logger('loading content cache');
-
-        $converter = self::initMarkdownConverter();
         $basePath = base_path();
         $contentPath = "$basePath".'/content';
 
@@ -37,24 +28,13 @@ final readonly class ContentCache
         $fileNames = [];
 
         foreach ($files as $filePath) {
-            $fileNames[] = self::cacheMarkdownFile($filePath, $converter);
+            $fileNames[] = self::cacheMarkdownFile($filePath);
         }
 
         Cache::forever('fileNames', $fileNames);
     }
 
-    private static function initMarkdownConverter(): MarkdownConverter
-    {
-        $environment = (new Environment())
-            ->addExtension(new CommonMarkCoreExtension())
-            ->addExtension(new FrontMatterExtension())
-            ->addExtension(new SmartPunctExtension())
-            ->addExtension(new StrikethroughExtension());
-
-        return new MarkdownConverter($environment);
-    }
-
-    private static function cacheMarkdownFile(string $filePath, MarkdownConverter $converter): string
+    private static function cacheMarkdownFile(string $filePath): string
     {
         $info = pathinfo($filePath);
         $fileName = basename($filePath, '.'.$info['extension']);
@@ -64,9 +44,11 @@ final readonly class ContentCache
         $frontMatterParser = new FrontMatterParser(new SymfonyYamlFrontMatterParser());
         $parsedContent = $frontMatterParser->parse($contents);
         $frontMatter = $parsedContent->getFrontMatter();
+
         $html = app(MarkdownRenderer::class)
             ->highlightTheme('github-dark')
             ->toHtml($parsedContent->getContent());
+
         $contentMeta = new ContentMeta($frontMatter, $html, $fileName);
 
         Cache::forever($fileName, $contentMeta);
@@ -91,7 +73,7 @@ final readonly class ContentCache
     /**
      * @return FrontMatter[]
      */
-    public function getContentMetas(bool $includeLatest = false): array
+    public function getFrontMatters(bool $includeLatest = false): array
     {
         /** @var string[] $files */
         $files = Cache::get('fileNames');
@@ -111,6 +93,6 @@ final readonly class ContentCache
         /** @var FrontMatter[] $asFrontMatterArray */
         $asFrontMatterArray = $frontMatters->toArray();
 
-        return $asFrontMatterArray;
+        return array_values($asFrontMatterArray);
     }
 }

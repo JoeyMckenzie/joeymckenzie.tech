@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { ContentMeta } from '@/models';
+import { FrontMatter } from '@/models';
 import BlogCard from '@/Components/BlogCard.vue';
 
-defineProps<{ contentMetas: ContentMeta[] }>();
+defineProps<{ frontMatters: FrontMatter[] }>();
 </script>
 
 <template>
@@ -10,9 +10,9 @@ defineProps<{ contentMetas: ContentMeta[] }>();
         class="mx-auto grid max-w-3xl grid-cols-1 gap-x-4 gap-y-12 py-8 sm:grid-cols-3"
     >
         <BlogCard
-            v-for="meta in contentMetas"
-            :key="meta.title"
-            :post="meta"
+            v-for="frontMatter in frontMatters"
+            :key="frontMatter.title"
+            :front-matter="frontMatter"
             :view-count="0"
         />
     </div>

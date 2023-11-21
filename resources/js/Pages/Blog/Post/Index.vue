@@ -10,8 +10,7 @@ const props = defineProps<{
     contentMeta: ContentMeta;
 }>();
 
-const content = computed(() => props.contentMeta.content);
-const frontMatter = computed(() => props.contentMeta);
+const frontMatter = computed(() => props.contentMeta.frontMatter);
 const formattedDate = computed(() =>
     new Date(frontMatter.value.pubDate ?? '').toLocaleDateString('en-us', {
         year: 'numeric',
@@ -33,13 +32,7 @@ const formattedDate = computed(() =>
                 <div
                     class="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight"
                 >
-                    <time
-                        :datetime="
-                            new Date(
-                                frontMatter.pubDate ?? '',
-                            )?.toISOString() ?? ''
-                        "
-                    >
+                    <time :datetime="frontMatter.pubDate">
                         {{ formattedDate }}
                     </time>
                     <Badge>{{ frontMatter.category }}</Badge>
@@ -51,7 +44,7 @@ const formattedDate = computed(() =>
                     width="500"
                 />
                 <!-- eslint-disable-next-line vue/no-v-html -->
-                <div v-html="content" />
+                <div v-html="contentMeta.content" />
             </article>
             <Link :href="route('blogs')" class="mx-auto max-w-md">
                 <Button variant="secondary"> Back to blogs</Button>

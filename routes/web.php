@@ -19,7 +19,7 @@ use Inertia\Inertia;
 */
 
 Route::get('', fn (ContentCache $contentCache) => Inertia::render('Home', [
-    'contentMetas' => $contentCache->getContentMetas(true),
+    'frontMatters' => $contentCache->getFrontMatters(true),
 ]))
     ->name('home');
 
@@ -27,7 +27,7 @@ Route::get('about', fn () => Inertia::render('About'))
     ->name('about');
 
 Route::get('blog', fn (ContentCache $contentCache) => Inertia::render('Blog/Index', [
-    'contentMetas' => $contentCache->getContentMetas(),
+    'frontMatters' => $contentCache->getFrontMatters(),
 ]))
     ->name('blogs');
 

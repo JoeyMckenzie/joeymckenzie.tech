@@ -76,9 +76,9 @@ To keep things simple, let's use our previous example of building out a todos ap
 might
 cleanly architect such an application. Our game plan will be something like:
 
--   One todo application, serving as nothing more than a glorified dependency injection container/puppeteer for the
-    libraries it depends on
--   Separate libraries that each have a single concern - state management, UI, and utilities
+- One todo application, serving as nothing more than a glorified dependency injection container/puppeteer for the
+  libraries it depends on
+- Separate libraries that each have a single concern - state management, UI, and utilities
 
 While it might be tempting to throw everything into our single todo application in place of separate libraries,
 we should make it a point to keep our applications as simple as possible, offloading most of our dependencies into
@@ -136,12 +136,12 @@ npx create-nx-workspace@latest exploring-nx --preset=angular
 Nx will kick off, creating our workspace and prompting for a few inputs from us on the command line.
 Once the process completes, let's go ahead and take a look at what Nx generates for us:
 
--   An `apps` directory containing our applications that will ultimately be the interface for our users into our code
--   A `libs` directory that will eventually contain all of our independent library code each dealing with a specific
-    concern
--   A `tools` directory serving as the home base for custom in-house development scripts and custom workspace generators
--   A bunch of config files that assist in wiring up apps, libs, devtools, and the like (don't worry too much about these
-    for now)
+- An `apps` directory containing our applications that will ultimately be the interface for our users into our code
+- A `libs` directory that will eventually contain all of our independent library code each dealing with a specific
+  concern
+- A `tools` directory serving as the home base for custom in-house development scripts and custom workspace generators
+- A bunch of config files that assist in wiring up apps, libs, devtools, and the like (don't worry too much about these
+  for now)
 
 For our purpose, we'll only be concerned with our todos app and the libraries it depends on. Nx provides
 some modern developer tooling in ESLint and Prettier to help keep our codebase properly linted and formatted, along with
@@ -181,10 +181,10 @@ available options to us while building out our code.
 
 Let's take a minute to discuss our `libs` strategy to help us keep things organized within our `shared` library:
 
--   We'll create a `features` folder that will contain our state management code
--   Next we'll add a `services` library that will _service_ as our primary data fetching module
--   Finally, we'll create a `ui` folder that will container two sub-libraries in `pages` and `components` (more on this
-    separation later)
+- We'll create a `features` folder that will contain our state management code
+- Next we'll add a `services` library that will _service_ as our primary data fetching module
+- Finally, we'll create a `ui` folder that will container two sub-libraries in `pages` and `components` (more on this
+  separation later)
 
 I use the terms library and folder in the above list _not_ interchangeably - I like to further refine
 my workspace namespaces by including nested folders inside my `libs` directories where it makes sense.
@@ -207,12 +207,12 @@ nx g @nrwl/angular:library pages --directory shared/ui
 
 With each containing the following, respectively:
 
--   _features_: will house our state management code utilizing NgRx
--   _services_: our HTTP layer, will be in charge of calling out to our API to fetch data
--   _components_: our home for dumb components, or simple Angular components that solely take in `@Input()` to spit out on
-    the page
--   _pages_: Angular components that compose our smaller, dumb components feeding them the data they'll need to generate
-    their markup
+- _features_: will house our state management code utilizing NgRx
+- _services_: our HTTP layer, will be in charge of calling out to our API to fetch data
+- _components_: our home for dumb components, or simple Angular components that solely take in `@Input()` to spit out on
+  the page
+- _pages_: Angular components that compose our smaller, dumb components feeding them the data they'll need to generate
+  their markup
 
 ## Architectural boundaries made easy
 
@@ -239,16 +239,16 @@ First, in `app.module.ts` in the todos app, let's import the `pages` module:
 #### app.module.ts
 
 ```ts
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { ENVIRONMENT } from '@exploring-nx/shared/features/settings';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
-import { AppRoutingModule } from './app-routing.module';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {ENVIRONMENT} from '@exploring-nx/shared/features/settings';
+import {EffectsModule} from '@ngrx/effects';
+import {StoreModule} from '@ngrx/store';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
+import {AppRoutingModule} from './app-routing.module';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 
 @NgModule({
     declarations: [AppComponent],
@@ -269,7 +269,8 @@ import { AppComponent } from './app.component';
         },
     ],
 })
-export class AppModule {}
+export class AppModule {
+}
 ```
 
 I've added a the NgRx require modules and an `AppRoutingModule`, with contents being:
@@ -277,8 +278,8 @@ I've added a the NgRx require modules and an `AppRoutingModule`, with contents b
 #### app-routing.module.ts
 
 ```ts
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
     imports: [
@@ -294,7 +295,8 @@ import { RouterModule } from '@angular/router';
     ],
     exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
 ```
 
 Nothing too out of the ordinary here, just doing our normal lazy module loading utilizing the `pages` library. Things to
@@ -308,13 +310,13 @@ For our `SharedUiPagesModule`, let's look at the module file to see what imports
 #### shared-ui-pages.module.ts
 
 ```ts
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { SharedFeaturesTodosModule } from '@exploring-nx/shared/features/todos';
-import { SharedUiComponentsModule } from '@exploring-nx/shared/ui/components';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {RouterModule} from '@angular/router';
+import {SharedFeaturesTodosModule} from '@exploring-nx/shared/features/todos';
+import {SharedUiComponentsModule} from '@exploring-nx/shared/ui/components';
 
-import { TodosComponent } from './todos/todos.component';
+import {TodosComponent} from './todos/todos.component';
 
 @NgModule({
     imports: [
@@ -330,7 +332,8 @@ import { TodosComponent } from './todos/todos.component';
     ],
     declarations: [TodosComponent],
 })
-export class SharedUiPagesModule {}
+export class SharedUiPagesModule {
+}
 ```
 
 We see that our `pages` library takes on two additional dependencies in `SharedFeaturesTodosModule`, our state
@@ -344,7 +347,7 @@ nx dep-graph
 
 ...and in your browser window you should the following (after clicking a few checkboxes):
 
-![dep graph](/blog/hitchhikers-guide-to-nx/todos_dep_graph.png)
+![dep graph](/images/hitchhikers-guide-to-nx/todos_dep_graph.png)
 
 Behold, the almighty dependency graph in all of its glory! Using Nx, not only
 do we get a conventionalized approach to mono-repository development,
@@ -370,13 +373,13 @@ NgRx in depth to them. For those familiar with flux/redux-like development, let'
 `+state` folder nesting in our `shared/features/todos` project underneath the `src/lib` subdirectory (
 subdirectory-ception):
 
--   `todos.reducer.ts`: your typical reducer function that defines our state and which mutations it can take on to form
-    new state
--   `todos.actions.ts`: all of the dispatch-able operations that can affect which shape our state takes
--   `todos.selectors.ts`: slices of (memoized) state to reference across components
--   `todos.effects.ts`: tasks performed when certain actions are `dispatch()`ed, also known as side effects
--   `todos.facade.ts`: an encapsulating service to be used from higher level modules, serving as the API into our state (
-    more or less)
+- `todos.reducer.ts`: your typical reducer function that defines our state and which mutations it can take on to form
+  new state
+- `todos.actions.ts`: all of the dispatch-able operations that can affect which shape our state takes
+- `todos.selectors.ts`: slices of (memoized) state to reference across components
+- `todos.effects.ts`: tasks performed when certain actions are `dispatch()`ed, also known as side effects
+- `todos.facade.ts`: an encapsulating service to be used from higher level modules, serving as the API into our state (
+  more or less)
 
 To keep this post in a readable _state_ <sub>no pun intended</sub>, I'll leave the gorey details for the reader to
 explore [here](https://github.com/JoeyMckenzie/exploring-nx/tree/main/libs/shared/features/todos/src/lib/%2Bstate).
@@ -403,9 +406,9 @@ to start loading in todos:
 #### todos.component.ts
 
 ```ts
-import { Component, OnInit } from '@angular/core';
-import { SettingsFacade } from '@exploring-nx/shared/features/settings';
-import { TodosFacade } from '@exploring-nx/shared/features/todos';
+import {Component, OnInit} from '@angular/core';
+import {SettingsFacade} from '@exploring-nx/shared/features/settings';
+import {TodosFacade} from '@exploring-nx/shared/features/todos';
 
 @Component({
     selector: 'exploring-nx-todos',
@@ -418,7 +421,8 @@ export class TodosComponent implements OnInit {
     constructor(
         private todosFacade: TodosFacade,
         private settingsFacade: SettingsFacade,
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         this.settingsFacade.loadSettings();
@@ -436,6 +440,7 @@ we shouldn't have any errors during runtime. With our code behind done, let's ad
 #### todos.component.html
 
 ```html
+
 <div class="flex min-h-screen flex-col items-center justify-center">
     <p class="pb-4">Loading: {{ loading$ | async }}</p>
     <button
@@ -482,8 +487,8 @@ In our `todos-list` component, let's add the following:
 #### todos.component.ts
 
 ```ts
-import { Component, HostBinding, Input } from '@angular/core';
-import { Todo } from '@exploring-nx/shared/models';
+import {Component, HostBinding, Input} from '@angular/core';
+import {Todo} from '@exploring-nx/shared/models';
 
 @Component({
     selector: 'exploring-nx-todos-list',
@@ -500,44 +505,45 @@ Next, the markup:
 #### todos-list.component-html
 
 ```html
+
 <table class="min-w-full divide-y divide-gray-200">
     <thead class="bg-gray-50">
-        <tr>
-            <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-            >
-                ID
-            </th>
-            <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-            >
-                Title
-            </th>
-            <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-            >
-                User ID
-            </th>
-            <th
-                scope="col"
-                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-            >
-                Completed
-            </th>
-            <th scope="col" class="relative px-6 py-3">
-                <span class="sr-only">Edit</span>
-            </th>
-        </tr>
+    <tr>
+        <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+        >
+            ID
+        </th>
+        <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+        >
+            Title
+        </th>
+        <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+        >
+            User ID
+        </th>
+        <th
+            scope="col"
+            class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+        >
+            Completed
+        </th>
+        <th scope="col" class="relative px-6 py-3">
+            <span class="sr-only">Edit</span>
+        </th>
+    </tr>
     </thead>
     <tbody class="divide-y divide-gray-200 bg-white">
-        <tr
-            *ngFor="let todo of todos"
-            exploring-nx-todos-list-item
-            [todo]="todo"
-        ></tr>
+    <tr
+        *ngFor="let todo of todos"
+        exploring-nx-todos-list-item
+        [todo]="todo"
+    ></tr>
     </tbody>
 </table>
 ```
@@ -554,8 +560,8 @@ Now for our `todo-list-item` component:
 #### todos-list-item.component.ts
 
 ```ts
-import { Component, Input } from '@angular/core';
-import { Todo } from '@exploring-nx/shared/models';
+import {Component, Input} from '@angular/core';
+import {Todo} from '@exploring-nx/shared/models';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -572,6 +578,7 @@ And the markup:
 #### todos-list-item.component.html
 
 ```html
+
 <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900">
     {{ todo?.id }}
 </td>
@@ -611,7 +618,7 @@ and we should see the typical output that is displayed when running a similar `n
 Angular workspace. Once our application is finished building and served for the browser, go ahead and navigate
 to `localhost:4200` with your Redux Devtools open in the dev console. Live action demo:
 
-[Exploring Nx with todos](/blog/hitchhikers-guide-to-nx/exploring_nx_todos.webm)
+[Exploring Nx with todos](/images/hitchhikers-guide-to-nx/exploring_nx_todos.webm)
 
 We've got ourselves a working todo application built with Nx and composable shared libraries! Since we've built out our
 todos libraries in common form, _any_ application we wish to write in the future has access to all of the code that

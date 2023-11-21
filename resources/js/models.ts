@@ -1,4 +1,9 @@
 export type ContentMeta = {
+    frontMatter: FrontMatter;
+    content?: string;
+};
+
+export type FrontMatter = {
     slug: string;
     heroImage: string;
     title: string;
@@ -6,5 +11,4 @@ export type ContentMeta = {
     category: string;
     description: string;
     keywords: string[];
-    content?: string;
 };

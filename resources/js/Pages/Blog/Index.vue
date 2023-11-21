@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import MainLayout from '@/Layouts/MainLayout.vue';
-import { ContentMeta } from '@/models';
+import { FrontMatter } from '@/models';
 import BlogPreviews from '@/Components/BlogPreviews.vue';
 import { Head } from '@inertiajs/vue3';
 
 defineProps<{
-    contentMetas: ContentMeta[];
+    frontMatters: FrontMatter[];
 }>();
 </script>
 
@@ -29,6 +29,6 @@ defineProps<{
                 me about any of the writing I do here, or to simply say hello!
             </p>
         </div>
-        <BlogPreviews :content-metas="contentMetas" />
+        <BlogPreviews :front-matters="frontMatters" />
     </MainLayout>
 </template>
