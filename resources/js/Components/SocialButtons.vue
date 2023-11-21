@@ -40,7 +40,7 @@ const socials = [
             :key="icon"
             :href="href"
         >
-            <Button class="flex flex-row gap-x-2" variant="outline">
+            <Button class="flex w-full flex-row gap-x-2" variant="outline">
                 <Icon :icon="icon" class="h-5 w-5" />
                 {{ display }}
                 <Icon :icon="external" class="h-5 w-5" />
