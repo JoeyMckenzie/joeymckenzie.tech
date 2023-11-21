@@ -31,7 +31,7 @@ const socials = [
 </script>
 
 <template>
-    <div class="flex justify-center space-x-6">
+    <div class="flex justify-center space-x-4">
         <a v-for="{ href, icon, display } in socials" :key="icon" :href="href">
             <span class="sr-only">{{ display }}</span>
             <Icon

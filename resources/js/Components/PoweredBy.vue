@@ -1,16 +1,17 @@
 <script lang="ts" setup>
 import { Icon } from '@iconify/vue';
+import { usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
 
-const props = defineProps<{
-    commitSha: string;
-}>();
+const page = usePage();
 
-const commitShaForDisplay = computed(() => props.commitSha.substring(0, 6));
+const commitSha = computed(() => page.props.commit);
+const commitShaForDisplay = computed(() => commitSha.value.substring(0, 6));
 const commitUrl = computed(
     () =>
-        `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${props.commitSha}`,
+        `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${commitSha.value}`,
 );
+
 const poweredBy = [
     {
         display: 'Larvel',
@@ -23,6 +24,11 @@ const poweredBy = [
         icon: 'logos:vue',
     },
     {
+        display: 'Inertia.js',
+        href: 'https://inertiajs.com',
+        icon: 'simple-icons:inertia',
+    },
+    {
         display: 'Fly.io',
         href: 'https://fly.io',
         icon: 'logos:fly-icon',
@@ -31,7 +37,7 @@ const poweredBy = [
 </script>
 
 <template>
-    <div class="mx-auto inline-flex flex-row items-center gap-x-4 md:mx-0">
+    <div class="mx-auto inline-flex flex-row items-center gap-x-3 md:mx-0">
         <p class="font-ubuntu text-center text-xs leading-5">Powered by</p>
         <a
             v-for="{ display, icon, href } in poweredBy"
