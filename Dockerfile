@@ -11,6 +11,8 @@ FROM fideloper/fly-laravel:${PHP_VERSION} as base
 # See https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
 ARG PHP_VERSION
 
+ENV BUILD_COMMIT_SHA=''
+
 LABEL fly_launch_runtime="laravel"
 
 # copy application code, skipping files based on .dockerignore
