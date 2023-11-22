@@ -11,15 +11,15 @@ type NavLinkProps = {
 const links: NavLinkProps[] = [
     {
         display: 'Home',
-        name: route('home'),
+        name: 'home',
     },
     {
         display: 'About',
-        name: route('about'),
+        name: 'about',
     },
     {
         display: 'Blog',
-        name: route('blogs'),
+        name: 'blogs',
     },
 ];
 </script>
@@ -32,7 +32,7 @@ const links: NavLinkProps[] = [
             <Link
                 v-for="{ display, name } of links"
                 :key="display"
-                :href="name"
+                :href="route(name)"
             >
                 <Button variant="outline">
                     {{ display }}

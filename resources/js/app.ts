@@ -7,10 +7,6 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import * as Sentry from '@sentry/vue';
 
-Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
-});
-
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
@@ -21,10 +17,20 @@ createInertiaApp({
             import.meta.glob<DefineComponent>('./Pages/**/*.vue'),
         ),
     setup({ el, App, props, plugin }) {
-        createApp({ render: () => h(App, props) })
+        const app = createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
+            .use((app) =>
+                Sentry.init({
+                    dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
+                    app,
+                }),
+            )
             .mount(el);
+
+        Sentry.init({
+            dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
+        });
     },
     progress: {
         color: '#4B5563',
