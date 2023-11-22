@@ -43,7 +43,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'commit' => config('app.commit'),
-            'nowPlaying' => $this->spotifyTracker->getNowPlaying(),
+            'spotify' => $this->spotifyTracker->getNowPlaying(),
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
