@@ -6,7 +6,6 @@ use App\Models\Spotify\NowPlaying;
 use App\Models\Spotify\SpotifyAuthResponse;
 use App\Models\Spotify\SpotifyNowPlayingResponse;
 use DateInterval;
-use DateTime;
 use Doctrine\Common\Annotations\AnnotationReader;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Cache;
@@ -73,10 +72,8 @@ final readonly class SpotifyTracker
         Log::info('now playing retrieved, adding to cache');
 
         $nowPlaying = self::getSpotifyNowPlaying();
-        $now = new DateTime();
-        $ttl = $now->add(new DateInterval('PT5M'));
 
-        Cache::set('nowPlaying', $ttl);
+        Cache::set('nowPlaying', $nowPlaying, new DateInterval('PT5M'));
 
         return $nowPlaying;
     }
