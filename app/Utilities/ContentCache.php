@@ -31,7 +31,7 @@ final readonly class ContentCache
             $fileNames[] = self::cacheMarkdownFile($filePath);
         }
 
-        cache()->forever('fileNames', $fileNames);
+        Cache::forever('fileNames', $fileNames);
     }
 
     private static function cacheMarkdownFile(string $filePath): string

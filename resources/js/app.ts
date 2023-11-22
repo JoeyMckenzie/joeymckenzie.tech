@@ -5,6 +5,11 @@ import { createApp, DefineComponent, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+import * as Sentry from '@sentry/vue';
+
+Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
+});
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 

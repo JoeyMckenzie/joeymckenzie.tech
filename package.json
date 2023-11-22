@@ -41,6 +41,7 @@
     },
     "dependencies": {
         "@radix-icons/vue": "^1.0.0",
+        "@sentry/vue": "^7.40.0",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.0.0",
         "date-fns": "^2.30.0",
