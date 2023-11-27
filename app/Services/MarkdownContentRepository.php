@@ -18,9 +18,9 @@ use Str;
 
 final readonly class MarkdownContentRepository implements ContentRepositoryContract
 {
-    private const string FRONTMATTERS_CACHE_KEY = 'frontMatters';
+    private const FRONTMATTERS_CACHE_KEY = 'frontMatters';
 
-    private const string FILEPATHS_CACHE_KEY = 'filePaths';
+    private const FILEPATHS_CACHE_KEY = 'filePaths';
 
     public static function initContentCache(): MarkdownContentRepository
     {
