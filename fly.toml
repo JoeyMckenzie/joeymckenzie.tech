@@ -32,8 +32,3 @@ processes = ["app"]
 [processes]
 app = ""
 ssr = "php /var/www/html/artisan inertia:start-ssr"
-
-[[vm]]
-cpu_kind = "shared"
-cpus = 1
-memory_mb = 1024
