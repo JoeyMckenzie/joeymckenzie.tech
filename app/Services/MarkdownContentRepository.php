@@ -18,6 +18,10 @@ use Str;
 
 final readonly class MarkdownContentRepository implements ContentRepositoryContract
 {
+    private const string FRONTMATTERS_CACHE_KEY = 'frontMatters';
+
+    private const string FILEPATHS_CACHE_KEY = 'filePaths';
+
     public static function initContentCache(): MarkdownContentRepository
     {
         Log::info('init content cache');
@@ -50,10 +54,23 @@ final readonly class MarkdownContentRepository implements ContentRepositoryContr
     }
 
     /**
+     * Grab the current list of applicable content file paths.
+     * We can cache these as they're only ever updated on deployment,
+     * avoiding the need for unnecessary file systems reads.
+     *
      * @return string[]
      */
     public function getMarkdownFilePaths(): array
     {
+        if (Cache::has(self::FILEPATHS_CACHE_KEY)) {
+            Log::info('cached files found');
+
+            /** @var string[] $filePaths */
+            $filePaths = Cache::get(self::FILEPATHS_CACHE_KEY);
+
+            return $filePaths;
+        }
+
         $basePath = base_path();
         $contentPath = "$basePath".'/content';
 
@@ -66,7 +83,9 @@ final readonly class MarkdownContentRepository implements ContentRepositoryContr
 
         $fileCount = count($files);
 
-        Log::info("$fileCount globbed files found");
+        Log::info("$fileCount globbed files found, updating cache");
+
+        Cache::forever(self::FILEPATHS_CACHE_KEY, $files);
 
         return $files;
     }

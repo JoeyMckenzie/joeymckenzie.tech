@@ -45,6 +45,8 @@ RUN corepack enable && corepack prepare pnpm@latest-8 --activate; \
 # assets that we generated above
 FROM base
 
+ENV BUILD_COMMIT_SHA;
+
 # For Inertia.js SSR, copy over the node binary
 # so we can pass off rendering to the SSR process
 COPY --from=node_modules_go_brrr /usr/local/bin/node /usr/local/bin/node
