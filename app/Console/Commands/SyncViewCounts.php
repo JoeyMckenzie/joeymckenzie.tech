@@ -25,7 +25,7 @@ final class SyncViewCounts extends Command
     protected $description = 'Syncs view counts between Neon and Planetscale databases.';
 
     /**
-     * Execute the console command.
+     * Attempt to sync view counts between Neon and PlanetScale databases.
      */
     public function handle(): void
     {
@@ -43,7 +43,7 @@ final class SyncViewCounts extends Command
                     ->first(fn (string $filePath) => Str::contains($filePath, $slug));
 
                 // If we find a matching slug with the current file content,
-                // update Planetscale with the view count to keep them in sync
+                // update PlanetScale with the view count to keep them in sync
                 if (isset($matchingFileContent)) {
                     ViewCount::updateOrCreate([
                         'slug' => $slug,

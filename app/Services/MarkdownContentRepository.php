@@ -18,6 +18,13 @@ use Str;
 
 final readonly class MarkdownContentRepository implements ContentRepositoryContract
 {
+    public static function initContentCache(): MarkdownContentRepository
+    {
+        Log::info('init content cache');
+
+        return new MarkdownContentRepository();
+    }
+
     public function getContentMeta(string $slug): ?ContentMeta
     {
         if (Cache::has($slug)) {
