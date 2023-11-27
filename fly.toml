@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for joey-mckenzie-tech on 2023-11-17T22:17:10-08:00
+# fly.toml app configuration file generated for joeymckenzie-tech on 2023-11-24T16:34:19-08:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "joey-mckenzie-tech"
+app = "joeymckenzie-tech"
 primary_region = "sjc"
 console_command = "php /var/www/html/artisan tinker"
 
@@ -19,11 +19,7 @@ LOG_LEVEL = "info"
 LOG_STDERR_FORMATTER = "Monolog\\Formatter\\JsonFormatter"
 SESSION_DRIVER = "cookie"
 SESSION_SECURE_COOKIE = "true"
-SSR_URL = "ssr.process.joey-mckenzie-tech.internal:13714"
-
-[processes]
-app = ""
-ssr = "php /var/www/html/artisan inertia:start-ssr"
+SSR_URL = "ssr.process.joeymckenzie-tech.internal:13714"
 
 [http_service]
 internal_port = 8080
@@ -32,3 +28,12 @@ auto_stop_machines = true
 auto_start_machines = true
 min_machines_running = 0
 processes = ["app"]
+
+[processes]
+app = ""
+ssr = "php /var/www/html/artisan inertia:start-ssr"
+
+[[vm]]
+cpu_kind = "shared"
+cpus = 1
+memory_mb = 1024

@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
-use App\Utilities\ContentCache;
-use App\Utilities\SpotifyTracker;
+use App\Contracts\ContentRepositoryContract;
+use App\Contracts\MusicTrackerContract;
+use App\Services\MarkdownContentRepository;
+use App\Services\SpotifyTracker;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,8 +17,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(ContentCache::class);
-        $this->app->singleton(SpotifyTracker::class);
+        $this->app->singleton(ContentRepositoryContract::class, MarkdownContentRepository::class);
+        $this->app->singleton(MusicTrackerContract::class, SpotifyTracker::class);
     }
 
     /**
@@ -22,6 +26,5 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        ContentCache::initContentCache();
     }
 }

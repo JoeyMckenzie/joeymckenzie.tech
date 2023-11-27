@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('view_counts', function (Blueprint $table) {
             $table->id();
             $table->string('slug')->unique();
-            $table->integer('views')->default(0);
+            $table->integer('views')->default(1);
             $table->timestamps();
         });
     }

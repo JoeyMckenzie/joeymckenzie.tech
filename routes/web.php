@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Contracts\ContentRepositoryContract;
 use App\Http\Controllers\ProfileController;
-use App\Utilities\ContentCache;
+use App\Models\FrontMatter;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,22 +19,35 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('', fn (ContentCache $contentCache) => Inertia::render('Home', [
-    'frontMatters' => $contentCache->getFrontMatters(true),
+Route::get('', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Home', [
+    'frontMatters' => array_values(
+        collect($contentRepository->allFrontMatters())
+            ->sortByDesc(fn (FrontMatter $frontMatter) => new DateTime($frontMatter->pubDate))
+            ->take(3)
+            ->toArray()
+    ),
 ]))
     ->name('home');
 
 Route::get('about', fn () => Inertia::render('About'))
     ->name('about');
 
-Route::get('blog', fn (ContentCache $contentCache) => Inertia::render('Blog/Index', [
-    'frontMatters' => $contentCache->getFrontMatters(),
+Route::get('blog', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Index', [
+    'frontMatters' => array_values(
+        collect($contentRepository->allFrontMatters())
+            ->sortByDesc(fn (FrontMatter $frontMatter) => new DateTime($frontMatter->pubDate))
+            ->toArray()
+    ),
 ]))
     ->name('blogs');
 
-Route::get('blog/{slug}', fn (string $slug, ContentCache $contentCache) => Inertia::render('Blog/Post/Index', [
-    'contentMeta' => $contentCache->getContentMeta($slug),
-]))
+Route::get('blog/{slug}', function (string $slug, ContentRepositoryContract $contentRepository) {
+    $contentRepository->addViewCount($slug);
+
+    return Inertia::render('Blog/Post/Index', [
+        'contentMeta' => $contentRepository->getContentMeta($slug),
+    ]);
+})
     ->name('post');
 
 Route::get('/dashboard', function () {

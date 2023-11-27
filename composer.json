@@ -17,6 +17,7 @@
         "laravel/pail": "*",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
+        "laravel/vapor-core": "^2.32",
         "league/commonmark": "^2.4",
         "phpdocumentor/reflection-docblock": "^5.3",
         "sentry/sentry-laravel": "^4.0",

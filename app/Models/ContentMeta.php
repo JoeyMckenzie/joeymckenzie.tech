@@ -9,8 +9,9 @@ final readonly class ContentMeta
     public function __construct(
         mixed $rawFrontMatter,
         public string $content,
-        string $slug
+        string $slug,
+        int $viewCount
     ) {
-        $this->frontMatter = new FrontMatter($rawFrontMatter, $slug);
+        $this->frontMatter = new FrontMatter($rawFrontMatter, $slug, $viewCount);
     }
 }

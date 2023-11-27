@@ -7,7 +7,6 @@ import { FrontMatter } from '@/models';
 
 const props = defineProps<{
     frontMatter: FrontMatter;
-    viewCount: number;
 }>();
 
 const formattedDate = computed(() =>
@@ -31,8 +30,11 @@ const formattedDate = computed(() =>
                     {{ formattedDate }}
                 </time>
                 <Badge>{{ frontMatter.category }}</Badge>
-                <div v-if="viewCount > 0" class="font-medium text-neutral-400">
-                    {{ viewCount }} views
+                <div
+                    v-if="frontMatter.viewCount > 0"
+                    class="font-medium text-neutral-400"
+                >
+                    {{ frontMatter.viewCount }} views
                 </div>
             </div>
             <div class="group relative">

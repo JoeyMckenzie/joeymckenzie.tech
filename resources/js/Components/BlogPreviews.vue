@@ -13,7 +13,6 @@ defineProps<{ frontMatters: FrontMatter[] }>();
             v-for="frontMatter in frontMatters"
             :key="frontMatter.title"
             :front-matter="frontMatter"
-            :view-count="0"
         />
     </div>
 </template>

@@ -1,7 +1,10 @@
 <?php
 
-namespace App\Utilities;
+declare(strict_types=1);
 
+namespace App\Services;
+
+use App\Contracts\MusicTrackerContract;
 use App\Models\Spotify\NowPlaying;
 use App\Models\Spotify\SpotifyAuthResponse;
 use App\Models\Spotify\SpotifyNowPlayingResponse;
@@ -23,7 +26,7 @@ use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-final readonly class SpotifyTracker
+final readonly class SpotifyTracker implements MusicTrackerContract
 {
     private const NOW_PLAYING_URL = 'https://api.spotify.com/v1/me/player?type=track,episode';
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Utilities\SpotifyTracker;
+use App\Services\SpotifyTracker;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -44,7 +44,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'commit' => config('app.commit'),
             'spotify' => $this->spotifyTracker->getNowPlaying(),
-            'ziggy' => fn () => [
+            'ziggy' => fn() => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],

@@ -11,4 +11,5 @@ export type FrontMatter = {
     category: string;
     description: string;
     keywords: string[];
+    viewCount: number;
 };

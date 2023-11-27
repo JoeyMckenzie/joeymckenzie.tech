@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { Link } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import MainLayout from '@/Layouts/MainLayout.vue';
 </script>
 
 <template>
+    <Head title="Bio | joeymckenzie.tech" />
+
     <MainLayout>
         <div>
             <h2 class="text-4xl font-bold tracking-tight sm:text-center">
