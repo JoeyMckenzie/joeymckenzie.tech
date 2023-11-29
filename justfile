@@ -23,5 +23,9 @@ ci:
     pnpm run ci
 
 # deploy to fly
-ci:
+deploy:
     fly deploy --build-arg BUILD_COMMIT_SHA=$(git rev-parse HEAD)
+
+# import secrets to fly
+secrets:
+    fly secrets import < .env.production

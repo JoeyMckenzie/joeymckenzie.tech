@@ -22,7 +22,7 @@ final readonly class MarkdownContentRepository implements ContentRepositoryContr
 
     public static function initContentCache(): MarkdownContentRepository
     {
-        Log::info('init content cache');
+        // GenerateContentCache::dispatch();
 
         return new MarkdownContentRepository();
     }
@@ -88,28 +88,44 @@ final readonly class MarkdownContentRepository implements ContentRepositoryContr
         return $files;
     }
 
-    private function intoContentMeta(string $filePath, string $slug): ContentMeta
+    private function intoContentMeta(string $filePath, string $slug = null): ContentMeta
     {
         $info = pathinfo($filePath);
         $fileName = basename($filePath, '.'.$info['extension']);
-        $viewCount = ViewCount::firstWhere('slug', $slug)?->views ?? 0;
+        $viewCount = isset($slug)
+            ? ViewCount::firstWhere('slug', $slug)?->views ?? 0
+            : 0;
 
+        [
+            'html' => $html,
+            'frontMatter' => $frontMatter
+        ] = self::getParsedContent($filePath);
+
+        return new ContentMeta($frontMatter, $html, $fileName, $viewCount);
+    }
+
+    private function getParsedContent(string $filePath): array
+    {
         /** @var string $contents */
         $contents = file_get_contents($filePath);
         $frontMatterParser = new FrontMatterParser(new SymfonyYamlFrontMatterParser());
         $parsedContent = $frontMatterParser->parse($contents);
         $frontMatter = $parsedContent->getFrontMatter();
         $markdown = $parsedContent->getContent();
-        $html = app(MarkdownRenderer::class)
-            ->highlightTheme('github-dark')
-            ->toHtml($markdown);
-        $contentMeta = new ContentMeta($frontMatter, $html, $fileName, $viewCount);
 
-        Log::info("adding $slug content file to cache");
+        return [
+            'html' => app(MarkdownRenderer::class)
+                ->highlightTheme('github-dark')
+                ->toHtml($markdown),
+            'frontMatter' => $frontMatter,
+        ];
+    }
 
-        Cache::set($slug, $contentMeta);
-
-        return $contentMeta;
+    public function cacheContentMetas(): void
+    {
+        $filePaths = self::getMarkdownFilePaths();
+        collect($filePaths)
+            ->each(fn (string $filePath) => self::intoContentMeta($filePath));
     }
 
     public function allFrontMatters(): array

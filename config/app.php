@@ -192,5 +192,4 @@ return [
     */
 
     'commit' => env('BUILD_COMMIT_SHA', ''),
-
 ];

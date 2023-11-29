@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(ContentRepositoryContract::class, fn () => MarkdownContentRepository::initContentCache());
+        $this->app->singleton(ContentRepositoryContract::class, MarkdownContentRepository::class);
         $this->app->singleton(MusicTrackerContract::class, SpotifyTracker::class);
     }
 

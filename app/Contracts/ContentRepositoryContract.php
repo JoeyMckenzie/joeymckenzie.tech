@@ -27,6 +27,12 @@ interface ContentRepositoryContract
     public function getContentMeta(string $slug): ?ContentMeta;
 
     /**
+     * Returns an aggregate view of a blog post containing its
+     * frontmatter descriptors, current view count, and parsed content.
+     */
+    public function cacheContentMetas(): void;
+
+    /**
      * Updates the view count of a blog post by an additional reader.
      *
      * @param  string  $slug slug based on the request, unvalidated.

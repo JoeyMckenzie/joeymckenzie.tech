@@ -32,6 +32,7 @@ processes = ["app"]
 [processes]
 app = ""
 ssr = "php /var/www/html/artisan inertia:start-ssr"
+worker = "php /var/www/html/artisan queue:listen"
 
 [[vm]]
 cpu_kind = "shared"
