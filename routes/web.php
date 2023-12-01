@@ -47,14 +47,14 @@ Route::get('', fn (ContentRepositoryContract $contentRepository) => Inertia::ren
 Route::get('about', fn () => Inertia::render('About'))
     ->name('about');
 
-// Route::get('blog', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Index', [
-//     'frontMatters' => array_values(
-//         collect($contentRepository->allFrontMatters())
-//             ->sortByDesc(fn (FrontMatter $frontMatter) => new DateTime($frontMatter->pubDate))
-//             ->toArray()
-//     ),
-// ]))
-//     ->name('blogs');
+Route::get('blog', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Index', [
+    'frontMatters' => array_values(
+        collect($contentRepository->allFrontMatters())
+            ->sortByDesc(fn (FrontMatter $frontMatter) => new DateTime($frontMatter->pubDate))
+            ->toArray()
+    ),
+]))
+    ->name('blogs');
 
 Route::get('blog/{slug}', fn (string $slug, ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Post/Index', [
     'post' => $contentRepository->getBlogPostBySlug($slug),

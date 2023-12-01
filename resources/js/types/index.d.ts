@@ -17,6 +17,8 @@ export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
     commit: string;
+    laravelVersion: string;
+    phpVersion: string;
     spotify?: NowPlaying;
     auth: {
         user: User;
