@@ -24,8 +24,8 @@ export default function Home(): React.JSX.Element {
                     <h2 className="text-4xl font-bold tracking-tight sm:text-center">
                         Hi, I&apos;m Joey.
                     </h2>
-                    <p className="prose dark:prose-invert mx-auto mt-6 text-justify leading-6">
-                        I&apos;m a
+                    <p className="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert">
+                        I&apos;m a{' '}
                         <span className="font-semibold">
                             Senior Software Engineer
                         </span>{' '}

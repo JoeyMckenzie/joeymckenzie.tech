@@ -11,7 +11,7 @@ const poweredBy = [
     {
         display: 'React',
         href: 'https://reactjs.org',
-        icon: 'logos:vue',
+        icon: 'logos:react',
     },
     {
         display: 'Inertia.js',

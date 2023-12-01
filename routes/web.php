@@ -47,6 +47,9 @@ Route::get('', fn (ContentRepositoryContract $contentRepository) => Inertia::ren
 Route::get('about', fn () => Inertia::render('About'))
     ->name('about');
 
+Route::get('now', fn () => Inertia::render('Now'))
+    ->name('now');
+
 Route::get('blog', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Index', [
     'frontMatters' => array_values(
         collect($contentRepository->allFrontMatters())
