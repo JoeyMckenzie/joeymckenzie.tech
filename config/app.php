@@ -1,5 +1,6 @@
 <?php
 
+use GrahamCampbell\Markdown\MarkdownServiceProvider;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -168,6 +169,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        MarkdownServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -185,4 +187,11 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Build Commit Sha
+    |--------------------------------------------------------------------------
+    */
+
+    'commit' => env('BUILD_COMMIT_SHA', ''),
 ];

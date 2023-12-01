@@ -1,12 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
+use App\Contracts\MusicTrackerContract;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 
-class HandleInertiaRequests extends Middleware
+final class HandleInertiaRequests extends Middleware
 {
     /**
      * The root template that is loaded on the first page visit.
@@ -15,10 +19,14 @@ class HandleInertiaRequests extends Middleware
      */
     protected $rootView = 'app';
 
+    public function __construct(private readonly MusicTrackerContract $spotifyTracker)
+    {
+    }
+
     /**
      * Determine the current asset version.
      */
-    public function version(Request $request): string|null
+    public function version(Request $request): ?string
     {
         return parent::version($request);
     }
@@ -39,6 +47,10 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'commit' => config('app.commit'),
+            'spotify' => $this->spotifyTracker->getNowPlaying(),
+            'laravelVersion' => Application::VERSION,
+            'phpVersion' => PHP_VERSION,
         ];
     }
 }
