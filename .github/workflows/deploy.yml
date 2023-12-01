@@ -5,19 +5,19 @@ name: Deploy to Fly
 #     workflows: [ 'Server CI' ]
 #     types:
 #       - completed
-on: [ push ]
+on: [push]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    build:
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
 
-    name: Deploy application
-    steps:
-      - uses: superfly/flyctl-actions/setup-flyctl@master
-      - uses: actions/checkout@v3
+        name: Deploy application
+        steps:
+            - uses: superfly/flyctl-actions/setup-flyctl@master
+            - uses: actions/checkout@v3
 
-      - name: Deploy to fly
-        run: flyctl deploy --build-arg BUILD_COMMIT_SHA=${{ github.sha }} --remote-only
-        env:
-          FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_TOKEN }}
+            - name: Deploy to fly
+              run: flyctl deploy --build-arg BUILD_COMMIT_SHA=${{ github.sha }} --remote-only
+              env:
+                  FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_TOKEN }}

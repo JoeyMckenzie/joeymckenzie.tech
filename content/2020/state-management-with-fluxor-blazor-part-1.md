@@ -60,11 +60,11 @@ server, let's go ahead and hit `Create`.
 With our project ready to roll within VS, let's add a package reference to `Fluxor.Blazor.Web`
 and `Fluxor.Blazor.Web.ReduxDevTools` using your preferred installation method:
 
-- Using the command line, `dotnet add package Fluxor.Blazor.Web`
-  and `dotnet add package Fluxor.Blazor.Web.ReduxDevTools`
-- Using Package Manager with VS `Install-Package Fluxor.Blazor.Web`
-  and `Install-Package Fluxor.Blazor.Web.ReduxDevTools`
-- Or, just simply add the package references through the NuGet GUI within VS
+-   Using the command line, `dotnet add package Fluxor.Blazor.Web`
+    and `dotnet add package Fluxor.Blazor.Web.ReduxDevTools`
+-   Using Package Manager with VS `Install-Package Fluxor.Blazor.Web`
+    and `Install-Package Fluxor.Blazor.Web.ReduxDevTools`
+-   Or, just simply add the package references through the NuGet GUI within VS
 
 Once we've got Fluxor added to the project, we'll need to add a few references to the library through our code to bring
 into scope. In our `index.html` file, let's add the required JavaScript bundle just above the closing `</body>` tag:
@@ -74,16 +74,16 @@ into scope. In our `index.html` file, let's add the required JavaScript bundle j
 ```html
 <!doctype html>
 <html>
-<head>
-    <!-- Meta and CSS references -->
-</head>
+    <head>
+        <!-- Meta and CSS references -->
+    </head>
 
-<body>
-<!-- Existing bootstrapped HTML -->
+    <body>
+        <!-- Existing bootstrapped HTML -->
 
-<!-- Fluxor JS dependencies -->
-<script src="_content/Fluxor.Blazor.Web/scripts/index.js"></script>
-</body>
+        <!-- Fluxor JS dependencies -->
+        <script src="_content/Fluxor.Blazor.Web/scripts/index.js"></script>
+    </body>
 </html>
 ```
 
@@ -173,20 +173,20 @@ In my totally awesome flowchart, I've outlined the big ideas with flux and what 
 design pattern, might look like. We'll go through each key term in the flux lexicon, but to skim the top, there are six
 key terms you'll hear frequently when using any flux/redux library:
 
-- **Dispatcher** - Nothing more than a request delegator of sorts, this guy/gal is in charge of issuing actions anytime
-  a user decides to do something on our page
-- **Actions** - A metadata container containing information about _what_ the user did and what our application should do
-  after the user has performed the interaction with our page to kick off our flux pipeline
-- **Side Effects** - As subscribers to dispatched actions, I like to think of effects as listeners of specific actions,
-  performing resulting tasks based on what action was just issued
-- **Reducers** - Simple pure methods whose only job is to take state _in_, and spit state _out_ by way of
-  non-destructive mutation, i.e. taking our current state object in, examining what action was just dispatched and how
-  the state should be transformed, and spitting out a _new_ state object with said transformations
-- **State** - A snapshot of the currently rendered page, containing any and all data our application is concerned about
-  at that point in time
-- **Store** - The central piece, our store is the state container, holding on to all current slices of state that all
-  components ultimately subscribe to and react to any store changes accordingly when the store notifies listeners
-  there's been an update
+-   **Dispatcher** - Nothing more than a request delegator of sorts, this guy/gal is in charge of issuing actions anytime
+    a user decides to do something on our page
+-   **Actions** - A metadata container containing information about _what_ the user did and what our application should do
+    after the user has performed the interaction with our page to kick off our flux pipeline
+-   **Side Effects** - As subscribers to dispatched actions, I like to think of effects as listeners of specific actions,
+    performing resulting tasks based on what action was just issued
+-   **Reducers** - Simple pure methods whose only job is to take state _in_, and spit state _out_ by way of
+    non-destructive mutation, i.e. taking our current state object in, examining what action was just dispatched and how
+    the state should be transformed, and spitting out a _new_ state object with said transformations
+-   **State** - A snapshot of the currently rendered page, containing any and all data our application is concerned about
+    at that point in time
+-   **Store** - The central piece, our store is the state container, holding on to all current slices of state that all
+    components ultimately subscribe to and react to any store changes accordingly when the store notifies listeners
+    there's been an update
 
 Let's break each of those down in correlation to the flux application flowchart above, starting at step 1:
 
@@ -525,13 +525,13 @@ namespace StateManagementWithFluxor.Store.Features.Todos.Actions.LoadTodos
 }
 ```
 
-- Our `LoadTodosAction.cs` class contains no logic, and is used for nothing more that a typed action for the flux
-  pipeline to signal to its subscribers of the `LoadTodos` workflow. Kickoff actions can contain metadata and we'll see
-  this when we retrieve todo details by ID.
-- Our `LoadTodosSuccessAction.cs` class contains a list of non-nullable `TodoDto` items that will act as the transport
-  object moving the JSON Placeholder API response into our flux store.
-- Our `LoadTodosFailureAction.cs` class will trigger an error workflow, allowing us to gracefully respond to any network
-  failures or errors returned from the API to be propagated back to our components.
+-   Our `LoadTodosAction.cs` class contains no logic, and is used for nothing more that a typed action for the flux
+    pipeline to signal to its subscribers of the `LoadTodos` workflow. Kickoff actions can contain metadata and we'll see
+    this when we retrieve todo details by ID.
+-   Our `LoadTodosSuccessAction.cs` class contains a list of non-nullable `TodoDto` items that will act as the transport
+    object moving the JSON Placeholder API response into our flux store.
+-   Our `LoadTodosFailureAction.cs` class will trigger an error workflow, allowing us to gracefully respond to any network
+    failures or errors returned from the API to be propagated back to our components.
 
 Notice I've also defined a `FailureAction.cs` class that acts as the root for all failure actions. For our simple
 application, failure actions will more often that not contain some type of error identifier (in our case, a message, but
@@ -587,18 +587,18 @@ Our reducer class is simply just a `static` object with `static` methods invoked
 feature slice state, and returns a new `TodosState` object based on any relevant data contained within the action that
 caused the reducer method to be invoked.
 
-- The `ReduceLoadTodosAction` method causes our reducer to create a new state with the `IsLoading` flag set to `true`,
-  telling components there's currently an API call in flight. Since our current action workflow is just dealing with
-  gathering a list of todos and does not effect the currently selected todo piece of state, we set whatever
-  the `CurrentTodo` property was from the old state on the new state as to not effect any components concerned with that
-  particular property.
-- The `ReduceLoadTodosSuccessAction` method returns a new state setting the `IsLoading` to `false` letting components
-  know our API call has completed, and we set the `CurrentTodos` state property to the `Todo` property dereferenced from
-  the `LoadTodosSuccessAction` passed in. We'll see how this property is initially populated in
-  the `LoadTodosSuccessAction` class shortly.
-- The `ReduceLoadTodosFailureAction` method again sets the `IsLoading` flag to `false` for the reasons mentioned above,
-  and we populate the `CurrentErrors` property on our state so that our components may react accordingly to the API
-  failure.
+-   The `ReduceLoadTodosAction` method causes our reducer to create a new state with the `IsLoading` flag set to `true`,
+    telling components there's currently an API call in flight. Since our current action workflow is just dealing with
+    gathering a list of todos and does not effect the currently selected todo piece of state, we set whatever
+    the `CurrentTodo` property was from the old state on the new state as to not effect any components concerned with that
+    particular property.
+-   The `ReduceLoadTodosSuccessAction` method returns a new state setting the `IsLoading` to `false` letting components
+    know our API call has completed, and we set the `CurrentTodos` state property to the `Todo` property dereferenced from
+    the `LoadTodosSuccessAction` passed in. We'll see how this property is initially populated in
+    the `LoadTodosSuccessAction` class shortly.
+-   The `ReduceLoadTodosFailureAction` method again sets the `IsLoading` flag to `false` for the reasons mentioned above,
+    and we populate the `CurrentErrors` property on our state so that our components may react accordingly to the API
+    failure.
 
 With our reducer defined, let's go ahead and create a side effect that will do the work of calling the API and
 dispatching the success or failure action based on its response. Again, back in our `Features/Todos` subfolder, let's
@@ -654,20 +654,20 @@ namespace StateManagementWithFluxor.Store.Features.Todos.Effects
 
 Let's break this code down:
 
-- First, we descend from Fluxor's `Effect<TAction>` class, with our `TAction` generic type being our `LoadTodosAction`
-  class so this effect knows to invoke its `HandleAsync` method whenever that action is dispatched
-- Fluxor scans our assembly for all classes descending from `Effect<TAction>` and adds them to the DI container, so we
-  have the ease of injecting dependencies at runtime
-- We inject an `HttpClient` instance and a logger into the class using an expression bodied tuple constructor (some C#
-  syntactic sugar)
-- `HandleAsync` ships with an `IDispatcher` instance for us to utilize to issue more actions inside our effect
-- We make the API call using the injected `HttpClient` instance, and use the `GetFromJsonAsync<TResponse>` extension
-  method from the `System.Net.Http` namespace the .NET team has so generously provided us to make the HTTP call and
-  deserialize the response into our `TodoDto` list
-- If all goes well and the API call is successful, we issue another action in the form of a `LoadTodosSuccessAction`
-  class constructed with the endpoint's response
-- If there's any exceptions thrown, we'll `catch` and log the error, as well as issue a failure action with the
-  exception message
+-   First, we descend from Fluxor's `Effect<TAction>` class, with our `TAction` generic type being our `LoadTodosAction`
+    class so this effect knows to invoke its `HandleAsync` method whenever that action is dispatched
+-   Fluxor scans our assembly for all classes descending from `Effect<TAction>` and adds them to the DI container, so we
+    have the ease of injecting dependencies at runtime
+-   We inject an `HttpClient` instance and a logger into the class using an expression bodied tuple constructor (some C#
+    syntactic sugar)
+-   `HandleAsync` ships with an `IDispatcher` instance for us to utilize to issue more actions inside our effect
+-   We make the API call using the injected `HttpClient` instance, and use the `GetFromJsonAsync<TResponse>` extension
+    method from the `System.Net.Http` namespace the .NET team has so generously provided us to make the HTTP call and
+    deserialize the response into our `TodoDto` list
+-   If all goes well and the API call is successful, we issue another action in the form of a `LoadTodosSuccessAction`
+    class constructed with the endpoint's response
+-   If there's any exceptions thrown, we'll `catch` and log the error, as well as issue a failure action with the
+    exception message
 
 Recall the flux pipeline mentioned earlier. Throughout our list retrieval process, we'll be going through two iterations
 of dispatcher > action > effect/reducer > store:
@@ -896,19 +896,19 @@ Let's explore a little using Redux Dev Tools (download for your favorite browser
 head back to the home page and refresh the application with the `Redux` tab selected in the dev console. Right off the
 bat, we see three actions being issued:
 
-- `@@INIT` - Redux Dev Tool's internal action
-- `StoreInitializedAction` - Recall the `<Fluxor.Blazor.Web.StoreInitializer />` component we added to `App.razor`, this
-  is Fluxor initializing our feature states from the `Feature<TState>` found during assembly scanning and setting up our
-  default states from the `GetInitialState()` method
-- `GoAction` - Fluxor's internal navigation action that sets the `@routing` piece of state on our store with the `Uri`
-  node within it (we'll hook into this action as well in a later post)
+-   `@@INIT` - Redux Dev Tool's internal action
+-   `StoreInitializedAction` - Recall the `<Fluxor.Blazor.Web.StoreInitializer />` component we added to `App.razor`, this
+    is Fluxor initializing our feature states from the `Feature<TState>` found during assembly scanning and setting up our
+    default states from the `GetInitialState()` method
+-   `GoAction` - Fluxor's internal navigation action that sets the `@routing` piece of state on our store with the `Uri`
+    node within it (we'll hook into this action as well in a later post)
 
 Now, if we navigate to `Todos` on the side nav, we should see three more actions being issued in the following order:
 
-- Another `GoAction` issued internally by Fluxor
-- Our `LoadTodosAction` we defined earlier
-- And finally, our `LoadTodosSuccessAction` containing the todo items returned from the API (click on the `Action` tab
-  on the action in the list and you see see our `Todo` property underneath the `Payload` property)
+-   Another `GoAction` issued internally by Fluxor
+-   Our `LoadTodosAction` we defined earlier
+-   And finally, our `LoadTodosSuccessAction` containing the todo items returned from the API (click on the `Action` tab
+    on the action in the list and you see see our `Todo` property underneath the `Payload` property)
 
 If we click on the `LoadTodosSuccessAction` on the action list and then the `State` tab, we should see our `Todos`
 feature slice node with a `CurrentTodos` node that contains an array of all the todo items returned from the API!

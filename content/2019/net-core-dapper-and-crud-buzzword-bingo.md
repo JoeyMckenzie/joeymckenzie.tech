@@ -435,14 +435,14 @@ our API interacts with tens of microservices all communicating with each other, 
 media type and domain concern our API will provide to consumers is a good idea. Think of it as layers _within_ our
 domain layer:
 
-- Our entities represent the source of record stored within our database, that when extracted, are expected to modify
-  and persist their state
-- Our DTOs act as containers to transport that persisted data between layers (e.g. the domain layer and the data layer,
-  and from the data layer to the API layer in the long run)
-- Our API layer should **not** have any knowledge of our entities, as they contain audit properties (timestamps) and
-  relations to other entities that should only be interacted with at lower layers
-- Our resource types will represent the models/media types we will provide to our consumers, as our DTOs are more, or
-  less, internal to our API
+-   Our entities represent the source of record stored within our database, that when extracted, are expected to modify
+    and persist their state
+-   Our DTOs act as containers to transport that persisted data between layers (e.g. the domain layer and the data layer,
+    and from the data layer to the API layer in the long run)
+-   Our API layer should **not** have any knowledge of our entities, as they contain audit properties (timestamps) and
+    relations to other entities that should only be interacted with at lower layers
+-   Our resource types will represent the models/media types we will provide to our consumers, as our DTOs are more, or
+    less, internal to our API
 
 With the semantics out of the way, lets go ahead and create a `Media` folder and place a few resource types within that
 folder:

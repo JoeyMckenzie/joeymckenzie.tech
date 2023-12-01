@@ -75,13 +75,13 @@ probably something I'm missing here, but I'll let the experts chime in and fill 
 Alright, back to business. Like we mentioned, there are three service lifetimes we can access through the dependency
 injection extension namespace in transient, scoped, and singleton. The plain english explanation is as follows:
 
-- **transient** - these services are constructed anew _every_ single time they're request from the service container and
-  will never persist across registered containers (i.e. `ServiceCollection`s that have outlived the scope of one
-  another)
-- **scoped** - services that are constructed once during the lifetime scope of a `ServiceCollection` and persist across
-  service requests each time they're requested within the lifetime scope of a service container
-- **singleton** - services that are constructed only a single time during the lifetime of an application, and persistent
-  across service container lifetime scopes
+-   **transient** - these services are constructed anew _every_ single time they're request from the service container and
+    will never persist across registered containers (i.e. `ServiceCollection`s that have outlived the scope of one
+    another)
+-   **scoped** - services that are constructed once during the lifetime scope of a `ServiceCollection` and persist across
+    service requests each time they're requested within the lifetime scope of a service container
+-   **singleton** - services that are constructed only a single time during the lifetime of an application, and persistent
+    across service container lifetime scopes
 
 That seems like a lot of hoobla, so let's see service lifetimes in action to really try and make sense of all of this.
 

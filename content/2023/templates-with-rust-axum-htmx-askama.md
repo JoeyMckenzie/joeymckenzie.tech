@@ -30,11 +30,11 @@ To kick things off, let's run through the bits we'll utilize to build a relative
 serves
 static HTML but with reactivity powered by htmx. Our sandbox will look something like:
 
-- Rust (for obvious reasons)
-- Axum for serving static assets and powering the backend API
-- Askama for HTML templating - think shared layouts, scripts, CSS, etc.
-- htmx for reactivity on the UI
-- Tailwind, because my brain is too smooth now to do CSS myself
+-   Rust (for obvious reasons)
+-   Axum for serving static assets and powering the backend API
+-   Askama for HTML templating - think shared layouts, scripts, CSS, etc.
+-   htmx for reactivity on the UI
+-   Tailwind, because my brain is too smooth now to do CSS myself
 
 RAAHT-stack? THARA? Not sure, gonna need to workshop the acronym a bit.
 
@@ -353,7 +353,7 @@ Created Tailwind CSS config file: tailwind.config.js
 And let's adjust the `tailwind.config.js` file that was generated for us:
 
 ```js
-const {fontFamily} = require('tailwindcss/defaultTheme');
+const { fontFamily } = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -457,21 +457,21 @@ a `base.html` file:
 ```html
 <!doctype html>
 <html lang="en">
-<head>
-    <link href="/assets/main.css" rel="stylesheet"/>
-    <link href="https://rsms.me/inter/inter.css" rel="stylesheet"/>
-    <!-- Allow any inheriting page to set it's own title -->
-    <title>{% block title %}{{ title }}{% endblock %}</title>
+    <head>
+        <link href="/assets/main.css" rel="stylesheet" />
+        <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+        <!-- Allow any inheriting page to set it's own title -->
+        <title>{% block title %}{{ title }}{% endblock %}</title>
 
-    <!-- Allow any inheriting page to extend head with additional assets -->
-    {% block head %}{% endblock %}
-</head>
-<body>
-<div id="content">
-    <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
-    {% block content %}{% endblock %}
-</div>
-</body>
+        <!-- Allow any inheriting page to extend head with additional assets -->
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        <div id="content">
+            <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
+            {% block content %}{% endblock %}
+        </div>
+    </body>
 </html>
 ```
 
@@ -592,7 +592,7 @@ Let's spice our templates up with some routes. In our `hello.html` let's add a l
     <a
         href="/another-page"
         class="text-indigo-500 underline hover:text-indigo-300"
-    >Another page</a
+        >Another page</a
     >
 </div>
 {% endblock %}
@@ -629,24 +629,24 @@ to our base layout so all pages have access to it:
 ```html
 <!doctype html>
 <html lang="en">
-<head>
-    <link href="/assets/main.css" rel="stylesheet"/>
-    <link href="https://rsms.me/inter/inter.css" rel="stylesheet"/>
-    <!-- Allow any inheriting page to set it's own title -->
-    <title>{% block title %}{{ title }}{% endblock %}</title>
+    <head>
+        <link href="/assets/main.css" rel="stylesheet" />
+        <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+        <!-- Allow any inheriting page to set it's own title -->
+        <title>{% block title %}{{ title }}{% endblock %}</title>
 
-    <!-- htmx from the unpkg CDN - your mileage may vary -->
-    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+        <!-- htmx from the unpkg CDN - your mileage may vary -->
+        <script src="https://unpkg.com/htmx.org@1.9.2"></script>
 
-    <!-- Allow any inheriting page to extend head with additional assets -->
-    {% block head %}{% endblock %}
-</head>
-<body>
-<div id="content">
-    <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
-    {% block content %}{% endblock %}
-</div>
-</body>
+        <!-- Allow any inheriting page to extend head with additional assets -->
+        {% block head %}{% endblock %}
+    </head>
+    <body>
+        <div id="content">
+            <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
+            {% block content %}{% endblock %}
+        </div>
+    </body>
 </html>
 ```
 
@@ -713,7 +713,7 @@ We're serving data, now let's wire this up to a button click. On our homepage, l
     <a
         href="/another-page"
         class="text-indigo-500 underline hover:text-indigo-300"
-    >Another page</a
+        >Another page</a
     >
     <button
         type="button"
@@ -755,7 +755,7 @@ $ pnpm add @tailwindcss/forms
 Once that's installed, let's update our `tailwind.config.cjs` file:
 
 ```js
-const {fontFamily} = require('tailwindcss/defaultTheme');
+const { fontFamily } = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -813,7 +813,7 @@ provides a jinja-like `include` tag we can throw on our `hello.html` template:
     <a
         href="/another-page"
         class="text-indigo-500 underline hover:text-indigo-300"
-    >Another page</a
+        >Another page</a
     >
     <button
         type="button"
@@ -913,7 +913,6 @@ need
 to paint the HTML returned by our `add_todo` route, so let's append it to the end of our `todo-form.html` markup:
 
 ```html
-
 <form
     hx-post="/api/todos"
     hx-target="#todos"
@@ -921,7 +920,7 @@ to paint the HTML returned by our `add_todo` route, so let's append it to the en
     class="max-w-md"
 >
     <label for="todo" class="block text-sm font-medium leading-6 text-gray-900"
-    >Todo</label
+        >Todo</label
     >
     <div class="mt-2 inline-flex flex-row space-x-2">
         <input
@@ -939,15 +938,15 @@ to paint the HTML returned by our `add_todo` route, so let's append it to the en
         </button>
     </div>
 </form>
-<div id="todos"/>
+<div id="todos" />
 ```
 
 I've sprinkled in some htmx directives with `hx-post`, `hx-target`, and `hx-swap` as well:
 
-- `hx-post` tells our form submission _where_ to send the form data as a POST request too
-- `hx-target` is the element we want to mutate after we get a response
-- `hx-swap="innerHTML"` means we'll drop the hypertext returned from our `add_todo` handler as a child element of
-  our `<div id="todos" />` tag
+-   `hx-post` tells our form submission _where_ to send the form data as a POST request too
+-   `hx-target` is the element we want to mutate after we get a response
+-   `hx-swap="innerHTML"` means we'll drop the hypertext returned from our `add_todo` handler as a child element of
+    our `<div id="todos" />` tag
 
 With our Tailwind and axum server processes still running in watch mode, we should be good to start trying things out
 now.

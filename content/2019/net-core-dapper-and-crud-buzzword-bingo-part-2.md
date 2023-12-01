@@ -36,11 +36,11 @@ effectively the 'D' in SOLID, [dependency inversion](https://en.wikipedia.org/wi
 With our layers pointing inward toward our domain, we create _clear_ boundaries within our application that deal with
 separate concerns:
 
-- The web and persistence layers directly depend on our core layer
-- Our core layer directly depends on the domain layer
-- By association, our web and persistence, inadvertently, have a dependency on our domain layer
-- The domain layer has **no** dependencies - all it knows, and cares about, are the entities, view models, DTOs, etc.
-  that live inside this project and how each is related
+-   The web and persistence layers directly depend on our core layer
+-   Our core layer directly depends on the domain layer
+-   By association, our web and persistence, inadvertently, have a dependency on our domain layer
+-   The domain layer has **no** dependencies - all it knows, and cares about, are the entities, view models, DTOs, etc.
+    that live inside this project and how each is related
 
 Creating these clear boundaries of separation helps to create a modular application, with each layer isolated from one
 another in perfect harmony. By creating this inversion of dependency within our application, for example, our core layer
@@ -598,19 +598,19 @@ namespace Dappery.Data
 
 Okay... that's a lot of code, so let's break it down:
 
-- In our constructor, we inject a nullable connection string (since we enabled C# 8, `string`s can now be nullable), and
-  assume that if no connection string is passed, we're probably running unit tests, or just a simple in-memory version
-  of our application. We'll see how this injected connection string will actually be passed into our `UnitOfWork`
-  constructor in our API project in a later post.
-- Once we figure out who our database provider is, we open the connection, initialize our repositories, and seed some
-  test data (if we're opting to use SQLite)
-- We pass a the `rowInsertRetrievalQuery` string into our repositories to tell the repository how to get back the row we
-  just added (we'll see why, exactly, we do this later)
-- We add some public getters to access the repositories through our `UnitOfWork` class
-- We implement our `Commit` method to try and commit the transaction to the database and rollback if anything unexpected
-  happens
-- Finally, we add the disposable pattern to safely release our database resources during each transaction and destruct
-  our instance of the `UnitOfWork`
+-   In our constructor, we inject a nullable connection string (since we enabled C# 8, `string`s can now be nullable), and
+    assume that if no connection string is passed, we're probably running unit tests, or just a simple in-memory version
+    of our application. We'll see how this injected connection string will actually be passed into our `UnitOfWork`
+    constructor in our API project in a later post.
+-   Once we figure out who our database provider is, we open the connection, initialize our repositories, and seed some
+    test data (if we're opting to use SQLite)
+-   We pass a the `rowInsertRetrievalQuery` string into our repositories to tell the repository how to get back the row we
+    just added (we'll see why, exactly, we do this later)
+-   We add some public getters to access the repositories through our `UnitOfWork` class
+-   We implement our `Commit` method to try and commit the transaction to the database and rollback if anything unexpected
+    happens
+-   Finally, we add the disposable pattern to safely release our database resources during each transaction and destruct
+    our instance of the `UnitOfWork`
 
 Taking a step back let's take a look at our project structure so far:
 
@@ -656,10 +656,10 @@ public async Task<IEnumerable<Brewery>> GetAllBreweries()
 
 Let's breakdown what's going on in this query:
 
-- First, we grab a reference to all the beers in our database so we can map each beer up to its corresponding brewery
-- Next, we query the brewery table and do a simple join on the address table
-- Finally, once we have our result set, we set each brewery's address to the joined address, and add all the beers to
-  the data model (if any exist)
+-   First, we grab a reference to all the beers in our database so we can map each beer up to its corresponding brewery
+-   Next, we query the brewery table and do a simple join on the address table
+-   Finally, once we have our result set, we set each brewery's address to the joined address, and add all the beers to
+    the data model (if any exist)
 
 Again, I'm not an expert with Dapper, so I'm sure there's some optimization to be done here. As this is just us
 exploring Dapper, this will suffice for now. For example, rather than performing two separate queries to get our

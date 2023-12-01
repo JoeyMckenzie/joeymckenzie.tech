@@ -35,10 +35,10 @@ Yep, the JAMstack: **J**avaScript, **A**PIs, and **M**arkup. There's a thriving 
 developers embracing the JAMstack, so defer to them for the nitty gritty details. The JAMstack follows a general
 artchitecture:
 
-- **M**arkup is pre-rendered at build time and served as static HTML and CSS
-- **J**avaScript still provides all its native interactivity with the browser, while not bogging down the initial
-  rendering of our apps with retrieving JS bundles
-- **A**PIs that provide data, processing, and whatever else we need from a backend server
+-   **M**arkup is pre-rendered at build time and served as static HTML and CSS
+-   **J**avaScript still provides all its native interactivity with the browser, while not bogging down the initial
+    rendering of our apps with retrieving JS bundles
+-   **A**PIs that provide data, processing, and whatever else we need from a backend server
 
 In essence, JAMstack principles align to provide fast, reliable, scalable, and performant web applications for the
 modern browser.
@@ -101,9 +101,9 @@ our `app-routing.module.ts`:
 #### app-routing.module.ts
 
 ```ts
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {DataComponent, HomeComponent, PingComponent} from '@components';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { DataComponent, HomeComponent, PingComponent } from '@components';
 
 const routes: Routes = [
     {
@@ -124,8 +124,7 @@ const routes: Routes = [
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}
 ```
 
 With routes in place, let's implement a few services that will help facilitate talking to our Netlify functions
@@ -157,8 +156,8 @@ their code. First, our `UnsubscribeService`:
 #### unsubscribe.service.ts
 
 ```ts
-import {Injectable, OnDestroy} from '@angular/core';
-import {Subject} from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class UnsubscribeService extends Subject<void> implements OnDestroy {
@@ -176,19 +175,18 @@ to within our components. Next, let's put our `PingService` code in place:
 #### ping.service.ts
 
 ```ts
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {ServerResponse} from 'types';
-import {catchError, delay, map} from 'rxjs/operators';
-import {of} from 'rxjs';
-import {environment} from '@environment';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { ServerResponse } from 'types';
+import { catchError, delay, map } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { environment } from '@environment';
 
 @Injectable({
     providedIn: 'root',
 })
 export class PingService {
-    constructor(private http: HttpClient) {
-    }
+    constructor(private http: HttpClient) {}
 
     pingServer() {
         const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`;
@@ -210,19 +208,18 @@ Next, our `DataService`:
 #### data.service.ts
 
 ```ts
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {environment} from '@environment';
-import {EMPTY} from 'rxjs';
-import {catchError, delay, map} from 'rxjs/operators';
-import {ServerResponse} from 'types';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from '@environment';
+import { EMPTY } from 'rxjs';
+import { catchError, delay, map } from 'rxjs/operators';
+import { ServerResponse } from 'types';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DataService {
-    constructor(private http: HttpClient) {
-    }
+    constructor(private http: HttpClient) {}
 
     sendDataToServer(name: string) {
         const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`;
@@ -248,9 +245,9 @@ and finally,
 #### document.service.ts
 
 ```ts
-import {DOCUMENT} from '@angular/common';
-import {Inject, Injectable} from '@angular/core';
-import {Meta, MetaDefinition} from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
+import { Inject, Injectable } from '@angular/core';
+import { Meta, MetaDefinition } from '@angular/platform-browser';
 
 @Injectable({
     providedIn: 'root',
@@ -261,8 +258,7 @@ export class DocumentService {
     constructor(
         @Inject(DOCUMENT) private readonly document: Document,
         private meta: Meta,
-    ) {
-    }
+    ) {}
 
     resetTitle(): void {
         this.document.title = this.rootTitle;
@@ -297,9 +293,9 @@ Let's add some code to our `ping` component:
 #### ping.component.ts
 
 ```ts
-import {Component, OnInit} from '@angular/core';
-import {DocumentService, PingService, UnsubscribeService} from '@services';
-import {takeUntil} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { DocumentService, PingService, UnsubscribeService } from '@services';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-ping',
@@ -312,8 +308,7 @@ export class PingComponent implements OnInit {
         private documentService: DocumentService,
         private pingService: PingService,
         private unsubscribe$: UnsubscribeService,
-    ) {
-    }
+    ) {}
 
     ngOnInit(): void {
         this.documentService.updateTitle('ping');
@@ -349,9 +344,9 @@ Next, `data.component.ts`:
 #### data.component.ts
 
 ```ts
-import {Component, OnInit} from '@angular/core';
-import {DocumentService, DataService, UnsubscribeService} from '@services';
-import {finalize, takeUntil} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { DocumentService, DataService, UnsubscribeService } from '@services';
+import { finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-data',
@@ -365,8 +360,7 @@ export class DataComponent implements OnInit {
         private documentService: DocumentService,
         private dataService: DataService,
         private unsubscribe$: UnsubscribeService,
-    ) {
-    }
+    ) {}
 
     ngOnInit(): void {
         this.documentService.updateTitle('data');
@@ -426,16 +420,15 @@ pages:
 #### home.component.ts
 
 ```ts
-import {Component, OnInit} from '@angular/core';
-import {DocumentService} from '../../services/document.service';
+import { Component, OnInit } from '@angular/core';
+import { DocumentService } from '../../services/document.service';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-    constructor(private documentService: DocumentService) {
-    }
+    constructor(private documentService: DocumentService) {}
 
     ngOnInit(): void {
         this.documentService.resetTitle();
@@ -448,7 +441,6 @@ and with markup,
 #### home.component.html
 
 ```html
-
 <div class="flex flex-row space-x-4">
     <a routerLink="/ping">
         <button
@@ -474,7 +466,6 @@ While we're at it, let's go ahead and update `app.component.html` with some rout
 #### app.component.html
 
 ```html
-
 <router-outlet></router-outlet>
 <div class="flex flex-row justify-center pt-12">
     <a routerLink="/">
@@ -507,10 +498,10 @@ is [Netlify Functions](https://functions.netlify.com/) - Netlify's version of se
 lambda functions behind the scenes to provide an easy way to integrate backend functionality with our statically served
 web apps. I've found serverless functions helpful in quite a few different ways:
 
-- Sending out emails using email API services
-- Integrating with third-party APIs to do some processing for frontend requests
-- Serving simple data to be consumed from the frontend
-- Heck, even persisting to database based on requests from our frontend applications
+-   Sending out emails using email API services
+-   Integrating with third-party APIs to do some processing for frontend requests
+-   Serving simple data to be consumed from the frontend
+-   Heck, even persisting to database based on requests from our frontend applications
 
 Our serverless functions will _serve_, more or less, as an API-lite for our static served Angular Scully application
 that will be hosted in Netlify, allowing us to connect our outgoing HTTP calls from the frontend to the backend
@@ -554,14 +545,14 @@ will tap into the functionality provided by the `@netlify/functions` package to 
 #### netlify/functions/ping.ts
 
 ```ts
-import {Handler} from '@netlify/functions';
+import { Handler } from '@netlify/functions';
 import {
     getErrorResponse,
     getHeaders,
     HttpStatus,
     isWhitelistedDomain,
 } from '../lib';
-import {ServerResponse} from 'types';
+import { ServerResponse } from 'types';
 
 const handler: Handler = async (event) => {
     const origin = event.headers.origin ?? '';
@@ -586,7 +577,7 @@ const handler: Handler = async (event) => {
     };
 };
 
-export {handler};
+export { handler };
 ```
 
 I've added some common code that I'll be sharing between functions and have moved that to a `lib` folder with a
@@ -595,8 +586,8 @@ single `index.ts` file:
 #### netlify/lib/index.ts
 
 ```ts
-import {Response} from '@netlify/functions/dist/function/response';
-import {ServerResponse} from 'types';
+import { Response } from '@netlify/functions/dist/function/response';
+import { ServerResponse } from 'types';
 
 enum HttpStatus {
     Forbidden = '403',
@@ -656,7 +647,7 @@ function getErrorResponse(statusCode: HttpStatus): Response {
     };
 }
 
-export {getErrorResponse, getHeaders, isWhitelistedDomain, HttpStatus};
+export { getErrorResponse, getHeaders, isWhitelistedDomain, HttpStatus };
 ```
 
 Nothing too complicated, just a few simple helpers to facilitate validating allowed origins for CORS, some common
@@ -678,10 +669,10 @@ common statically typed-model between the front and backend of our project!
 As you might have guessed, the names and pathing of our function `.ts` files _does_ matter in our case. There's a few
 simple rules to adhere to when creating function endpoints
 
-- `netlify/functions/ping.ts` would receive HTTP request matching the route `/.netlify/functions/ping`
-- `netlify/functions/ping/index.ts` would _also_ receive HTTP request matching the route `/.netlify/functions/ping`
-- `netlify/functions/ping/ping.ts` would, again, _also_ receive HTTP request matching the
-  route `/.netlify/functions/ping`
+-   `netlify/functions/ping.ts` would receive HTTP request matching the route `/.netlify/functions/ping`
+-   `netlify/functions/ping/index.ts` would _also_ receive HTTP request matching the route `/.netlify/functions/ping`
+-   `netlify/functions/ping/ping.ts` would, again, _also_ receive HTTP request matching the
+    route `/.netlify/functions/ping`
 
 Now that we have our first function in place, let's go ahead and start our function server:
 
@@ -711,14 +702,14 @@ data in the body and return data based on it:
 #### netlify/functions/data/index.ts
 
 ```ts
-import {Handler} from '@netlify/functions';
+import { Handler } from '@netlify/functions';
 import {
     getErrorResponse,
     getHeaders,
     HttpStatus,
     isWhitelistedDomain,
 } from '../../lib';
-import {ServerResponse} from 'types';
+import { ServerResponse } from 'types';
 
 const handler: Handler = async (event) => {
     const origin = event.headers.origin ?? '';
@@ -763,7 +754,7 @@ const handler: Handler = async (event) => {
     return getErrorResponse(HttpStatus.InternalServerError);
 };
 
-export {handler};
+export { handler };
 ```
 
 Utilizing our helper methods again, since this is a POST request with more complex request headers (as we can
@@ -798,7 +789,7 @@ The schematic will add a few Scully dependencies to our project, as well as gene
 a `scully.{{projectName}}. config.ts` file with the following:
 
 ```ts
-import {ScullyConfig} from '@scullyio/scully';
+import { ScullyConfig } from '@scullyio/scully';
 
 /** this loads the default render plugin, remove when switching to something else. */
 import '@scullyio/scully-plugin-puppeteer';
@@ -853,11 +844,11 @@ With our Scully server running, we should still be able to hit our Netlify funct
 running), receiving the same responses we saw from serving the de-Scully'd version of our application. While it may
 not _seem_ like much, let's take a second to realize what's going on:
 
-- We have a serverless backend stood up ready to receive HTTP requests and do any server related processing with
-  _zero_ backend frameworks in place
-- We have a fully static version of our Angular application running in the browser optimized for SEO and indexing by
-  search engines
-- To top it off, we're doing all of this within the same repository code!
+-   We have a serverless backend stood up ready to receive HTTP requests and do any server related processing with
+    _zero_ backend frameworks in place
+-   We have a fully static version of our Angular application running in the browser optimized for SEO and indexing by
+    search engines
+-   To top it off, we're doing all of this within the same repository code!
 
 While we're only scratching the surface of what's possible with Angular, Scully, and Netlify Functions, the DX
 offered by these tools allows us to quickly develop and ship static websites with rich functionality and data fetching
