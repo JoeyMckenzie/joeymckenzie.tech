@@ -59,7 +59,8 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "prepare": "git config core.hookspath .githooks"
     },
     "extra": {
         "laravel": {
