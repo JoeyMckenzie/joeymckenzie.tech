@@ -4,6 +4,7 @@
         "es2021": true,
         "node": true
     },
+    "ignorePatterns": ["*.d.ts"],
     "extends": [
         "standard-with-typescript",
         "plugin:react/recommended",

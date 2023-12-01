@@ -51,6 +51,7 @@
         "lucide-react": "^0.294.0",
         "prettier-plugin-tailwindcss": "^0.5.7",
         "tailwind-merge": "^2.0.0",
-        "tailwindcss-animate": "^1.0.7"
+        "tailwindcss-animate": "^1.0.7",
+        "ziggy-js": "^1.8.1"
     }
 }

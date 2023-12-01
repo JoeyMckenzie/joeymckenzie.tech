@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\BlogPost;
 use App\Models\ContentMeta;
+use App\Models\ViewCount;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -37,7 +38,8 @@ final class SyncContent extends Command
     {
         $files = self::getMarkdownFilePaths();
         $connection = DB::connection('pgsql');
-        $viewCounts = collect($connection->select('SELECT slug, view_count FROM view_counts'));
+        /** @var Collection<int, ViewCount> $viewCounts */
+        $viewCounts = $connection->table('view_counts')->select(['slug', 'view_count'])->get();
 
         collect($files)
             ->map(fn (string $filePath) => self::getParsedContent($filePath, $converter))
@@ -92,17 +94,20 @@ final class SyncContent extends Command
         return new ContentMeta($fileSlug, $markdown, $html, $frontMatter);
     }
 
+    /**
+     * @param  Collection<int, ViewCount>  $viewCounts
+     */
     private function intoBlogPost(ContentMeta $contentMeta, Collection $viewCounts): BlogPost
     {
-        $views = $viewCounts->firstOrFail(fn (mixed $viewCount) => property_exists($viewCounts, 'slug') && $viewCount->slug === $contentMeta->slug)?->view_count ?? 0;
-        $slug = $contentMeta->slug;
+        $contentSlug = $contentMeta->slug;
+        $views = $viewCounts->firstOrFail(fn (mixed $viewCount) => $viewCount->slug === $contentSlug)->view_count;
 
-        Log::info("upserting blog post $slug");
+        Log::info("upserting blog post $contentSlug");
 
         return BlogPost::updateOrCreate([
-            'slug' => $slug,
+            'slug' => $contentSlug,
         ], [
-            'slug' => $slug,
+            'slug' => $contentSlug,
             'title' => $contentMeta->frontMatter->title,
             'description' => $contentMeta->frontMatter->description,
             'category' => $contentMeta->frontMatter->category,
