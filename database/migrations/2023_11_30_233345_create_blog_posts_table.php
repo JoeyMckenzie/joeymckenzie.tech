@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('keywords');
             $table->integer('views')->default(0);
             $table->text('raw_content');
-            $table->text('parsed_content');
+            $table->longText('parsed_content');
         });
     }
 

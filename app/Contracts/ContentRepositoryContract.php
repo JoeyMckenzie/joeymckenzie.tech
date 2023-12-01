@@ -14,5 +14,10 @@ interface ContentRepositoryContract
      */
     public function getBlogPostMetadata(): Collection;
 
+    /**
+     * @return Collection<int, BlogPost>
+     */
+    public function getLatestBlogPostMetadata(): Collection;
+
     public function getBlogPostBySlug(string $slug): BlogPost;
 }

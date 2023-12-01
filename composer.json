@@ -21,7 +21,9 @@
         "symfony/property-access": "^7.0",
         "symfony/serializer": "^7.0",
         "symfony/yaml": "^7.0",
-        "tightenco/ziggy": "^1.0"
+        "tightenco/ziggy": "^1.0",
+        "torchlight/torchlight-commonmark": "^0.5.5",
+        "torchlight/torchlight-laravel": "^0.5.14"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.9",

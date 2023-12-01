@@ -1,8 +1,15 @@
 import * as React from 'react';
 import MainLayout from '@/Layouts/MainLayout';
 import { Head } from '@inertiajs/react';
+import BlogPreviews from '@/Components/BlogPreviews';
+import { type FrontMatter } from '@/models';
+import SocialButtons from '@/Components/SocialButtons';
 
-export default function Home(): React.JSX.Element {
+export default function Home({
+    frontMatters,
+}: {
+    frontMatters: FrontMatter[];
+}): React.JSX.Element {
     return (
         <>
             <Head>
@@ -35,13 +42,12 @@ export default function Home(): React.JSX.Element {
                         efficient web services, learning new things, and writing
                         code in the open source ecosystem.
                     </p>
-                    {/* <SocialButtons /> */}
-                    {/**/}
+                    <SocialButtons />
                     <h2 className="pb-4 pt-8 text-right text-4xl font-bold tracking-tight sm:text-center">
                         Latest thoughts.
                     </h2>
+                    <BlogPreviews frontMatters={frontMatters} />
                 </>
-                {/* <BlogPreviews :front-matters="frontMatters" /> */}
             </MainLayout>
         </>
     );

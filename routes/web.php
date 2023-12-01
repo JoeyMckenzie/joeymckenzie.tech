@@ -2,7 +2,6 @@
 
 use App\Contracts\ContentRepositoryContract;
 use App\Http\Controllers\ProfileController;
-use App\Models\BlogPost;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,9 +35,7 @@ Route::get('/', function () {
 
 Route::get('', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Home', [
     'frontMatters' => array_values(
-        collect($contentRepository->getBlogPostMetadata())
-            ->sortByDesc(fn (BlogPost $post) => $post->published_date)
-            ->take(3)
+        collect($contentRepository->getLatestBlogPostMetadata())
             ->toArray()
     ),
 ]))
@@ -52,8 +49,7 @@ Route::get('now', fn () => Inertia::render('Now'))
 
 Route::get('blog', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Index', [
     'frontMatters' => array_values(
-        collect($contentRepository->allFrontMatters())
-            ->sortByDesc(fn (FrontMatter $frontMatter) => new DateTime($frontMatter->pubDate))
+        collect($contentRepository->getBlogPostMetadata())
             ->toArray()
     ),
 ]))

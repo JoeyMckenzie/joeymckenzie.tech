@@ -17,16 +17,16 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
         /**
          * @return Collection<int, BlogPost>
          */
-        $blogPosts = BlogPost::all([
+        return BlogPost::select([
             'slug',
             'published_date',
             'category',
             'description',
             'title',
             'views',
-        ]);
-
-        return $blogPosts;
+        ])
+            ->orderByDesc('created_at')
+            ->get();
     }
 
     #[Override]
@@ -47,5 +47,26 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
         }
 
         return $post;
+    }
+
+    #[Override]
+    public function getLatestBlogPostMetadata(): Collection
+    {
+        /**
+         * @return Collection<int, BlogPost>
+         */
+        $blogPosts = BlogPost::select([
+            'slug',
+            'published_date',
+            'category',
+            'description',
+            'title',
+            'views',
+        ])
+            ->orderByDesc('created_at')
+            ->limit(3)
+            ->get();
+
+        return $blogPosts;
     }
 }

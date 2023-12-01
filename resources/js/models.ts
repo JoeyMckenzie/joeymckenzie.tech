@@ -14,12 +14,6 @@ export type FrontMatter = {
     views: number;
 };
 
-export type Post = {
-    keywords: string;
-    hero_image: string;
-    published_date: string;
-    category: string;
-    title: string;
-    views: string;
+export type Post = FrontMatter & {
     parsed_content: string;
 };

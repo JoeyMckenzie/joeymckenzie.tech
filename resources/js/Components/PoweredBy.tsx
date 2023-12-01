@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { usePage } from '@inertiajs/react';
 import { Icon } from '@iconify/react';
+import TorchlightIcon from '@/Components/TorchlightIcon';
 
 const poweredBy = [
     {
@@ -37,7 +38,7 @@ export default function PoweredBy(): React.JSX.Element {
                 Powered by
             </p>
             {poweredBy.map(({ icon, href, display }) => (
-                <a key={icon} href={href}>
+                <a key={display} href={href}>
                     <span className="sr-only">{display}</span>
                     <Icon
                         icon={icon}
@@ -45,6 +46,11 @@ export default function PoweredBy(): React.JSX.Element {
                     />
                 </a>
             ))}
+
+            <a href="https://torchlight.dev">
+                <span className="sr-only">Torchlight</span>
+                <TorchlightIcon />
+            </a>
 
             <a
                 href={commitUrl}
