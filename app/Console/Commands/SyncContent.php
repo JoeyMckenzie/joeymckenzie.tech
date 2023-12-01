@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use App\Models\BlogPost;
 use App\Models\ContentMeta;
 use Illuminate\Console\Command;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use League\CommonMark\ConverterInterface;
 use League\CommonMark\Exception\CommonMarkException;
@@ -12,7 +14,7 @@ use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
 use League\Config\Exception\ConfigurationExceptionInterface;
 
-class SyncContent extends Command
+final class SyncContent extends Command
 {
     /**
      * The name and signature of the console command.
@@ -33,12 +35,13 @@ class SyncContent extends Command
      */
     public function handle(ConverterInterface $converter): void
     {
-        // 1. Read all content files
         $files = self::getMarkdownFilePaths();
+        $connection = DB::connection('pgsql');
+        $viewCounts = collect($connection->select('SELECT slug, view_count FROM view_counts'));
 
         collect($files)
             ->map(fn (string $filePath) => self::getParsedContent($filePath, $converter))
-            ->each(fn (ContentMeta $contentMeta) => self::intoBlogPost($contentMeta));
+            ->each(fn (ContentMeta $contentMeta) => self::intoBlogPost($contentMeta, $viewCounts));
     }
 
     /**
@@ -84,13 +87,14 @@ class SyncContent extends Command
         $markdown = $parsedContent->getContent();
         $html = $converter->convert($markdown);
 
-        Log::info('frontmatter and content parsed');
+        Log::info('frontmatter and content parsed, retrieving view count from neon');
 
         return new ContentMeta($fileSlug, $markdown, $html, $frontMatter);
     }
 
-    private function intoBlogPost(ContentMeta $contentMeta): BlogPost
+    private function intoBlogPost(ContentMeta $contentMeta, Collection $viewCounts): BlogPost
     {
+        $views = $viewCounts->firstOrFail(fn (mixed $viewCount) => property_exists($viewCounts, 'slug') && $viewCount->slug === $contentMeta->slug)?->view_count ?? 0;
         $slug = $contentMeta->slug;
 
         Log::info("upserting blog post $slug");
@@ -107,6 +111,7 @@ class SyncContent extends Command
             'keywords' => implode(',', $contentMeta->frontMatter->keywords),
             'raw_content' => $contentMeta->markdown,
             'parsed_content' => $contentMeta->html,
+            'views' => $views,
         ]);
     }
 }
