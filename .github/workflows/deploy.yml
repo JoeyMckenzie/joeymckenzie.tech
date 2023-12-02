@@ -1,11 +1,10 @@
 name: Deploy to Fly
 
-# on:
-#   workflow_run:
-#     workflows: [ 'Server CI' ]
-#     types:
-#       - completed
-on: [push]
+on:
+    workflow_run:
+        workflows: ['Server CI']
+        types:
+            - completed
 
 jobs:
     build:
