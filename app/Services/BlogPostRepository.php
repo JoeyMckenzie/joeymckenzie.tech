@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\ContentRepositoryContract;
+use App\Jobs\AddView;
 use App\Models\BlogPost;
 use Illuminate\Database\Eloquent\Collection;
 use Override;
@@ -25,7 +26,7 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
             'title',
             'views',
         ])
-            ->orderByDesc('created_at')
+            ->orderByDesc('published_date')
             ->get();
     }
 
@@ -33,6 +34,7 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
     public function getBlogPostBySlug(string $slug): BlogPost
     {
         $post = BlogPost::select([
+            'slug',
             'keywords',
             'hero_image',
             'published_date',
@@ -46,6 +48,9 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
             abort(404);
         }
 
+        // While we're add it, add a view count
+        AddView::dispatch($post->slug, $post->views);
+
         return $post;
     }
 
@@ -55,7 +60,7 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
         /**
          * @return Collection<int, BlogPost>
          */
-        $blogPosts = BlogPost::select([
+        return BlogPost::select([
             'slug',
             'published_date',
             'category',
@@ -63,10 +68,8 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
             'title',
             'views',
         ])
-            ->orderByDesc('created_at')
+            ->orderByDesc('published_date')
             ->limit(3)
             ->get();
-
-        return $blogPosts;
     }
 }

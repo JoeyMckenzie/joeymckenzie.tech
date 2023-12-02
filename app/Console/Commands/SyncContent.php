@@ -4,10 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\BlogPost;
 use App\Models\ContentMeta;
-use App\Models\ViewCount;
 use Illuminate\Console\Command;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use League\CommonMark\ConverterInterface;
 use League\CommonMark\Exception\CommonMarkException;
@@ -37,13 +34,9 @@ final class SyncContent extends Command
     public function handle(ConverterInterface $converter): void
     {
         $files = self::getMarkdownFilePaths();
-        $connection = DB::connection('pgsql');
-        /** @var Collection<int, ViewCount> $viewCounts */
-        $viewCounts = $connection->table('view_counts')->select(['slug', 'view_count'])->get();
-
         collect($files)
             ->map(fn (string $filePath) => self::getParsedContent($filePath, $converter))
-            ->each(fn (ContentMeta $contentMeta) => self::intoBlogPost($contentMeta, $viewCounts));
+            ->each(fn (ContentMeta $contentMeta) => self::intoBlogPost($contentMeta));
     }
 
     /**
@@ -94,13 +87,9 @@ final class SyncContent extends Command
         return new ContentMeta($fileSlug, $markdown, $html, $frontMatter);
     }
 
-    /**
-     * @param  Collection<int, ViewCount>  $viewCounts
-     */
-    private function intoBlogPost(ContentMeta $contentMeta, Collection $viewCounts): BlogPost
+    private function intoBlogPost(ContentMeta $contentMeta): BlogPost
     {
         $contentSlug = $contentMeta->slug;
-        $views = $viewCounts->firstOrFail(fn (mixed $viewCount) => $viewCount->slug === $contentSlug)->view_count;
 
         Log::info("upserting blog post $contentSlug");
 
@@ -116,7 +105,6 @@ final class SyncContent extends Command
             'keywords' => implode(',', $contentMeta->frontMatter->keywords),
             'raw_content' => $contentMeta->markdown,
             'parsed_content' => $contentMeta->html,
-            'views' => $views,
         ]);
     }
 }
