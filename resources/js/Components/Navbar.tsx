@@ -18,10 +18,6 @@ const links: NavLinkProps[] = [
         name: 'about',
     },
     {
-        display: 'Now',
-        name: 'now',
-    },
-    {
         display: 'Blog',
         name: 'blogs',
     },

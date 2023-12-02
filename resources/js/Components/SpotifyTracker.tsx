@@ -10,7 +10,7 @@ function NotCurrentlyPlaying({
     return (
         <div className="flex flex-col space-y-1">
             <div className="flex flex-row items-center justify-center space-x-2">
-                <slot />
+                {children}
                 <div className="flex flex-col">
                     <h4 className="text-xs text-neutral-500">
                         Not currently listening
