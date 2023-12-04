@@ -26,7 +26,13 @@ export function ThemeProvider({
     defaultTheme = 'system',
     storageKey = 'vite-ui-theme',
     ...props
-}: ThemeProviderProps): React.JSX.Element {
+}: ThemeProviderProps): React.JSX.Element | null {
+    // When using Inertia SSR, we won't have the window until we're on the client
+    // So bypass creating the provider until we're loaded in the browser
+    if (typeof window === 'undefined') {
+        return null;
+    }
+
     const [theme, setTheme] = useState<Theme>(
         () => (localStorage.getItem(storageKey) as Theme) ?? defaultTheme,
     );
