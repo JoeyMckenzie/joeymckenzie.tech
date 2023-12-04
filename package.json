@@ -12,7 +12,8 @@
         "prepare": "git config core.hookspath .githooks"
     },
     "lint-staged": {
-        "**/*.{js,ts,tsx,json,yml,toml,md}": "pnpm run fmt"
+        "**/*.{js,ts,tsx,json,yml,toml,md}": "pnpm run fmt",
+        "**/*.php": "composer run fmt"
     },
     "devDependencies": {
         "@headlessui/react": "^1.4.2",
