@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('slug')->unique();
-            $table->date('published_date')->default(now());
+            $table->date('published_date');
             $table->string('hero_image');
             $table->string('category');
             $table->string('keywords');
