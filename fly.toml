@@ -20,7 +20,6 @@ LOG_STDERR_FORMATTER = "Monolog\\Formatter\\JsonFormatter"
 SESSION_DRIVER = "cookie"
 SESSION_SECURE_COOKIE = "true"
 SSR_URL = "ssr.process.joey-mckenzie-tech.internal:13714"
-BUILD_COMMIT_SHA = ""
 
 [processes]
 app = ""
