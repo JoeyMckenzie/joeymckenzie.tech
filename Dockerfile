@@ -45,8 +45,8 @@ RUN corepack enable && corepack prepare pnpm@latest-8 --activate; \
 # assets that we generated above
 FROM base
 
-ARG BUID_COMMIT_SHA
-ENV BUID_COMMIT_SHA=$BUID_COMMIT_SHA
+ARG BUILD_COMMIT_SHA
+ENV BUILD_COMMIT_SHA=$BUILD_COMMIT_SHA
 
 # For Inertia.js SSR, copy over the node binary
 # so we can pass off rendering to the SSR process
