@@ -1,5 +1,6 @@
 import { Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
+import defaultTheme from 'tailwindcss/defaultTheme';
 import animate from 'tailwindcss-animate';
 
 const disabledCss = {
@@ -29,6 +30,9 @@ export default {
             },
         },
         extend: {
+            fontFamily: {
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            },
             typography: {
                 DEFAULT: { css: disabledCss },
                 sm: { css: disabledCss },
