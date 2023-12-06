@@ -27,24 +27,47 @@ const socials = [
         icon: 'carbon:identification',
         display: 'Specs',
         external: 'material-symbols:download-sharp',
+        download: true,
     },
 ];
 
 export default function SocialButtons(): React.JSX.Element {
     return (
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-4 py-8 sm:grid-cols-4">
-            {socials.map(({ display, href, icon, external }) => (
-                <Link key={icon} href={href}>
-                    <Button
-                        className="flex w-full flex-row gap-x-2"
-                        variant="outline"
-                    >
-                        <Icon icon={icon} className="h-5 w-5" />
-                        {display}
-                        <Icon icon={external} className="h-5 w-5" />
-                    </Button>
-                </Link>
-            ))}
+            {socials.map(
+                ({ display, href, icon, external, download = false }) => (
+                    <>
+                        {!download && (
+                            <Link key={icon} href={href}>
+                                <Button
+                                    className="flex w-full flex-row gap-x-2"
+                                    variant="outline"
+                                >
+                                    <Icon icon={icon} className="h-5 w-5" />
+                                    {display}
+                                    <Icon icon={external} className="h-5 w-5" />
+                                </Button>
+                            </Link>
+                        )}
+                        {download && (
+                            <a
+                                key={icon}
+                                href={href}
+                                download="JoeyMcKenzie_resume.pdf"
+                            >
+                                <Button
+                                    className="flex w-full flex-row gap-x-2"
+                                    variant="outline"
+                                >
+                                    <Icon icon={icon} className="h-5 w-5" />
+                                    {display}
+                                    <Icon icon={external} className="h-5 w-5" />
+                                </Button>
+                            </a>
+                        )}
+                    </>
+                ),
+            )}
         </div>
     );
 }
