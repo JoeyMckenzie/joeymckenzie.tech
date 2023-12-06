@@ -24,7 +24,7 @@ export default function About(): React.JSX.Element {
                                 .NET microservices running on AWS. I spend most
                                 of time architecting serveless workloads with
                                 the likes of things like Lambda, Docker, SQS,
-                                SNS, and whole lot.
+                                SNS, and the whole lot.
                             </li>
                             <li>
                                 I&apos;m learning PHP and{' '}

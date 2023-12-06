@@ -8,7 +8,9 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/Components/ui/dropdown-menu';
-import { useTheme } from '@/Components/ThemeProvider';
+import { type Theme, useTheme } from '@/Components/ThemeProvider';
+
+const themes: Theme[] = ['light', 'dark', 'system'];
 
 export function ThemeToggle(): React.JSX.Element {
     const { setTheme } = useTheme();
@@ -22,28 +24,21 @@ export function ThemeToggle(): React.JSX.Element {
                     <span className="sr-only">Toggle theme</span>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                    onClick={() => {
-                        setTheme('light');
-                    }}
-                >
-                    Light
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => {
-                        setTheme('dark');
-                    }}
-                >
-                    Dark
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                    onClick={() => {
-                        setTheme('system');
-                    }}
-                >
-                    System
-                </DropdownMenuItem>
+            <DropdownMenuContent
+                align="start"
+                className="flex flex-col items-center"
+            >
+                {themes.map((theme) => (
+                    <DropdownMenuItem
+                        key={theme}
+                        className="flex w-full justify-center"
+                        onClick={() => {
+                            setTheme(theme);
+                        }}
+                    >
+                        {theme.replace(/\b\w/g, (t) => t.toUpperCase())}
+                    </DropdownMenuItem>
+                ))}
             </DropdownMenuContent>
         </DropdownMenu>
     );

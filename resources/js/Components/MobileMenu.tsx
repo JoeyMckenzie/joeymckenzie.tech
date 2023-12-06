@@ -19,7 +19,7 @@ export default function MobileMenu(): React.JSX.Element {
                     <Icon icon="ep:menu" />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-12 text-center">
+            <DropdownMenuContent align="end" className="w-6">
                 {links.map(({ display, name }) => (
                     <DropdownMenuItem
                         className="flex justify-center"
