@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { type Post } from '@/models';
 import { Head, Link } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';

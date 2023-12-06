@@ -25,7 +25,7 @@ const socials = [
     {
         href: 'https://resume.joeymckenzie.tech/JoeyMcKenzie_resume.pdf',
         icon: 'carbon:identification',
-        display: 'Resume',
+        display: 'Specs',
         external: 'material-symbols:download-sharp',
     },
 ];

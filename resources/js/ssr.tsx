@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactDOMServer from 'react-dom/server';
+import * as ReactDOMServer from 'react-dom/server';
 import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';

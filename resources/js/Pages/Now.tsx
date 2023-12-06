@@ -19,19 +19,20 @@ export default function About(): React.JSX.Element {
                         </p>
                         <ul role="list" className="px-8">
                             <li>
-                                I work on financial loan applications
-                                specialized for small-to-medium business.
-                                I&apos;m part of team modernizing systems from
-                                legacy .NET to modern .NET. I spend most of time
-                                architecting serveless workloads on AWS with the
-                                of things like Lambda, SQS, SNS, and whole lot.
+                                I&apos;m part of team modernizing fintech
+                                systems from legacy .NET applications to modern
+                                .NET microservices running on AWS. I spend most
+                                of time architecting serveless workloads with
+                                the likes of things like Lambda, Docker, SQS,
+                                SNS, and whole lot.
                             </li>
                             <li>
                                 I&apos;m learning PHP and{' '}
-                                <a href="https://laravel.com">Laravel</a>. The
-                                website your currently reading is written with
-                                Laravel and React with the help of{' '}
-                                <a href="https://inertiajs.com/">Inertia</a>,
+                                <a href="https://laravel.com">Laravel</a> and
+                                very unexpectedly having an absolute blast doing
+                                so. The website you&apos;re currently reading is
+                                written with Laravel and React with the help of{' '}
+                                <a href="https://inertiajs.com/">Inertia</a>{' '}
                                 served from an image on{' '}
                                 <a href="hhtps://fly.io/">Fly.io</a> and backed
                                 by a MySQL database hosted on{' '}
