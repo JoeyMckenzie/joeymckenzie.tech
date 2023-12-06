@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Button } from '@/Components/ui/button';
-import { Link } from '@inertiajs/react';
 import { ThemeToggle } from '@/Components/ThemeToggle';
+import DesktopMenu from '@/Components/DesktopMenu';
+import MobileMenu from '@/Components/MobileMenu';
 
 type NavLinkProps = {
     name: string;
     display: string;
 };
 
-const links: NavLinkProps[] = [
+export const links: NavLinkProps[] = [
     {
         display: 'Home',
         name: 'home',
@@ -16,6 +16,10 @@ const links: NavLinkProps[] = [
     {
         display: 'About',
         name: 'about',
+    },
+    {
+        display: 'Now',
+        name: 'now',
     },
     {
         display: 'Blog',
@@ -27,15 +31,12 @@ export function Navbar(): React.JSX.Element {
     return (
         <header>
             <nav className="flex flex-row items-center justify-center gap-x-2 px-6 py-8">
-                {links.map(({ display, name }) => (
-                    <Link
-                        v-for="{ display, name } of links"
-                        key={name}
-                        href={route(name)}
-                    >
-                        <Button variant="outline">{display}</Button>
-                    </Link>
-                ))}
+                <span className="hidden sm:block">
+                    <DesktopMenu />
+                </span>
+                <span className="block sm:hidden">
+                    <MobileMenu />
+                </span>
                 <ThemeToggle />
             </nav>
         </header>
