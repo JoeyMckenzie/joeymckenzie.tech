@@ -17,5 +17,10 @@
     "plugins": ["react"],
     "rules": {
         "@typescript-eslint/consistent-type-definitions": ["error", "type"]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }
