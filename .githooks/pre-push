@@ -1,3 +1,4 @@
 #!/bin/bash
 
 pnpm run lint
+composer run lint && composer run types
