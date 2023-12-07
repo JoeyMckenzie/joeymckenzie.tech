@@ -91,7 +91,7 @@ class SyncContent implements ShouldQueue
         $parsedContent = $frontMatterParser->parse($contents);
         $frontMatter = $parsedContent->getFrontMatter();
         $markdown = $parsedContent->getContent();
-        $html = $converter->convert($markdown);
+        $html = $converter->convert($markdown)->getContent();
 
         Log::info('frontmatter and content parsed, retrieving view count from neon');
 
