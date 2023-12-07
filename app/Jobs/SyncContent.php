@@ -42,6 +42,8 @@ class SyncContent implements ShouldQueue
 
         // Set the current sync record using the current commit
         ContentSync::create(['commit' => $this->commit])->save();
+
+        $this->release();
     }
 
     /**

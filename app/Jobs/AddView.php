@@ -31,5 +31,7 @@ class AddView implements ShouldQueue
             ?->update([
                 'views' => $this->currentViews + 1,
             ]);
+
+        $this->release();
     }
 }
