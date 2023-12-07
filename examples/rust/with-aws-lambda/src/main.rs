@@ -32,7 +32,7 @@ async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
         }
     };
 
-    // Fineally, determine the response based on the authored quote we generated
+    // Finally, determine the response based on the authored quote we generated
     // If we successfully generated a quote, wrap it up in a nice JSON response
     // In the case an author was passed in via query param but no quote was found,
     // return an error response in JSON format with the help of serde_json's `json!()` macro

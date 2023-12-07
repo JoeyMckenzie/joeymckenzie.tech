@@ -2,7 +2,7 @@
 title: 'Rust, AWS Lambda, and too many Office quotes'
 description: 'Identity theft is not joke, Jim!'
 pubDate: 'Nov 2 2023'
-heroImage: '/images/rust-aws-lambda-office-quotes/meme.jpg'
+heroImage: '/images/rust-aws-lambda-office-quotes/meme.jpeg'
 category: 'aws'
 keywords:
     - rust
@@ -12,7 +12,7 @@ keywords:
 
 Back from a hard fought battle against writer's block, I've been looking for a way to convince my boss to let me use
 Rust at work.
-Most of our infrastructure is on AWS (:surprised-pikachu-face:) and I've been writing a lot of new system features
+Most of our infrastructure is on AWS (_surprised pikachu face_) and I've been writing a lot of new system features
 designed
 to run serverlessly with things like Lambda, Step Functions, SQS, SNS, and all the other band members we know and love.
 We're a .NET shop, so moving to Rust wouldn't exactly be an overnight transition, nor would I want to force my zealotry
@@ -43,14 +43,14 @@ time. If you're following along, it'll help to have the following installed:
 
 -   Cargo and cargo lambda installed (a quick `cargo install cargo-lambda` should do the trick)
 -   Terraform CLI
--   An AWS account (I'm still on the free tier, luckily)
+-   An AWS account (I'm still on the free tier, for now...)
 
 We'll touch the surface of a few things here, but won't be going into depth necessarily on any one topic. There's people
 a lot smarter than myself that are ackshually qualified to talk about Rust, AWS, and Terraform.
 
 ## Getting started
 
-First thing's first, we're gonna need some rust code to deploy. Let's spin up a new project with cargo lambda:
+First thing's first, we're gonna need some Rust code to deploy. Let's spin up a new project with cargo lambda:
 
 ```shell
 $ cargo lambda new office-quotes
@@ -60,7 +60,7 @@ $ cargo lambda new office-quotes
 We're prompted about the compute context of our Rust-based Lambda, which in our case, will be from an API Gateway
 request. Lambdas are compute services that can be triggered from any number of things in AWS like events from SNS. I
 plan to eventually display some random Office quotes for anyone visiting my website, so I'll make it available over the
-network for my Svelte frontend to call.
+network for my website to utilize.
 
 Cracking open our `main.rs` file, we'll see a pretty bare bones scaffolded Rust application:
 
@@ -303,7 +303,9 @@ find a quote by that author from the JSON we parsed. If no author sent, generate
 JSON the API gateway based on the result of the request, falling back
 to an error if an author was provided but no quote was found. I've sprinkled in some `.context()?` utilities to help us
 early return from unexpected errors with the help of `anyhow`. In a more robust application, we'd probably want to do
-some more fine-grained error handling.
+some more fine-grained error handling. Cargo lambda conveniently bundles the `tracing` crate into our functions, so
+we're
+able to spit out some logs as well that will feed into a CloudWatch log group.
 
 Now that we've got our function in place, let's test it out. `cargo lambda` has some sweet utilities to help us out,
 including a `watch` command:
@@ -357,15 +359,16 @@ With our deployment approach, we'll do something akin to the following:
 -   Package up the output into a zip file to store in S3
 -   Upload the zip file into a bucket
 -   Setup an Lambda function using the zip file as the source executable
--   Setup an API Gateway instance that proxies request through to our Lambda function
+-   Setup an API Gateway instance that proxies requests through to our Lambda function
 
 Now doing all that stuff manually is not _too_ tedious, but I've been writing a lot Terraform lately and thought it
 would fun to Terraform-erize this process. If you're not familiar with Terraform, it's
 a [Hashicorp](https://www.hashicorp.com/) product with the goal of making provisioned infrastructure easier to main
-through infrastructure as code, or IaC. Terraform using a configuration language called Hashicorp Configuration
+through infrastructure as code, or IaC. Terraform uses a configuration language called Hashicorp Configuration
 Language, or HCL, to define the who/what/when/where/why/how of our AWS infrastructure.
 
-I like to think of Terraform as a recipe for what our AWS infrastructure, while also having the ability to plan and
+I like to think of Terraform as a recipe for what our AWS infrastructure should look like, while also having the ability
+to plan and
 apply those infrastructure changes for us, saving us an uncountable amount of mouse clicks navigating through the AWS
 console.
 
@@ -626,4 +629,127 @@ $ curl -l "https://dbyhxt543e.execute-api.us-west-1.amazonaws.com/prod/quotes" |
 ```
 
 Success! Rust, running on Lambda, publicly available through an API Gateway. This is great and all, but we need a way
-to reliably rebuild our infrastructure and apply changes.
+to reliably rebuild our infrastructure and apply changes. I'm going to define a `justfile`
+using [just](https://github.com/casey/just)
+at the root of our project directory as I'm not smart enough to use `make`.
+
+#### justfile
+
+```shell
+alias b := build
+
+default: dev
+
+# build main
+build:
+    cargo lambda build --release && cp ./quotes.json ./target/lambda/office-quotes
+
+# build main
+build-deploy: build
+    just terraform/reapply
+
+# run the dev server
+dev:
+    cargo watch -x run
+
+# lint rust files
+clippy:
+    cargo clippy
+
+# check rust files format
+check:
+    cargo fmt -v --check
+
+# format rust files
+format:
+    cargo fmt -v
+
+# run code quality tools
+ci: check clippy
+```
+
+`just` is _just_ a convenient command runner, useful for aggregating things you'll run constantly in the terminal into a
+single source command. Instead of having to swap between `terraform` and `cargo` commands, `just` will allow me define a
+few
+common commands to run so I can use things like `just build` or `just deploy` instead. I'm also going to define
+another `justfile`
+within our `terraform` directory that will house all of the `terraform` commands we'll need to run:
+
+#### terraform/justfile
+
+```shell
+default: plan
+
+# run the plan
+plan:
+    terraform plan
+
+# apply the plan
+apply:
+    terraform apply -auto-approve && sed -i '' "s|^QUOTES_BASE_URL=.*|QUOTES_BASE_URL=$(terraform output -raw base_url)|" ../../../../.env
+
+# destroy the plan
+destroy:
+    terraform destroy -auto-approve
+
+# re-apply the plan
+reapply: destroy apply
+
+# format files
+fmt:
+    terraform fmt
+```
+
+One could argue it's may not be the most fruitful idea to `-auto-approve` TF commands as it's essentially a force
+command,
+and we'd be better served running these things in CI through something like Terraform Cloud. I'm a one band on the AWS
+free tier,
+though, so I'll cut a few corners.
+
+Back in our root project directory, I can now run things like `just terraform/destory` or `just terraform/apply` without
+needing
+to swap directories to run the different commands from the different `justfile`s. Let's verify our infrastructure is
+re-creatable,
+as that's where the true power of Terraform shines (in my opinion). Reliably re-creatable infrastructure empowers us to
+move
+fast, especially when building in a multi-stage development environment.
+
+```shell
+$ just build-deploy
+cargo lambda build --release && cp ./quotes.json ./target/lambda/office-quotes
+    Finished release [optimized] target(s) in 0.12s
+just terraform/reapply
+terraform destroy -auto-approve
+// ...and a bunch of other TF output
+```
+
+With our single `build-deploy` command, we'll:
+
+-   Compile our Rust code
+-   Build the expected output we need to zip and deploy to S3
+-   Copy over our JSON file for our Rust code to read from
+-   Destroy/recreate all of the required AWS infrastructure
+-   Deploy our zip file to the S3 bucket for our Lambda to use
+
+Again, we'll see more output for the `base_url` and `lambda_bucket_name`, though with different IDs and names this time.
+I won't necessarily verify everything in AWS console, but we now have:
+
+-   A Lambda function that runs our zipped up Rust code from an S3 bucket
+-   An API Gateway instance that forwards requests to that Lambda
+-   CloudWatch log groups for both our API Gateway instance and our Lambda function
+
+As a sanity check, let's make sure all the pipes are still hooked up by sending through another request to our gateway:
+
+```shell
+$ curl -l "https://jcojq5szvk.execute-api.us-west-1.amazonaws.com/prod?author=michael" | jq .
+{
+    "author": "Michael Scott",
+    "quote": "I'm not superstitious...but I'm a little stitious."
+}
+```
+
+Ez-pz, as the kids say! And with that, we've got Rust runing on Lambda in AWS. The future of serverless Rust is looking
+bright! You can find all the source code for this example on my website examples
+in [GitHub](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/main/examples/rust/with-aws-lambda).
+
+Until next time, friends!
