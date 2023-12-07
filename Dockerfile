@@ -27,7 +27,7 @@ RUN composer install --optimize-autoloader --no-dev \
 
 # Sync content and build the sitemap
 RUN php artisan app:sync-content \
-    php artisan app:generate-sitemap;
+    && php artisan app:generate-sitemap;
 
 # Multi-stage build: Build static assets
 # This allows us to not include Node within the final container
