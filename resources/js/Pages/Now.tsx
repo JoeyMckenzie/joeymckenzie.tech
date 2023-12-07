@@ -43,6 +43,19 @@ export default function About(): React.JSX.Element {
                                 eventually...
                             </li>
                             <li>
+                                In the name of learning of PHP, I&apos;m also
+                                working on a{' '}
+                                <a href="https://packagist.org/packages/bubblehearth/bubblehearth">
+                                    Composer package
+                                </a>{' '}
+                                that wraps the{' '}
+                                <a href="https://develop.battle.net/">
+                                    Blizzard Game Data APIs
+                                </a>{' '}
+                                with an easy-to-use and (hopefully) elegant PHP
+                                library.
+                            </li>
+                            <li>
                                 I&apos;m doing{' '}
                                 <a href="https://adventofcode.com/">
                                     Advent of Code
