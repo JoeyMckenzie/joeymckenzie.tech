@@ -37,7 +37,10 @@ final class SyncViews extends Command
 
         foreach ($files as $file) {
             $fileInfo = pathinfo($file);
-            $fileSlug = basename($file, '.'.$fileInfo['extension']);
+            $extension = empty($fileInfo['extension'])
+                ? ''
+                : '.'.$fileInfo['extension'];
+            $fileSlug = basename($file, $extension);
             $views = $viewCounts->firstOrFail(fn (mixed $viewCount) => $viewCount->slug === $fileSlug)->view_count;
 
             BlogPost::firstWhere('slug', $fileSlug)
@@ -47,6 +50,9 @@ final class SyncViews extends Command
         }
     }
 
+    /**
+     * @return string[]
+     */
     private function getMarkdownFilePaths(): array
     {
         $basePath = base_path();

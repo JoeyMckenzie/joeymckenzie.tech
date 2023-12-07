@@ -72,7 +72,10 @@ final class SyncContent extends Command
         /** @var string $contents */
         $contents = file_get_contents($filePath);
         $fileInfo = pathinfo($filePath);
-        $fileSlug = basename($filePath, '.'.$fileInfo['extension']);
+        $extension = empty($fileInfo['extension'])
+            ? ''
+            : '.'.$fileInfo['extension'];
+        $fileSlug = basename($filePath, $extension);
 
         Log::info("file parsed, determined slug as $fileSlug");
 
