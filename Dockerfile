@@ -25,10 +25,6 @@ RUN composer install --optimize-autoloader --no-dev \
     && cp .fly/entrypoint.sh /entrypoint \
     && chmod +x /entrypoint
 
-# Sync content and build the sitemap
-RUN php artisan app:sync-content \
-    && php artisan app:generate-sitemap;
-
 # Multi-stage build: Build static assets
 # This allows us to not include Node within the final container
 FROM node:${NODE_VERSION} as node_modules_go_brrr
