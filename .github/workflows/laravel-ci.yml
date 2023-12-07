@@ -9,19 +9,14 @@ jobs:
         steps:
             - uses: actions/checkout@v3
 
-            - name: Setup pnpm
-              uses: pnpm/action-setup@v2
+            - name: Setup PHP
+              id: setup-php
+              uses: shivammathur/setup-php@v2
               with:
-                  version: latest
+                  php-version: '8.3'
 
-            - name: Setup node
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 18.x
-                  cache: 'pnpm'
+            - name: Install composer dependencies
+              run: composer install
 
-            - name: Install dependencies
-              run: pnpm install
-
-            - name: Build and lint
-              run: pnpm run ci
+            - name: Lint and test
+              run: composer run ci
