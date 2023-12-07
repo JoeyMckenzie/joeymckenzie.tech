@@ -28,9 +28,16 @@ class GenerateSitemap extends Command
      */
     public function handle(): void
     {
+
         /** @var string $url */
         $url = config('app.url');
         $publicPath = public_path();
+        $outputFile = "$publicPath/sitemap-index.xml";
+
+        if (file_exists($outputFile)) {
+            return;
+        }
+
         $slugs = BlogPost::select(['slug', 'updated_at'])->get();
 
         $siteMap = SitemapGenerator::create($url)->getSitemap();
@@ -52,6 +59,6 @@ class GenerateSitemap extends Command
             ->add(Url::create('/now')
                 ->setPriority(0.5)
                 ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY))
-            ->writeToFile("$publicPath/sitemap-index.xml");
+            ->writeToFile($outputFile);
     }
 }

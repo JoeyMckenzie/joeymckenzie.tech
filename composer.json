@@ -67,11 +67,12 @@
             "@php artisan key:generate --ansi"
         ],
         "prepare": "git config core.hookspath .githooks",
-        "lint": "vendor/bin/phpstan analyse .",
+        "lint": "vendor/bin/phpstan analyse app",
         "test": "./vendor/bin/pest",
         "test:watch": "./vendor/bin/pest --watch",
         "fmt": "./vendor/bin/pint",
-        "types": "./vendor/bin/pest --type-coverage --min=100"
+        "types": "./vendor/bin/pest --type-coverage --min=100",
+        "ci": "composer run lint && composer run test && composer run types"
     },
     "extra": {
         "laravel": {
