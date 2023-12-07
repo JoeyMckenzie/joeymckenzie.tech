@@ -25,31 +25,6 @@ RUN composer install --optimize-autoloader --no-dev \
     && cp .fly/entrypoint.sh /entrypoint \
     && chmod +x /entrypoint
 
-ARG DB_CONNECTION
-ENV DB_CONNECTION=$DB_CONNECTION
-
-ARG DB_HOST
-ENV DB_HOST=$DB_HOST
-
-ARG DB_PORT
-ENV DB_PORT=$DB_PORT
-
-ARG DB_DATABASE
-ENV DB_DATABASE=$DB_DATABASE
-
-ARG DB_USERNAME
-ENV DB_USERNAME=$DB_USERNAME
-
-ARG DB_PASSWORD
-ENV DB_PASSWORD=$DB_PASSWORD
-
-ARG BUILD_COMMIT_SHA
-ENV MYSQL_ATTR_SSL_CA=$MYSQL_ATTR_SSL_CA
-
-# Sync content and build the sitemap
-RUN php artisan app:sync-content \
-    && php artisan app:generate-sitemap;
-
 # Multi-stage build: Build static assets
 # This allows us to not include Node within the final container
 FROM node:${NODE_VERSION} as node_modules_go_brrr

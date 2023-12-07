@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\BlogPost;
 use App\Models\ContentMeta;
+use App\Models\ContentSync;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use League\CommonMark\ConverterInterface;
@@ -33,10 +34,28 @@ final class SyncContent extends Command
      */
     public function handle(ConverterInterface $converter): void
     {
+        /** @var string $commit */
+        $commit = config('app.commit');
+        $currentSync = ContentSync::firstWhere('commit', $commit);
+
+        // In the case we've already synced, bail out of the process
+        // Helpful for Fly deployments where containers are constantly
+        // being brought down/restarted
+        if (! is_null($currentSync)) {
+            Log::info("Content sync has already been done for $commit, bypassing");
+
+            return;
+        }
+
         $files = self::getMarkdownFilePaths();
         collect($files)
             ->map(fn (string $filePath) => self::getParsedContent($filePath, $converter))
             ->each(fn (ContentMeta $contentMeta) => self::intoBlogPost($contentMeta));
+
+        Log::info("Setting content sync for commit $commit");
+
+        // Set the current sync record using the current commit
+        ContentSync::create(['commit' => $commit])->save();
     }
 
     /**
