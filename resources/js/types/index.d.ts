@@ -1,10 +1,3 @@
-export type User = {
-    id: number;
-    name: string;
-    email: string;
-    email_verified_at: string;
-};
-
 export type NowPlaying = {
     nowPlaying: boolean;
     albumImageSrc?: string;
@@ -20,7 +13,4 @@ export type PageProps<
     laravelVersion: string;
     phpVersion: string;
     spotify?: NowPlaying;
-    auth: {
-        user: User;
-    };
 };

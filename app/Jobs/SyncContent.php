@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Jobs;
 
 use App\Models\BlogPost;
 use App\Models\ContentMeta;
 use App\Models\ContentSync;
-use Illuminate\Console\Command;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use League\CommonMark\ConverterInterface;
 use League\CommonMark\Exception\CommonMarkException;
@@ -13,49 +17,31 @@ use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
 use League\Config\Exception\ConfigurationExceptionInterface;
 
-final class SyncContent extends Command
+class SyncContent implements ShouldQueue
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:sync-content';
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * The console command description.
-     *
-     * @var string
+     * Create a new job instance.
      */
-    protected $description = 'Syncs content from markdown files into the database.';
+    public function __construct(public string $commit)
+    {
+    }
 
     /**
-     * Execute the console command.
+     * Execute the job.
      */
     public function handle(ConverterInterface $converter): void
     {
-        /** @var string $commit */
-        $commit = config('app.commit');
-        $currentSync = ContentSync::firstWhere('commit', $commit);
-
-        // In the case we've already synced, bail out of the process
-        // Helpful for Fly deployments where containers are constantly
-        // being brought down/restarted
-        if (! is_null($currentSync)) {
-            Log::info("Content sync has already been done for $commit, bypassing");
-
-            return;
-        }
-
         $files = self::getMarkdownFilePaths();
         collect($files)
             ->map(fn (string $filePath) => self::getParsedContent($filePath, $converter))
             ->each(fn (ContentMeta $contentMeta) => self::intoBlogPost($contentMeta));
 
-        Log::info("Setting content sync for commit $commit");
+        Log::info("Setting content sync for commit $this->commit");
 
         // Set the current sync record using the current commit
-        ContentSync::create(['commit' => $commit])->save();
+        ContentSync::create(['commit' => $this->commit])->save();
     }
 
     /**
