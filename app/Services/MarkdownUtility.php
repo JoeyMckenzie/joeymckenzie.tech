@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Contracts\ContentUtilitiesContract;
+use App\Contracts\ContentUtilityContract;
 use App\Models\BlogPost;
 use App\Models\ContentMeta;
 use Illuminate\Support\Facades\Log;
@@ -11,7 +11,7 @@ use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
 use Override;
 
-final readonly class MarkdownUtilities implements ContentUtilitiesContract
+final readonly class MarkdownUtility implements ContentUtilityContract
 {
     private ConverterInterface $converter;
 

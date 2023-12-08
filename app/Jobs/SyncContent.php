@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use App\Contracts\ContentUtilitiesContract;
+use App\Contracts\ContentUtilityContract;
 use App\Models\ContentMeta;
 use App\Models\ContentSync;
 use Illuminate\Bus\Queueable;
@@ -28,7 +28,7 @@ class SyncContent implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(ContentUtilitiesContract $contentUtility): void
+    public function handle(ContentUtilityContract $contentUtility): void
     {
         $files = $contentUtility->getMarkdownFilePaths();
         collect($files)

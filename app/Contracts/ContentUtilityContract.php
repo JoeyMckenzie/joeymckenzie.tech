@@ -7,7 +7,7 @@ use App\Models\ContentMeta;
 use League\CommonMark\Exception\CommonMarkException;
 use League\Config\Exception\ConfigurationExceptionInterface;
 
-interface ContentUtilitiesContract
+interface ContentUtilityContract
 {
     /**
      * @return string[]

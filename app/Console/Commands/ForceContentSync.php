@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Contracts\ContentUtilitiesContract;
+use App\Contracts\ContentUtilityContract;
 use App\Models\ContentMeta;
 use Illuminate\Console\Command;
 
@@ -25,7 +25,7 @@ final class ForceContentSync extends Command
     /**
      * Execute the console command.
      */
-    public function handle(ContentUtilitiesContract $contentUtility): void
+    public function handle(ContentUtilityContract $contentUtility): void
     {
         $files = $contentUtility->getMarkdownFilePaths();
         collect($files)
