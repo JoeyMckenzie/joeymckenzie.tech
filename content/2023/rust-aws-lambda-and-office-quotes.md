@@ -748,7 +748,7 @@ $ curl -l "https://jcojq5szvk.execute-api.us-west-1.amazonaws.com/prod?author=mi
 }
 ```
 
-Ez-pz, as the kids say! And with that, we've got Rust runing on Lambda in AWS. The future of serverless Rust is looking
+Ez-pz, as the kids say! And with that, we've got Rust running on Lambda in AWS. The future of serverless Rust is looking
 bright! You can find all the source code for this example on my website examples
 in [GitHub](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/main/examples/rust/with-aws-lambda).
 

@@ -7,11 +7,7 @@ export default function DesktopMenu(): React.JSX.Element {
     return (
         <div className="space-x-2">
             {links.map(({ display, name }) => (
-                <Link
-                    v-for="{ display, name } of links"
-                    key={name}
-                    href={route(name)}
-                >
+                <Link key={name} href={route(name)}>
                     <Button variant="outline">{display}</Button>
                 </Link>
             ))}

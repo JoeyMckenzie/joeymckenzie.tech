@@ -6,7 +6,9 @@ namespace App\Services;
 
 use App\Contracts\ContentRepositoryContract;
 use App\Models\BlogPost;
+use DateInterval;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Cache;
 use Override;
 
 final readonly class BlogPostRepository implements ContentRepositoryContract
@@ -14,10 +16,15 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
     #[Override]
     public function getBlogPostMetadata(): Collection
     {
-        /**
-         * @return Collection<int, BlogPost>
-         */
-        return BlogPost::select([
+        if (Cache::has('allPosts')) {
+            /** @var Collection<int, BlogPost> $allPosts */
+            $allPosts = Cache::get('allPosts');
+
+            return $allPosts;
+        }
+
+        /** @var Collection<int, BlogPost> $posts */
+        $posts = BlogPost::select([
             'slug',
             'published_date',
             'category',
@@ -27,11 +34,16 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
         ])
             ->orderByDesc('published_date')
             ->get();
+
+        Cache::set('allPosts', $posts, new DateInterval('PT5M'));
+
+        return $posts;
     }
 
     #[Override]
     public function getBlogPostBySlug(string $slug): BlogPost
     {
+        // We won't cache the blogs, easier to let the view counts ride
         $post = BlogPost::select([
             'id',
             'slug',
@@ -60,10 +72,15 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
     #[Override]
     public function getLatestBlogPostMetadata(): Collection
     {
-        /**
-         * @return Collection<int, BlogPost>
-         */
-        return BlogPost::select([
+        if (Cache::has('latestPosts')) {
+            /** @var Collection<int, BlogPost> $cachedPosts */
+            $cachedPosts = Cache::get('latestPosts');
+
+            return $cachedPosts;
+        }
+
+        /** @var Collection<int, BlogPost> $posts */
+        $posts = BlogPost::select([
             'slug',
             'published_date',
             'category',
@@ -74,5 +91,9 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
             ->orderByDesc('published_date')
             ->limit(3)
             ->get();
+
+        Cache::set('latestPosts', $posts, new DateInterval('PT5M'));
+
+        return $posts;
     }
 }

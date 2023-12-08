@@ -24,11 +24,10 @@ export function ThemeToggle(): React.JSX.Element {
                     <span className="sr-only">Toggle theme</span>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="flex flex-col items-center">
+            <DropdownMenuContent align="end">
                 {themes.map((theme) => (
                     <DropdownMenuItem
                         key={theme}
-                        className="flex w-full justify-center"
                         onClick={() => {
                             setTheme(theme);
                         }}
