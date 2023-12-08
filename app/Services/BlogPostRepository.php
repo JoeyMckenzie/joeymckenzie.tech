@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\ContentRepositoryContract;
-use App\Jobs\AddView;
 use App\Models\BlogPost;
 use Illuminate\Database\Eloquent\Collection;
 use Override;
@@ -34,6 +33,7 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
     public function getBlogPostBySlug(string $slug): BlogPost
     {
         $post = BlogPost::select([
+            'id',
             'slug',
             'keywords',
             'hero_image',
@@ -44,12 +44,15 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
             'parsed_content',
         ])->firstWhere('slug', $slug);
 
-        if (! $post?->exists()) {
+        if (is_null($post)) {
             abort(404);
         }
 
-        // While we're add it, add a view count
-        AddView::dispatch($post->slug, $post->views);
+        // While we're at it, add a view count
+        // AddView::dispatch($post);
+
+        $post->views += 1;
+        $post->save();
 
         return $post;
     }

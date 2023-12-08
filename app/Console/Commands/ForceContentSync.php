@@ -1,16 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Jobs;
+namespace App\Console\Commands;
 
 use App\Models\BlogPost;
 use App\Models\ContentMeta;
-use App\Models\ContentSync;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use League\CommonMark\ConverterInterface;
 use League\CommonMark\Exception\CommonMarkException;
@@ -18,19 +12,24 @@ use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
 use League\Config\Exception\ConfigurationExceptionInterface;
 
-class SyncContent implements ShouldQueue
+final class ForceContentSync extends Command
 {
-    use Dispatchable, InteractsWithQueue, Queueable;
-
     /**
-     * Create a new job instance.
+     * The name and signature of the console command.
+     *
+     * @var string
      */
-    public function __construct(public string $commit)
-    {
-    }
+    protected $signature = 'app:force-content-sync';
 
     /**
-     * Execute the job.
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Syncs content from markdown files into the database.';
+
+    /**
+     * Execute the console command.
      */
     public function handle(ConverterInterface $converter): void
     {
@@ -38,11 +37,6 @@ class SyncContent implements ShouldQueue
         collect($files)
             ->map(fn (string $filePath) => self::getParsedContent($filePath, $converter))
             ->each(fn (ContentMeta $contentMeta) => self::intoBlogPost($contentMeta));
-
-        Log::info("Setting content sync for commit $this->commit");
-
-        // Set the current sync record using the current commit
-        ContentSync::create(['commit' => $this->commit])->save();
     }
 
     /**

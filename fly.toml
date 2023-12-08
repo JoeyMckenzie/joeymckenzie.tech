@@ -24,7 +24,7 @@ SSR_URL = "ssr.process.joey-mckenzie-tech.internal:13714"
 [processes]
 app = ""
 ssr = "php /var/www/html/artisan inertia:start-ssr"
-worker = "php /var/www/html/artisan queue:work --tries=3"
+# worker = "php /var/www/html/artisan queue:work --tries=3"
 
 [http_service]
 internal_port = 8080
@@ -38,4 +38,4 @@ processes = ["app"]
 cpu_kind = "shared"
 cpus = 1
 memory_mb = 1024
-processes = ["ssr", "app", "worker"]
+processes = ["ssr", "app"]
