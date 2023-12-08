@@ -36,6 +36,7 @@
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
         "pestphp/pest-plugin-type-coverage": "^2.5",
+        "pestphp/pest-plugin-watch": "^2.0",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
