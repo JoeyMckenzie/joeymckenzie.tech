@@ -20,5 +20,5 @@ interface ContentUtilityContract
      */
     public function getParsedContent(string $filePath): ContentMeta;
 
-    public function intoBlogPost(ContentMeta $contentMeta): BlogPost;
+    public function upsertBlogPost(ContentMeta $contentMeta): BlogPost;
 }

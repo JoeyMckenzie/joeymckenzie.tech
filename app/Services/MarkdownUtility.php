@@ -67,7 +67,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
     }
 
     #[Override]
-    public function intoBlogPost(ContentMeta $contentMeta): BlogPost
+    public function upsertBlogPost(ContentMeta $contentMeta): BlogPost
     {
         $contentSlug = $contentMeta->slug;
 
