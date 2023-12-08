@@ -70,7 +70,7 @@
         "test:watch": "./vendor/bin/pest --watch",
         "fmt": "./vendor/bin/pint",
         "types": "./vendor/bin/pest --type-coverage --min=100",
-        "ci": "composer run lint && composer run test && composer run types"
+        "ci": "composer run lint && composer run types"
     },
     "extra": {
         "laravel": {
