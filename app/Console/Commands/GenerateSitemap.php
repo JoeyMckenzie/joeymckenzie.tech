@@ -29,7 +29,6 @@ class GenerateSitemap extends Command
      */
     public function handle(): void
     {
-
         /** @var string $url */
         $url = config('app.url');
         $publicPath = public_path();

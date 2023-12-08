@@ -35,7 +35,7 @@ final class CheckForContentSync extends Command
         // In the case we've already synced, bail out of the process
         // Helpful for Fly deployments where containers are constantly
         // being brought down/restarted
-        if ($currentSync?->exists) {
+        if (! is_null($currentSync)) {
             Log::info("Content sync has already been done for $commit, bypassing");
         } else {
             Log::info("Content has not been synced, dispatching sync event for $commit");
