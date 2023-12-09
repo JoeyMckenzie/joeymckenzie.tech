@@ -4,6 +4,7 @@ import { Head } from '@inertiajs/react';
 import BlogPreviews from '@/Components/BlogPreviews';
 import { type FrontMatter } from '@/models';
 import SocialButtons from '@/Components/SocialButtons';
+import Notes from '@/Components/Notes';
 
 export default function Home({
     frontMatters,
@@ -47,6 +48,7 @@ export default function Home({
                         Latest thoughts.
                     </h2>
                     <BlogPreviews frontMatters={frontMatters} />
+                    <Notes />
                 </>
             </MainLayout>
         </>

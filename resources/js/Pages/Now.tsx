@@ -20,11 +20,21 @@ export default function About(): React.JSX.Element {
                         <ul role="list" className="px-8">
                             <li>
                                 I&apos;m part of team modernizing fintech
-                                systems from legacy .NET applications to modern
-                                .NET microservices running on AWS. I spend most
-                                of time architecting serveless workloads with
-                                the likes of things like Lambda, Docker, SQS,
-                                SNS, and the whole lot.
+                                systems from legacy{' '}
+                                <a href="https://dotnet.microsoft.com/en-us/">
+                                    .NET
+                                </a>{' '}
+                                microservices running on{' '}
+                                <a href="https://docs.aws.amazon.com/">AWS</a>.
+                                I spend most of time architecting serverless
+                                workloads with the likes of things like{' '}
+                                <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-rust.html">
+                                    Lambda
+                                </a>
+                                , <a href="https://www.docker.com/">Docker</a>,{' '}
+                                <a href="https://aws.amazon.com/sqs/">SQS</a>,{' '}
+                                <a href="https://aws.amazon.com/sns/">SNS</a>,
+                                and the whole lot.
                             </li>
                             <li>
                                 I&apos;m learning PHP and{' '}
