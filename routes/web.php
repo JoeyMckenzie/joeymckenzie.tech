@@ -23,6 +23,7 @@ Route::get('', fn (ContentRepositoryContract $contentRepository) => Inertia::ren
     ),
     'notes' => array_values(
         Note::select(['title', 'description'])
+            ->where('show', true)
             ->orderByDesc('created_at')
             ->limit(3)
             ->get()

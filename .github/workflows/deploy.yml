@@ -1,4 +1,4 @@
-name: Trigger Forge deploy
+name: Deploy to Forge
 
 on:
     workflow_run:

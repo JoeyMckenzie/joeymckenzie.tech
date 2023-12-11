@@ -19,9 +19,13 @@ function NoteDisplay({
     );
 }
 
-export default function Notes({ notes }: { notes: Note[] }): React.JSX.Element {
+export default function NotesToSelf({
+    notes,
+}: {
+    notes: Note[];
+}): React.JSX.Element {
     return (
-        <div className="pb-16">
+        <div className="pb-4 sm:pb-16">
             <h2 className="pb-4 pt-8 text-left text-4xl font-bold tracking-tight sm:text-center">
                 Note to self.
             </h2>
