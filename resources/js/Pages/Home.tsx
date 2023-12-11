@@ -1,16 +1,20 @@
 import * as React from 'react';
 import MainLayout from '@/Layouts/MainLayout';
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import BlogPreviews from '@/Components/BlogPreviews';
 import { type FrontMatter } from '@/models';
 import SocialButtons from '@/Components/SocialButtons';
 import Notes from '@/Components/Notes';
+import { type Note } from '@/types';
 
 export default function Home({
     frontMatters,
 }: {
     frontMatters: FrontMatter[];
 }): React.JSX.Element {
+    const page = usePage();
+    const notes = (page.props.notes as Note[]) ?? ([] as Note[]);
+
     return (
         <>
             <Head>
@@ -48,7 +52,7 @@ export default function Home({
                         Latest thoughts.
                     </h2>
                     <BlogPreviews frontMatters={frontMatters} />
-                    <Notes />
+                    <Notes notes={notes} />
                 </>
             </MainLayout>
         </>

@@ -192,5 +192,5 @@ return [
     |--------------------------------------------------------------------------
     */
 
-    'commit' => env('BUILD_COMMIT_SHA', ''),
+    'commit' => env('FORGE_DEPLOY_COMMIT', ''),
 ];

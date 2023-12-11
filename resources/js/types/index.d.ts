@@ -6,6 +6,11 @@ export type NowPlaying = {
     trackTitle?: string;
 };
 
+export type Note = {
+    title: string;
+    description: string;
+};
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
@@ -13,4 +18,5 @@ export type PageProps<
     laravelVersion: string;
     phpVersion: string;
     spotify?: NowPlaying;
+    notes: Note[];
 };
