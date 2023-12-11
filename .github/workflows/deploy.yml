@@ -15,5 +15,25 @@ jobs:
         steps:
             - uses: actions/checkout@v3
 
+            - name: Setup PHP
+              id: setup-php
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
+
+            - name: Install Forge CLI
+              run: composer global require laravel/forge-cli
+
+            - name: Authenticate with Forge
+              run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
+
+            - name: Download current configuration
+              run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
+
+            - name: Add current commit
+              run: |
+                  echo FORGE_DEPLOY_COMMIT=${{ github.sha }} > ${{ github.workspace }}/.env
+                  forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
+
             - name: Ping deploy URL
               run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
