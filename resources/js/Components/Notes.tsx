@@ -19,7 +19,7 @@ const notes = [
 
 export default function Notes(): React.JSX.Element {
     return (
-        <>
+        <div className="pb-16">
             <h2 className="pb-4 pt-8 text-left text-4xl font-bold tracking-tight sm:text-center">
                 Note to self.
             </h2>
@@ -32,6 +32,6 @@ export default function Notes(): React.JSX.Element {
                     </Alert>
                 ))}
             </div>
-        </>
+        </div>
     );
 }
