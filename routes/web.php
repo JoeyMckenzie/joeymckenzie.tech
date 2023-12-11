@@ -1,6 +1,7 @@
 <?php
 
 use App\Contracts\ContentRepositoryContract;
+use App\Models\Note;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,6 +19,13 @@ use Inertia\Inertia;
 Route::get('', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Home', [
     'frontMatters' => array_values(
         collect($contentRepository->getLatestBlogPostMetadata())
+            ->toArray()
+    ),
+    'notes' => array_values(
+        Note::select(['title', 'description'])
+            ->orderByDesc('created_at')
+            ->limit(3)
+            ->get()
             ->toArray()
     ),
 ]))

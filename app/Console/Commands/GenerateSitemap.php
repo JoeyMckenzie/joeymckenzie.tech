@@ -6,7 +6,6 @@ namespace App\Console\Commands;
 
 use App\Models\BlogPost;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Log;
 use Spatie\Sitemap\SitemapGenerator;
 use Spatie\Sitemap\Tags\Url;
 
@@ -35,15 +34,7 @@ class GenerateSitemap extends Command
         $url = config('app.url');
         $publicPath = public_path();
         $outputFile = "$publicPath/sitemap-index.xml";
-
-        if (file_exists($outputFile)) {
-            Log::info('Sitemap already generated, bypassing');
-
-            return;
-        }
-
         $slugs = BlogPost::select(['slug', 'updated_at'])->get();
-
         $siteMap = SitemapGenerator::create($url)->getSitemap();
 
         collect($slugs)

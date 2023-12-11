@@ -36,9 +36,9 @@ export default function SocialButtons(): React.JSX.Element {
         <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-4 py-8 sm:grid-cols-4">
             {socials.map(
                 ({ display, href, icon, external, download = false }) => (
-                    <>
+                    <div key={icon}>
                         {!download && (
-                            <Link key={icon} href={href}>
+                            <Link href={href}>
                                 <Button
                                     className="flex w-full flex-row gap-x-2"
                                     variant="outline"
@@ -50,11 +50,7 @@ export default function SocialButtons(): React.JSX.Element {
                             </Link>
                         )}
                         {download && (
-                            <a
-                                key={icon}
-                                href={href}
-                                download="JoeyMcKenzie_resume.pdf"
-                            >
+                            <a download="JoeyMcKenzie_resume.pdf">
                                 <Button
                                     className="flex w-full flex-row gap-x-2"
                                     variant="outline"
@@ -65,7 +61,7 @@ export default function SocialButtons(): React.JSX.Element {
                                 </Button>
                             </a>
                         )}
-                    </>
+                    </div>
                 ),
             )}
         </div>

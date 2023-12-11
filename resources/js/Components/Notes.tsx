@@ -17,6 +17,22 @@ const notes = [
     },
 ];
 
+function Note({
+    title,
+    description,
+}: {
+    title: string;
+    description: string;
+}): React.JSX.Element {
+    return (
+        <Alert key="title">
+            <Terminal className="h-4 w-4" />
+            <AlertTitle className="font-bold">{title}</AlertTitle>
+            <AlertDescription>{description}</AlertDescription>
+        </Alert>
+    );
+}
+
 export default function Notes(): React.JSX.Element {
     return (
         <div className="pb-16">
@@ -24,12 +40,12 @@ export default function Notes(): React.JSX.Element {
                 Note to self.
             </h2>
             <div className="mx-auto grid max-w-3xl grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3">
-                {notes.map(({ title, description }) => (
-                    <Alert key="title">
-                        <Terminal className="h-4 w-4" />
-                        <AlertTitle className="font-bold">{title}</AlertTitle>
-                        <AlertDescription>{description}</AlertDescription>
-                    </Alert>
+                {notes.map(({ title, description }, index) => (
+                    <Note
+                        key={`note-${index}`}
+                        title={title}
+                        description={description}
+                    />
                 ))}
             </div>
         </div>
