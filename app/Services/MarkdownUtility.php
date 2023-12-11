@@ -63,7 +63,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
         $markdown = $parsedContent->getContent();
         $html = $this->converter->convert($markdown)->getContent();
 
-        Log::info('frontmatter and content parsed, retrieving view count from neon');
+        Log::info('frontmatter and content parsed');
 
         return new ContentMeta($fileSlug, $markdown, $html, $frontMatter);
     }
@@ -75,7 +75,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
 
         Log::info("upserting blog post $contentSlug");
 
-        return BlogPost::updateOrCreate([
+        $upsertedBlog = BlogPost::updateOrCreate([
             'slug' => $contentSlug,
         ], [
             'slug' => $contentSlug,
@@ -88,5 +88,9 @@ final readonly class MarkdownUtility implements ContentUtilityContract
             'raw_content' => $contentMeta->markdown,
             'parsed_content' => $contentMeta->html,
         ]);
+
+        Log::info('blog content updated!');
+
+        return $upsertedBlog;
     }
 }
