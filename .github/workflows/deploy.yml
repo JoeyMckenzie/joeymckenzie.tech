@@ -32,7 +32,7 @@ jobs:
 
             - name: Add current commit
               run: |
-                  echo FORGE_DEPLOY_COMMIT=${{ github.sha }} > ${{ github.workspace }}/.env
+                  echo FORGE_DEPLOY_COMMIT=${{ github.sha }} >> ${{ github.workspace }}/.env
                   forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
 
             - name: Ping deploy URL

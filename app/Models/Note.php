@@ -10,4 +10,9 @@ class Note extends Model
         'title',
         'description',
     ];
+
+    protected $fillable = [
+        'title',
+        'description',
+    ];
 }
