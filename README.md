@@ -8,8 +8,14 @@
 My personal slice of the internet. A blog about software, frameworks, languages, technology, and sometimes beer. Powered
 by:
 
--   [Laravel](https://laravel.com) and PHP
--   React and TypeScript with the help of [Inertia.js](https://inertiajs.com/)
--   [Torchlight](https://torchlight.dev) for syntax highlighting
--   [PlanetScale](https://planetscale.com) for storage
--   Hosted on [Fly.io](https://fly.io)
+- [Laravel](https://laravel.com) and PHP
+- [React](https://react.dev), [Shad UI](https://ui.shadcn.com/), and [TypeScript](https://www.typescriptlang.org/) with
+  the help
+  of [Inertia.js](https://inertiajs.com/)
+- [Torchlight](https://torchlight.dev) for syntax highlighting
+- [PlanetScale](https://planetscale.com) for storage
+- Hosted on [Fly.io](https://fly.io)
+- [Biome](https://biomejs.dev) for frontend code quality
+    - Note, tailwind class sorting [isn't supported yet](https://github.com/biomejs/biome/discussions/164), so there's a
+      bit of MacGyver'ing with [prettier](https://prettier.io/) to use
+      the [plugin](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier) for now
