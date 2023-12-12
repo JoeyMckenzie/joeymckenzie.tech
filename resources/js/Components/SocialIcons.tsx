@@ -1,31 +1,31 @@
-import * as React from 'react';
-import { Icon } from '@iconify/react';
+import { Icon } from "@iconify/react";
+import * as React from "react";
 
 const socials = [
     {
-        href: 'https://twitter.com/_joeyMcKenzie',
-        display: 'Twitter',
-        icon: 'simple-icons:x',
+        href: "https://twitter.com/_joeyMcKenzie",
+        display: "Twitter",
+        icon: "simple-icons:x",
     },
     {
-        href: 'https://github.com/JoeyMcKenzie',
-        display: 'GitHub',
-        icon: 'mdi:github',
+        href: "https://github.com/JoeyMcKenzie",
+        display: "GitHub",
+        icon: "mdi:github",
     },
     {
-        href: 'https://www.youtube.com/channel/UCkdpN-mQSyJ_2XJMU1kQ5fA#',
-        display: 'YouTube',
-        icon: 'mdi:youtube',
+        href: "https://www.youtube.com/channel/UCkdpN-mQSyJ_2XJMU1kQ5fA#",
+        display: "YouTube",
+        icon: "mdi:youtube",
     },
     {
-        href: 'https://twitch.tv/JoeTheDevMan',
-        display: 'Twitch',
-        icon: 'mdi:twitch',
+        href: "https://twitch.tv/JoeTheDevMan",
+        display: "Twitch",
+        icon: "mdi:twitch",
     },
     {
-        href: 'https://linkedin.com/in/JoeyMcKenzie',
-        display: 'LinkedIn',
-        icon: 'mdi:linkedin',
+        href: "https://linkedin.com/in/JoeyMcKenzie",
+        display: "LinkedIn",
+        icon: "mdi:linkedin",
     },
 ];
 

@@ -1,11 +1,11 @@
-import * as React from 'react';
-import MainLayout from '@/Layouts/MainLayout';
-import { Head, usePage } from '@inertiajs/react';
-import BlogPreviews from '@/Components/BlogPreviews';
-import { type FrontMatter } from '@/models';
-import SocialButtons from '@/Components/SocialButtons';
-import NotesToSelf from '@/Components/NotesToSelf';
-import { type Note } from '@/types';
+import BlogPreviews from "@/Components/BlogPreviews";
+import NotesToSelf from "@/Components/NotesToSelf";
+import SocialButtons from "@/Components/SocialButtons";
+import MainLayout from "@/Layouts/MainLayout";
+import { type FrontMatter } from "@/models";
+import { type Note } from "@/types";
+import { Head, usePage } from "@inertiajs/react";
+import * as React from "react";
 
 export default function Home({
     frontMatters,
@@ -37,10 +37,10 @@ export default function Home({
                         Hi, I&apos;m Joey.
                     </h2>
                     <p className="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert">
-                        I&apos;m a{' '}
+                        I&apos;m a{" "}
                         <span className="font-semibold">
                             Senior Software Engineer
-                        </span>{' '}
+                        </span>{" "}
                         based in Northern California working in fintech. I enjoy
                         writing about software, design, dad jokes, and cheap
                         beer among a few other things. I like building fast,

@@ -1,5 +1,5 @@
 ---
-title: 'Rustful statement machines and event driven design'
+title: 'I rewrote my website in PHP and regret nothing'
 description: "A hobbyist Rustacean's ode to the Gang of Four."
 pubDate: 'Oct 23 2023'
 heroImage: '/images/ziggin-around/meme.jpg'

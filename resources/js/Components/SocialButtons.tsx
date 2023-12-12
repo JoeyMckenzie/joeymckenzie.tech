@@ -1,32 +1,32 @@
-import * as React from 'react';
-import { Link } from '@inertiajs/react';
-import { Button } from '@/Components/ui/button';
-import { Icon } from '@iconify/react';
+import { Button } from "@/Components/ui/button";
+import { Icon } from "@iconify/react";
+import { Link } from "@inertiajs/react";
+import * as React from "react";
 
 const socials = [
     {
-        href: 'https://github.com/joeymckenzie',
-        icon: 'mdi:github',
-        display: 'GitHub',
-        external: 'gg:external',
+        href: "https://github.com/joeymckenzie",
+        icon: "mdi:github",
+        display: "GitHub",
+        external: "gg:external",
     },
     {
-        href: 'https://linkedin.com/in/JoeyMcKenzie',
-        icon: 'mdi:linkedin',
-        display: 'LinkedIn',
-        external: 'gg:external',
+        href: "https://linkedin.com/in/JoeyMcKenzie",
+        icon: "mdi:linkedin",
+        display: "LinkedIn",
+        external: "gg:external",
     },
     {
-        href: 'https://x.com/_joeyMcKenzie',
-        icon: 'mdi:twitter',
-        display: 'Twitter',
-        external: 'gg:external',
+        href: "https://x.com/_joeyMcKenzie",
+        icon: "mdi:twitter",
+        display: "Twitter",
+        external: "gg:external",
     },
     {
-        href: 'https://resume.joeymckenzie.tech/JoeyMcKenzie_resume.pdf',
-        icon: 'carbon:identification',
-        display: 'Specs',
-        external: 'material-symbols:download-sharp',
+        href: "https://resume.joeymckenzie.tech/JoeyMcKenzie_resume.pdf",
+        icon: "carbon:identification",
+        display: "Specs",
+        external: "material-symbols:download-sharp",
         download: true,
     },
 ];
@@ -50,7 +50,10 @@ export default function SocialButtons(): React.JSX.Element {
                             </Link>
                         )}
                         {download && (
-                            <a download="JoeyMcKenzie_resume.pdf">
+                            <a
+                                href="https://resume.joeymckenzie.tech/JoeyMcKenzie_resume.pdf"
+                                download="JoeyMcKenzie_resume.pdf"
+                            >
                                 <Button
                                     className="flex w-full flex-row gap-x-2"
                                     variant="outline"

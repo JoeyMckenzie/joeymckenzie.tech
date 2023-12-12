@@ -1,6 +1,6 @@
-import * as React from 'react';
-import MainLayout from '@/Layouts/MainLayout';
-import { Head, Link } from '@inertiajs/react';
+import MainLayout from "@/Layouts/MainLayout";
+import { Head, Link } from "@inertiajs/react";
+import * as React from "react";
 
 export default function About(): React.JSX.Element {
     return (
@@ -20,7 +20,7 @@ export default function About(): React.JSX.Element {
                             working on technologies across the stack, from Java,
                             IBM, .NET, and most of the major web frontend
                             frameworks you&apos;ll see folks arguing about over
-                            on{' '}
+                            on{" "}
                             <a href="https://reddit.com/r/webdev">r/webdev</a>.
                         </p>
                         <p>
@@ -36,7 +36,7 @@ export default function About(): React.JSX.Element {
                         <p>
                             In my spare time, I like to do things with
                             TypeScript, PHP (pause for audible gasps) and Rust
-                            (I&apos;m even writing some cool stuff about{' '}
+                            (I&apos;m even writing some cool stuff about{" "}
                             <a href="https://fullstackrust.netlify.app/">
                                 Rust!
                             </a>
@@ -45,13 +45,13 @@ export default function About(): React.JSX.Element {
                             things I come across in the wild (of software),
                             design, frameworks, and language features among
                             other things. If I find the time, you can catch any
-                            of my content on{' '}
+                            of my content on{" "}
                             <a href="https://www.youtube.com/channel/UCkdpN-mQSyJ_2XJMU1kQ5fA#">
                                 YouTube
-                            </a>{' '}
-                            or streaming live on{' '}
+                            </a>{" "}
+                            or streaming live on{" "}
                             <a href="https://twitch.tv/JoeTheDevMan">Twitch</a>.
-                            Checkout my <Link href={route('blogs')}>blog</Link>{' '}
+                            Checkout my <Link href={route("blogs")}>blog</Link>{" "}
                             for things I publish that mostly deal with my
                             questionable takes on development.
                         </p>

@@ -1,18 +1,18 @@
-import * as React from 'react';
-import { type Post } from '@/models';
-import { Head, Link } from '@inertiajs/react';
-import MainLayout from '@/Layouts/MainLayout';
-import { Badge } from '@/Components/ui/badge';
-import { Button } from '@/Components/ui/button';
-import '../../../../css/atom-one-dark.css';
+import { Badge } from "@/Components/ui/badge";
+import { Button } from "@/Components/ui/button";
+import MainLayout from "@/Layouts/MainLayout";
+import { type Post } from "@/models";
+import { Head, Link } from "@inertiajs/react";
+import * as React from "react";
+import "../../../../css/atom-one-dark.css";
 
 export default function BlogPost({ post }: { post: Post }): React.JSX.Element {
     const formattedDate = new Date(
-        post.published_date ?? '',
-    ).toLocaleDateString('en-us', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
+        post.published_date ?? "",
+    ).toLocaleDateString("en-us", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
     });
 
     return (
@@ -31,18 +31,19 @@ export default function BlogPost({ post }: { post: Post }): React.JSX.Element {
                             <p>{post.views} views</p>
                         </div>
                         <img
-                            alt={`${post.title} hero image`}
+                            alt={`${post.title} blog meme`}
                             src={post.hero_image}
                             height="400"
                             width="500"
                         />
                         <div
+                            // biome-ignore lint/security/noDangerouslySetInnerHtml: controlled input
                             dangerouslySetInnerHTML={{
                                 __html: post.parsed_content,
                             }}
                         />
                     </article>
-                    <Link href={route('blogs')} className="mx-auto max-w-md">
+                    <Link href={route("blogs")} className="mx-auto max-w-md">
                         <Button variant="secondary"> Back to blogs</Button>
                     </Link>
                 </div>

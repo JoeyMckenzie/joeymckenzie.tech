@@ -1,15 +1,15 @@
-import * as React from 'react';
-import { Head, Link } from '@inertiajs/react';
-import { type FrontMatter } from '@/models';
-import { Badge } from '@/Components/ui/badge';
-import { format } from 'date-fns';
+import { Badge } from "@/Components/ui/badge";
+import { type FrontMatter } from "@/models";
+import { Head, Link } from "@inertiajs/react";
+import { format } from "date-fns";
+import * as React from "react";
 
 export default function BlogCard({
     frontMatter,
 }: {
     frontMatter: FrontMatter;
 }): React.JSX.Element {
-    const formattedDate = format(new Date(frontMatter.published_date), 'PP');
+    const formattedDate = format(new Date(frontMatter.published_date), "PP");
 
     return (
         <>
@@ -19,7 +19,7 @@ export default function BlogCard({
 
             <article className="hover:scale-102 flex max-w-xl flex-col items-start transition duration-150 ease-in-out hover:-translate-y-1">
                 <Link
-                    href={route('post', {
+                    href={route("post", {
                         slug: frontMatter.slug,
                     })}
                 >

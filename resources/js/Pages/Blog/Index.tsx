@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { type FrontMatter } from '@/models';
-import BlogPreviews from '@/Components/BlogPreviews';
-import MainLayout from '@/Layouts/MainLayout';
-import { Head } from '@inertiajs/react';
+import BlogPreviews from "@/Components/BlogPreviews";
+import MainLayout from "@/Layouts/MainLayout";
+import { type FrontMatter } from "@/models";
+import { Head } from "@inertiajs/react";
+import * as React from "react";
 
 export default function BlogIndex({
     frontMatters,
@@ -25,10 +25,10 @@ export default function BlogIndex({
                             writing a journal of technologies I&apos;ve worked
                             with at some point during my career, and I&apos;m
                             always happy to field questions and conversations
-                            from interested readers. Feel free to{' '}
+                            from interested readers. Feel free to{" "}
                             <a href="mailto:joey.mckenzie27@gmail.com">
                                 contact
-                            </a>{' '}
+                            </a>{" "}
                             me about any of the writing I do here, or to simply
                             say hello!
                         </p>

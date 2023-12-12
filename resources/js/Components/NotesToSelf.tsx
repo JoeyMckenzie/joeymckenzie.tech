@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { Alert, AlertDescription, AlertTitle } from '@/Components/ui/alert';
-import { Terminal } from 'lucide-react';
-import { type Note } from '@/types';
+import { Alert, AlertDescription, AlertTitle } from "@/Components/ui/alert";
+import { type Note } from "@/types";
+import { Terminal } from "lucide-react";
+import * as React from "react";
 
 function NoteDisplay({
     title,

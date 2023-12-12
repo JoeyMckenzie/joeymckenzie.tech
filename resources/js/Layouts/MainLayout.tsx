@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { Navbar } from '@/Components/Navbar';
-import { ThemeProvider } from '@/Components/ThemeProvider';
-import Footer from '@/Components/Footer';
+import Footer from "@/Components/Footer";
+import { Navbar } from "@/Components/Navbar";
+import { ThemeProvider } from "@/Components/ThemeProvider";
+import * as React from "react";
 
 export default function MainLayout({
     children,

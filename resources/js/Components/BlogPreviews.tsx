@@ -1,6 +1,6 @@
-import * as React from 'react';
-import BlogCard from '@/Components/BlogCard';
-import { type FrontMatter } from '@/models';
+import BlogCard from "@/Components/BlogCard";
+import { type FrontMatter } from "@/models";
+import * as React from "react";
 
 export default function BlogPreviews({
     frontMatters,

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { ThemeToggle } from '@/Components/ThemeToggle';
-import DesktopMenu from '@/Components/DesktopMenu';
+import DesktopMenu from "@/Components/DesktopMenu";
+import { ThemeToggle } from "@/Components/ThemeToggle";
+import * as React from "react";
 
 type NavLinkProps = {
     name: string;
@@ -9,16 +9,16 @@ type NavLinkProps = {
 
 export const links: NavLinkProps[] = [
     {
-        display: 'Home',
-        name: 'home',
+        display: "Home",
+        name: "home",
     },
     {
-        display: 'Now',
-        name: 'now',
+        display: "Now",
+        name: "now",
     },
     {
-        display: 'Blog',
-        name: 'blogs',
+        display: "Blog",
+        name: "blogs",
     },
 ];
 

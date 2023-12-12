@@ -1,16 +1,16 @@
-import * as React from 'react';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun } from "lucide-react";
+import * as React from "react";
 
-import { Button } from '@/Components/ui/button';
+import { type Theme, useTheme } from "@/Components/ThemeProvider";
+import { Button } from "@/Components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from '@/Components/ui/dropdown-menu';
-import { type Theme, useTheme } from '@/Components/ThemeProvider';
+} from "@/Components/ui/dropdown-menu";
 
-const themes: Theme[] = ['light', 'dark', 'system'];
+const themes: Theme[] = ["light", "dark", "system"];
 
 export function ThemeToggle(): React.JSX.Element {
     const { setTheme } = useTheme();

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { type NowPlaying } from '@/types';
-import { usePage } from '@inertiajs/react';
+import { type NowPlaying } from "@/types";
+import { usePage } from "@inertiajs/react";
+import * as React from "react";
 
 function NotCurrentlyPlaying({
     children,

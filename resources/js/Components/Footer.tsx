@@ -1,8 +1,8 @@
-import * as React from 'react';
-import PoweredBy from '@/Components/PoweredBy';
-import SocialIcons from '@/Components/SocialIcons';
-import { Icon } from '@iconify/react';
-import SpotifyTracker from '@/Components/SpotifyTracker';
+import PoweredBy from "@/Components/PoweredBy";
+import SocialIcons from "@/Components/SocialIcons";
+import SpotifyTracker from "@/Components/SpotifyTracker";
+import { Icon } from "@iconify/react";
+import * as React from "react";
 
 export default function Footer(): React.JSX.Element {
     return (

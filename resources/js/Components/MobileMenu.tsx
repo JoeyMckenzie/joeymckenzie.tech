@@ -1,15 +1,15 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { Button } from '@/Components/ui/button';
+import { links } from "@/Components/Navbar";
+import { Button } from "@/Components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-} from '@/Components/ui/dropdown-menu';
-import { Link } from '@inertiajs/react';
-import { links } from '@/Components/Navbar';
-import { Icon } from '@iconify/react';
+} from "@/Components/ui/dropdown-menu";
+import { Icon } from "@iconify/react";
+import { Link } from "@inertiajs/react";
 
 export default function MobileMenu(): React.JSX.Element {
     return (

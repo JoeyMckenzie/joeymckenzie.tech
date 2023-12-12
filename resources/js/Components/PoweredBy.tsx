@@ -1,34 +1,34 @@
-import * as React from 'react';
-import { usePage } from '@inertiajs/react';
-import { Icon } from '@iconify/react';
-import TorchlightIcon from '@/Components/TorchlightIcon';
+import TorchlightIcon from "@/Components/TorchlightIcon";
+import { Icon } from "@iconify/react";
+import { usePage } from "@inertiajs/react";
+import * as React from "react";
 
 const poweredBy = [
     {
-        display: 'Larvel',
-        href: 'https://laravel.com',
-        icon: 'logos:laravel',
+        display: "Larvel",
+        href: "https://laravel.com",
+        icon: "logos:laravel",
     },
     {
-        display: 'React',
-        href: 'https://reactjs.org',
-        icon: 'logos:react',
+        display: "React",
+        href: "https://reactjs.org",
+        icon: "logos:react",
     },
     {
-        display: 'Inertia.js',
-        href: 'https://inertiajs.com',
-        icon: 'simple-icons:inertia',
+        display: "Inertia.js",
+        href: "https://inertiajs.com",
+        icon: "simple-icons:inertia",
     },
     {
-        display: 'Digital Ocean',
-        href: 'https://digitalocean.com',
-        icon: 'gg:digitalocean',
+        display: "Digital Ocean",
+        href: "https://digitalocean.com",
+        icon: "gg:digitalocean",
     },
 ];
 
 export default function PoweredBy(): React.JSX.Element {
     const page = usePage();
-    const commitSha = (page.props.commit as string) ?? '';
+    const commitSha = (page.props.commit as string) ?? "";
     const commitShaForDisplay = commitSha.substring(0, 6);
     const commitUrl = `https://github.com/JoeyMckenzie/joey-mckenzie-tech/commit/${commitSha}`;
 
