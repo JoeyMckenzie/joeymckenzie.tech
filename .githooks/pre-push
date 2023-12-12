@@ -1,4 +1,4 @@
 #!/bin/bash
 
-pnpm run lint
+pnpm run ci
 composer run lint && composer run types
