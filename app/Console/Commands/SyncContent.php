@@ -7,6 +7,7 @@ namespace App\Console\Commands;
 use App\Contracts\ContentUtilityContract;
 use App\Models\ContentMeta;
 use Illuminate\Console\Command;
+use Throwable;
 
 final class SyncContent extends Command
 {
@@ -26,6 +27,8 @@ final class SyncContent extends Command
 
     /**
      * Execute the console command.
+     *
+     * @throws Throwable
      */
     public function handle(ContentUtilityContract $contentUtility): void
     {

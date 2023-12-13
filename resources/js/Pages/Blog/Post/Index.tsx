@@ -4,7 +4,6 @@ import MainLayout from "@/Layouts/MainLayout";
 import { type Post } from "@/models";
 import { Head, Link } from "@inertiajs/react";
 import * as React from "react";
-import "../../../../css/atom-one-dark.css";
 
 export default function BlogPost({ post }: { post: Post }): React.JSX.Element {
     const formattedDate = new Date(

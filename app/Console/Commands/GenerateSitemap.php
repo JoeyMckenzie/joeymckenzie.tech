@@ -34,6 +34,7 @@ class GenerateSitemap extends Command
         $url = config('app.url');
         $publicPath = public_path();
         $outputFile = "$publicPath/sitemap-index.xml";
+
         $slugs = BlogPost::select(['slug', 'updated_at'])->get();
         $siteMap = SitemapGenerator::create($url)->getSitemap();
 
