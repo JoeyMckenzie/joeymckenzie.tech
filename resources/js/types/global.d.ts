@@ -7,6 +7,8 @@ declare global {
         axios: AxiosInstance;
     }
 
-    let route: typeof ziggyRoute;
-    let Ziggy: ZiggyConfig;
+    // biome-ignore lint/style/noVar: SSR server errors for some reason, I'll fix it eventually...
+    var route: typeof ziggyRoute;
+    // biome-ignore lint/style/noVar: SSR server errors for some reason, I'll fix it eventually...
+    var Ziggy: ZiggyConfig;
 }
