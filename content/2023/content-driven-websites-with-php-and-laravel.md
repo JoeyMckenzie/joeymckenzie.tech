@@ -11,8 +11,8 @@ keywords:
 
 Alright, I'm making this one short (sort of). My pre-New Year's Resolution is to write on my blog here more
 than bi-annually. Since becoming a dad and taking up my jorts-laden mantle and becoming alarmingly interested in grass
-mowing techniques and New Balance footwear this past year, finding the time to write has come too far and between (
-betwixt?).
+mowing techniques and New Balance footwear this past year, finding the time to write has come too far and between
+(betwixt?).
 
 I was recently on the hunt for something new to learn and after laughing at memes
 on [r/webdev](https://reddit.com/r/webdev/) about PHP for far too long, I figured I had better at least learn a little
