@@ -807,7 +807,7 @@ appending the SHA as an environment variable, and simply pushing it back up to F
 
 All-in-all, this is what my deploy action looks like:
 
-```yml
+```yaml
 name: Deploy to Forge
 
 on:
