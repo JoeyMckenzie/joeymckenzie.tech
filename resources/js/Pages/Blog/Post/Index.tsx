@@ -17,7 +17,9 @@ export default function BlogPost({ post }: { post: Post }): React.JSX.Element {
 
     return (
         <>
-            <Head title={`${post.title} | joeymckenzie.tech`} />
+            <Head title={`${post.title} | joeymckenzie.tech`}>
+                <meta name="keywords" content={post.keywords} />
+            </Head>
 
             <MainLayout>
                 <div className="flex flex-col justify-center">
