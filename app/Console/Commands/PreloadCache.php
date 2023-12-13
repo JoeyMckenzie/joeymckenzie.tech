@@ -23,7 +23,7 @@ final class PreloadCache extends Command
     protected $description = 'Command description';
 
     /**
-     * Preloads the content cache.
+     * Preloads the content cache and the currently listening info on spotify.
      */
     public function handle(BlogPostRepository $repository, MusicTrackerContract $musicTracker): void
     {
