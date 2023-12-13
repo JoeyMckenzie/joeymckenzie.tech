@@ -761,33 +761,6 @@ use Override;
 final readonly class BlogPostRepository implements ContentRepositoryContract
 {
     #[Override]
-    public function getBlogPostMetadata(): Collection
-    {
-        if (Cache::has('allPosts')) {
-            /** @var Collection<int, BlogPost> $allPosts */
-            $allPosts = Cache::get('allPosts');
-
-            return $allPosts;
-        }
-
-        /** @var Collection<int, BlogPost> $posts */
-        $posts = BlogPost::select([
-            'slug',
-            'published_date',
-            'category',
-            'description',
-            'title',
-            'views',
-        ])
-            ->orderByDesc('published_date')
-            ->get();
-
-        Cache::set('allPosts', $posts, new DateInterval('PT5M'));
-
-        return $posts;
-    }
-
-    #[Override]
     public function getBlogPostBySlug(string $slug): BlogPost
     {
         // We won't cache the blogs, easier to let the view counts ride
@@ -819,11 +792,22 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
     #[Override]
     public function getLatestBlogPostMetadata(): Collection
     {
-        if (Cache::has('latestPosts')) {
-            /** @var Collection<int, BlogPost> $cachedPosts */
-            $cachedPosts = Cache::get('latestPosts');
+        /** @var Collection<int, BlogPost> $posts */
+        $posts = self::getBlogPostMetadata()
+            ->sortByDesc('published_date')
+            ->take(3);
 
-            return $cachedPosts;
+        return $posts;
+    }
+
+    #[Override]
+    public function getBlogPostMetadata(): Collection
+    {
+        if (Cache::has('allPosts')) {
+            /** @var Collection<int, BlogPost> $allPosts */
+            $allPosts = Cache::get('allPosts');
+
+            return $allPosts;
         }
 
         /** @var Collection<int, BlogPost> $posts */
@@ -836,10 +820,9 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
             'views',
         ])
             ->orderByDesc('published_date')
-            ->limit(3)
             ->get();
 
-        Cache::set('latestPosts', $posts, new DateInterval('PT5M'));
+        Cache::set('allPosts', $posts, new DateInterval('PT5M'));
 
         return $posts;
     }

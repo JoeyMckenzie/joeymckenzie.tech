@@ -9,7 +9,7 @@ use Illuminate\Console\Command;
 use Spatie\Sitemap\SitemapGenerator;
 use Spatie\Sitemap\Tags\Url;
 
-class GenerateSitemap extends Command
+final class GenerateSitemap extends Command
 {
     /**
      * The name and signature of the console command.
