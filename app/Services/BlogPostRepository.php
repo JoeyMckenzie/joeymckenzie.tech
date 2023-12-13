@@ -13,6 +13,8 @@ use Override;
 
 final readonly class BlogPostRepository implements ContentRepositoryContract
 {
+    private const string POSTS_CACHE_KEY = 'allPosts';
+
     #[Override]
     public function getBlogPostBySlug(string $slug): BlogPost
     {
@@ -56,9 +58,9 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
     #[Override]
     public function getBlogPostMetadata(): Collection
     {
-        if (Cache::has('allPosts')) {
+        if (Cache::has(self::POSTS_CACHE_KEY)) {
             /** @var Collection<int, BlogPost> $allPosts */
-            $allPosts = Cache::get('allPosts');
+            $allPosts = Cache::get(self::POSTS_CACHE_KEY);
 
             return $allPosts;
         }
@@ -75,7 +77,7 @@ final readonly class BlogPostRepository implements ContentRepositoryContract
             ->orderByDesc('published_date')
             ->get();
 
-        Cache::set('allPosts', $posts, new DateInterval('PT5M'));
+        Cache::set(self::POSTS_CACHE_KEY, $posts, new DateInterval('PT5M'));
 
         return $posts;
     }

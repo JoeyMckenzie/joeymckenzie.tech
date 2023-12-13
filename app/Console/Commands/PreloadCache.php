@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Contracts\MusicTrackerContract;
 use App\Services\BlogPostRepository;
 use Illuminate\Console\Command;
 
@@ -24,8 +25,9 @@ final class PreloadCache extends Command
     /**
      * Preloads the content cache.
      */
-    public function handle(BlogPostRepository $repository): void
+    public function handle(BlogPostRepository $repository, MusicTrackerContract $musicTracker): void
     {
+        $musicTracker->getNowPlaying();
         $repository->getBlogPostMetadata();
     }
 }
