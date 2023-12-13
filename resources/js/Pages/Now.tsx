@@ -1,5 +1,5 @@
 import MainLayout from "@/Layouts/MainLayout";
-import { Head } from "@inertiajs/react";
+import { Head, Link } from "@inertiajs/react";
 import * as React from "react";
 
 export default function About(): React.JSX.Element {
@@ -43,14 +43,19 @@ export default function About(): React.JSX.Element {
                                 so. The website you&apos;re currently reading is
                                 written with Laravel and React with the help of{" "}
                                 <a href="https://inertiajs.com/">Inertia</a>{" "}
-                                served from an image on{" "}
-                                <a href="hhtps://fly.io/">Fly.io</a> and backed
-                                by a MySQL database hosted on{" "}
-                                <a href="https://planetscale.com/">
-                                    PlanetScale
-                                </a>
-                                . I&apos;ll get around to writing about it
-                                eventually...
+                                served from a droplet on{" "}
+                                <a href="https://digitalocean.com/">
+                                    DigitalOcean
+                                </a>{" "}
+                                - I even{" "}
+                                <Link
+                                    href={route("post", {
+                                        slug: "content-driven-websites-with-php-and-laravel",
+                                    })}
+                                >
+                                    wrote about it
+                                </Link>{" "}
+                                on my blog!
                             </li>
                             <li>
                                 In the name of learning of PHP, I&apos;m also

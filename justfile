@@ -2,11 +2,11 @@ default: pail
 
 # runs tail logging
 pail:
-    artisan pail
+    php artisan pail
 
 # syncs content to the database
 sync:
-    artisan app:sync-content
+    php artisan app:sync-content
 
 # continuously runs lint on file change
 lint:
