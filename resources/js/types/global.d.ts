@@ -7,7 +7,9 @@ declare global {
         axios: AxiosInstance;
     }
 
-    let route: typeof ziggyRoute;
+    // biome-ignore lint/style/noVar: route needs to be globally lifted
+    var route: typeof ziggyRoute;
 
-    let Ziggy: ZiggyConfig;
+    // biome-ignore lint/style/noVar: ziggy needs to be globally lifted
+    var Ziggy: ZiggyConfig;
 }
