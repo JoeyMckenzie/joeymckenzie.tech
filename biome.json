@@ -5,12 +5,16 @@
     },
     "formatter": {
         "indentStyle": "space",
-        "indentWidth": 4
+        "indentWidth": 4,
+        "include": ["resources/js"],
+        "ignore": ["resources/js/ssr.tsx"]
     },
     "linter": {
         "enabled": true,
         "rules": {
             "recommended": true
-        }
+        },
+        "include": ["resources/js"],
+        "ignore": ["resources/js/ssr.tsx"]
     }
 }
