@@ -9,24 +9,23 @@ keywords:
     - laravel
 ---
 
-Alright, I'm making this one short (I _almost_ promise). My pre-New Year's Resolution is to write on my blog here more
-than
-bi-annually. Since becoming a dad and taking up my jorts-laden mantle becoming alarmingly interested in grass mowing
-techniques and
-New Balance footwear this past year, finding the time to write has come too far and between (betwixt?).
+Alright, I'm making this one short (sort of). My pre-New Year's Resolution is to write on my blog here more
+than bi-annually. Since becoming a dad and taking up my jorts-laden mantle and becoming alarmingly interested in grass
+mowing techniques and New Balance footwear this past year, finding the time to write has come too far and between (
+betwixt?).
 
-I was recently on the hunt for something new to learn and after laughing at
-memes on
-[r/webdev](https://reddit.com/r/webdev/) about PHP for far too long, I figured I had better at least learn a little PHP
+I was recently on the hunt for something new to learn and after laughing at memes
+on [r/webdev](https://reddit.com/r/webdev/) about PHP for far too long, I figured I had better at least learn a little
+PHP
 to understand the source of the meme'ery in the first place. Learning PHP ultimately brought me
 to [Laravel](https://laravel.com/),
 and oh... my... god... do I feel betrayed by my fellow developers for dunking on PHP without telling me about the
 abundant Lambos running rampant in the Laravel ecosystem. I've been writing a bunch of Rust to keep my brain occupied
 outside my normal 8-to-5 and PHP was a breath of fresh air.
 
-If you're a full-time TypeScript/.NET'er with a sprinkle of other languages like Go and Rust here and there like me, PHP
-might seem like an afterthought. I can confidently say that after embarking down the Laravel/PHP road, I'm more than
-happy I did.
+If you're a full-time TypeScript/.NET'er working with a sprinkle of other languages like Go and Rust here and there like
+me, PHP might seem like an afterthought. I can confidently say that after embarking down the Laravel/PHP road, I'm more
+than happy I did.
 
 I thought it would be fun to write a bit about the process of learning Laravel through re-writing my website from a few
 different iterations of JS frameworks and give some insight from a newcomers perspective about Laravel and PHP.
@@ -47,48 +46,47 @@ you happen to be reading, at least once a year. I've gone through a few iteratio
 Quite frankly, I'm burnt out on JS framework madness, though to no fault of their own. There's many that are innovating
 and pushing the ecosystem forward with cool new technology that I'll get to use in production five years from now if I'm
 lucky. Each iteration I re-wrote wrangled a hodge podge of JS libraries for certain things I wanted to do, including but
-not limited
-to:
+not limited to:
 
-- Parse markdown
+- Parsing markdown
   content ([contentlayer](https://contentlayer.dev), [gray-matter](https://www.npmjs.com/package/gray-matter)) and
-  highlight code snippets ([highlight.js](https://highlightjs.org/), [shiki](https://shiki.matsu.io/))
-- Store things in a database with a bit of magic
+  highlighting code snippets ([highlight.js](https://highlightjs.org/), [shiki](https://shiki.matsu.io/))
+- Storing things in a database with a bit of magic
   abstraction ([prisma](https://prisma.io), [drizzle](https://orm.drizzle.team/))
 - Calling external APIs through framework semantics, which differ from framework to framework
+- Caching content pages as I don't update them often
 
 And a plethora of other things. The nice thing about Laravel is that a lot of this is out-of-the-box functionality so
 I can indulge in my slice-of-the-internet playground that is my website.
 
 ## Making code great again
 
-I found that while re-building my site with Laravel, I was having fun writing code in a new way than working with a JS
-flavor of the month framework. My .NET brain felt right at home with Laravel, all the while being able to mix and match
-frontends thanks to [Inertia.js](https://inertiajs.com) (I'm not quite ready to
+I found that while re-building my site with Laravel, I was having fun writing code in a new way that I was missing when
+using the JS flavor of the month framework. My .NET brain felt right at home with Laravel, all the while being able to
+mix and match frontends thanks to [Inertia.js](https://inertiajs.com) (I'm not quite ready to
 embrace [Livewire](https://livewire.laravel.com/) just yet). Anything I wanted to do, Laravel had an answer:
 
 - Syncing content to the database on
-  startup? [Console commands](https://laravel.com/docs/10.x/artisan#generating-commands).
+  deployment? [Console commands](https://laravel.com/docs/10.x/artisan#generating-commands).
 - Querying content? [Eloquent](https://laravel.com/docs/10.x/eloquent).
 - Built-in caching, an HTTP client, and just about anything you'll need for the general web
 
-The goal of this post
-will be to outline what I think makes Laravel great from the context of a PHP/Laravel outsider. Let's roll through what
-makes Laravel great even for a small, mostly static website like mine.
+The goal of this post will be to outline what I think makes Laravel great from the context of a PHP/Laravel outsider
+even for a small, mostly static website like mine.
 
 ## DI from the start
 
-Coming from .NET, I clutch my DI framework pearls tightly, rarely loosening my grip. I'll even die on the hill that
+Coming from .NET, I clutch onto my DI framework pearls tightly, rarely loosening my grip. I'll even die on the hill that
 .NET's first-party dependency injection framework (when used within it's expected confines) is one of the better DI
 frameworks out there (I've enjoyed it _much_ more than Spring's DI with magical `@autowire`s on every bean).
 
 I like to _think_ I'm not that much of a DI container shill after writing a few things in Rust and Go, and while they
 have there place and time when serving a viable purpose, are nice to work with _when used correctly_. I see a lot of
-.NET in the wild attempting to bend `ServiceProvider` to their application's will creating a poor man's service locator
-within a service locator (I'm guilty as charged).
+.NET in the wild attempting to bend `ServiceProvider`s to their application's will, creating a poor man's service
+locator within a service locator (I'm guilty as charged).
 
-With Laravel, binding contracts to concretes is simple and straight forward. Couple with route-provider binding built-in
-DI, it quite literally felt like I was back at home writing a modern .NET application.
+With Laravel, binding contracts to concretes is simple and straight forward. Coupled with route-provider binding
+built-in DI, it quite literally felt like I was back at home writing a modern .NET application.
 
 ## Strict linting opt-in
 
@@ -108,11 +106,11 @@ default: pail
 
 # runs tail logging
 pail:
-    artisan pail
+    php artisan pail
 
 # syncs content to the database
 sync:
-    artisan app:sync-content
+    php artisan app:sync-content
 
 # continuously runs lint on file change
 lint:
@@ -122,7 +120,7 @@ lint:
 and in my terminal:
 
 ```shell
-$ just lint
+$ just lint # which runs `fswatch -o app/ | xargs -n1 -I{} sh -c "composer run lint"` by proxy
 
 > vendor/bin/phpstan analyse app
 
@@ -137,19 +135,20 @@ Note: Using configuration file /Users/jmckenzie/projects/php/joeymckenzie.tech/p
 Beautiful! Any source code change within my `app/` directory triggered a full linting run to make sure I was holding
 myself accountable for not letting my code go to shit (pardon my French).
 
-Side note, composer is easily up there with cargo competing for best language toolchain on the market.
+Side note, composer is easily up there with cargo competing for best language toolchain on the market. I mean come on
+JavaScript... why do we need four different package managers?
 
 ## Content syncing
 
-One of the things I need is the ability to continuously sync markdown content with the database I store it in. Rather
-than writing some one off shell script to do that, I found Laravel commands mighty useful to simply just define a custom
-artisan command that would:
+One of the things I need is the ability to continuously sync markdown content with the database I store it in, which in
+my case is just a MySQL instance running on my droplet provisioned with the help of Laravel Forge (more on that later).
+Rather than writing some one off shell script to do that, I found Laravel commands mighty useful to simply just define a
+custom artisan command that would:
 
 - Read my content files
 - Parse the frontmatter on each markdown file
-- Parse the markdown
-- Convert the markdown to HTML
-- Save it all to the database
+- Parse the markdown and convert it to HTML
+- Save everything to the data to the database
 
 That ended up looking something like:
 
@@ -197,7 +196,7 @@ final class SyncContent extends Command
 ```
 
 Coming from .NET, I'm a self diagnosed [LINQ](https://learn.microsoft.com/en-us/dotnet/csharp/linq/) addict. Collections
-made me feel right at home. From the above, I'm configuring a pipeline of sorts that will do all the things I
+made me feel right at home. From the above, I'm configuring a short pipeline of sorts that will do all the things I
 outlined with a little help from the DI container and the `ContentUtilityContract`:
 
 ```php
@@ -331,7 +330,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
 ```
 
 Now from what I've gathered... folks in the PHP community don't exactly _love_ `final` classes - I have no intention on
-extending these and like to follow a composition approach as often as possible (though not always).
+inheriting from these classes and like to follow a composition approach as often as possible (though not always).
 
 Now anytime I want to sync my content, a simple
 
@@ -352,14 +351,15 @@ I could probably be even lazier and shorten it, but that'll do for now.
 Using [Laravel Forge](https://forge.laravel.com/) and a DigitalOcean droplet, I'm able to turn the server provisioning
 part of my brain completely off and simply write code, commit, and push. Forge does just about everything for you when
 deploying application servers, including setting up MySQL, PHP versions, server tooling, SSL, etc. I was even able to
-tweak the deployment script so I could refresh/sync my markdown content with the database. You're probably thinking "
-wait... why do you have a database in the first place?" There's a few reasons for that.
+tweak the deployment script, so I could refresh/sync my markdown content with the database anytime a new deployment was
+triggered. You're probably thinking "wait... why do you have a database in the first place?" There's a few reasons for
+that.
 
 I use [torchlight](https://torchlight.dev/) for syntax highlighting in content, and storing the parsed content in the
 database means I only need to pay the price of content highlighting once at deployment time. I also like to keep track
-of views on each blog, so I need some form of persistent storage. I also like to keep my notes in there (one of my few
-pieces of website flair) where I can simply SSH to my droplet and _drop_ into (no pun intended)
-a [tinker](https://laravel.com/docs/10.x/artisan#tinker) sesion to create more notes, so something like this just works
+of views on each blog, so I need some form of persistent storage. I _also_ like to keep my notes in there (one of my few
+pieces of website flair) where I can simply SSH to my droplet and _drop_ (no pun intended) into
+a [tinker](https://laravel.com/docs/10.x/artisan#tinker) session to create more notes, so something like this just works
 when I
 want to add a new note without a GUI component:
 
@@ -367,6 +367,7 @@ want to add a new note without a GUI component:
 # On the droplet...
 
 root@website /home/forge/joeymckenzie.tech $ php artisan tinker
+
 Psy Shell v0.11.22 (PHP 8.3.0 — cli) by Justin Hileman
 
 > \App\Models\Note::create(['title' => 'Networking', 'description' => 'I have no clue how SSL truly works.']);
@@ -379,8 +380,8 @@ Psy Shell v0.11.22 (PHP 8.3.0 — cli) by Justin Hileman
   }
 ```
 
-I can also generate sitemaps on startup too which is "stupid easy" (as the kids say) with the help of
-Spatie's [Laravel sitemap library](https://github.com/spatie/laravel-sitemap) paired with a console command:
+I can also generate sitemaps on startup too which is "dumb easy" (as the kids say) with the help of
+Spatie's [Laravel sitemap library](https://github.com/spatie/laravel-sitemap) paired with another console command:
 
 ```php
 <?php
@@ -451,7 +452,8 @@ class GenerateSitemap extends Command
 }
 ```
 
-And in my Forge deployment script, I can simply:
+And in my Forge deployment script, I can simply add the custom artisan command to generate a new sitemap everytime I
+deploy:
 
 ```shell
 # Other stuff...
@@ -463,7 +465,7 @@ if [ -f artisan ]; then
 fi
 ```
 
-Easy... almost _too_ easy.
+Simple!
 
 # Inertia
 
@@ -471,24 +473,78 @@ Okay, so I know I'm somewhat dunking on JavaScript in this post, but truth be to
 working with each of the Big Three<sup>tm</sup> frameworks in Angular, Vue, and React. I've begrudgingly been using
 React because I'm lazy and (what seems like) one of the few that enjoy JSX. With Inertia and React, that means I can use
 things like [shad](https://ui.shadcn.com/) for getting that clean Tailwind look (there's also
-a [Vue](https://www.shadcn-vue.com/) and [Svelte](https://www.shadcn-svelte.com/) I used in the previous versions), and
+a [Vue](https://www.shadcn-vue.com/) and [Svelte](https://www.shadcn-svelte.com/) versions I used in the previous
+iterations), and
 all the neat React things that are out in the wild. If it's on the web, there's probably a React library for it.
 
 I'm a fan of [pnpm](https://pnpm.io/) as a drop in replacement for npm, and I've also decided to
 ditch [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for [biome](https://biomejs.dev/), another drop
-in
-replacement for both, written in Rust (like all good tooling nowadays). I've had my fair share of battles over the years
-with both eslint and prettier, and also getting them to play nice together (shout out
+in replacement for both tools, written in Rust (like all good tooling nowadays). I've had my fair share of battles over
+the years with both eslint and prettier, and also getting them to play nice together (shout out
 to [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier)). While they're fundamentally different
 things, i.e. formatting vs. linting, I think the argument could be made they're in the same family of code quality
-tools. Biome neatly wraps them up into a single tool and _just works_. Inertia has SSR too, which boils down to simply
-having to run an `artisan` command on deployment to spin up your Node.js server where ever it may be and point Laravel
-to it. With Forge, it's _literally_ the flip of a switch.
+tools. Biome neatly wraps them up into a single tool that _just works_. So now when I want to lint or format my React
+components, no more `.eslintrc.*` and `.prettierrc.*` files to deal with, just a single `biome.json` file:
 
-One of the things I also needed was to display some common data on each page of my site, including all the posts
+```json
+{
+    "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+    "organizeImports": {
+        "enabled": true
+    },
+    "formatter": {
+        "indentStyle": "space",
+        "indentWidth": 4
+    },
+    "linter": {
+        "enabled": true,
+        "rules": {
+            "recommended": true
+        }
+    }
+}
+```
+
+Coupled with a neat biome command:
+
+```shell
+# When I want to format things
+$ pnpm dlx @biomejs/biome format --write ./resources/js
+
+# or, if I want to lint
+$ pnpm dlx @biomejs/biome lint ./resources/js
+```
+
+Wrapping those up in my `package.json` `scripts` looks something like:
+
+```json
+{
+    // Other stuff...
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build && vite build --ssr",
+        "tailwind": "prettier --plugin prettier-plugin-tailwindcss --write ./resources/js",
+        "check": "pnpm dlx @biomejs/biome check --apply ./resources/js",
+        "fmt": "pnpm dlx @biomejs/biome format --write ./resources/js",
+        "fix": "pnpm dlx @biomejs/biome lint --apply ./resources/js",
+        "lint": "pnpm dlx @biomejs/biome lint ./resources/js",
+        "ci": "pnpm dlx @biomejs/biome ci ./resources/js",
+        "prepare": "git config core.hookspath .githooks",
+        "pre-commit": "pnpm run tailwind && pnpm run check && pnpm run fmt"
+    }
+}
+```
+
+Now unfortunately, I'm not _entirely_ free of prettier just yet, as there's still no support for [Tailwind class sorting
+in biome](https://github.com/biomejs/biome/discussions/164). I only use prettier to simply wrangle Tailwind classes,
+then let biome do the rest.
+
+Inertia has SSR too, which boils down to simply having to run an `artisan` command on deployment to spin up your Node.js
+server where ever it may be and point Laravel to it. With Forge, it's _literally_ the flip of a switch.
+
+One of the things I also needed was to display some common data on each page of my website, including on all the posts
 themselves. In the footer, you'll see a Spotify widget that displays what I'm currently listening to and the current
-build
-commit SHA the site was deployed with. With Inertia middleware, this was a simple addon to the existing configured
+build commit SHA the site was deployed with. With Inertia middleware, this was a simple addon to the existing configured
 middleware:
 
 #### app/Http/Middleware/HandleInertiaRequests.php
@@ -680,7 +736,7 @@ export default function BlogPost({post}: { post: Post }): React.JSX.Element {
 }
 ```
 
-A fairly simple component that ultimately takes the converted HTML content I've ran through the nifty PHP League's
+A fairly simple component that ultimately takes the converted HTML content I've run through the nifty PHP League's
 [CommonMark](https://commonmark.thephpleague.com/) library and spit out on the other side to `dangerouslySetInnerHTML`
 within my React code.
 
@@ -799,7 +855,7 @@ Which brings me to my next talking point...
 # Deployments
 
 I'm a big fan of GitHub Actions, and while I _could_ just trigger Forge deploys based on the latest push, it's easy
-enough to setup a simple action to ping the deployment URL to tell Forge to pull in my code and deploy the latest
+enough to set up a simple action to ping the deployment URL to tell Forge to pull in my code and deploy the latest
 version of it to the droplet. I like to display the latest commit in the footer, so I also needed a way to propagate the
 git commit SHA as an environment variable. Unfortunately, Forge only has the SHA available at deployment time.
 _Fortunately_, it's easy enough to work around by pulling in the latest configuration for production via the Forge CLI,
