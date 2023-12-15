@@ -6,7 +6,11 @@ pail:
 
 # syncs content to the database
 sync:
-    php artisan app:sync-content
+    php artisan content:sync
+
+# syncs content to the database
+migrate:
+    php artisan migrate:fresh && php artisan content:sync
 
 # runs the ssr server
 ssr:

@@ -16,7 +16,7 @@ final class SyncContent extends Command
      *
      * @var string
      */
-    protected $signature = 'app:sync-content';
+    protected $signature = 'content:sync';
 
     /**
      * The console command description.

@@ -13,7 +13,7 @@ final class PreloadCache extends Command
      *
      * @var string
      */
-    protected $signature = 'app:preload-cache';
+    protected $signature = 'cache:preload';
 
     /**
      * The console command description.

@@ -49,21 +49,6 @@ export default function SocialButtons(): React.JSX.Element {
                                 </Button>
                             </Link>
                         )}
-                        {download && (
-                            <a
-                                href="https://resume.joeymckenzie.tech/JoeyMcKenzie_resume.pdf"
-                                download="JoeyMcKenzie_resume.pdf"
-                            >
-                                <Button
-                                    className="flex w-full flex-row gap-x-2"
-                                    variant="outline"
-                                >
-                                    <Icon icon={icon} className="h-5 w-5" />
-                                    {display}
-                                    <Icon icon={external} className="h-5 w-5" />
-                                </Button>
-                            </a>
-                        )}
                     </div>
                 ),
             )}
