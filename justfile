@@ -17,7 +17,11 @@ ssr:
     pnpm run build && php artisan inertia:start-ssr
 
 # continuously runs lint on file change
-lint:
+lint-php:
     fswatch -o app/ | xargs -n1 -I{} sh -c "composer run lint"
+
+# continuously runs lint on file change
+lint-react:
+    fswatch -o resources/js | xargs -n1 -I{} sh -c "pnpm run lint"
 
 
