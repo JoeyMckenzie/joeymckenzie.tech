@@ -20,7 +20,7 @@ export default function About(): React.JSX.Element {
                         <ul className="px-8">
                             <li>
                                 I&apos;m part of team modernizing fintech
-                                systems from legacy{" "}
+                                systems from legacy .NET to modern .NET{" "}
                                 <a href="https://dotnet.microsoft.com/en-us/">
                                     .NET
                                 </a>{" "}
