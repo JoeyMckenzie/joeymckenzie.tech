@@ -25,7 +25,7 @@ export default function About(): React.JSX.Element {
                                     .NET
                                 </a>{" "}
                                 microservices running on{" "}
-                                <a href="https://docs.aws.amazon.com/">AWS</a>.
+                                <a href="https://docs.aws.amazon.com/">AWS</a>.p
                                 I spend most of time architecting serverless
                                 workloads with the likes of things like{" "}
                                 <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-rust.html">
