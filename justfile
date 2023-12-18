@@ -1,5 +1,13 @@
 default: pail
 
+# install dependencies for React and Laravel
+dev:
+    pnpm run dev & php artisan serve
+
+# install dependencies for React and Laravel
+install:
+    pnpm install & composer install
+
 # runs tail logging
 pail:
     php artisan pail
@@ -23,5 +31,3 @@ lint-php:
 # continuously runs lint on file change
 lint-react:
     fswatch -o resources/js | xargs -n1 -I{} sh -c "pnpm run lint"
-
-

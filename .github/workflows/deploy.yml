@@ -34,10 +34,13 @@ jobs:
       - name: Download current configuration
         run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
 
-      - name: Add current commit
+      - name: Add current commit and push back to forge
         run: |
-          echo FORGE_DEPLOY_COMMIT=${{ github.sha }} >> ${{ github.workspace }}/.env
-          forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
+          ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
+        working-directory: ${{ github.workspace }}
+
+      - name: Push environment to Forge
+        run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
 
       - name: Ping deploy URL
         run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}

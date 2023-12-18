@@ -129,7 +129,7 @@ Note: Using configuration file /Users/jmckenzie/projects/php/joeymckenzie.tech/p
  40/40 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
 
 
- [OK] No errors 
+ [OK] No errors
 ```
 
 Beautiful! Any source code change within my `app/` directory triggered a full linting run to make sure I was holding
@@ -341,7 +341,7 @@ $ artisan app:sync-content
 does the trick! Note: I'm a lazy developer, so my `~/.zshrc` configuration has an alias:
 
 ```shell
-alias artisan="php artisan" 
+alias artisan="php artisan"
 ```
 
 I could probably be even lazier and shorten it, but that'll do for now.
@@ -418,11 +418,11 @@ class GenerateSitemap extends Command
     {
         /** @var string $url */
         $url = config('app.url');
-        
+
         // Build the sitemap key that will ultimately live in the public directory
         $publicPath = public_path();
         $outputFile = "$publicPath/sitemap-index.xml";
-        
+
         // Grab a list of the slugs from the database so we can
         // dynamically generate the different entries of the map
         $slugs = BlogPost::select(['slug', 'updated_at'])->get();
@@ -844,7 +844,33 @@ git commit SHA as an environment variable. Unfortunately, Forge only has the SHA
 _Fortunately_, it's easy enough to work around by pulling in the latest configuration for production via the Forge CLI,
 appending the SHA as an environment variable, and simply pushing it back up to Forge before the deployment script runs.
 
-All-in-all, this is what my deploy action looks like:
+One caveat to this process is that we want the append process to only append _if_ there's currently not a commit in the `.env` file, while replacing the existing commit key-value pair if it already exists. A quick script like the follow should get the job done:
+
+```shell
+#!/bin/bash
+
+# Check if the correct number of arguments is provided
+if [ "$#" -ne 2 ]; then
+  echo "Usage: $0 <arg1> <arg2>"
+  exit 1
+fi
+
+# Assign arguments to variables
+key="$1"
+value="$2"
+
+# Check if the key already exists in the file
+if grep -q "^$key=" .env; then
+  # Replace the existing key-value pair
+  sed -i "s/^$key=.*/$key=$value/" .env
+else
+  # Append the new key-value pair to the end of the file
+  echo "$key=$value" >> .env
+fi
+```
+
+
+We can then update our deploy workflow action to call this script, pass the key and SHA to it, and execute directly before updating the production configuration. All-in-all, this is what my deploy action looks like:
 
 ```yaml
 name: Deploy to Forge
@@ -862,34 +888,37 @@ jobs:
 
         name: Deploy application
         steps:
-            -   uses: actions/checkout@v3
+            - uses: actions/checkout@v3
 
-            -   name: Setup PHP
-                id: setup-php
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: '8.3'
+            - name: Setup PHP
+              id: setup-php
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
 
-            -   name: Install Forge CLI
-                run: composer global require laravel/forge-cli
+            - name: Install Forge CLI
+              run: composer global require laravel/forge-cli
 
-            -   name: Authenticate with Forge
-                run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
+            - name: Authenticate with Forge
+              run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
 
             # Forge environment variables, including the current git commit hash,
             # aren't included as runtime environment variables and only in the build script.
             # To get the current commit propagated, pull the current production configuration,
             # and append the current commit to the file and push it back up to Forge.
-            -   name: Download current configuration
-                run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
+            - name: Download current configuration
+              run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
 
-            -   name: Add current commit
-                run: |
-                    echo FORGE_DEPLOY_COMMIT=${{ github.sha }} >> ${{ github.workspace }}/.env
-                    forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
+            - name: Add current commit and push back to forge
+              run: |
+                ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
+              working-directory: ${{ github.workspace }}
 
-            -   name: Ping deploy URL
-                run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
+            - name: Push environment to Forge
+              run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
+
+            - name: Ping deploy URL
+              run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
 ```
 
 Setting a few environment variables, badda bing, badda boom, and everything works.
@@ -909,4 +938,4 @@ and I'm well aware there's a _ton_ more to learn, but nonetheless, I'm quite exc
 
 TL;DR - Laravel is friggin' sweet.
 
-Until next time, friends! 
+Until next time, friends!
