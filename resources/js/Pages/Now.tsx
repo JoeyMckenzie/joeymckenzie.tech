@@ -20,9 +20,9 @@ export default function About(): React.JSX.Element {
                         <ul className="px-8">
                             <li>
                                 I&apos;m part of team modernizing fintech
-                                systems from legacy .NET to modern .NET
-                                microservices running on{" "}
-                                <a href="https://docs.aws.amazon.com/">AWS</a>.p
+                                systems from legacy .NET applications to modern
+                                .NET microservices running on{" "}
+                                <a href="https://docs.aws.amazon.com/">AWS</a>.
                                 I spend most of time architecting serverless
                                 workloads with the likes of things like{" "}
                                 <a href="https://docs.aws.amazon.com/lambda/latest/dg/lambda-rust.html">
