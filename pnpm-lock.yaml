@@ -27,8 +27,8 @@ dependencies:
     specifier: ^2.30.0
     version: 2.30.0
   lucide-react:
-    specifier: ^0.294.0
-    version: 0.294.0(react@18.2.0)
+    specifier: ^0.301.0
+    version: 0.301.0(react@18.2.0)
   tailwind-merge:
     specifier: ^2.1.0
     version: 2.1.0
@@ -2331,8 +2331,8 @@ packages:
       yallist: 3.1.1
     dev: true
 
-  /lucide-react@0.294.0(react@18.2.0):
-    resolution: {integrity: sha512-V7o0/VECSGbLHn3/1O67FUgBwWB+hmzshrgDVRJQhMh8uj5D3HBuIvhuAmQTtlupILSplwIZg5FTc4tTKMA2SA==}
+  /lucide-react@0.301.0(react@18.2.0):
+    resolution: {integrity: sha512-ZMbsXSv8qg3u0wqGngW+dG2Tu20fBqQAu3e0MikjGIx6KUN+4TrL2j3XwWZCcpHEfH9Tw+gqnQXRhHVne5DzJQ==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
     dependencies:
