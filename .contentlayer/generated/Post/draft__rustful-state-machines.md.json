@@ -1,0 +1,27 @@
+{
+  "title": "Rustful statement machines and event driven design",
+  "description": "A hobbyist Rustacean's ode to the Gang of Four.",
+  "pubDate": "2023-10-23T07:00:00.000Z",
+  "category": "rust",
+  "heroImage": "/images/ziggin-around/meme.jpg",
+  "draft": false,
+  "keywords": [
+    "rust",
+    "state machines",
+    "design patterns"
+  ],
+  "body": {
+    "raw": "\nBack in action, and I'm fresh off a hiatus while raising a little one. I can safely say that I _definitely_\nunderestimated\nwhat being a new parent would entail. Needless to say, as a break from changing diapers, I thought it would be fun to\nget some\nthoughts out on the blog here.\n\nFirst, I want to say **thank you** to those that have been reaching out via email with kind words regarding the mostly\ncraft beer-driven\nword adventures I have here on the blog - if you like what's going on here, give me\na [shout](mailto:joey.mckenzie27@gmail.com)!\nWith the pleasantries out of the way, let's dive back into our regularly schedule program of exploring things a bit\noutside our\n8 to 5 comfort zone.\n\nI've been writing way too many step functions in AWS lately, and I've grown somewhat of an interest in the topic of\nstate machines.\nCoincidentally, I've also taken quite a liking to PHP (pause for audible gasps) and Laravel. Couple\nwith [Jake Bennett's talk on\nstate machines in Laravel](and state machines) at the 2023 Laracon US, I thought it would be a fun thought/finger typing\nexperiment\nto explore what state machines would like in Rust.\n\nI've been skimming a newly bought copy of the [Gang of Four's holy text](https://en.wikipedia.org/wiki/Design_Patterns)\nof design patterns,\nand had immersed in state machines so much I've applied them to the my six month old's daily routine. I thought it would\nbe fun to...\n\n(**Warning**: dad joke ahead)\n\nshake the _rust_ off my blogging hiatus by implementing state patterns in Rust.\n\n## State machines and you\n\nState machines are (in my lowly opinion) one of my favorite design patterns. Couple with event driven designs, using\nstateful patterns\nallows me to think of my application as a time series - as frames advance throughout the request cycle's lifetime, I can\nthink of\nmy handlers as first responders to an event my API happens to capture.\n",
+    "html": "<p>Back in action, and I'm fresh off a hiatus while raising a little one. I can safely say that I <em>definitely</em>\nunderestimated\nwhat being a new parent would entail. Needless to say, as a break from changing diapers, I thought it would be fun to\nget some\nthoughts out on the blog here.</p>\n<p>First, I want to say <strong>thank you</strong> to those that have been reaching out via email with kind words regarding the mostly\ncraft beer-driven\nword adventures I have here on the blog - if you like what's going on here, give me\na <a href=\"mailto:joey.mckenzie27@gmail.com\">shout</a>!\nWith the pleasantries out of the way, let's dive back into our regularly schedule program of exploring things a bit\noutside our\n8 to 5 comfort zone.</p>\n<p>I've been writing way too many step functions in AWS lately, and I've grown somewhat of an interest in the topic of\nstate machines.\nCoincidentally, I've also taken quite a liking to PHP (pause for audible gasps) and Laravel. Couple\nwith [Jake Bennett's talk on\nstate machines in Laravel](and state machines) at the 2023 Laracon US, I thought it would be a fun thought/finger typing\nexperiment\nto explore what state machines would like in Rust.</p>\n<p>I've been skimming a newly bought copy of the <a href=\"https://en.wikipedia.org/wiki/Design_Patterns\">Gang of Four's holy text</a>\nof design patterns,\nand had immersed in state machines so much I've applied them to the my six month old's daily routine. I thought it would\nbe fun to...</p>\n<p>(<strong>Warning</strong>: dad joke ahead)</p>\n<p>shake the <em>rust</em> off my blogging hiatus by implementing state patterns in Rust.</p>\n<h2>State machines and you</h2>\n<p>State machines are (in my lowly opinion) one of my favorite design patterns. Couple with event driven designs, using\nstateful patterns\nallows me to think of my application as a time series - as frames advance throughout the request cycle's lifetime, I can\nthink of\nmy handlers as first responders to an event my API happens to capture.</p>"
+  },
+  "_id": "draft/rustful-state-machines.md",
+  "_raw": {
+    "sourceFilePath": "draft/rustful-state-machines.md",
+    "sourceFileName": "rustful-state-machines.md",
+    "sourceFileDir": "draft",
+    "contentType": "markdown",
+    "flattenedPath": "draft/rustful-state-machines"
+  },
+  "type": "Post",
+  "url": "/blog/draft/rustful-state-machines"
+}

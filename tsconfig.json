@@ -12,8 +12,10 @@
 		"strict": true,
 		"types": ["vinxi/client"],
 		"isolatedModules": true,
+		"baseUrl": ".",
 		"paths": {
-      "~/*": ["./src/*"]
+      "~/*": ["./src/*"],
+			"contentlayer/generated": ["./.contentlayer/generated"],
     }
 	}
 }
