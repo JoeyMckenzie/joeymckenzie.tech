@@ -1,22 +1,19 @@
 {
-    "compilerOptions": {
-        "allowJs": true,
-        "module": "ESNext",
-        "moduleResolution": "bundler",
-        "jsx": "react-jsx",
-        "strict": true,
-        "isolatedModules": true,
-        "target": "ESNext",
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "noEmit": true,
-        "paths": {
-            "@/*": ["./resources/js/*"]
-        }
-    },
-    "include": [
-        "resources/js/**/*.ts",
-        "resources/js/**/*.tsx",
-        "resources/js/**/*.d.ts"
-    ]
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"allowSyntheticDefaultImports": true,
+		"esModuleInterop": true,
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"allowJs": true,
+		"noEmit": true,
+		"strict": true,
+		"types": ["vinxi/client"],
+		"isolatedModules": true,
+		"paths": {
+      "~/*": ["./src/*"]
+    }
+	}
 }
