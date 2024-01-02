@@ -1,7 +1,21 @@
-import { createSignal } from "solid-js";
+import { cache, createAsync } from "@solidjs/router";
+import { createEffect, createSignal } from "solid-js";
+import { getSpotifyNowPlaying } from "~/lib/spotify";
+
+const getSpotifyTracking = cache(async () => {
+	"use server";
+	return await getSpotifyNowPlaying();
+}, "spotify");
+
+export const route = {
+	load: () => getSpotifyTracking(),
+};
 
 export default function Counter() {
+	const spotify = createAsync(getSpotifyTracking);
 	const [count, setCount] = createSignal(0);
+
+	createEffect(() => console.log("spotify", spotify()));
 
 	return (
 		<button

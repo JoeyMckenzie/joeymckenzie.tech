@@ -1,15 +1,5 @@
-import { A, cache } from "@solidjs/router";
+import { A } from "@solidjs/router";
 import Counter from "~/components/Counter";
-import { getSpotifyNowPlaying } from "~/lib/spotify";
-
-const getSpotifyTracking = cache(async () => {
-	"use server";
-	return getSpotifyNowPlaying();
-}, "spotify");
-
-export const route = {
-	load: () => getSpotifyTracking(),
-};
 
 export default function Home() {
 	return (
