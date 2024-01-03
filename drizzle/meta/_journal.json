@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1704241438545,
+      "tag": "0000_real_echo",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1704241502731,
+      "tag": "0001_material_dreaming_celestial",
+      "breakpoints": true
+    }
+  ]
+}

@@ -14,22 +14,28 @@
     "fmt": "pnpm dlx @biomejs/biome format --write --skip-errors src/",
     "fix": "pnpm dlx @biomejs/biome lint --apply src/",
     "lint": "pnpm dlx @biomejs/biome lint src/",
-    "ci": "pnpm dlx @biomejs/biome ci src/"
+    "ci": "pnpm dlx @biomejs/biome ci src/",
+    "generate": "drizzle-kit generate:sqlite",
+    "migrate": "drizzle-kit push:sqlite"
   },
   "lint-staged": {
     "**/*.{ts,tsx,json}": "pnpm run fmt"
   },
   "dependencies": {
+    "@libsql/client": "0.4.0-pre.5",
     "@solidjs/router": "^0.10.5",
     "@solidjs/start": "^0.4.2",
     "autoprefixer": "^10.4.14",
     "contentlayer": "^0.3.4",
     "date-fns": "^3.0.6",
+    "dotenv": "^16.3.1",
+    "drizzle-orm": "^0.29.3",
     "postcss": "^8.4.26",
     "rehype-highlight": "^7.0.0",
     "rehype-pretty-code": "^0.12.3",
     "solid-js": "^1.8.7",
     "tailwindcss": "^3.3.3",
+    "url": "^0.11.3",
     "vinxi": "0.0.59"
   },
   "engines": {
@@ -37,8 +43,12 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.4.1",
+    "@tailwindcss/typography": "^0.5.10",
     "concurrently": "^8.2.2",
+    "daisyui": "^4.4.24",
+    "drizzle-kit": "^0.20.9",
     "lint-staged": "^15.2.0",
-    "prettier-plugin-tailwindcss": "^0.5.10"
+    "prettier-plugin-tailwindcss": "^0.5.10",
+    "ts-node": "^10.9.2"
   }
 }
