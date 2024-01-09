@@ -1,20 +1,20 @@
 import { cache, createAsync } from "@solidjs/router";
 import { createEffect } from "solid-js";
-import { getViewCounts } from "~/lib/db";
+import { getPostPreviews } from "~/lib/loaders";
 
-const getBlogViewCounts = cache(async () => {
+const loadPosts = cache(async () => {
 	"use server";
-	return await getViewCounts();
-}, "viewCounts");
+	return await getPostPreviews();
+}, "posts");
 
 export const route = {
-	load: () => getBlogViewCounts(),
+	load: () => loadPosts(),
 };
 
 export default function Blog() {
-	const viewCounts = createAsync(getBlogViewCounts);
+	const posts = createAsync(loadPosts);
 
-	createEffect(() => console.log("viewCounts", viewCounts()));
+	createEffect(() => console.log("posts", posts()));
 
 	return <h1>hello</h1>;
 }

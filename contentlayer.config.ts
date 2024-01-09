@@ -3,7 +3,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 
 export const Post = defineDocumentType(() => ({
 	name: "Post",
-	filePathPattern: "**/*.md",
+	filePathPattern: process.env.NODE_ENV === 'production' ? "*[!draft]/*.md" : "**/*.md",
 	contentType: "markdown",
 	fields: {
 		title: { type: "string", required: true },

@@ -48,7 +48,6 @@
     "daisyui": "^4.4.24",
     "drizzle-kit": "^0.20.9",
     "lint-staged": "^15.2.0",
-    "prettier-plugin-tailwindcss": "^0.5.10",
-    "ts-node": "^10.9.2"
+    "prettier-plugin-tailwindcss": "^0.5.10"
   }
 }
