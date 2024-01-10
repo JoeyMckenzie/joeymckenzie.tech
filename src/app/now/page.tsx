@@ -29,7 +29,7 @@ export default function Now() {
             the help of <a href="https://inertiajs.com/">Inertia</a> served from
             a droplet on <a href="https://digitalocean.com/">DigitalOcean</a> -
             I even{" "}
-            <Link href="blog/2023/content-driven-websites-with-php-and-laravel">
+            <Link href="blog/content-driven-websites-with-php-and-laravel">
               wrote about it
             </Link>{" "}
             on my blog!
