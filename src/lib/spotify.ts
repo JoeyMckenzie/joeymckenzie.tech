@@ -34,6 +34,8 @@ export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
     ),
   });
 
+  console.log("accessTokenResponse", accessTokenResponse);
+
   const accessToken: AccessTokenResponse = await accessTokenResponse.json();
   const nowPlayingResponse = await fetch(NOW_PLAYING_URL, {
     method: "GET",
@@ -42,6 +44,8 @@ export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
       Authorization: `${accessToken.token_type} ${accessToken.access_token}`,
     },
   });
+
+  console.log("nowPlayingResponse", accessTokenResponse);
 
   // Spotify returned a 204, so no content === not playing anything
   if (nowPlayingResponse.status === 204 || !nowPlayingResponse.ok) {
