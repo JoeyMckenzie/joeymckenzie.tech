@@ -1,5 +1,5 @@
 import type { IconBaseProps } from "react-icons";
-import { SiNextdotjs, SiVercel } from "react-icons/si";
+import { SiNextdotjs, SiTurso, SiVercel } from "react-icons/si";
 
 const poweredBy = [
   {
@@ -11,6 +11,11 @@ const poweredBy = [
     display: "Vercel",
     href: "https://vercel.com",
     icon: (props: IconBaseProps) => <SiVercel {...props} />,
+  },
+  {
+    display: "Turso",
+    href: "https://turso.tech",
+    icon: (props: IconBaseProps) => <SiTurso {...props} />,
   },
 ];
 
