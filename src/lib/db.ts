@@ -32,7 +32,7 @@ export async function getViewCount(slug: string) {
     .where(eq(viewCounts.slug, slug))
     .limit(1);
 
-  return viewCountQuery;
+  return viewCountQuery[0];
 }
 
 export async function addViewCount(slug: string) {
