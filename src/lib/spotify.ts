@@ -27,6 +27,7 @@ export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
   const accessToken: AccessTokenResponse = await accessTokenResponse.json();
   const nowPlayingResponse = await fetch(NOW_PLAYING_URL, {
     method: "GET",
+    cache: "no-cache",
     headers: {
       Authorization: `${accessToken.token_type} ${accessToken.access_token}`,
     },
