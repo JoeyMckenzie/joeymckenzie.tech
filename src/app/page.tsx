@@ -1,45 +1,26 @@
-import { Post, allPosts } from "contentlayer/generated";
-import { compareDesc, format, parseISO } from "date-fns";
-import Link from "next/link";
-
-function PostCard(post: Post) {
-  return (
-    <div className="mb-8">
-      <h2 className="mb-1 text-xl">
-        <Link
-          href={post.url}
-          className="text-blue-700 hover:text-blue-900 dark:text-blue-400"
-        >
-          {post.title}
-        </Link>
-      </h2>
-      <time
-        dateTime={post.pubDate}
-        className="mb-2 block text-xs text-gray-600"
-      >
-        {format(parseISO(post.pubDate), "LLLL d, yyyy")}
-      </time>
-      <div
-        className="text-sm [&>*]:mb-3 [&>*:last-child]:mb-0"
-        // dangerouslySetInnerHTML={{ __html: post.body.html }}
-      />
-    </div>
-  );
-}
+import { BlogPreviews } from "@/components/blog-previews";
+import { SocialButtons } from "@/components/social-buttons";
 
 export default function Home() {
-  const posts = allPosts.sort((a, b) =>
-    compareDesc(new Date(a.pubDate), new Date(b.pubDate)),
-  );
-
   return (
-    <div className="mx-auto max-w-xl py-8">
-      <h1 className="mb-8 text-center text-2xl">
-        Next.js + Contentlayer Example
-      </h1>
-      {posts.map((post) => (
-        <PostCard key={post.url} {...post} />
-      ))}
-    </div>
+    <>
+      <h2 className="text-4xl font-bold tracking-tight sm:text-center">
+        Hi, I&apos;m Joey.
+      </h2>
+      <p className="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert">
+        I&apos;m a{" "}
+        <span className="font-semibold">Senior Software Engineer</span> based in
+        Northern California working in fintech. I enjoy writing about software,
+        design, dad jokes, and cheap beer among a few other things. I like
+        building fast, efficient web services, learning new things, and writing
+        code in the open source ecosystem.
+      </p>
+      <SocialButtons />
+      <h2 className="pb-4 pt-8 text-right text-4xl font-bold tracking-tight sm:text-center">
+        Latest thoughts.
+      </h2>
+      <BlogPreviews includeLatest={true} />
+      {/* <NotesToSelf notes={notes} /> */}
+    </>
   );
 }

@@ -374,7 +374,7 @@ console.
 
 An example piece of TF configuration might look like:
 
-```terraform
+```hcl
 resource "aws_lambda_function" "office_quotes" {
   function_name = "office-quotes"
 
@@ -403,7 +403,7 @@ a `bucket.tf` configuration file that will do just that:
 
 #### bucket.tf
 
-```terraform
+```hcl
 resource "random_pet" "lambda_bucket_name" {
   prefix = "rust-lambda"
 }
@@ -461,7 +461,7 @@ With our bucket configuration in place, let's define our Lambda function configu
 
 #### lambda.tf
 
-```terraform
+```hcl
 resource "aws_lambda_function" "office_quotes" {
   function_name = "office-quotes"
 
@@ -513,7 +513,7 @@ Let's hookup the final piece of infrastructure we'll need for now in an API Gate
 
 #### gateway.tf
 
-```terraform
+```hcl
 resource "aws_apigatewayv2_api" "office_gateway" {
   name = "office-gateway"
 
@@ -587,7 +587,7 @@ to step into the AWS Console and click our way through to the API Gateway dashbo
 that tell Terraform that once all of our infrastructure is created, output it to the console for us. The created
 resources are also saved in our `terraform.tfstate` file as well, so we can also reference them there if need be.
 
-```terraform
+```hcl
 output "base_url" {
   description = "Base URL for API Gateway stage."
 

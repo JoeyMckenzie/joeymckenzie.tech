@@ -23,6 +23,18 @@ export async function getViewCounts(topOnly = false) {
   return topOnly ? viewCountsQuery.slice(0, 3) : viewCountsQuery;
 }
 
+export async function getViewCount(slug: string) {
+  const viewCountQuery = await getSqlClient()
+    .select({
+      count: viewCounts.viewCount,
+    })
+    .from(viewCounts)
+    .where(eq(viewCounts.slug, slug))
+    .limit(1);
+
+  return viewCountQuery;
+}
+
 export async function addViewCount(slug: string) {
   const db = getSqlClient();
   const currentViewCount = await db

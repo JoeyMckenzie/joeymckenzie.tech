@@ -6,14 +6,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "npx @biomejs/biome lint src/",
-    "fmt": "npx @biomejs/biome format src/ --write",
-    "check": "npx @biomejs/biome check --apply src/",
+    "lint": "pnpm dlx @biomejs/biome lint src/",
+    "fmt": "pnpm dlx @biomejs/biome format src/ --write",
+    "check": "pnpm dlx @biomejs/biome check --apply src/",
     "generate": "drizzle-kit generate:sqlite",
     "migrate": "drizzle-kit push:sqlite"
   },
   "lint-staged": {
-    "**/*.{js,json,ts,tsx}": "npm run fmt"
+    "**/*.{js,json,ts,tsx}": "pnpm run fmt"
   },
   "dependencies": {
     "@libsql/client": "0.4.0-pre.7",
@@ -46,6 +46,7 @@
     "postcss": "^8",
     "rehype-highlight": "^7.0.0",
     "rehype-pretty-code": "^0.12.3",
+    "rehype-shikiji": "^0.9.18",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }

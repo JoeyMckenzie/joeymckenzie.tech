@@ -1,0 +1,75 @@
+{
+  "_BlogPreviews-2baf582e.js": {
+    "file": "assets/BlogPreviews-2baf582e.js",
+    "imports": ["resources/js/app.tsx", "_badge-87f87642.js"]
+  },
+  "_MainLayout-6cb07c7b.js": {
+    "file": "assets/MainLayout-6cb07c7b.js",
+    "imports": ["resources/js/app.tsx"]
+  },
+  "_badge-87f87642.js": {
+    "file": "assets/badge-87f87642.js",
+    "imports": ["resources/js/app.tsx", "_MainLayout-6cb07c7b.js"]
+  },
+  "resources/js/Pages/About.tsx": {
+    "file": "assets/About-c41b8185.js",
+    "imports": ["resources/js/app.tsx", "_MainLayout-6cb07c7b.js"],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/About.tsx"
+  },
+  "resources/js/Pages/Blog/Index.tsx": {
+    "file": "assets/Index-e0522682.js",
+    "imports": [
+      "resources/js/app.tsx",
+      "_BlogPreviews-2baf582e.js",
+      "_MainLayout-6cb07c7b.js",
+      "_badge-87f87642.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Blog/Index.tsx"
+  },
+  "resources/js/Pages/Blog/Post/Index.tsx": {
+    "file": "assets/Index-6362761e.js",
+    "imports": [
+      "resources/js/app.tsx",
+      "_badge-87f87642.js",
+      "_MainLayout-6cb07c7b.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Blog/Post/Index.tsx"
+  },
+  "resources/js/Pages/Home.tsx": {
+    "file": "assets/Home-f8f3588b.js",
+    "imports": [
+      "resources/js/app.tsx",
+      "_BlogPreviews-2baf582e.js",
+      "_MainLayout-6cb07c7b.js",
+      "_badge-87f87642.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Home.tsx"
+  },
+  "resources/js/Pages/Now.tsx": {
+    "file": "assets/Now-f208fa78.js",
+    "imports": ["resources/js/app.tsx", "_MainLayout-6cb07c7b.js"],
+    "isDynamicEntry": true,
+    "src": "resources/js/Pages/Now.tsx"
+  },
+  "resources/js/app.css": {
+    "file": "assets/app-c768954e.css",
+    "src": "resources/js/app.css"
+  },
+  "resources/js/app.tsx": {
+    "css": ["assets/app-c768954e.css"],
+    "dynamicImports": [
+      "resources/js/Pages/About.tsx",
+      "resources/js/Pages/Blog/Index.tsx",
+      "resources/js/Pages/Blog/Post/Index.tsx",
+      "resources/js/Pages/Home.tsx",
+      "resources/js/Pages/Now.tsx"
+    ],
+    "file": "assets/app-754fd55e.js",
+    "isEntry": true,
+    "src": "resources/js/app.tsx"
+  }
+}
