@@ -1,5 +1,4 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
-import rehypeShikiji from "rehype-shikiji";
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
@@ -26,14 +25,14 @@ export default makeSource({
   contentDirPath: "./content",
   contentDirExclude: ["draft"],
   documentTypes: [Post],
-  markdown: {
-    rehypePlugins: [
-      [
-        rehypeShikiji,
-        {
-          theme: "one-dark-pro",
-        },
-      ],
-    ],
-  },
+  // markdown: {
+  //   rehypePlugins: [
+  //     [
+  //       rehypeShikiji,
+  //       {
+  //         theme: "one-dark-pro",
+  //       },
+  //     ],
+  //   ],
+  // },
 });
