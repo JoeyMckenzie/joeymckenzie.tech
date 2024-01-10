@@ -15,16 +15,6 @@ export type NowPlayingResponse = {
 };
 
 export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
-  console.log(
-    "process.env.SPOTIFY_REFRESH_TOKEN",
-    process.env.SPOTIFY_REFRESH_TOKEN,
-  );
-  console.log("process.env.SPOTIFY_CLIENT_ID", process.env.SPOTIFY_CLIENT_ID);
-  console.log(
-    "process.env.SPOTIFY_CLIENT_SECRET",
-    process.env.SPOTIFY_CLIENT_SECRET,
-  );
-
   const accessTokenResponse = await fetch(TOKEN_URL, {
     method: "POST",
     body: getRequestBody(process.env.SPOTIFY_REFRESH_TOKEN ?? ""),
@@ -34,8 +24,6 @@ export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
     ),
   });
 
-  console.log("accessTokenResponse", accessTokenResponse);
-
   const accessToken: AccessTokenResponse = await accessTokenResponse.json();
   const nowPlayingResponse = await fetch(NOW_PLAYING_URL, {
     method: "GET",
@@ -44,8 +32,6 @@ export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
       Authorization: `${accessToken.token_type} ${accessToken.access_token}`,
     },
   });
-
-  console.log("nowPlayingResponse", accessTokenResponse);
 
   // Spotify returned a 204, so no content === not playing anything
   if (nowPlayingResponse.status === 204 || !nowPlayingResponse.ok) {
