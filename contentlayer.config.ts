@@ -1,4 +1,5 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files";
+import rehypeShikiji from "rehype-shikiji";
 
 export const Post = defineDocumentType(() => ({
   name: "Post",
@@ -25,14 +26,15 @@ export default makeSource({
   contentDirPath: "./content",
   contentDirExclude: ["draft"],
   documentTypes: [Post],
-  // markdown: {
-  //   rehypePlugins: [
-  //     [
-  //       rehypeShikiji,
-  //       {
-  //         theme: "one-dark-pro",
-  //       },
-  //     ],
-  //   ],
-  // },
+  markdown: {
+    rehypePlugins: [
+      [
+        // @ts-expect-error plugin is properly typed, not sure why contentlayer takes issue with this
+        rehypeShikiji,
+        {
+          theme: "one-dark-pro",
+        },
+      ],
+    ],
+  },
 });
