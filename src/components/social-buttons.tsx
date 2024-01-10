@@ -27,8 +27,11 @@ export function SocialButtons() {
       {socials.map((social) => (
         <div key={social.display}>
           <a href={social.href}>
-            <Button className="flex w-full flex-row gap-x-4" variant="outline">
-              <social.icon className="h-5 w-5" />
+            <Button
+              className="flex justify-center items-center w-full flex-row gap-x-3"
+              variant="outline"
+            >
+              <social.icon className="h-4 w-4" />
               {social.display}
               <FaExternalLinkAlt className="h-3 w-3" />
             </Button>

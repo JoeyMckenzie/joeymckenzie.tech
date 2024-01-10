@@ -3,7 +3,9 @@ import Link from "next/link";
 export default function Now() {
   return (
     <>
-      <h2 className="text-4xl font-bold tracking-tight sm:text-center">Now.</h2>
+      <h2 className="text-4xl font-semibold tracking-tight sm:text-center">
+        Now.
+      </h2>
       <div className="prose mx-auto flex max-w-2xl flex-col leading-6 dark:prose-invert">
         <p className="mt-6">
           A few things I&apos;m working on{" "}

@@ -4,7 +4,7 @@ export default function Blog() {
   return (
     <>
       <div className="pb-12">
-        <h2 className="text-4xl font-bold tracking-tight sm:text-center">
+        <h2 className="text-4xl font-semibold tracking-tight sm:text-center">
           Blog.
         </h2>
         <p className="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert">

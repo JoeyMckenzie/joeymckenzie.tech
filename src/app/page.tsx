@@ -4,7 +4,7 @@ import { SocialButtons } from "@/components/social-buttons";
 export default function Home() {
   return (
     <>
-      <h2 className="text-4xl font-bold tracking-tight sm:text-center">
+      <h2 className="text-4xl font-semibold tracking-tight sm:text-center">
         Hi, I&apos;m Joey.
       </h2>
       <p className="prose mx-auto mt-6 text-justify leading-6 dark:prose-invert">
@@ -16,7 +16,7 @@ export default function Home() {
         code in the open source ecosystem.
       </p>
       <SocialButtons />
-      <h2 className="pb-4 pt-8 text-right text-4xl font-bold tracking-tight sm:text-center">
+      <h2 className="pb-4 pt-8 text-right text-4xl font-semibold tracking-tight sm:text-center">
         Latest thoughts.
       </h2>
       <BlogPreviews includeLatest={true} />

@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="h-full">
       <head>
         <link
           rel="apple-touch-icon"
@@ -42,7 +42,7 @@ export default function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body className={figtree.className}>
+      <body className={`${figtree.className} h-full`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
