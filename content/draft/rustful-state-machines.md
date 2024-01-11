@@ -5,9 +5,10 @@ pubDate: 'Oct 23 2023'
 heroImage: '/images/ziggin-around/meme.jpg'
 category: 'rust'
 keywords:
-    - rust
-    - state machines
-    - design patterns
+  - rust
+  - state machines
+  - design patterns
+draft: true
 ---
 
 Back in action, and I'm fresh off a hiatus while raising a little one. I can safely say that I _definitely_
