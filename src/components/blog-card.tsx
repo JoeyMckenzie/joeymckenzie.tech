@@ -12,11 +12,7 @@ async function Views({ slug }: { slug: string }) {
   return <ViewCounter viewsForSlug={views} />;
 }
 
-export default function BlogCard({
-  post,
-}: {
-  post: Post;
-}): React.JSX.Element {
+export default function BlogCard({ post }: { post: Post }): React.JSX.Element {
   const formattedDate = format(new Date(post.pubDate), "PP");
 
   return (

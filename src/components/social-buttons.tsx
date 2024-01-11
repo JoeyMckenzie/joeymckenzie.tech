@@ -28,7 +28,7 @@ export function SocialButtons() {
         <div key={social.display}>
           <a href={social.href}>
             <Button
-              className="flex justify-center items-center w-full flex-row gap-x-3"
+              className="flex w-full flex-row items-center justify-center gap-x-3"
               variant="outline"
             >
               <social.icon className="h-4 w-4" />

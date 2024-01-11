@@ -2,11 +2,7 @@ import { getSpotifyNowPlaying } from "@/lib/spotify";
 import { NowPlaying } from "@/lib/types";
 import * as React from "react";
 
-function NotCurrentlyPlaying({
-  children,
-}: {
-  children: React.JSX.Element;
-}) {
+function NotCurrentlyPlaying({ children }: { children: React.JSX.Element }) {
   return (
     <div className="flex flex-col space-y-1">
       <div className="flex flex-row items-center justify-center space-x-2">

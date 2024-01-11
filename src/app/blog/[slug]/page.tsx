@@ -10,7 +10,9 @@ import { Suspense, cache } from "react";
 
 export async function generateMetadata({
   params,
-}: { params: { slug: string } }): Promise<Metadata> {
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
   const post = await loadPost(params.slug);
 
   return {
@@ -47,7 +49,7 @@ export default async function Post({ params }: { params: { slug: string } }) {
     <>
       <div className="flex flex-col justify-center">
         <article className="prose mx-auto w-full overflow-hidden pb-6 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
-          <h1 className="text-center text-2xl">{post.title}</h1>
+          <h1 className="text-center text-2xl font-semibold">{post.title}</h1>
           <div className="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight">
             <time dateTime={post.pubDate}>{formattedDate}</time>
             <Badge>{post.category}</Badge>

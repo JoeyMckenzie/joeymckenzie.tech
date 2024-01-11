@@ -3,7 +3,9 @@ import BlogCard from "./blog-card";
 
 export async function BlogPreviews({
   includeLatest,
-}: { includeLatest: boolean }) {
+}: {
+  includeLatest: boolean;
+}) {
   const posts = loadPostPreviews(includeLatest);
 
   return (
