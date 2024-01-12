@@ -24,6 +24,50 @@ function ContentLayerIcon(props: IconBaseProps) {
   );
 }
 
+function DrizzleIcon(props: IconBaseProps) {
+  return (
+    <svg
+      className="p-1"
+      {...props}
+      width="160"
+      height="160"
+      viewBox="0 0 160 160"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <title>Drizzle ORM</title>
+      <rect
+        width="9.63139"
+        height="40.8516"
+        rx="4.8157"
+        transform="matrix(0.873028 0.48767 -0.497212 0.867629 43.4805 67.3037)"
+        fill="currentColor"
+      />
+      <rect
+        width="9.63139"
+        height="40.8516"
+        rx="4.8157"
+        transform="matrix(0.873028 0.48767 -0.497212 0.867629 76.9395 46.5342)"
+        fill="currentColor"
+      />
+      <rect
+        width="9.63139"
+        height="40.8516"
+        rx="4.8157"
+        transform="matrix(0.873028 0.48767 -0.497212 0.867629 128.424 46.5352)"
+        fill="currentColor"
+      />
+      <rect
+        width="9.63139"
+        height="40.8516"
+        rx="4.8157"
+        transform="matrix(0.873028 0.48767 -0.497212 0.867629 94.957 67.3037)"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
 const poweredBy = [
   {
     display: "Next.js",
@@ -40,11 +84,16 @@ const poweredBy = [
     href: "https://turso.tech",
     icon: (props: IconBaseProps) => <SiTurso {...props} />,
   },
-  {
-    display: "Contentlayer",
-    href: "https://contentlayer.dev",
-    icon: (props: IconBaseProps) => <ContentLayerIcon {...props} />,
-  },
+  // {
+  //   display: "Contentlayer",
+  //   href: "https://contentlayer.dev",
+  //   icon: (props: IconBaseProps) => <ContentLayerIcon {...props} />,
+  // },
+  // {
+  //   display: "Drizzle",
+  //   href: "https://orm.drizzle.team/",
+  //   icon: (props: IconBaseProps) => <DrizzleIcon {...props} />,
+  // },
 ];
 
 export function PoweredBy(): React.JSX.Element {
@@ -58,7 +107,7 @@ export function PoweredBy(): React.JSX.Element {
       {poweredBy.map((provider) => (
         <a key={provider.display} href={provider.href}>
           <span className="sr-only">{provider.display}</span>
-          <provider.icon className="h-5 w-5 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110" />
+          <provider.icon className="h-5 w-5 text-neutral-900 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 dark:text-neutral-100" />
         </a>
       ))}
 
