@@ -12,6 +12,7 @@
         "graham-campbell/markdown": "^15.0",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.6.3",
+        "joeymckenzie/openbrewerydb-php-api": "^0.3.0",
         "laravel/framework": "^10.10",
         "laravel/pail": "^1.0",
         "laravel/tinker": "^2.8",

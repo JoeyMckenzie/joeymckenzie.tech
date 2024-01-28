@@ -32,7 +32,7 @@ export default function NotesToSelf({
             <div className="mx-auto grid max-w-3xl grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3">
                 {notes.map(({ title, description }, index) => (
                     <NoteDisplay
-                        key={`note-${index}`}
+                        key={`note-${title}`}
                         title={title}
                         description={description}
                     />

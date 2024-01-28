@@ -1,6 +1,7 @@
 {
     "private": true,
     "type": "module",
+    "packageManager": "pnpm@8.15.0",
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build && vite build --ssr",

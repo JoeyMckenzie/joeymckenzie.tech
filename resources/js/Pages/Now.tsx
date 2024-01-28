@@ -20,8 +20,8 @@ export default function About(): React.JSX.Element {
                         <ul className="px-8">
                             <li>
                                 I&apos;m part of team modernizing fintech
-                                systems from legacy .NET applications to modern
-                                .NET microservices running on{" "}
+                                systems from legacy .NET to modern .NET running
+                                on{" "}
                                 <a href="https://docs.aws.amazon.com/">AWS</a>.
                                 I spend most of time architecting serverless
                                 workloads with the likes of things like{" "}
@@ -68,16 +68,16 @@ export default function About(): React.JSX.Element {
                                 library.
                             </li>
                             <li>
-                                I&apos;m doing{" "}
-                                <a href="https://adventofcode.com/">
-                                    Advent of Code
+                                I like beer - and as such, I wrote a{" "}
+                                <a href="https://github.com/JoeyMckenzie/openbrewerydb-php-api">
+                                    PHP library
                                 </a>{" "}
-                                this year in{" "}
-                                <a href="https://github.com/JoeyMckenzie/advent-of-code-2023">
-                                    PHP
-                                </a>
-                                . Another year, another round of string split
-                                mania...
+                                that wraps the{" "}
+                                <a href="https://openbrewerydb.org/">
+                                    Open Brewery DB
+                                </a>{" "}
+                                API providing brewery data from pubs across the
+                                world.
                             </li>
                             <li>
                                 I write a lot of{" "}
