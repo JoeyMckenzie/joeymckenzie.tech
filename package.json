@@ -19,7 +19,7 @@
         "**/*.php": "composer run fmt"
     },
     "devDependencies": {
-        "@biomejs/biome": "1.4.1",
+        "@biomejs/biome": "1.5.3",
         "@headlessui/react": "^1.4.2",
         "@inertiajs/react": "^1.0.0",
         "@tailwindcss/forms": "^0.5.3",
