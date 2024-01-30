@@ -7,7 +7,7 @@
         "build": "tsc && vite build && vite build --ssr",
         "tailwind": "prettier --plugin prettier-plugin-tailwindcss --write ./resources/js",
         "check": "pnpm dlx @biomejs/biome check --apply ./resources/js",
-        "fmt": "pnpm dlx @biomejs/biome format --write --skip-errors ./resources/js",
+        "fmt": "pnpm dlx @biomejs/biome format --write ./resources/js",
         "fix": "pnpm dlx @biomejs/biome lint --apply ./resources/js",
         "lint": "pnpm dlx @biomejs/biome lint ./resources/js",
         "ci": "pnpm dlx @biomejs/biome ci ./resources/js",

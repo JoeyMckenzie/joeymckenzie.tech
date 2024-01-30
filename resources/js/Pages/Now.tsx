@@ -2,7 +2,16 @@ import MainLayout from "@/Layouts/MainLayout";
 import { Head, Link } from "@inertiajs/react";
 import * as React from "react";
 
-export default function About(): React.JSX.Element {
+type RandomBrewery = {
+    name: string;
+    url: string;
+};
+
+export default function Now({
+    brewery,
+}: {
+    brewery: RandomBrewery;
+}): React.JSX.Element {
     return (
         <>
             <Head title="Now | joeymckenzie.tech" />

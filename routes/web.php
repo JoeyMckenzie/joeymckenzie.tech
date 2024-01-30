@@ -1,6 +1,7 @@
 <?php
 
 use App\Contracts\ContentRepositoryContract;
+use App\Http\Controllers\NowController;
 use App\Models\Note;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,11 +33,7 @@ Route::get('', fn (ContentRepositoryContract $contentRepository) => Inertia::ren
 ]))
     ->name('home');
 
-Route::get('about', fn () => Inertia::render('About'))
-    ->name('about');
-
-Route::get('now', fn () => Inertia::render('Now'))
-    ->name('now');
+Route::get('now', [NowController::class, 'index'])->name('now');
 
 Route::get('blog', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Index', [
     'frontMatters' => array_values(
