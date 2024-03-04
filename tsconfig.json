@@ -5,6 +5,7 @@
         "moduleResolution": "bundler",
         "jsx": "preserve",
         "strict": true,
+        "strictNullChecks": true,
         "isolatedModules": true,
         "target": "ESNext",
         "esModuleInterop": true,
@@ -16,5 +17,9 @@
             "ziggy-js": ["./vendor/tightenco/ziggy"]
         }
     },
-    "include": ["resources/js/**/*.ts", "resources/js/**/*.d.ts", "resources/js/**/*.vue"]
+    "include": [
+        "resources/js/**/*.ts",
+        "resources/js/**/*.d.ts",
+        "resources/js/**/*.vue"
+    ]
 }
