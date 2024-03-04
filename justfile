@@ -26,7 +26,7 @@ lint:
 
 # check types on any file change
 lint-js:
-    find resources/ | entr -s 'npm run lint'
+    find resources/ | entr -s 'npm run lint:check'
 
 # run tests in parallel
 test:
