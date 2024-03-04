@@ -34,4 +34,4 @@ test:
 
 # keep ourselves honest, practice safe CI
 ci:
-    npm run ci && composer run ci
+    npm run pre-commit && composer run ci

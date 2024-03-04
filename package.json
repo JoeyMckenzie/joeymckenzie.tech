@@ -3,7 +3,16 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vue-tsc && vite build && vite build --ssr"
+        "build": "vue-tsc && vite build && vite build --ssr",
+        "fmt:check": "prettier ./resources/js --plugin=prettier-plugin-tailwindcss --check",
+        "fmt:write": "prettier ./resources/js --plugin=prettier-plugin-tailwindcss --write",
+        "pre-commit": "npm run fmt:write"
+    },
+    "lint-staged": {
+        "**/*.{js,ts,tsx,json,yml}": [
+            "pnpm run fmt:write"
+        ],
+        "**/*.php": "composer run fmt"
     },
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
@@ -13,7 +22,10 @@
         "autoprefixer": "^10.4.12",
         "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.0",
+        "lint-staged": "^15.2.2",
         "postcss": "^8.4.31",
+        "prettier": "^3.2.5",
+        "prettier-plugin-tailwindcss": "^0.5.11",
         "tailwindcss": "^3.2.1",
         "typescript": "^5.0.2",
         "vite": "^5.0",
