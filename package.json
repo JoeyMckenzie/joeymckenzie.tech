@@ -11,9 +11,7 @@
         "pre-commit": "npm run fmt:write"
     },
     "lint-staged": {
-        "**/*.{js,ts,tsx,json,yml}": [
-            "npm run fmt:write"
-        ],
+        "**/*.{js,ts,tsx,json,yml}": "npm run fmt:write",
         "**/*.php": "composer run fmt"
     },
     "devDependencies": {
