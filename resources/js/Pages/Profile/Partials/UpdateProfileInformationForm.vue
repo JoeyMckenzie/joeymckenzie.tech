@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { Button } from '@/Components/ui/button';
+import { Label } from '@/Components/ui/label';
+import { Input } from '@/Components/ui/input';
 
 defineProps<{
     mustVerifyEmail?: Boolean;
@@ -35,9 +35,9 @@ const form = useForm({
             @submit.prevent="form.patch(route('profile.update'))"
         >
             <div>
-                <InputLabel for="name" value="Name" />
+                <Label for="name" value="Name" />
 
-                <TextInput
+                <Input
                     id="name"
                     v-model="form.name"
                     autocomplete="name"
@@ -51,9 +51,9 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="email" value="Email" />
+                <Label for="email">Email</Label>
 
-                <TextInput
+                <Input
                     id="email"
                     v-model="form.email"
                     autocomplete="username"
@@ -87,7 +87,7 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <Button :disabled="form.processing">Save</Button>
 
                 <Transition
                     enter-active-class="transition ease-in-out"

@@ -4,10 +4,11 @@
     "scripts": {
         "dev": "vite",
         "build": "vue-tsc && vite build && vite build --ssr",
-        "fmt:check": "prettier ./resources/js --plugin=prettier-plugin-tailwindcss --check",
-        "fmt:write": "prettier ./resources/js --plugin=prettier-plugin-tailwindcss --write",
+        "fmt": "prettier ./resources/js --plugin=prettier-plugin-tailwindcss",
+        "fmt:check": "npm run fmt -- --check",
+        "fmt:write": "npm run fmt -- --write",
         "lint:check": "eslint \"./resources/js/**/*.{ts,vue}\"",
-        "lint:fix": "eslint \"./resources/js/**/*.{ts,vue}\" --fix",
+        "lint:fix": "npm run lint:check -- --fix",
         "pre-commit": "npm run fmt:write",
         "check": "npm run fmt:check && npm run lint:check"
     },
@@ -38,5 +39,14 @@
         "vue": "^3.4.0",
         "vue-eslint-parser": "^9.4.2",
         "vue-tsc": "^1.8.27"
+    },
+    "dependencies": {
+        "@radix-icons/vue": "^1.0.0",
+        "@vueuse/core": "^10.9.0",
+        "class-variance-authority": "^0.7.0",
+        "clsx": "^2.1.0",
+        "radix-vue": "^1.4.9",
+        "tailwind-merge": "^2.2.1",
+        "tailwindcss-animate": "^1.0.7"
     }
 }

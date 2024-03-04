@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import route from 'ziggy-js';
+import { Checkbox } from '@/Components/ui/checkbox';
+import { Button } from '@/Components/ui/button';
+import { Label } from '@/Components/ui/label';
+import { Input } from '@/Components/ui/input';
 
 defineProps<{
     canResetPassword?: boolean;
@@ -38,9 +38,9 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <Label for="email">Email</Label>
 
-                <TextInput
+                <Input
                     id="email"
                     v-model="form.email"
                     autocomplete="username"
@@ -54,9 +54,9 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <Label for="password">Password</Label>
 
-                <TextInput
+                <Input
                     id="password"
                     v-model="form.password"
                     autocomplete="current-password"
@@ -84,13 +84,13 @@ const submit = () => {
                     Forgot your password?
                 </Link>
 
-                <PrimaryButton
+                <Button
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                     class="ms-4"
                 >
                     Log in
-                </PrimaryButton>
+                </Button>
             </div>
         </form>
     </GuestLayout>

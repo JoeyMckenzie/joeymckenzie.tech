@@ -1,0 +1,4 @@
+resources/js/types/global.d.ts
+resources/js/shad.ts
+resources/js/Components/ui/**/*.ts
+resources/js/Components/ui/**/*.vue

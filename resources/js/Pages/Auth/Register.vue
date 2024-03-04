@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import route from 'ziggy-js';
+import { Button } from '@/Components/ui/button';
+import { Label } from '@/Components/ui/label';
+import { Input } from '@/Components/ui/input';
 
 const form = useForm({
     name: '',
@@ -29,9 +29,9 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <Label for="name">Name</Label>
 
-                <TextInput
+                <Input
                     id="name"
                     v-model="form.name"
                     autocomplete="name"
@@ -45,9 +45,9 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+                <Label for="email">Email</Label>
 
-                <TextInput
+                <Input
                     id="email"
                     v-model="form.email"
                     autocomplete="username"
@@ -60,9 +60,9 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+                <Label for="password">Password</Label>
 
-                <TextInput
+                <Input
                     id="password"
                     v-model="form.password"
                     autocomplete="new-password"
@@ -75,12 +75,9 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <InputLabel
-                    for="password_confirmation"
-                    value="Confirm Password"
-                />
+                <Label for="password_confirmation">Confirm Password</Label>
 
-                <TextInput
+                <Input
                     id="password_confirmation"
                     v-model="form.password_confirmation"
                     autocomplete="new-password"
@@ -103,13 +100,13 @@ const submit = () => {
                     Already registered?
                 </Link>
 
-                <PrimaryButton
+                <Button
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                     class="ms-4"
                 >
                     Register
-                </PrimaryButton>
+                </Button>
             </div>
         </form>
     </GuestLayout>

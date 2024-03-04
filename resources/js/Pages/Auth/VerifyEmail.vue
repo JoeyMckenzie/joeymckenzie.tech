@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import { computed } from 'vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import route from 'ziggy-js';
+import { Button } from '@/Components/ui/button';
 
 const props = defineProps<{
     status?: string;
@@ -40,12 +40,12 @@ const verificationLinkSent = computed(
 
         <form @submit.prevent="submit">
             <div class="mt-4 flex items-center justify-between">
-                <PrimaryButton
+                <Button
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
                     Resend Verification Email
-                </PrimaryButton>
+                </Button>
 
                 <Link
                     :href="route('logout')"

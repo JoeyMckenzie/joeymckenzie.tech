@@ -28,6 +28,10 @@ lint:
 lint-js:
     find resources/ | entr -s 'npm run lint:check'
 
+# check types on any file change
+build-js:
+    find resources/ | entr -s 'npm run build'
+
 # run tests in parallel
 test:
     find app/ tests/ | entr -s 'composer run test'

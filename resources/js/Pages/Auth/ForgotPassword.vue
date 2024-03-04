@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import { Label } from '@/Components/ui/label';
+import { Input } from '@/Components/ui/input';
 import { Head, useForm } from '@inertiajs/vue3';
 import route from 'ziggy-js';
+import { Button } from '@/Components/ui/button';
 
 defineProps<{
     status?: string;
@@ -36,9 +36,9 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <Label for="email">Email</Label>
 
-                <TextInput
+                <Input
                     id="email"
                     v-model="form.email"
                     autocomplete="username"
@@ -52,12 +52,12 @@ const submit = () => {
             </div>
 
             <div class="mt-4 flex items-center justify-end">
-                <PrimaryButton
+                <Button
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
                     Email Password Reset Link
-                </PrimaryButton>
+                </Button>
             </div>
         </form>
     </GuestLayout>

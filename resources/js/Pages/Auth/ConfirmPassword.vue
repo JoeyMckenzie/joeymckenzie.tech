@@ -1,11 +1,11 @@
 <script lang="ts" setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { Head, useForm } from '@inertiajs/vue3';
 import route from 'ziggy-js';
+import { Button } from '@/Components/ui/button';
+import { Label } from '@/Components/ui/label';
+import { Input } from '@/Components/ui/input';
 
 const form = useForm({
     password: '',
@@ -31,8 +31,9 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="password" value="Password" />
-                <TextInput
+                <Label for="password" value="Password" />
+
+                <Input
                     id="password"
                     v-model="form.password"
                     autocomplete="current-password"
@@ -41,17 +42,18 @@ const submit = () => {
                     required
                     type="password"
                 />
+                
                 <InputError :message="form.errors.password" class="mt-2" />
             </div>
 
             <div class="mt-4 flex justify-end">
-                <PrimaryButton
+                <Button
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                     class="ms-4"
                 >
                     Confirm
-                </PrimaryButton>
+                </Button>
             </div>
         </form>
     </GuestLayout>
