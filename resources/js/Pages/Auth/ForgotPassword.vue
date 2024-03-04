@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -40,14 +40,14 @@ const submit = () => {
                 <TextInput
                     id="email"
                     v-model="form.email"
-                    type="email"
+                    autocomplete="username"
+                    autofocus
                     class="mt-1 block w-full"
                     required
-                    autofocus
-                    autocomplete="username"
+                    type="email"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError :message="form.errors.email" class="mt-2" />
             </div>
 
             <div class="mt-4 flex items-center justify-end">

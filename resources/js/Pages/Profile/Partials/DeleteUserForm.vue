@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import DangerButton from '@/Components/DangerButton.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -67,18 +67,18 @@ const closeModal = () => {
 
                 <div class="mt-6">
                     <InputLabel
+                        class="sr-only"
                         for="password"
                         value="Password"
-                        class="sr-only"
                     />
 
                     <TextInput
                         id="password"
                         ref="passwordInput"
                         v-model="form.password"
-                        type="password"
                         class="mt-1 block w-3/4"
                         placeholder="Password"
+                        type="password"
                         @keyup.enter="deleteUser"
                     />
 
@@ -91,9 +91,9 @@ const closeModal = () => {
                     </SecondaryButton>
 
                     <DangerButton
-                        class="ms-3"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
+                        class="ms-3"
                         @click="deleteUser"
                     >
                         Delete Account

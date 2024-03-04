@@ -1,4 +1,4 @@
-import { createSSRApp, h, DefineComponent } from 'vue';
+import { createSSRApp, DefineComponent, h } from 'vue';
 import { renderToString } from '@vue/server-renderer';
 import { createInertiaApp } from '@inertiajs/vue3';
 import createServer from '@inertiajs/vue3/server';

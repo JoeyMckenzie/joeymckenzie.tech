@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
@@ -34,20 +34,20 @@ const submit = () => {
                 <TextInput
                     id="password"
                     v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
                     autocomplete="current-password"
                     autofocus
+                    class="mt-1 block w-full"
+                    required
+                    type="password"
                 />
-                <InputError class="mt-2" :message="form.errors.password" />
+                <InputError :message="form.errors.password" class="mt-2" />
             </div>
 
             <div class="mt-4 flex justify-end">
                 <PrimaryButton
-                    class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
+                    class="ms-4"
                 >
                     Confirm
                 </PrimaryButton>

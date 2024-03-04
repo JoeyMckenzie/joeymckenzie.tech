@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script lang="ts" setup>
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
@@ -40,14 +40,14 @@ const form = useForm({
                 <TextInput
                     id="name"
                     v-model="form.name"
-                    type="text"
+                    autocomplete="name"
+                    autofocus
                     class="mt-1 block w-full"
                     required
-                    autofocus
-                    autocomplete="name"
+                    type="text"
                 />
 
-                <InputError class="mt-2" :message="form.errors.name" />
+                <InputError :message="form.errors.name" class="mt-2" />
             </div>
 
             <div>
@@ -56,13 +56,13 @@ const form = useForm({
                 <TextInput
                     id="email"
                     v-model="form.email"
-                    type="email"
+                    autocomplete="username"
                     class="mt-1 block w-full"
                     required
-                    autocomplete="username"
+                    type="email"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError :message="form.errors.email" class="mt-2" />
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
@@ -70,9 +70,9 @@ const form = useForm({
                     Your email address is unverified.
                     <Link
                         :href="route('verification.send')"
-                        method="post"
                         as="button"
                         class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        method="post"
                     >
                         Click here to re-send the verification email.
                     </Link>
