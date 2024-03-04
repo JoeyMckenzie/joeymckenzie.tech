@@ -8,7 +8,8 @@
         "fmt:write": "prettier ./resources/js --plugin=prettier-plugin-tailwindcss --write",
         "lint:check": "eslint \"./resources/js/**/*.{ts,vue}\"",
         "lint:fix": "eslint \"./resources/js/**/*.{ts,vue}\" --fix",
-        "pre-commit": "npm run fmt:write"
+        "pre-commit": "npm run fmt:write",
+        "check": "npm run fmt:check && npm run lint:check"
     },
     "lint-staged": {
         "**/*.{js,ts,tsx,json,yml}": "npm run fmt:write",
