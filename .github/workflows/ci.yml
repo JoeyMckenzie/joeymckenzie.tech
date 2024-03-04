@@ -32,6 +32,9 @@ jobs:
       - name: Lint TypeScript files
         run: npm run check
 
+      - name: Build SSR bundle
+        run: npm run build
+
   tests:
     runs-on: ubuntu-latest
     timeout-minutes: 5
