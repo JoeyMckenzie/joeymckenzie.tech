@@ -15,16 +15,10 @@ jobs:
         with:
           php-version: '8.3'
 
-      - name: Setup npm
-        uses: npm/action-setup@v2
-        with:
-          version: latest
-
       - name: Setup node
         uses: actions/setup-node@v3
         with:
           node-version: latest
-          cache: 'npm'
 
       - name: Install node dependencies
         run: npm install
@@ -66,11 +60,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-
-      - name: Setup npm
-        uses: npm/action-setup@v2
-        with:
-          version: latest
 
       - name: Copy .env
         run: cp .env.ci .env
