@@ -42,7 +42,7 @@ const submit = () => {
                     required
                     type="password"
                 />
-                
+
                 <InputError :message="form.errors.password" class="mt-2" />
             </div>
 

@@ -1,12 +1,20 @@
 <script lang="ts" setup>
 import InputError from '@/Components/InputError.vue';
-import Modal from '@/Components/Modal.vue';
 import { useForm } from '@inertiajs/vue3';
 import { nextTick, ref } from 'vue';
 import route from 'ziggy-js';
 import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { Input } from '@/Components/ui/input';
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from '@/Components/ui/dialog';
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref<HTMLInputElement | null>(null);
@@ -51,22 +59,24 @@ const closeModal = () => {
             </p>
         </header>
 
-        <Button variant="destructive" @click="confirmUserDeletion"
-            >Delete Account
-        </Button>
-
-        <Modal :show="confirmingUserDeletion" @close="closeModal">
-            <div class="p-6">
-                <h2 class="text-lg font-medium text-gray-900">
-                    Are you sure you want to delete your account?
-                </h2>
-
-                <p class="mt-1 text-sm text-gray-600">
-                    Once your account is deleted, all of its resources and data
-                    will be permanently deleted. Please enter your password to
-                    confirm you would like to permanently delete your account.
-                </p>
-
+        <Dialog>
+            <DialogTrigger as-child>
+                <Button variant="destructive" @click="confirmUserDeletion"
+                    >Delete Account
+                </Button>
+            </DialogTrigger>
+            <DialogContent class="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle class="text-lg font-medium text-gray-900"
+                        >Are you sure you want to delete your account?
+                    </DialogTitle>
+                    <DialogDescription class="mt-1 text-sm text-gray-600">
+                        Once your account is deleted, all of its resources and
+                        data will be permanently deleted. Please enter your
+                        password to confirm you would like to permanently delete
+                        your account.
+                    </DialogDescription>
+                </DialogHeader>
                 <div class="mt-6">
                     <Label class="sr-only" for="password">Password</Label>
 
@@ -74,7 +84,7 @@ const closeModal = () => {
                         id="password"
                         ref="passwordInput"
                         v-model="form.password"
-                        class="mt-1 block w-3/4"
+                        class="mt-1 block w-full"
                         placeholder="Password"
                         type="password"
                         @keyup.enter="deleteUser"
@@ -82,8 +92,7 @@ const closeModal = () => {
 
                     <InputError :message="form.errors.password" class="mt-2" />
                 </div>
-
-                <div class="mt-6 flex justify-end">
+                <DialogFooter class="mt-6 flex justify-end">
                     <Button variant="secondary" @click="closeModal">
                         Cancel
                     </Button>
@@ -92,13 +101,14 @@ const closeModal = () => {
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"
                         class="ms-3"
+                        type="submit"
                         variant="destructive"
                         @click="deleteUser"
                     >
                         Delete Account
                     </Button>
-                </div>
-            </div>
-        </Modal>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     </section>
 </template>
