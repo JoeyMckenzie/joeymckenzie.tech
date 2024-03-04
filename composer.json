@@ -27,6 +27,7 @@
         "pestphp/pest-plugin-laravel": "^2.0",
         "pestphp/pest-plugin-type-coverage": "^2.8",
         "phpstan/phpstan-strict-rules": "^1.5",
+        "rector/rector": "^1.0",
         "spatie/laravel-ignition": "^2.4"
     },
     "autoload": {

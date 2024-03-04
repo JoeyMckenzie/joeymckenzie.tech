@@ -1,3 +1,4 @@
 #!/bin/bash
 
-just ci
+composer run lint
+npm run lint:check
