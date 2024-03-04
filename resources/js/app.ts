@@ -24,4 +24,6 @@ createInertiaApp({
     progress: {
         color: '#4B5563',
     },
-});
+})
+    .then(() => console.log('Inertia successfully initialized!'))
+    .catch(console.error);
