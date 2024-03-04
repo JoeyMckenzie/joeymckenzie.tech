@@ -6,6 +6,8 @@
         "build": "vue-tsc && vite build && vite build --ssr",
         "fmt:check": "prettier ./resources/js --plugin=prettier-plugin-tailwindcss --check",
         "fmt:write": "prettier ./resources/js --plugin=prettier-plugin-tailwindcss --write",
+        "lint:check": "eslint \"./resources/js/**/*.{ts,vue}\"",
+        "lint:fix": "eslint \"./resources/js/**/*.{ts,vue}\" --fix",
         "pre-commit": "npm run fmt:write"
     },
     "lint-staged": {
@@ -17,10 +19,14 @@
     "devDependencies": {
         "@inertiajs/vue3": "^1.0.0",
         "@tailwindcss/forms": "^0.5.3",
+        "@typescript-eslint/parser": "^7.1.0",
         "@vitejs/plugin-vue": "^5.0.0",
         "@vue/server-renderer": "^3.4.0",
         "autoprefixer": "^10.4.12",
         "axios": "^1.6.4",
+        "eslint": "^8.57.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-vue": "^9.22.0",
         "laravel-vite-plugin": "^1.0",
         "lint-staged": "^15.2.2",
         "postcss": "^8.4.31",
@@ -30,6 +36,7 @@
         "typescript": "^5.0.2",
         "vite": "^5.0",
         "vue": "^3.4.0",
+        "vue-eslint-parser": "^9.4.2",
         "vue-tsc": "^1.8.27"
     }
 }
