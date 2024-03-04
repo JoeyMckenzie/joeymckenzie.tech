@@ -2,11 +2,11 @@ default: pail
 
 # install dependencies for React and Laravel
 dev:
-    pnpm run dev & php artisan serve
+    npm run dev & php artisan serve
 
 # install dependencies for React and Laravel
 install:
-    rm -rf node_modules pnpm-lock.yaml && pnpm install
+    rm -rf node_modules npm-lock.yaml && npm install
 
 # refresh dependencies for React and Laravel
 refresh: install
@@ -18,15 +18,15 @@ pail:
 
 # runs the ssr server
 ssr:
-    rm -rf bootstrap/ssr/ && pnpm run build && php artisan inertia:start-ssr
+    rm -rf bootstrap/ssr/ && npm run build && php artisan inertia:start-ssr
 
 # check types on any file change
 lint:
-    find app/ tests/ database/ | entr -s 'composer run lint'
+    find app/ tests/ database/ routes/ | entr -s 'composer run lint'
 
 # check types on any file change
 lint-js:
-    find resources/ | entr -s 'pnpm run lint'
+    find resources/ | entr -s 'npm run lint'
 
 # run tests in parallel
 test:
@@ -34,4 +34,4 @@ test:
 
 # keep ourselves honest, practice safe CI
 ci:
-    pnpm run ci && composer run ci
+    npm run ci && composer run ci

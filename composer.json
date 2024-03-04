@@ -15,12 +15,15 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^2.0",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
+        "pestphp/pest-plugin-type-coverage": "^2.8",
+        "phpstan/phpstan-strict-rules": "^1.5",
         "spatie/laravel-ignition": "^2.4"
     },
     "autoload": {
@@ -50,6 +53,32 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --ansi"
+        ],
+        "test:integration": "./vendor/bin/pest --parallel --colors=always",
+        "test:watch": "./vendor/bin/pest --watch --parallel",
+        "test:types": "./vendor/bin/pest --type-coverage --min=100",
+        "test": [
+            "@test:types",
+            "@test:integration"
+        ],
+        "lint": "./vendor/bin/phpstan analyze",
+        "fmt": "./vendor/bin/pint -v",
+        "check": "./vendor/bin/pint --test",
+        "prepare": "git config core.hookspath .githooks",
+        "ci": [
+            "@check",
+            "@rector:dry",
+            "@lint"
+        ],
+        "ci:test": [
+            "@ci",
+            "@test"
+        ],
+        "rector": "vendor/bin/rector process",
+        "rector:dry": "vendor/bin/rector process --dry-run",
+        "refactor": [
+            "@rector",
+            "@fmt"
         ]
     },
     "extra": {
