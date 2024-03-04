@@ -12,7 +12,7 @@
     },
     "lint-staged": {
         "**/*.{js,ts,tsx,json,yml}": [
-            "pnpm run fmt:write"
+            "npm run fmt:write"
         ],
         "**/*.php": "composer run fmt"
     },
