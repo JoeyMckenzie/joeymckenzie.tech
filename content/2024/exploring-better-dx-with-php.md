@@ -21,8 +21,7 @@ said on the internet).
 If you haven't noticed, I write about beer quite a bit here mostly in the form of code examples. One of my favorite ways
 to really dive deep into a language is to build a library of some sort, and it was time to scratch that itch with PHP. After
 sifting through a bunch of great libraries written by PHP folks much more versed in the language than myself, I stumbled
-upon [Nuno Maduro](https://github.com/nunomaduro)'s library providing a [PHP client](https://github.com/openai-php/client) for the Open AI API.
-I enjoyed the style that the library was written in and took a lot of influence from it while building my PHP client for Open Brewery DB.
+upon [Nuno Maduro](https://github.com/nunomaduro)'s library providing a [PHP client](https://github.com/openai-php/client) (stop reading this and go give it a star!) for the Open AI API. I enjoyed the style that the library was written in and took a lot of influence from it while building my PHP client for Open Brewery DB.
 
 A few things really stood out to me as a journeyman PHP'er, so I'll highlight a few things I really enjoyed while honing
 in my DX while building my first PHP package.
