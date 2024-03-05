@@ -1,5 +1,5 @@
 ---
-title: 'Exploring the developer experience with PHP, public APIs, and beer'
+title: 'Exploring developer experience with PHP, public APIs, and beer'
 description: "It's 2024... and PHP still isn't dead?!"
 pubDate: 'March 05 2024'
 heroImage: '/images/php-dx/meme.jpeg'
