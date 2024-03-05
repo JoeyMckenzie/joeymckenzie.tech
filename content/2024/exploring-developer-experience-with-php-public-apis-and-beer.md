@@ -1,5 +1,5 @@
 ---
-title: 'Exploring better DX with PHP'
+title: 'Exploring the developer experience with PHP, public APIs, and beer'
 description: "It's 2024... and PHP still isn't dead?!"
 pubDate: 'March 05 2024'
 heroImage: '/images/php-dx/meme.jpeg'
@@ -10,8 +10,7 @@ keywords:
     - libraries
 ---
 
-I'm back on my bull... stuff (as the kids say) and decided that it was time to jump back into a project of some sort to keep my sanity.
-I've been chasing an almost one-year-old around the house lately and needed a little reprieve in the form of writing some
+I'm back on my bull... stuff (as the kids say) and decided that it was time to jump back into a project of some sort to keep my sanity. I've been chasing an almost one-year-old around the house lately and needed a little reprieve in the form of writing some
 PHP on my epic quest to become the internet's token PHPman. Coincidentally, I've also been scouring the [Open Brewery DB](https://openbrewerydb.org/) API and decided to bring holy matrimony to two of my loves in PHP and craft beer. The culmination of the two resulted in
 a [package I published to Packagist](https://packagist.org/packages/joeymckenzie/openbrewerydb-php-api), and I thought it would be fun to write about a rather pleasant DX I strapped together that made writing PHP an _absolute_ blast (I hope that's not the first time that sentence has been
 said on the internet).
@@ -20,11 +19,11 @@ said on the internet).
 
 If you haven't noticed, I write about beer quite a bit here mostly in the form of code examples. One of my favorite ways
 to really dive deep into a language is to build a library of some sort, and it was time to scratch that itch with PHP. After
-sifting through a bunch of great libraries written by PHP folks much more versed in the language than myself, I stumbled
+sifting through a bunch of great libraries written by PHP folks much more versed in the language than me, I stumbled
 upon [Nuno Maduro](https://github.com/nunomaduro)'s library providing a [PHP client](https://github.com/openai-php/client) (stop reading this and go give it a star!) for the Open AI API. I enjoyed the style that the library was written in and took a lot of influence from it while building my PHP client for Open Brewery DB.
 
-A few things really stood out to me as a journeyman PHP'er, so I'll highlight a few things I really enjoyed while honing
-in my DX while building my first PHP package.
+A few things stood out to me as a journeyman PHP'er while building my simple API wrapper, and I thought it would be fun to
+highlight a few things I enjoyed while honing in my developer experience and building my first PHP package.
 
 ## B.Y.O.C. (Bring Your Own Client)
 
