@@ -28,7 +28,7 @@ export const Post = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: "./content",
-  contentDirExclude: ["draft"],
+  contentDirExclude: process.env.NODE_ENV === "production" ? ["draft"] : [],
   documentTypes: [Post],
   markdown: {
     rehypePlugins: [
