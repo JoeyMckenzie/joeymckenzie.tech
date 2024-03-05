@@ -41,8 +41,6 @@ export async function getSpotifyNowPlaying(): Promise<NowPlayingResponse> {
 
   const nowPlaying: SpotifyNowPlayingResponse = await nowPlayingResponse.json();
 
-  console.log("nowPlaying", nowPlaying);
-
   // Most of the linking and track/show information come from the `item` and `context` node and we can largely ignore the majority of the response
   const item = nowPlaying.item;
   const context = nowPlaying.context;
