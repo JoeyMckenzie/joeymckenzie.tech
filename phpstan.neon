@@ -11,3 +11,5 @@ parameters:
     ignoreErrors:
         - '#Dynamic call to static method Illuminate\\Http\\Request::validate\(\).#'
         - '#Dynamic call to static method Illuminate\\Console\\Scheduling\\Event::hourly\(\).#'
+        - '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\[a-zA-Z]+>::limit\(\).#'
+        - '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\[a-zA-Z]+>::orderByDesc().#'

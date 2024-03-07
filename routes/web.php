@@ -1,27 +1,37 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Contracts\ContentRepositoryContract;
+use App\Models\Note;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Home', [
+    'frontMatters' => array_values(
+        collect($contentRepository->getLatestBlogPostMetadata())
+            ->toArray()
+    ),
+    'notes' => array_values(
+        Note::select(['title', 'description'])
+            ->where('show', true)
+            ->orderByDesc('created_at')
+            ->limit(3)
+            ->get()
+            ->toArray()
+    ),
+]))
+    ->name('home');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('now', [NowController::class, 'index'])->name('now');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::get('blog', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Index', [
+    'frontMatters' => array_values(
+        collect($contentRepository->getBlogPostMetadata())
+            ->toArray()
+    ),
+]))
+    ->name('blogs');
 
-require __DIR__.'/auth.php';
+Route::get('blog/{slug}', fn (string $slug, ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Post/Index', [
+    'post' => $contentRepository->getBlogPostBySlug($slug),
+]))
+    ->name('post');
