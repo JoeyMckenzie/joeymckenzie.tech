@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Note extends Model
+final class Note extends Model
 {
     protected $visible = [
         'title',

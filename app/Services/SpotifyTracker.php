@@ -44,7 +44,6 @@ final readonly class SpotifyTracker implements MusicTrackerContract
 
     private function getSpotifyNowPlaying(): NowPlaying
     {
-
         $defaultResponse = new NowPlaying(false);
 
         try {

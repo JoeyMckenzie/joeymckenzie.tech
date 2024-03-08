@@ -12,7 +12,7 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class PasswordResetLinkController extends Controller
+final class PasswordResetLinkController extends Controller
 {
     /**
      * Display the password reset link request view.

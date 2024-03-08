@@ -13,3 +13,4 @@ parameters:
         - '#Dynamic call to static method Illuminate\\Console\\Scheduling\\Event::hourly\(\).#'
         - '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\[a-zA-Z]+>::limit\(\).#'
         - '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\[a-zA-Z]+>::orderByDesc().#'
+        - '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\[a-zA-Z]+>::select().#'

@@ -17,7 +17,7 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class NewPasswordController extends Controller
+final class NewPasswordController extends Controller
 {
     /**
      * Display the password reset view.
