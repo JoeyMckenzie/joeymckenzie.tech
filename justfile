@@ -6,7 +6,7 @@ dev:
 
 # install dependencies for React and Laravel
 install:
-    rm -rf node_modules npm-lock.yaml && npm install
+    rm -rf node_modules package-lock.yaml && npm install
 
 # refresh dependencies for React and Laravel
 refresh: install

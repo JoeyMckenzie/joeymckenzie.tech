@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\ContentUtilityContract;
+use App\Models\Keyword;
 use App\Models\Post;
 use App\ValueObjects\ContentMeta;
 use Illuminate\Support\Facades\Log;
+use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\ConverterInterface;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
@@ -17,9 +19,9 @@ final readonly class MarkdownUtility implements ContentUtilityContract
 {
     private ConverterInterface $converter;
 
-    public function __construct(ConverterInterface $converter)
+    public function __construct()
     {
-        $this->converter = $converter;
+        $this->converter = new CommonMarkConverter();
     }
 
     #[Override]
@@ -61,6 +63,8 @@ final readonly class MarkdownUtility implements ContentUtilityContract
 
         $frontMatterParser = new FrontMatterParser(new SymfonyYamlFrontMatterParser());
         $parsedContent = $frontMatterParser->parse($contents);
+
+        /** @var array{title: string, description: string, keywords: string[], pubDate: string, heroImage: string, category: string} $frontMatter */
         $frontMatter = $parsedContent->getFrontMatter();
         $markdown = $parsedContent->getContent();
         $html = $this->converter->convert($markdown)->getContent();
@@ -77,19 +81,24 @@ final readonly class MarkdownUtility implements ContentUtilityContract
 
         Log::info("upserting blog post $contentSlug");
 
+        /** @var Post $upsertedBlog */
         $upsertedBlog = Post::updateOrCreate([
             'slug' => $contentSlug,
         ], [
             'slug' => $contentSlug,
-            'title' => $contentMeta->frontMatter->title,
-            'description' => $contentMeta->frontMatter->description,
-            'category' => $contentMeta->frontMatter->category,
-            'published_date' => $contentMeta->frontMatter->pubDate,
-            'hero_image' => $contentMeta->frontMatter->heroImage,
-            'keywords' => implode(',', $contentMeta->frontMatter->keywords),
+            'title' => $contentMeta->frontMatter->data['title'],
+            'description' => $contentMeta->frontMatter->data['description'],
+            'category' => $contentMeta->frontMatter->data['category'],
+            'published_date' => $contentMeta->frontMatter->data['pubDate'],
+            'hero_image' => $contentMeta->frontMatter->data['heroImage'],
             'raw_content' => $contentMeta->markdown,
             'parsed_content' => $contentMeta->html,
         ]);
+
+        foreach ($contentMeta->frontMatter->data['keywords'] as $keyword) {
+            $keyword = Keyword::firstOrCreate(['word' => strtolower($keyword)]);
+            $upsertedBlog->keywords()->attach($keyword);
+        }
 
         Log::info('blog content updated!');
 

@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\ValueObjects;
 
-use Exception;
-
 final readonly class ContentMeta
 {
     public FrontMatter $frontMatter;
 
     /**
-     * @throws Exception
+     * @param  array{title: string, description: string, keywords: string[], pubDate: string, heroImage: string, category: string}  $frontMatter
      */
     public function __construct(
         public string $slug,

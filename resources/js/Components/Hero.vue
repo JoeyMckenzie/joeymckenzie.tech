@@ -7,7 +7,7 @@
                 Hi, I'm Joey.
             </h2>
             <p
-                class="mx-auto mt-6 max-w-xl text-justify leading-8 text-gray-500 dark:text-gray-400"
+                class="mx-auto mt-6 max-w-xl text-justify text-gray-500 dark:text-gray-400"
             >
                 I'm a Senior Software Engineer based in Northern California
                 working in fintech. I enjoy writing about software, design, dad

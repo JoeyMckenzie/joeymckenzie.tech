@@ -19,17 +19,17 @@ final readonly class PostRepository implements ContentRepositoryContract
     public function getBlogPostBySlug(string $slug): Post
     {
         // We won't cache the blogs, easier to let the view counts ride
-        $post = Post::select([
-            'id',
-            'slug',
-            'keywords',
-            'hero_image',
-            'published_date',
-            'category',
-            'title',
-            'views',
-            'parsed_content',
-        ])->firstWhere('slug', $slug);
+        $post = Post::query()
+            ->select([
+                'id',
+                'slug',
+                'keywords',
+                'hero_image',
+                'published_date',
+                'category',
+                'title',
+                'parsed_content',
+            ])->firstWhere('slug', $slug);
 
         if (is_null($post)) {
             abort(404);
@@ -38,8 +38,8 @@ final readonly class PostRepository implements ContentRepositoryContract
         // While we're at it, add a view count
         // AddView::dispatch($post);
 
-        $post->views += 1;
-        $post->save();
+        // $post->views += 1;
+        // $post->save();
 
         return $post;
     }
@@ -71,7 +71,6 @@ final readonly class PostRepository implements ContentRepositoryContract
             'category',
             'description',
             'title',
-            'views',
         ])
             ->orderByDesc('published_date')
             ->get();

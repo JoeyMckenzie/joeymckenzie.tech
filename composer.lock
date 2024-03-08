@@ -1051,12 +1051,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/inertiajs/inertia-laravel.git",
-                "reference": "463b2804d40684d7273096e5c8ceb59c2e7c7673"
+                "reference": "36b4473cb99902fcfa8de599801dfcc7f83f437b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/463b2804d40684d7273096e5c8ceb59c2e7c7673",
-                "reference": "463b2804d40684d7273096e5c8ceb59c2e7c7673",
+                "url": "https://api.github.com/repos/inertiajs/inertia-laravel/zipball/36b4473cb99902fcfa8de599801dfcc7f83f437b",
+                "reference": "36b4473cb99902fcfa8de599801dfcc7f83f437b",
                 "shasum": ""
             },
             "require": {
@@ -1118,7 +1118,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-06T00:34:49+00:00"
+            "time": "2024-03-08T02:03:56+00:00"
         },
         {
             "name": "laravel/breeze",
@@ -1188,12 +1188,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "c85bd7ad882f3fdc27304e3f7f26e24d41b34fa9"
+                "reference": "fba12e14c0dbefc0e2d24e9e1fa426b1101b229f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/c85bd7ad882f3fdc27304e3f7f26e24d41b34fa9",
-                "reference": "c85bd7ad882f3fdc27304e3f7f26e24d41b34fa9",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/fba12e14c0dbefc0e2d24e9e1fa426b1101b229f",
+                "reference": "fba12e14c0dbefc0e2d24e9e1fa426b1101b229f",
                 "shasum": ""
             },
             "require": {
@@ -1384,7 +1384,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-03-07T14:21:11+00:00"
+            "time": "2024-03-08T08:37:44+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -6922,16 +6922,16 @@
         },
         {
             "name": "jean85/pretty-package-versions",
-            "version": "2.0.5",
+            "version": "2.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Jean85/pretty-package-versions.git",
-                "reference": "ae547e455a3d8babd07b96966b17d7fd21d9c6af"
+                "reference": "f9fdd29ad8e6d024f52678b570e5593759b550b4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Jean85/pretty-package-versions/zipball/ae547e455a3d8babd07b96966b17d7fd21d9c6af",
-                "reference": "ae547e455a3d8babd07b96966b17d7fd21d9c6af",
+                "url": "https://api.github.com/repos/Jean85/pretty-package-versions/zipball/f9fdd29ad8e6d024f52678b570e5593759b550b4",
+                "reference": "f9fdd29ad8e6d024f52678b570e5593759b550b4",
                 "shasum": ""
             },
             "require": {
@@ -6939,9 +6939,9 @@
                 "php": "^7.1|^8.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.17",
+                "friendsofphp/php-cs-fixer": "^3.2",
                 "jean85/composer-provided-replaced-stub-package": "^1.0",
-                "phpstan/phpstan": "^0.12.66",
+                "phpstan/phpstan": "^1.4",
                 "phpunit/phpunit": "^7.5|^8.5|^9.4",
                 "vimeo/psalm": "^4.3"
             },
@@ -6975,9 +6975,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Jean85/pretty-package-versions/issues",
-                "source": "https://github.com/Jean85/pretty-package-versions/tree/2.0.5"
+                "source": "https://github.com/Jean85/pretty-package-versions/tree/2.0.6"
             },
-            "time": "2021-10-08T21:21:46+00:00"
+            "time": "2024-03-08T09:58:59+00:00"
         },
         {
             "name": "larastan/larastan",
@@ -7773,22 +7773,22 @@
         },
         {
             "name": "pestphp/pest-plugin-type-coverage",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest-plugin-type-coverage.git",
-                "reference": "cfb7436391d38b7bfd755549a3a5b190c39ffd24"
+                "reference": "4be0cf0faca7d207c5d97af8ab68a450ebf8da24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest-plugin-type-coverage/zipball/cfb7436391d38b7bfd755549a3a5b190c39ffd24",
-                "reference": "cfb7436391d38b7bfd755549a3a5b190c39ffd24",
+                "url": "https://api.github.com/repos/pestphp/pest-plugin-type-coverage/zipball/4be0cf0faca7d207c5d97af8ab68a450ebf8da24",
+                "reference": "4be0cf0faca7d207c5d97af8ab68a450ebf8da24",
                 "shasum": ""
             },
             "require": {
                 "pestphp/pest-plugin": "^2.1.1",
                 "php": "^8.1",
-                "phpstan/phpstan": "^1.10.55",
+                "phpstan/phpstan": "^1.10.60",
                 "tomasvotruba/type-coverage": "^0.2.1"
             },
             "require-dev": {
@@ -7826,7 +7826,7 @@
             ],
             "support": {
                 "issues": "https://github.com/pestphp/pest-plugin-type-coverage/issues",
-                "source": "https://github.com/pestphp/pest-plugin-type-coverage/tree/v2.8.0"
+                "source": "https://github.com/pestphp/pest-plugin-type-coverage/tree/v2.8.1"
             },
             "funding": [
                 {
@@ -7842,7 +7842,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-01-10T12:07:51+00:00"
+            "time": "2024-03-08T09:48:04+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -10258,22 +10258,29 @@
         },
         {
             "name": "tomasvotruba/type-coverage",
-            "version": "0.2.1",
+            "version": "0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TomasVotruba/type-coverage.git",
-                "reference": "a152ac431b2312ec173f3093a628ff988b7ed10f"
+                "reference": "213ef9cfcdcb1472c5e1a1d7c3c99d39347433f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TomasVotruba/type-coverage/zipball/a152ac431b2312ec173f3093a628ff988b7ed10f",
-                "reference": "a152ac431b2312ec173f3093a628ff988b7ed10f",
+                "url": "https://api.github.com/repos/TomasVotruba/type-coverage/zipball/213ef9cfcdcb1472c5e1a1d7c3c99d39347433f7",
+                "reference": "213ef9cfcdcb1472c5e1a1d7c3c99d39347433f7",
                 "shasum": ""
             },
             "require": {
-                "nette/utils": "^3.2 || ^4.0",
-                "php": "^7.2 || ^8.0",
-                "phpstan/phpstan": "^1.9.3"
+                "php": "^8.2",
+                "phpstan/phpstan": "^1.10.60"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "^1.3",
+                "phpunit/phpunit": "^10.5",
+                "rector/rector": "^1.0.2",
+                "symplify/easy-coding-standard": "^12.1",
+                "tomasvotruba/unused-public": "^0.2",
+                "tracy/tracy": "^2.10"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -10299,7 +10306,7 @@
             ],
             "support": {
                 "issues": "https://github.com/TomasVotruba/type-coverage/issues",
-                "source": "https://github.com/TomasVotruba/type-coverage/tree/0.2.1"
+                "source": "https://github.com/TomasVotruba/type-coverage/tree/0.2.3"
             },
             "funding": [
                 {
@@ -10311,7 +10318,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-08-27T10:33:51+00:00"
+            "time": "2024-03-08T18:25:10+00:00"
         }
     ],
     "aliases": [],

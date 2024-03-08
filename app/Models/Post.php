@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 final class Post extends Model
 {
@@ -18,7 +19,6 @@ final class Post extends Model
         'category',
         'description',
         'title',
-        'views',
     ];
 
     protected $visible = [
@@ -30,11 +30,18 @@ final class Post extends Model
         'category',
         'description',
         'title',
-        'views',
     ];
 
     protected $casts = [
         'published_date' => 'date',
         'keywords' => 'array',
     ];
+
+    /**
+     * @return BelongsToMany<Keyword>
+     */
+    public function keywords(): BelongsToMany
+    {
+        return $this->belongsToMany(Keyword::class);
+    }
 }

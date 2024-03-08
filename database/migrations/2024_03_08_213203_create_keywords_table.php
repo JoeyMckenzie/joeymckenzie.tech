@@ -13,17 +13,10 @@ return new class() extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('keywords', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('title');
-            $table->string('description');
-            $table->string('slug')->unique();
-            $table->date('published_date');
-            $table->string('hero_image');
-            $table->string('category');
-            $table->text('raw_content');
-            $table->longText('parsed_content');
+            $table->string('word')->unique();
         });
     }
 
@@ -32,6 +25,6 @@ return new class() extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('keywords');
     }
 };
