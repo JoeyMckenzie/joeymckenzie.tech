@@ -18,6 +18,7 @@
         "league/commonmark": "^2.4",
         "spatie/laravel-markdown": "^2.5",
         "spatie/laravel-sitemap": "^7.2",
+        "symfony/yaml": "^7.0",
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
