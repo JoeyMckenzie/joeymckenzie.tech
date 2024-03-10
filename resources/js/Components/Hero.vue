@@ -2,7 +2,7 @@
     <div class="px-6 py-12 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-2xl">
             <h2
-                class="text-3xl text-center font-extrabold tracking-tight sm:text-4xl"
+                class="text-center text-3xl font-extrabold tracking-tight sm:text-4xl"
             >
                 Hi, I'm Joey.
             </h2>

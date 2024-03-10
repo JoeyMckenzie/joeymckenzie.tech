@@ -13,6 +13,14 @@ export type Post = Omit<FrontMatter, 'description'> & {
     parsed_content: string;
 };
 
+export type NowPlaying = {
+    nowPlaying: boolean;
+    albumImageSrc?: string;
+    artist?: string;
+    href?: string;
+    trackTitle?: string;
+};
+
 export type Note = {
     title: string;
     description: string;
@@ -32,4 +40,6 @@ export type PageProps<
         user: User;
     };
     ziggy: Config & { location: string };
+    commit: string;
+    spotify: NowPlaying;
 };

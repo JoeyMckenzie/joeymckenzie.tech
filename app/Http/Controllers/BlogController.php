@@ -16,7 +16,10 @@ final class BlogController extends Controller
 
     public function index(): Response
     {
-        $frontMatters = collect($this->contentRepository->getBlogPostMetadata())->toArray();
+        $sortedFrontMatters = $this->contentRepository
+            ->getBlogPostMetadata()
+            ->sortByDesc('published_date');
+        $frontMatters = collect($sortedFrontMatters)->toArray();
 
         return Inertia::render('Blog/Index', [
             'frontMatters' => array_values($frontMatters),

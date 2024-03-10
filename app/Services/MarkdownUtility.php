@@ -9,19 +9,15 @@ use App\Models\Keyword;
 use App\Models\Post;
 use App\ValueObjects\ContentMeta;
 use Illuminate\Support\Facades\Log;
-use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\ConverterInterface;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
 use Override;
+use Spatie\LaravelMarkdown\MarkdownRenderer;
 
 final readonly class MarkdownUtility implements ContentUtilityContract
 {
-    private ConverterInterface $converter;
-
-    public function __construct()
+    public function __construct(private MarkdownRenderer $renderer)
     {
-        $this->converter = new CommonMarkConverter();
     }
 
     #[Override]
@@ -67,7 +63,9 @@ final readonly class MarkdownUtility implements ContentUtilityContract
         /** @var array{title: string, description: string, keywords: string[], pubDate: string, heroImage: string, category: string} $frontMatter */
         $frontMatter = $parsedContent->getFrontMatter();
         $markdown = $parsedContent->getContent();
-        $html = $this->converter->convert($markdown)->getContent();
+        $html = $this->renderer
+            ->highlightTheme('tokyo-night')
+            ->toHtml($markdown);
 
         Log::info('frontmatter and content parsed');
 

@@ -9,7 +9,7 @@ const links = [
         display: 'Home',
     },
     {
-        to: 'home',
+        to: 'now',
         display: 'Now',
     },
     {
