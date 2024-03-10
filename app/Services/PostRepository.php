@@ -20,6 +20,7 @@ final readonly class PostRepository implements ContentRepositoryContract
     {
         // We won't cache the blogs, easier to let the view counts ride
         $post = Post::query()
+            ->with('keywords')
             ->select([
                 'id',
                 'slug',

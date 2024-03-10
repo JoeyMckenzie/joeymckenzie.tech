@@ -2,6 +2,7 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 import { Config } from 'tailwindcss';
 import animate from 'tailwindcss-animate';
+import typography from '@tailwindcss/typography';
 
 export default {
     content: [
@@ -92,5 +93,5 @@ export default {
             },
         },
     },
-    plugins: [forms, animate],
+    plugins: [forms, animate, typography],
 } satisfies Config;

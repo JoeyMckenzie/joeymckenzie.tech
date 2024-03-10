@@ -81,7 +81,6 @@ final readonly class MarkdownUtility implements ContentUtilityContract
 
         Log::info("upserting blog post $contentSlug");
 
-        /** @var Post $upsertedBlog */
         $upsertedBlog = Post::updateOrCreate([
             'slug' => $contentSlug,
         ], [

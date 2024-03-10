@@ -2,39 +2,15 @@
 
 declare(strict_types=1);
 
-use App\Contracts\ContentRepositoryContract;
-use App\Models\Note;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::get('', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Index', [
-    'frontMatters' => array_values(
-        collect($contentRepository->getLatestBlogPostMetadata())
-            ->toArray()
-    ),
-    'notes' => array_values(
-        Note::query()
-            ->select(['title', 'description'])
-            ->where('show', true)
-            ->orderByDesc('created_at')
-            ->limit(3)
-            ->get()
-            ->toArray()
-    ),
-]))
+Route::get('', HomeController::class)
     ->name('home');
 
-// Route::get('now', [NowController::class, 'index'])->name('now');
+Route::get('blog', [BlogController::class, 'index'])
+    ->name('blog');
 
-Route::get('blog', fn (ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Index', [
-    'frontMatters' => array_values(
-        collect($contentRepository->getBlogPostMetadata())
-            ->toArray()
-    ),
-]))
-    ->name('blogs');
-
-Route::get('blog/{slug}', fn (string $slug, ContentRepositoryContract $contentRepository) => Inertia::render('Blog/Post/Index', [
-    'post' => $contentRepository->getBlogPostBySlug($slug),
-]))
-    ->name('post');
+Route::get('blog/{slug}', [BlogController::class, 'show'])
+    ->name('blog.post');

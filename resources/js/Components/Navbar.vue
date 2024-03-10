@@ -13,7 +13,7 @@ const links = [
         display: 'Now',
     },
     {
-        to: 'blogs',
+        to: 'blog',
         display: 'Blog',
     },
 ];
@@ -21,9 +21,11 @@ const links = [
 
 <template>
     <nav class="flex flex-row items-center justify-center gap-x-2 px-6 pt-8">
-        <Button v-for="link in links" :key="link.to" variant="outline">
-            <Link :href="route(link.to)"> {{ link.display }}</Link>
-        </Button>
+        <Link v-for="link in links" :key="link.to" :href="route(link.to)">
+            <Button variant="outline">
+                {{ link.display }}
+            </Button>
+        </Link>
         <ThemeToggle />
     </nav>
 </template>

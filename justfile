@@ -1,8 +1,12 @@
-default: pail
+default: lint
 
 # install dependencies for React and Laravel
 dev:
     npm run dev & php artisan serve
+
+# refresh the database and run migrations
+migrate:
+    php artisan migrate:fresh && php artisan content:sync
 
 # install dependencies for React and Laravel
 install:
@@ -11,10 +15,6 @@ install:
 # refresh dependencies for React and Laravel
 refresh: install
     rm -rf vendor composer.lock && composer install
-
-# runs tail logging
-pail:
-    php artisan pail
 
 # runs the ssr server
 ssr:
@@ -28,7 +28,7 @@ lint:
 lint-js:
     find resources/ | entr -s 'npm run lint:check'
 
-# check types on any file change
+# rerun the build process on any file system changes
 build-js:
     find resources/ | entr -s 'npm run build'
 

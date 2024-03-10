@@ -33,6 +33,7 @@ final class SyncContent extends Command
     public function handle(ContentUtilityContract $contentUtility): void
     {
         $files = $contentUtility->getMarkdownFilePaths();
+
         collect($files)
             ->map(fn (string $filePath) => $contentUtility->getParsedContent($filePath))
             ->each(fn (ContentMeta $contentMeta) => $contentUtility->upsertBlogPost($contentMeta));
