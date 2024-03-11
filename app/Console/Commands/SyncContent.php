@@ -7,7 +7,6 @@ namespace App\Console\Commands;
 use App\Contracts\ContentUtilityContract;
 use App\ValueObjects\ContentMeta;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Http;
 use Throwable;
 
 final class SyncContent extends Command
@@ -34,10 +33,6 @@ final class SyncContent extends Command
     public function handle(ContentUtilityContract $contentUtility): void
     {
         $files = $contentUtility->getMarkdownFilePaths();
-        $endpoints = config('misc.production_url').'api/views';
-
-        /** @var array<int, array{slug: string, views: int}> $views */
-        $views = Http::get($endpoints)->json();
 
         collect($files)
             ->map(fn (string $filePath): \App\ValueObjects\ContentMeta => $contentUtility->getParsedContent($filePath))
