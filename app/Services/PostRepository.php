@@ -30,6 +30,7 @@ final readonly class PostRepository implements ContentRepositoryContract
                 'category',
                 'title',
                 'parsed_content',
+                'views',
             ])->firstWhere('slug', $slug);
 
         if (is_null($post)) {
@@ -37,10 +38,8 @@ final readonly class PostRepository implements ContentRepositoryContract
         }
 
         // While we're at it, add a view count
-        // AddView::dispatch($post);
-
-        // $post->views += 1;
-        // $post->save();
+        $post->views += 1;
+        $post->save();
 
         return $post;
     }
@@ -72,6 +71,7 @@ final readonly class PostRepository implements ContentRepositoryContract
             'category',
             'description',
             'title',
+            'views',
         ])
             ->orderByDesc('published_date')
             ->get();

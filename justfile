@@ -39,3 +39,7 @@ test:
 # keep ourselves honest, practice safe CI
 ci:
     npm run pre-commit && composer run ci
+
+# import prod secrets
+import:
+    fly secrets import< .env.production

@@ -38,6 +38,7 @@ const altText = computed(() => `${props.post.title} blog meme`);
                         >{{ post.published_date }}
                     </time>
                     <Badge variant="secondary">{{ post.category }}</Badge>
+                    <p>{{ post.views }} views</p>
                 </div>
                 <img
                     :alt="altText"

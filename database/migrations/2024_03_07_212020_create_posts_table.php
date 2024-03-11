@@ -21,6 +21,7 @@ return new class() extends Migration
             $table->string('slug')->unique();
             $table->date('published_date');
             $table->string('hero_image');
+            $table->integer('views')->default(0);
             $table->string('category');
             $table->text('raw_content');
             $table->longText('parsed_content');

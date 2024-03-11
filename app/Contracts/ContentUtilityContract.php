@@ -17,4 +17,7 @@ interface ContentUtilityContract
     public function getParsedContent(string $filePath): ContentMeta;
 
     public function upsertBlogPost(ContentMeta $contentMeta): Post;
+
+    /** @param array<int, array{slug: string, views: int}> $views */
+    public function upsertBlogPostWithViewCount(ContentMeta $contentMeta, array $views): Post;
 }

@@ -9,7 +9,7 @@ console_command = 'php /var/www/html/artisan tinker'
 
 [build]
 [build.args]
-NODE_VERSION = '18'
+NODE_VERSION = '20'
 PHP_VERSION = '8.3'
 
 [env]
@@ -20,6 +20,7 @@ LOG_STDERR_FORMATTER = 'Monolog\Formatter\JsonFormatter'
 SESSION_DRIVER = 'cookie'
 SESSION_SECURE_COOKIE = 'true'
 SSR_URL = "ssr.process.joeymckenzie-tech.internal:13714"
+VITE_APP_NAME = "joeymckenzie.tech"
 
 [http_service]
 internal_port = 8080

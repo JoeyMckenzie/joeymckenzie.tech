@@ -101,4 +101,37 @@ final readonly class MarkdownUtility implements ContentUtilityContract
 
         return $upsertedBlog;
     }
+
+    #[Override]
+    public function upsertBlogPostWithViewCount(ContentMeta $contentMeta, array $views): Post
+    {
+        $contentSlug = $contentMeta->slug;
+        $view = collect($views)->firstWhere('slug', $contentSlug);
+        $viewCount = $view['views'] ?? 0;
+
+        Log::info("upserting blog post $contentSlug with view count $viewCount");
+
+        $upsertedBlog = Post::updateOrCreate([
+            'slug' => $contentSlug,
+        ], [
+            'slug' => $contentSlug,
+            'title' => $contentMeta->frontMatter->data['title'],
+            'description' => $contentMeta->frontMatter->data['description'],
+            'category' => $contentMeta->frontMatter->data['category'],
+            'published_date' => $contentMeta->frontMatter->data['pubDate'],
+            'hero_image' => $contentMeta->frontMatter->data['heroImage'],
+            'raw_content' => $contentMeta->markdown,
+            'parsed_content' => $contentMeta->html,
+            'views' => $viewCount,
+        ]);
+
+        foreach ($contentMeta->frontMatter->data['keywords'] as $keyword) {
+            $keyword = Keyword::firstOrCreate(['word' => strtolower($keyword)]);
+            $upsertedBlog->keywords()->attach($keyword);
+        }
+
+        Log::info('blog content updated!');
+
+        return $upsertedBlog;
+    }
 }

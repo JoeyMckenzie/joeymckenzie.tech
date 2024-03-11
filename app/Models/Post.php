@@ -17,6 +17,7 @@ final class Post extends Model
         'hero_image',
         'published_date',
         'category',
+        'views',
         'description',
         'title',
     ];
@@ -28,6 +29,7 @@ final class Post extends Model
         'hero_image',
         'published_date',
         'category',
+        'views',
         'description',
         'title',
     ];
