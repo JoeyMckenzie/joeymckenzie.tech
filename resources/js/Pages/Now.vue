@@ -8,7 +8,7 @@ import MainLayout from '@/Layouts/MainLayout.vue';
         <title>Now.</title>
     </Head>
     <MainLayout>
-        <h2 class="pt-12 text-4xl font-semibold tracking-tight sm:text-center">
+        <h2 class="pt-12 text-center text-4xl font-semibold tracking-tight">
             Now.
         </h2>
         <div

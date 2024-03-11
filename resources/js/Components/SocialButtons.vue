@@ -23,7 +23,7 @@ const socials = [
 
 <template>
     <div
-        class="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-4 py-8 px-4 sm:grid-cols-3"
+        class="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-4 py-8 sm:grid-cols-3"
     >
         <div v-for="social in socials" :key="social.display">
             <a :href="social.href">

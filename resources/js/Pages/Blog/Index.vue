@@ -14,7 +14,7 @@ defineProps<{
         <title>Blog</title>
     </Head>
     <MainLayout>
-        <div class="px-6 py-12 sm:px-6 lg:px-8">
+        <div class="py-12 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-2xl pb-12">
                 <h2
                     class="text-center text-3xl font-extrabold tracking-tight sm:text-4xl"
