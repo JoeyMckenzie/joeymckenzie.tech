@@ -26,8 +26,9 @@ jobs:
 
       - name: Sync content
         run: php artisan content:sync
-        env:
-          PRODUCTION_URL: ${{ secrets.PRODUCTION_URL }}
+
+      - name: Generate sitemap
+        run: php artisan make:sitemap
 
       - name: Deploy to Fly.io
         run: flyctl deploy -e GIT_COMMIT_SHA=${{ github.sha }} --remote-only
