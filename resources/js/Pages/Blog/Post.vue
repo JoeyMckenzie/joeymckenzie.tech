@@ -24,7 +24,7 @@ const altText = computed(() => `${props.post.title} blog meme`);
     </Head>
 
     <MainLayout>
-        <div class="flex flex-col justify-center pt-12">
+        <div class="flex flex-col justify-center pt-12 px-4">
             <article
                 class="prose mx-auto w-full overflow-hidden pb-6 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md"
             >

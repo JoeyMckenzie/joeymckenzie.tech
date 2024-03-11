@@ -23,7 +23,7 @@ const notes = [
 </script>
 
 <template>
-    <div class="pb-4 sm:pb-16">
+    <div class="pb-4 px-4 sm:pb-16">
         <h2
             class="pb-4 pt-8 text-left text-4xl font-bold tracking-tight sm:text-center"
         >
