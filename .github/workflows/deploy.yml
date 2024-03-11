@@ -1,14 +1,9 @@
 name: Deploy to Fly.io
 
-on:
-  workflow_run:
-    workflows: ['Run CI']
-    types:
-      - completed
+on: [push]
 
 jobs:
-  forge:
-    if: github.event.workflow_run.conclusion == 'success'
+  fly:
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
