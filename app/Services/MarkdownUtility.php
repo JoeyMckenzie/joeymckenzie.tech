@@ -8,6 +8,7 @@ use App\Contracts\ContentUtilityContract;
 use App\Models\Keyword;
 use App\Models\Post;
 use App\ValueObjects\ContentMeta;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
@@ -86,7 +87,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
             'title' => $contentMeta->frontMatter->data['title'],
             'description' => $contentMeta->frontMatter->data['description'],
             'category' => $contentMeta->frontMatter->data['category'],
-            'published_date' => $contentMeta->frontMatter->data['pubDate'],
+            'published_date' => Carbon::parse($contentMeta->frontMatter->data['pubDate']),
             'hero_image' => $contentMeta->frontMatter->data['heroImage'],
             'raw_content' => $contentMeta->markdown,
             'parsed_content' => $contentMeta->html,
