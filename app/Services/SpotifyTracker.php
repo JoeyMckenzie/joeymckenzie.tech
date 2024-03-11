@@ -82,15 +82,15 @@ final readonly class SpotifyTracker implements MusicTrackerContract
             ])->get(self::NOW_PLAYING_URL);
 
             Log::info('now playing info retrieved');
-
             // Spotify returned a 204, so no content === not playing anything
             if ($nowPlayingResponse->status() === 204) {
                 Log::info('not currently playing, returning default response');
 
                 return $defaultResponse;
-            } elseif ($nowPlayingResponse->failed()) {
-                $message = $nowPlayingResponse->body();
+            }
 
+            if ($nowPlayingResponse->failed()) {
+                $message = $nowPlayingResponse->body();
                 Log::error("an error occurred retrieving now playing info: $message");
 
                 return $defaultResponse;
@@ -105,7 +105,6 @@ final readonly class SpotifyTracker implements MusicTrackerContract
             $item = $nowPlaying['item'];
             $trackTitle = $item['name'];
             $href = $item['external_urls']['spotify'] ?? '/';
-
             // The playing type will either be `"show"` or `"track"` based on a podcast or artist song
             // There's _a lot_ of presumptive `unwrap()`ing going here, should probably clean up eventually
             if ($nowPlaying['currently_playing_type'] === 'track' && isset($item['album']) && isset($item['artists'])) {
@@ -113,7 +112,9 @@ final readonly class SpotifyTracker implements MusicTrackerContract
                 $artist = $item['artists'][0]['name'];
 
                 return new NowPlaying(true, $href, $albumImage['url'], $trackTitle, $artist);
-            } elseif (isset($item['show'])) {
+            }
+
+            if (isset($item['show'])) {
                 $show = $item['show'];
                 $showImage = $show['images'][0];
                 $showTitle = $show['name'];

@@ -39,7 +39,7 @@ final class GenerateSitemap extends Command
         $siteMap = SitemapGenerator::create($url)->getSitemap();
 
         collect($slugs)
-            ->each(function (Post $blogPost) use ($siteMap) {
+            ->each(function (Post $blogPost) use ($siteMap): void {
                 $slug = $blogPost->slug;
                 $siteMap
                     ->add(Url::create("/blog/$slug")

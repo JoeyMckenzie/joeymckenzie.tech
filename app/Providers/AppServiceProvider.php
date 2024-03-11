@@ -23,11 +23,4 @@ final class AppServiceProvider extends ServiceProvider
         $this->app->singleton(ContentRepositoryContract::class, PostRepository::class);
         $this->app->singleton(ContentUtilityContract::class, MarkdownUtility::class);
     }
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-    }
 }
