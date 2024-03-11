@@ -13,7 +13,7 @@
         "check": "npm run fmt:check && npm run lint:check"
     },
     "lint-staged": {
-        "**/*.{js,ts,tsx,json,yml}": "npm run fmt:write",
+        "**/*.{js,ts,vue,json,yml}": "npm run fmt:write",
         "**/*.php": "composer run fmt"
     },
     "devDependencies": {
