@@ -18,7 +18,7 @@ import MainLayout from '@/Layouts/MainLayout.vue';
                 A few things I&apos;m working on
                 <a href="https://nownownow.com/about">now</a>:
             </p>
-            <ul class="px-8">
+            <ul>
                 <li>
                     I&apos;m part of team modernizing fintech systems from
                     legacy .NET applications to modern .NET microservices

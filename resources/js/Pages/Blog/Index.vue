@@ -11,19 +11,17 @@ defineProps<{
 
 <template>
     <Head>
-        <title>Blog</title>
+        <title>Blog.</title>
     </Head>
     <MainLayout>
         <div class="py-12 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-2xl pb-12">
                 <h2
-                    class="text-center text-3xl font-extrabold tracking-tight sm:text-4xl"
+                    class="text-center text-4xl font-extrabold tracking-tight sm:text-4xl"
                 >
                     Blog.
                 </h2>
-                <p
-                    class="mx-auto mt-6 max-w-xl text-justify text-gray-500 dark:text-gray-400"
-                >
+                <p class="mx-auto mt-6 max-w-xl text-justify">
                     I write about a lot of things, mainly languages, ecosystems,
                     and software design. I consider my writing a journal of
                     technologies I've worked with at some point during my
