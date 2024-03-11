@@ -26,6 +26,8 @@ jobs:
 
       - name: Sync content
         run: php artisan content:sync
+        env:
+          PRODUCTION_URL: ${{ secrets.PRODUCTION_URL }}
 
       - name: Deploy to Fly.io
         run: flyctl deploy -e GIT_COMMIT_SHA=${{ github.sha }} --remote-only
