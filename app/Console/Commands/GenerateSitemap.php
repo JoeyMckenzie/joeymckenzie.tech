@@ -35,6 +35,10 @@ final class GenerateSitemap extends Command
         $publicPath = public_path();
         $outputFile = "$publicPath/sitemap-index.xml";
 
+        if (file_exists($outputFile)) {
+            unlink($outputFile);
+        }
+
         $slugs = Post::select(['slug', 'updated_at'])->get();
         $siteMap = SitemapGenerator::create($url)->getSitemap();
 
