@@ -1,6 +1,6 @@
 ---
 title: 'JAMstack Angular apps with Scully and Netlify'
-description: 'Write, build, and deploy Angular applications as fully SEO-optimized static sites with Netlify and Netlify Functions!'
+description: 'Write, build, and deploy.sh Angular applications as fully SEO-optimized static sites with Netlify and Netlify Functions!'
 pubDate: 'Feb 22 2022'
 heroImage: '/images/jamstack-angular-apps-with-scully/angular-scully-netlify-meme.jpg'
 category: 'angular'
@@ -35,10 +35,10 @@ Yep, the JAMstack: **J**avaScript, **A**PIs, and **M**arkup. There's a thriving 
 developers embracing the JAMstack, so defer to them for the nitty gritty details. The JAMstack follows a general
 artchitecture:
 
--   **M**arkup is pre-rendered at build time and served as static HTML and CSS
--   **J**avaScript still provides all its native interactivity with the browser, while not bogging down the initial
-    rendering of our apps with retrieving JS bundles
--   **A**PIs that provide data, processing, and whatever else we need from a backend server
+- **M**arkup is pre-rendered at build time and served as static HTML and CSS
+- **J**avaScript still provides all its native interactivity with the browser, while not bogging down the initial
+  rendering of our apps with retrieving JS bundles
+- **A**PIs that provide data, processing, and whatever else we need from a backend server
 
 In essence, JAMstack principles align to provide fast, reliable, scalable, and performant web applications for the
 modern browser.
@@ -498,10 +498,10 @@ is [Netlify Functions](https://functions.netlify.com/) - Netlify's version of se
 lambda functions behind the scenes to provide an easy way to integrate backend functionality with our statically served
 web apps. I've found serverless functions helpful in quite a few different ways:
 
--   Sending out emails using email API services
--   Integrating with third-party APIs to do some processing for frontend requests
--   Serving simple data to be consumed from the frontend
--   Heck, even persisting to database based on requests from our frontend applications
+- Sending out emails using email API services
+- Integrating with third-party APIs to do some processing for frontend requests
+- Serving simple data to be consumed from the frontend
+- Heck, even persisting to database based on requests from our frontend applications
 
 Our serverless functions will _serve_, more or less, as an API-lite for our static served Angular Scully application
 that will be hosted in Netlify, allowing us to connect our outgoing HTTP calls from the frontend to the backend
@@ -669,10 +669,10 @@ common statically typed-model between the front and backend of our project!
 As you might have guessed, the names and pathing of our function `.ts` files _does_ matter in our case. There's a few
 simple rules to adhere to when creating function endpoints
 
--   `netlify/functions/ping.ts` would receive HTTP request matching the route `/.netlify/functions/ping`
--   `netlify/functions/ping/index.ts` would _also_ receive HTTP request matching the route `/.netlify/functions/ping`
--   `netlify/functions/ping/ping.ts` would, again, _also_ receive HTTP request matching the
-    route `/.netlify/functions/ping`
+- `netlify/functions/ping.ts` would receive HTTP request matching the route `/.netlify/functions/ping`
+- `netlify/functions/ping/index.ts` would _also_ receive HTTP request matching the route `/.netlify/functions/ping`
+- `netlify/functions/ping/ping.ts` would, again, _also_ receive HTTP request matching the
+  route `/.netlify/functions/ping`
 
 Now that we have our first function in place, let's go ahead and start our function server:
 
@@ -844,11 +844,11 @@ With our Scully server running, we should still be able to hit our Netlify funct
 running), receiving the same responses we saw from serving the de-Scully'd version of our application. While it may
 not _seem_ like much, let's take a second to realize what's going on:
 
--   We have a serverless backend stood up ready to receive HTTP requests and do any server related processing with
-    _zero_ backend frameworks in place
--   We have a fully static version of our Angular application running in the browser optimized for SEO and indexing by
-    search engines
--   To top it off, we're doing all of this within the same repository code!
+- We have a serverless backend stood up ready to receive HTTP requests and do any server related processing with
+  _zero_ backend frameworks in place
+- We have a fully static version of our Angular application running in the browser optimized for SEO and indexing by
+  search engines
+- To top it off, we're doing all of this within the same repository code!
 
 While we're only scratching the surface of what's possible with Angular, Scully, and Netlify Functions, the DX
 offered by these tools allows us to quickly develop and ship static websites with rich functionality and data fetching

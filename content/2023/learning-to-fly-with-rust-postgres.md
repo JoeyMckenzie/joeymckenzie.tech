@@ -182,7 +182,7 @@ RUN --mount=type=cache,target=/app/target \
     objcopy --compress-debug-sections target/release/flying-with-rust-and-postgres ./server
 
 # Stage two - we'll utilize a second container to run our built binary from our first container - slim containers!
-FROM debian:bullseye-slim as deploy
+FROM debian:bullseye-slim as deploy.sh
 
 # Let's install all the necessary runtime tools on the container
 RUN set -eux; \
@@ -194,7 +194,7 @@ RUN set -eux; \
     rm -rf /var/lib/{apt,dpkg,cache,log}/;
 
 # Let's work from a self contained directory for all of our deployment needs
-WORKDIR /deploy
+WORKDIR /deploy.sh
 
 # We need the artifact from the build container, so let's grab it
 COPY --from=build /app/server ./
@@ -356,7 +356,7 @@ CMD ["./server"]
 Okay, the second time's a charm:
 
 ```shell
-> fly deploy
+> fly deploy.sh
 ```
 
 And after a few seconds (thanks to our layer caching), we should see a message about our app being deployed
@@ -519,8 +519,8 @@ Applied 20230403232851/migrate add beer logs table (71.391042ms)
 
 Sweet! If we inspect the database using your tool of choice, we should see two tables:
 
--   `_sqlx_migrations` - the migration management table
--   `beer_logs` - the journal table we created
+- `_sqlx_migrations` - the migration management table
+- `beer_logs` - the journal table we created
 
 We're going to need the same schema applied to our production database, so let's add a bit of code to apply migrations
 programmatically when our application starts up. Back in `main.rs`:
@@ -622,7 +622,7 @@ insecure ports will do.
 Now, if we deploy our application with a `fly deploy`, we should see some good logs:
 
 ```shell
-> fly deploy
+> fly deploy.sh
 
 # A bunch of other logs...
 [info]Initializing connection pool...
@@ -939,8 +939,8 @@ We should now see a `sqlx-data.json` file at the root of our project with some d
 and a few other things. Again, since we're copying everything over during the container build process, we'll get this
 file included by default. To get our docker builds successfully running, we'll need to do one of two things:
 
--   Add the `SQLX_OFFLINE` environment variable to our `.env` file
--   OR, tell docker to ignore `.env` files while copying over from source
+- Add the `SQLX_OFFLINE` environment variable to our `.env` file
+- OR, tell docker to ignore `.env` files while copying over from source
 
 We'll go with option one, as there might be environment variables we'll want to load in eventually other than the
 database URL, so we'll tell sqlx to use the cached metadata when building. Our `.env` file should look something like
@@ -955,7 +955,7 @@ Now if we build our container locally with a `make build` our build should run t
 light to deploy to fly. Let's do that now:
 
 ```shell
-> fly deploy
+> fly deploy.sh
 
 # After a sifting through the build logs, we should see...
 1 desired, 1 placed, 1 healthy, 0 unhealthy [health checks: 1 total] --> v15 deployed successfully

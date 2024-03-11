@@ -844,7 +844,9 @@ git commit SHA as an environment variable. Unfortunately, Forge only has the SHA
 _Fortunately_, it's easy enough to work around by pulling in the latest configuration for production via the Forge CLI,
 appending the SHA as an environment variable, and simply pushing it back up to Forge before the deployment script runs.
 
-One caveat to this process is that we want the append process to only append _if_ there's currently not a commit in the `.env` file, while replacing the existing commit key-value pair if it already exists. A quick script like the follow should get the job done:
+One caveat to this process is that we want the append process to only append _if_ there's currently not a commit in
+the `.env` file, while replacing the existing commit key-value pair if it already exists. A quick script like the follow
+should get the job done:
 
 ```shell
 #!/bin/bash
@@ -869,8 +871,8 @@ else
 fi
 ```
 
-
-We can then update our deploy workflow action to call this script, pass the key and SHA to it, and execute directly before updating the production configuration. All-in-all, this is what my deploy action looks like:
+We can then update our deploy workflow action to call this script, pass the key and SHA to it, and execute directly
+before updating the production configuration. All-in-all, this is what my deploy action looks like:
 
 ```yaml
 name: Deploy to Forge
@@ -888,37 +890,37 @@ jobs:
 
         name: Deploy application
         steps:
-            - uses: actions/checkout@v3
+            -   uses: actions/checkout@v3
 
-            - name: Setup PHP
-              id: setup-php
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: '8.3'
+            -   name: Setup PHP
+                id: setup-php
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.3'
 
-            - name: Install Forge CLI
-              run: composer global require laravel/forge-cli
+            -   name: Install Forge CLI
+                run: composer global require laravel/forge-cli
 
-            - name: Authenticate with Forge
-              run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
+            -   name: Authenticate with Forge
+                run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
 
             # Forge environment variables, including the current git commit hash,
             # aren't included as runtime environment variables and only in the build script.
             # To get the current commit propagated, pull the current production configuration,
             # and append the current commit to the file and push it back up to Forge.
-            - name: Download current configuration
-              run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
+            -   name: Download current configuration
+                run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
 
-            - name: Add current commit and push back to forge
-              run: |
-                ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
-              working-directory: ${{ github.workspace }}
+            -   name: Add current commit and push back to forge
+                run: |
+                    ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
+                working-directory: ${{ github.workspace }}
 
-            - name: Push environment to Forge
-              run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
+            -   name: Push environment to Forge
+                run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
 
-            - name: Ping deploy URL
-              run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
+            -   name: Ping deploy.sh URL
+                run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
 ```
 
 Setting a few environment variables, badda bing, badda boom, and everything works.

@@ -41,9 +41,9 @@ was to get up and running with Lambdas that were even more easily deployed to AW
 some [Terraform](https://www.terraform.io/) because I'm lazy and don't know which buttons to click in AWS most of the
 time. If you're following along, it'll help to have the following installed:
 
--   Cargo and cargo lambda installed (a quick `cargo install cargo-lambda` should do the trick)
--   Terraform CLI
--   An AWS account (I'm still on the free tier, for now...)
+- Cargo and cargo lambda installed (a quick `cargo install cargo-lambda` should do the trick)
+- Terraform CLI
+- An AWS account (I'm still on the free tier, for now...)
 
 We'll touch the surface of a few things here, but won't be going into depth necessarily on any one topic. There's people
 a lot smarter than myself that are ackshually qualified to talk about Rust, AWS, and Terraform.
@@ -355,11 +355,11 @@ Nice! We've got ourselves an MVP, time to ship to production.
 
 With our deployment approach, we'll do something akin to the following:
 
--   Build the output artifact with the help of `cargo lambda`
--   Package up the output into a zip file to store in S3
--   Upload the zip file into a bucket
--   Setup an Lambda function using the zip file as the source executable
--   Setup an API Gateway instance that proxies requests through to our Lambda function
+- Build the output artifact with the help of `cargo lambda`
+- Package up the output into a zip file to store in S3
+- Upload the zip file into a bucket
+- Setup an Lambda function using the zip file as the source executable
+- Setup an API Gateway instance that proxies requests through to our Lambda function
 
 Now doing all that stuff manually is not _too_ tedious, but I've been writing a lot Terraform lately and thought it
 would fun to Terraform-erize this process. If you're not familiar with Terraform, it's
@@ -645,7 +645,7 @@ build:
     cargo lambda build --release && cp ./quotes.json ./target/lambda/office-quotes
 
 # build main
-build-deploy: build
+build-deploy.sh: build
     just terraform/reapply
 
 # run the dev server
@@ -715,7 +715,7 @@ move
 fast, especially when building in a multi-stage development environment.
 
 ```shell
-$ just build-deploy
+$ just build-deploy.sh
 cargo lambda build --release && cp ./quotes.json ./target/lambda/office-quotes
     Finished release [optimized] target(s) in 0.12s
 just terraform/reapply
@@ -725,18 +725,18 @@ terraform destroy -auto-approve
 
 With our single `build-deploy` command, we'll:
 
--   Compile our Rust code
--   Build the expected output we need to zip and deploy to S3
--   Copy over our JSON file for our Rust code to read from
--   Destroy/recreate all of the required AWS infrastructure
--   Deploy our zip file to the S3 bucket for our Lambda to use
+- Compile our Rust code
+- Build the expected output we need to zip and deploy to S3
+- Copy over our JSON file for our Rust code to read from
+- Destroy/recreate all of the required AWS infrastructure
+- Deploy our zip file to the S3 bucket for our Lambda to use
 
 Again, we'll see more output for the `base_url` and `lambda_bucket_name`, though with different IDs and names this time.
 I won't necessarily verify everything in AWS console, but we now have:
 
--   A Lambda function that runs our zipped up Rust code from an S3 bucket
--   An API Gateway instance that forwards requests to that Lambda
--   CloudWatch log groups for both our API Gateway instance and our Lambda function
+- A Lambda function that runs our zipped up Rust code from an S3 bucket
+- An API Gateway instance that forwards requests to that Lambda
+- CloudWatch log groups for both our API Gateway instance and our Lambda function
 
 As a sanity check, let's make sure all the pipes are still hooked up by sending through another request to our gateway:
 
