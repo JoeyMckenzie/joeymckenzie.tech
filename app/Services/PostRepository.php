@@ -37,10 +37,6 @@ final readonly class PostRepository implements ContentRepositoryContract
             abort(404);
         }
 
-        // While we're at it, add a view count
-        $post->views += 1;
-        $post->save();
-
         return $post;
     }
 

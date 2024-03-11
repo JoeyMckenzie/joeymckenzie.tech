@@ -21,7 +21,6 @@ const href = computed(() => `/blog/${props.frontMatter.slug}`);
                     >{{ frontMatter.published_date }}
                 </time>
                 <Badge variant="secondary">{{ frontMatter.category }}</Badge>
-                <p class="font-medium">{{ frontMatter.views }} views</p>
             </div>
             <div class="group relative">
                 <h3 class="mt-3 text-lg font-semibold leading-6">

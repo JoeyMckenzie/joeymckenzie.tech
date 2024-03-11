@@ -41,6 +41,6 @@ final class SyncContent extends Command
 
         collect($files)
             ->map(fn (string $filePath): \App\ValueObjects\ContentMeta => $contentUtility->getParsedContent($filePath))
-            ->each(fn (ContentMeta $contentMeta): \App\Models\Post => $contentUtility->upsertBlogPostWithViewCount($contentMeta, $views));
+            ->each(fn (ContentMeta $contentMeta): \App\Models\Post => $contentUtility->upsertBlogPost($contentMeta));
     }
 }
