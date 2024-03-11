@@ -51,7 +51,7 @@
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.0.0",
         "date-fns": "^2.30.0",
-        "lucide-react": "^0.294.0",
+        "lucide-react": "^0.354.0",
         "tailwind-merge": "^2.2.0",
         "tailwindcss-animate": "^1.0.7",
         "ziggy-js": "^1.8.1"
