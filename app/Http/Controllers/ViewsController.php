@@ -15,6 +15,9 @@ final class ViewsController extends Controller
     {
         $posts = Post::query()->get(['slug', 'views']);
 
-        return $posts->toArray();
+        /** @var array<int, array{slug: string, views: int}> $postsResponse */
+        $postsResponse = $posts->toArray();
+
+        return $postsResponse;
     }
 }
