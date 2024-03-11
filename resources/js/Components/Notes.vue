@@ -17,7 +17,7 @@ const notes = [
     },
     {
         title: 'Agile',
-        description: "It's a social complex, not a method.",
+        description: "It's a social complex, not a methodology.",
     },
 ];
 </script>

@@ -18,11 +18,19 @@ jobs:
         with:
           php-version: '8.3'
 
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: Install node dependencies
+        run: npm install
+
       - name: Install composer dependencies
         run: composer install
 
       - name: Run migrations
-        run: php artisan migrate --force
+        run: php artisan migrate:fresh --force
 
       - name: Sync content
         run: php artisan content:sync
