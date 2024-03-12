@@ -25,9 +25,6 @@
 
 <body class="font-sans antialiased">
     @inertia
-    <script>
-        Ziggy.url = '{{ env('APP_URL') }}'
-    </script>
 </body>
 
 </html>
