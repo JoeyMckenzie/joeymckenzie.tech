@@ -1,16 +1,16 @@
 {
-    "name": "laravel/laravel",
+    "name": "joeymckenzie/joeymckenzie.tech",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "My personal slice of the internet.",
     "keywords": [
         "laravel",
         "framework"
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.3",
         "inertiajs/inertia-laravel": "^1.0",
-        "laravel/breeze": "^2.0@dev",
+        "laravel/breeze": "^2.0",
         "laravel/framework": "^11.0",
         "laravel/pail": "^1.1",
         "laravel/sanctum": "^4.0",
@@ -91,9 +91,6 @@
         ]
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "11.x-dev"
-        },
         "laravel": {
             "dont-discover": []
         }
@@ -107,6 +104,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
