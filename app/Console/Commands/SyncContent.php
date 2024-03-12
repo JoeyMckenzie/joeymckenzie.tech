@@ -37,7 +37,7 @@ final class SyncContent extends Command
         $files = $contentUtility->getMarkdownFilePaths();
 
         collect($files)
-            ->map(fn(string $filePath): ContentMeta => $contentUtility->getParsedContent($filePath))
-            ->each(fn(ContentMeta $contentMeta): Post => $postRepository->upsertBlogPost($contentMeta));
+            ->map(fn (string $filePath): ContentMeta => $contentUtility->getParsedContent($filePath))
+            ->each(fn (ContentMeta $contentMeta): Post => $postRepository->upsertBlogPost($contentMeta));
     }
 }

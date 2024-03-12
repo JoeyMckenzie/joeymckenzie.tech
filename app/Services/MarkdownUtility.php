@@ -22,7 +22,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
     public function getMarkdownFilePaths(): array
     {
         $basePath = base_path();
-        $contentPath = "$basePath" . '/content';
+        $contentPath = "$basePath".'/content';
 
         Log::info("identified content path as $contentPath, globbing content files");
 
@@ -50,7 +50,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
         $fileInfo = pathinfo($filePath);
         $extension = $fileInfo['extension'] === ''
             ? ''
-            : '.' . $fileInfo['extension'];
+            : '.'.$fileInfo['extension'];
         $fileSlug = basename($filePath, $extension);
 
         Log::info("file parsed, determined slug as $fileSlug");
