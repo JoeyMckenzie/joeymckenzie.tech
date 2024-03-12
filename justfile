@@ -10,7 +10,7 @@ migrate:
 
 # install dependencies for React and Laravel
 install:
-    rm -rf node_modules package-lock.yaml && npm install
+    rm -rf node_modules package-lock.json && npm install
 
 # refresh dependencies for React and Laravel
 refresh: install
@@ -39,7 +39,3 @@ test:
 # keep ourselves honest, practice safe CI
 ci:
     npm run pre-commit && composer run ci
-
-# import prod secrets
-import:
-    fly secrets import< .env.production
