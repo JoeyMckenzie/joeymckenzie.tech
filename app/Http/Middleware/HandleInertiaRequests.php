@@ -7,6 +7,7 @@ namespace App\Http\Middleware;
 use App\Contracts\MusicTrackerContract;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Override;
 use Tightenco\Ziggy\Ziggy;
 
 final class HandleInertiaRequests extends Middleware
@@ -25,6 +26,7 @@ final class HandleInertiaRequests extends Middleware
     /**
      * Determine the current asset version.
      */
+    #[Override]
     public function version(Request $request): ?string
     {
         return parent::version($request);
@@ -35,6 +37,7 @@ final class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function share(Request $request): array
     {
         return [

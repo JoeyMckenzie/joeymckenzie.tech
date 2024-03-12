@@ -11,12 +11,14 @@ use App\Services\MarkdownUtility;
 use App\Services\PostRepository;
 use App\Services\SpotifyTracker;
 use Illuminate\Support\ServiceProvider;
+use Override;
 
 final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
         $this->app->singleton(MusicTrackerContract::class, SpotifyTracker::class);

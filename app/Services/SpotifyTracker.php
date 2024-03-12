@@ -11,6 +11,7 @@ use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Override;
 
 final readonly class SpotifyTracker implements MusicTrackerContract
 {
@@ -20,6 +21,7 @@ final readonly class SpotifyTracker implements MusicTrackerContract
 
     private const string NOW_PLAYING_KEY = 'nowPlaying';
 
+    #[Override]
     public function getNowPlaying(): NowPlaying
     {
         Log::info('retrieving Spotify now playing info');
