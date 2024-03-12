@@ -5,21 +5,11 @@ import {
     AlertTitle,
 } from '@/Components/ui/alert/index.js';
 import { Icon } from '@iconify/vue';
+import { Note } from '@/types';
 
-const notes = [
-    {
-        title: 'Salesforce',
-        description: 'Empowering pain-driven development since 1999.',
-    },
-    {
-        title: 'Networking',
-        description: 'How the f@!k does SSL even work?',
-    },
-    {
-        title: 'Agile',
-        description: "It's a social complex, not a methodology.",
-    },
-];
+defineProps<{
+    notes: Note[];
+}>();
 </script>
 
 <template>
@@ -32,7 +22,7 @@ const notes = [
         <div
             class="mx-auto grid max-w-3xl grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3"
         >
-            <Alert v-for="note in notes.slice(0, 3)" :key="note.title">
+            <Alert v-for="note in notes" :key="note.title">
                 <Icon class="h-4 w-4" icon="tabler:terminal" />
                 <AlertTitle class="font-bold">{{ note.title }}</AlertTitle>
                 <AlertDescription>{{ note.description }}</AlertDescription>

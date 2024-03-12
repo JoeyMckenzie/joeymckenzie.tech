@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\ContentRepositoryContract;
+use App\Models\Keyword;
 use App\Models\Post;
+use App\ValueObjects\ContentMeta;
+use Carbon\Carbon;
 use DateInterval;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Override;
 
 final readonly class PostRepository implements ContentRepositoryContract
@@ -24,7 +28,6 @@ final readonly class PostRepository implements ContentRepositoryContract
             ->select([
                 'id',
                 'slug',
-                'keywords',
                 'hero_image',
                 'published_date',
                 'category',
@@ -36,6 +39,9 @@ final readonly class PostRepository implements ContentRepositoryContract
         if (is_null($post)) {
             abort(404);
         }
+
+        $post->views += 1;
+        $post->save();
 
         return $post;
     }
@@ -75,5 +81,35 @@ final readonly class PostRepository implements ContentRepositoryContract
         Cache::set(self::POSTS_CACHE_KEY, $posts, new DateInterval('PT5M'));
 
         return $posts;
+    }
+
+    #[Override]
+    public function upsertBlogPost(ContentMeta $contentMeta): Post
+    {
+        $contentSlug = $contentMeta->slug;
+
+        Log::info("upserting blog post $contentSlug");
+
+        $upsertedBlog = Post::updateOrCreate([
+            'slug' => $contentSlug,
+        ], [
+            'slug' => $contentSlug,
+            'title' => $contentMeta->frontMatter->data['title'],
+            'description' => $contentMeta->frontMatter->data['description'],
+            'category' => $contentMeta->frontMatter->data['category'],
+            'published_date' => Carbon::parse($contentMeta->frontMatter->data['pubDate']),
+            'hero_image' => $contentMeta->frontMatter->data['heroImage'],
+            'raw_content' => $contentMeta->markdown,
+            'parsed_content' => $contentMeta->html,
+        ]);
+
+        foreach ($contentMeta->frontMatter->data['keywords'] as $keyword) {
+            $keyword = Keyword::firstOrCreate(['word' => strtolower($keyword)]);
+            $upsertedBlog->keywords()->attach($keyword);
+        }
+
+        Log::info('blog content updated!');
+
+        return $upsertedBlog;
     }
 }

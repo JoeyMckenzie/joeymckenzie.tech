@@ -6,6 +6,7 @@ export type FrontMatter = {
     category: string;
     description: string;
     title: string;
+    views: number;
 };
 
 export type Post = Omit<FrontMatter, 'description'> & {

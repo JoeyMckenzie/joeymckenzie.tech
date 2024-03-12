@@ -4,11 +4,12 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 import LatestPosts from '@/Components/LatestPosts.vue';
 import SocialButtons from '@/Components/SocialButtons.vue';
 import { Head } from '@inertiajs/vue3';
-import { FrontMatter } from '@/types';
+import { FrontMatter, Note } from '@/types';
 import Notes from '@/Components/Notes.vue';
 
 defineProps<{
     frontMatters: FrontMatter[];
+    notes: Note[];
 }>();
 </script>
 
@@ -21,6 +22,6 @@ defineProps<{
         <Hero />
         <SocialButtons />
         <LatestPosts :front-matters="frontMatters" />
-        <Notes />
+        <Notes :notes="notes" />
     </MainLayout>
 </template>

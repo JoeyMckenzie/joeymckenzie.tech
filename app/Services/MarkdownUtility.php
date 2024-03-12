@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Contracts\ContentUtilityContract;
-use App\Models\Keyword;
-use App\Models\Post;
 use App\ValueObjects\ContentMeta;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
@@ -25,7 +22,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
     public function getMarkdownFilePaths(): array
     {
         $basePath = base_path();
-        $contentPath = "$basePath".'/content';
+        $contentPath = "$basePath" . '/content';
 
         Log::info("identified content path as $contentPath, globbing content files");
 
@@ -53,7 +50,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
         $fileInfo = pathinfo($filePath);
         $extension = $fileInfo['extension'] === ''
             ? ''
-            : '.'.$fileInfo['extension'];
+            : '.' . $fileInfo['extension'];
         $fileSlug = basename($filePath, $extension);
 
         Log::info("file parsed, determined slug as $fileSlug");
@@ -71,35 +68,5 @@ final readonly class MarkdownUtility implements ContentUtilityContract
         Log::info('frontmatter and content parsed');
 
         return new ContentMeta($fileSlug, $markdown, $html, $frontMatter);
-    }
-
-    #[Override]
-    public function upsertBlogPost(ContentMeta $contentMeta): Post
-    {
-        $contentSlug = $contentMeta->slug;
-
-        Log::info("upserting blog post $contentSlug");
-
-        $upsertedBlog = Post::updateOrCreate([
-            'slug' => $contentSlug,
-        ], [
-            'slug' => $contentSlug,
-            'title' => $contentMeta->frontMatter->data['title'],
-            'description' => $contentMeta->frontMatter->data['description'],
-            'category' => $contentMeta->frontMatter->data['category'],
-            'published_date' => Carbon::parse($contentMeta->frontMatter->data['pubDate']),
-            'hero_image' => $contentMeta->frontMatter->data['heroImage'],
-            'raw_content' => $contentMeta->markdown,
-            'parsed_content' => $contentMeta->html,
-        ]);
-
-        foreach ($contentMeta->frontMatter->data['keywords'] as $keyword) {
-            $keyword = Keyword::firstOrCreate(['word' => strtolower($keyword)]);
-            $upsertedBlog->keywords()->attach($keyword);
-        }
-
-        Log::info('blog content updated!');
-
-        return $upsertedBlog;
     }
 }

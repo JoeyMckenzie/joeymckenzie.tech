@@ -22,6 +22,7 @@ return new class() extends Migration
             $table->date('published_date');
             $table->string('hero_image');
             $table->string('category');
+            $table->integer('views')->default(0);
             $table->text('raw_content');
             $table->longText('parsed_content');
         });

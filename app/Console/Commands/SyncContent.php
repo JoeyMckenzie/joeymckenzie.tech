@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Contracts\ContentUtilityContract;
+use App\Models\Post;
+use App\Services\PostRepository;
 use App\ValueObjects\ContentMeta;
 use Illuminate\Console\Command;
 use Throwable;
@@ -30,12 +32,12 @@ final class SyncContent extends Command
      *
      * @throws Throwable
      */
-    public function handle(ContentUtilityContract $contentUtility): void
+    public function handle(ContentUtilityContract $contentUtility, PostRepository $postRepository): void
     {
         $files = $contentUtility->getMarkdownFilePaths();
 
         collect($files)
-            ->map(fn (string $filePath): \App\ValueObjects\ContentMeta => $contentUtility->getParsedContent($filePath))
-            ->each(fn (ContentMeta $contentMeta): \App\Models\Post => $contentUtility->upsertBlogPost($contentMeta));
+            ->map(fn(string $filePath): ContentMeta => $contentUtility->getParsedContent($filePath))
+            ->each(fn(ContentMeta $contentMeta): Post => $postRepository->upsertBlogPost($contentMeta));
     }
 }
