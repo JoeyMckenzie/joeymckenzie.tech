@@ -11,7 +11,7 @@ defineProps<{
     <div class="pt-12 sm:px-6 lg:px-8">
         <div class="mx-auto max-w-4xl">
             <h2
-                class="text-right text-3xl font-bold tracking-tight sm:text-center sm:text-4xl"
+                class="text-right text-4xl font-bold tracking-tight sm:text-center sm:text-4xl"
             >
                 Latest thoughts.
             </h2>
