@@ -15,7 +15,7 @@ defineProps<{
 
 <template>
     <Head>
-        <title>Hi, I'm Joe.</title>
+        <title>Hi, I'm Joey.</title>
     </Head>
 
     <MainLayout>
