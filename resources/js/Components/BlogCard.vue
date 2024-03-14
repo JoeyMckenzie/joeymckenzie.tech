@@ -9,6 +9,9 @@ const props = defineProps<{
 }>();
 
 const href = computed(() => `/blog/${props.frontMatter.slug}`);
+const formattedViewCount = computed(() =>
+    props.frontMatter.views.toLocaleString(),
+);
 </script>
 
 <template>
@@ -21,7 +24,7 @@ const href = computed(() => `/blog/${props.frontMatter.slug}`);
                     >{{ frontMatter.published_date }}
                 </time>
                 <Badge variant="secondary">{{ frontMatter.category }}</Badge>
-                <p>{{ frontMatter.views }} views</p>
+                <p>{{ formattedViewCount }} views</p>
             </div>
             <div class="group relative">
                 <h3 class="mt-3 text-lg font-semibold leading-6">

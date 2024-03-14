@@ -13,6 +13,7 @@ const props = defineProps<{
 
 const keywordList = computed(() => props.keywords.join(','));
 const altText = computed(() => `${props.post.title} blog meme`);
+const formattedViewCount = computed(() => props.post.views.toLocaleString());
 </script>
 
 <template>
@@ -38,7 +39,7 @@ const altText = computed(() => `${props.post.title} blog meme`);
                         >{{ post.published_date }}
                     </time>
                     <Badge variant="secondary">{{ post.category }}</Badge>
-                    <p>{{ post.views }} views</p>
+                    <p>{{ formattedViewCount }} views</p>
                 </div>
                 <img
                     :alt="altText"
