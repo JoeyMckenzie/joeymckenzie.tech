@@ -45,9 +45,25 @@ jobs:
 
       - name: Run migrations
         run: php artisan migrate --force
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+          DB_CONNECTION: ${{ env.DB_CONNECTION }}
+          DB_HOST: ${{ env.DB_HOST }}
+          DB_PORT: ${{ env.DB_PORT }}
+          DB_DATABASE: ${{ env.DB_DATABASE }}
+          DB_USERNAME: ${{ env.DB_USERNAME }}
+          DB_PASSWORD: ${{ env.DB_PASSWORD }}
 
       - name: Sync content
         run: php artisan content:sync
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+          DB_CONNECTION: ${{ env.DB_CONNECTION }}
+          DB_HOST: ${{ env.DB_HOST }}
+          DB_PORT: ${{ env.DB_PORT }}
+          DB_DATABASE: ${{ env.DB_DATABASE }}
+          DB_USERNAME: ${{ env.DB_USERNAME }}
+          DB_PASSWORD: ${{ env.DB_PASSWORD }}
 
       - name: Generate sitemap
         run: php artisan make:sitemap
