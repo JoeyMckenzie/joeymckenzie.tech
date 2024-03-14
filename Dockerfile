@@ -38,7 +38,6 @@ COPY --from=base /var/www/html/vendor /app/vendor
 RUN npm ci --no-audit; \
     npm run build;
 
-
 # From our base container created above, we
 # create our final image, adding in static
 # assets that we generated above
@@ -46,7 +45,7 @@ FROM base
 
 COPY --from=node_modules_go_brrr /usr/local/bin/node /usr/local/bin/node
 COPY --from=node_modules_go_brrr /app/node_modules /var/www/html/node_modules
-
+COPY --from=node_modules_go_brrr /bootstrap/ssr /var/www/html/bootstrap/ssr
 
 # Packages like Laravel Nova may have added assets to the public directory
 # or maybe some custom assets were added manually! Either way, we merge
