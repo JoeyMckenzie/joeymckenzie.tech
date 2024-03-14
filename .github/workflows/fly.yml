@@ -1,0 +1,58 @@
+name: Deploy to Fly.io
+
+on:
+  workflow_run:
+    workflows: ['Run CI']
+    types:
+      - completed
+
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
+  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_PORT: ${{ secrets.DB_PORT }}
+  DB_DATABASE: ${{ secrets.DB_DATABASE }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+jobs:
+  fly:
+    if: github.event.workflow_run.conclusion == 'success' && ${{ !github.actor == 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    name: Sync content and deploy
+    steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Setup PHP
+        id: setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: Install node dependencies
+        run: npm install
+
+      - name: Install composer dependencies
+        run: composer install
+
+      - name: Run migrations
+        run: php artisan migrate --force
+
+      - name: Sync content
+        run: php artisan content:sync
+
+      - name: Generate sitemap
+        run: php artisan make:sitemap
+
+      - name: Deploy to Fly.io
+        run: flyctl deploy -e GIT_COMMIT_SHA=${{ github.sha }} --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
