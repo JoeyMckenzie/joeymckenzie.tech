@@ -24,9 +24,9 @@ const poweredBy = [
         icon: 'simple-icons:inertia',
     },
     {
-        display: 'Fly.io',
-        href: 'https://fly.io',
-        icon: 'logos:fly-icon',
+        display: 'Digital Ocean',
+        href: 'https://digitalocean.com',
+        icon: 'logos:digital-ocean-icon',
     },
 ];
 </script>
