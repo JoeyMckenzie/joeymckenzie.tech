@@ -19,5 +19,3 @@ const nowPlaying = computed(() => page.props.spotify);
         <slot />
     </SpotifyNotCurrentlyPlaying>
 </template>
-
-<style scoped></style>

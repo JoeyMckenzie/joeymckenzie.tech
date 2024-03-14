@@ -24,9 +24,14 @@ const poweredBy = [
         icon: 'simple-icons:inertia',
     },
     {
-        display: 'Digital Ocean',
-        href: 'https://digitalocean.com',
-        icon: 'logos:digital-ocean-icon',
+        display: 'Fly.io',
+        href: 'https://fly.io',
+        icon: 'logos:fly-icon',
+    },
+    {
+        display: 'Neon DB',
+        href: 'https://neon.tech',
+        icon: 'logos:neon-icon',
     },
 ];
 </script>
@@ -54,5 +59,3 @@ const poweredBy = [
         </a>
     </div>
 </template>
-
-<style scoped></style>

@@ -35,5 +35,3 @@ defineProps<{
         </div>
     </MainLayout>
 </template>
-
-<style scoped></style>

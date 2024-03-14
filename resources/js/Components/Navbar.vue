@@ -29,5 +29,3 @@ const links = [
         <ThemeToggle />
     </nav>
 </template>
-
-<style scoped></style>
