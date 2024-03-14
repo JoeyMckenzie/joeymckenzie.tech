@@ -9,6 +9,8 @@ keywords:
     - laravel
 ---
 
+> UPDATE: I've moved to [fly.io](https://fly.io) for hosting along with migrating my content [neon](https://neon.tech) as I'm lazy and cheap. All same principles still apply, though deployment will differ a bit as I'm no longer using Forge and Digital Ocean.
+
 Alright, I'm making this one short (sort of). My pre-New Year's Resolution is to write on my blog here more
 than bi-annually. Since becoming a dad and taking up my jorts-laden mantle and becoming alarmingly interested in grass
 mowing techniques and New Balance footwear this past year, finding the time to write has come too far and between
@@ -35,26 +37,26 @@ different iterations of JS frameworks and give some insight from a newcomers per
 I'm a creature of habit, and one thing I've formed somewhat of a ritual around is re-writing my website, the very one
 you happen to be reading, at least once a year. I've gone through a few iterations:
 
-- Static site generators with Hugo and Jekyll
-- SSR frameworks
-  with [Next.js](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/archive/blog-v1), [Nuxt.js](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/archive/nuxt-v2),
-  and [SvelteKit](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/archive/svelte)
-- At one point, a combo of [Astro and Rust](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/archive/astro-rust)
-  that formed an interesting mix of SSG and [island architectures](https://docs.astro.build/en/concepts/islands/) for
-  fetching dynamic data
+-   Static site generators with Hugo and Jekyll
+-   SSR frameworks
+    with [Next.js](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/archive/blog-v1), [Nuxt.js](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/archive/nuxt-v2),
+    and [SvelteKit](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/archive/svelte)
+-   At one point, a combo of [Astro and Rust](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/archive/astro-rust)
+    that formed an interesting mix of SSG and [island architectures](https://docs.astro.build/en/concepts/islands/) for
+    fetching dynamic data
 
 Quite frankly, I'm burnt out on JS framework madness, though to no fault of their own. There's many that are innovating
 and pushing the ecosystem forward with cool new technology that I'll get to use in production five years from now if I'm
 lucky. Each iteration I re-wrote wrangled a hodge podge of JS libraries for certain things I wanted to do, including but
 not limited to:
 
-- Parsing markdown
-  content ([contentlayer](https://contentlayer.dev), [gray-matter](https://www.npmjs.com/package/gray-matter)) and
-  highlighting code snippets ([highlight.js](https://highlightjs.org/), [shiki](https://shiki.matsu.io/))
-- Storing things in a database with a bit of magic
-  abstraction ([prisma](https://prisma.io), [drizzle](https://orm.drizzle.team/))
-- Calling external APIs through framework semantics, which differ from framework to framework
-- Caching content pages as I don't update them often
+-   Parsing markdown
+    content ([contentlayer](https://contentlayer.dev), [gray-matter](https://www.npmjs.com/package/gray-matter)) and
+    highlighting code snippets ([highlight.js](https://highlightjs.org/), [shiki](https://shiki.matsu.io/))
+-   Storing things in a database with a bit of magic
+    abstraction ([prisma](https://prisma.io), [drizzle](https://orm.drizzle.team/))
+-   Calling external APIs through framework semantics, which differ from framework to framework
+-   Caching content pages as I don't update them often
 
 And a plethora of other things. The nice thing about Laravel is that a lot of this is out-of-the-box functionality so
 I can indulge in my slice-of-the-internet playground that is my website.
@@ -66,10 +68,10 @@ using the JS flavor of the month framework. My .NET brain felt right at home wit
 mix and match frontends thanks to [Inertia.js](https://inertiajs.com) (I'm not quite ready to
 embrace [Livewire](https://livewire.laravel.com/) just yet). Anything I wanted to do, Laravel had an answer:
 
-- Syncing content to the database on
-  deployment? [Console commands](https://laravel.com/docs/10.x/artisan#generating-commands).
-- Querying content? [Eloquent](https://laravel.com/docs/10.x/eloquent).
-- Built-in caching, an HTTP client, and just about anything you'll need for the general web
+-   Syncing content to the database on
+    deployment? [Console commands](https://laravel.com/docs/10.x/artisan#generating-commands).
+-   Querying content? [Eloquent](https://laravel.com/docs/10.x/eloquent).
+-   Built-in caching, an HTTP client, and just about anything you'll need for the general web
 
 The goal of this post will be to outline what I think makes Laravel great from the context of a PHP/Laravel outsider
 even for a small, mostly static website like mine.
@@ -145,10 +147,10 @@ my case is just a MySQL instance running on my droplet provisioned with the help
 Rather than writing some one off shell script to do that, I found Laravel commands mighty useful to simply just define a
 custom artisan command that would:
 
-- Read my content files
-- Parse the frontmatter on each markdown file
-- Parse the markdown and convert it to HTML
-- Save everything to the data to the database
+-   Read my content files
+-   Parse the frontmatter on each markdown file
+-   Parse the markdown and convert it to HTML
+-   Save everything to the data to the database
 
 That ended up looking something like:
 
@@ -612,7 +614,11 @@ and in my component footer:
 #### resources/js/Components/SpotifyTracker.tsx
 
 ```tsx
-export default function SpotifyTracker({children}: { children: React.JSX.Element }): React.JSX.Element {
+export default function SpotifyTracker({
+    children,
+}: {
+    children: React.JSX.Element;
+}): React.JSX.Element {
     // Inertia has a pretty sweet hook allowing us to tap into common page properties
     const page = usePage();
 
@@ -879,7 +885,7 @@ name: Deploy to Forge
 
 on:
     workflow_run:
-        workflows: [ 'Inertia CI' ]
+        workflows: ['Inertia CI']
         types:
             - completed
 
@@ -890,37 +896,37 @@ jobs:
 
         name: Deploy application
         steps:
-            -   uses: actions/checkout@v3
+            - uses: actions/checkout@v3
 
-            -   name: Setup PHP
-                id: setup-php
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: '8.3'
+            - name: Setup PHP
+              id: setup-php
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
 
-            -   name: Install Forge CLI
-                run: composer global require laravel/forge-cli
+            - name: Install Forge CLI
+              run: composer global require laravel/forge-cli
 
-            -   name: Authenticate with Forge
-                run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
+            - name: Authenticate with Forge
+              run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
 
             # Forge environment variables, including the current git commit hash,
             # aren't included as runtime environment variables and only in the build script.
             # To get the current commit propagated, pull the current production configuration,
             # and append the current commit to the file and push it back up to Forge.
-            -   name: Download current configuration
-                run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
+            - name: Download current configuration
+              run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
 
-            -   name: Add current commit and push back to forge
-                run: |
-                    ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
-                working-directory: ${{ github.workspace }}
+            - name: Add current commit and push back to forge
+              run: |
+                  ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
+              working-directory: ${{ github.workspace }}
 
-            -   name: Push environment to Forge
-                run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
+            - name: Push environment to Forge
+              run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
 
-            -   name: Ping deploy.sh URL
-                run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
+            - name: Ping deploy.sh URL
+              run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
 ```
 
 Setting a few environment variables, badda bing, badda boom, and everything works.
