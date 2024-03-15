@@ -53,7 +53,8 @@ jobs:
         run: php artisan make:sitemap
 
       - name: Deploy to Fly.io
-        run: |
+        run:
+          | # We need to clear the Neon cache within the Dockerfile, so pass in the DB connection as build args
           flyctl deploy \
             -e GIT_COMMIT_SHA=${{ github.sha }} \
             --build-arg DB_CONNECTION=${{ env.DB_CONNECTION }} \
