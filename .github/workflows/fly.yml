@@ -48,4 +48,13 @@ jobs:
         run: php artisan make:sitemap
 
       - name: Deploy to Fly.io
-        run: flyctl deploy -e GIT_COMMIT_SHA=${{ github.sha }} --remote-only
+        run: |
+          flyctl deploy \
+            -e GIT_COMMIT_SHA=${{ github.sha }} \
+            -e DB_CONNECTION=${{ env.DB_CONNECTION }} \
+            -e DB_HOST=${{ env.DB_HOST }} \
+            -e DB_PORT=${{ env.DB_PORT }} \
+            -e DB_DATABASE=${{ env.DB_DATABASE }} \
+            -e DB_USERNAME=${{ env.DB_USERNAME }} \
+            -e DB_PASSWORD=${{ env.DB_PASSWORD }} \
+            --remote-only
