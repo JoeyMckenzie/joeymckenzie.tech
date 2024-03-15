@@ -16,6 +16,20 @@ LABEL fly_launch_runtime="laravel"
 # copy application code, skipping files based on .dockerignore
 COPY . /var/www/html
 
+ARG DB_CONNECTION=""
+ARG DB_HOST=""
+ARG DB_PORT=""
+ARG DB_DATABASE=""
+ARG DB_USERNAME=""
+ARG DB_PASSWORD=""
+
+ENV DB_CONNECTION=${DB_CONNECTION}
+ENV DB_HOST=${DB_HOST}
+ENV DB_PORT=${DB_PORT}
+ENV DB_DATABASE=${DB_DATABASE}
+ENV DB_USERNAME=${DB_USERNAME}
+ENV DB_PASSWORD=${DB_PASSWORD}
+
 RUN composer install --optimize-autoloader --no-dev \
     && mkdir -p storage/logs \
     && php artisan optimize:clear \
