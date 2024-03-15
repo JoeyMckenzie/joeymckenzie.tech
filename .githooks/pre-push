@@ -2,12 +2,3 @@
 
 composer run lint
 npm run lint:check
-
-fly deploy \
-    -e DB_CONNECTION=${{ secrets.DB_CONNECTION }} \
-    -e DB_HOST=${{ secrets.DB_HOST }} \
-    -e DB_PORT=${{ secrets.DB_PORT }} \
-    -e DB_DATABASE=${{ secrets.DB_DATABASE }} \
-    -e DB_USERNAME=${{ secrets.DB_USERNAME }} \
-    -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
-    --remote-only
