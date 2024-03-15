@@ -68,18 +68,12 @@ jobs:
         run: |
           flyctl deploy \
             -e GIT_COMMIT_SHA=${{ github.sha }} \
-            --build-arg DB_CONNECTION=$DB_CONNECTION \
-            --build-arg DB_HOST=$DB_HOST \
-            --build-arg DB_PORT=$DB_PORT \
-            --build-arg DB_DATABASE=$DB_DATABASE \
-            --build-arg DB_USERNAME=$DB_USERNAME \
-            --build-arg DB_PASSWORD=$DB_PASSWORD \
+            --build-arg DB_CONNECTION=${{ secrets.DB_CONNECTION }} \
+            --build-arg DB_HOST=${{ secrets.DB_HOST }} \
+            --build-arg DB_PORT=${{ secrets.DB_PORT }} \
+            --build-arg DB_DATABASE=${{ secrets.DB_DATABASE }} \
+            --build-arg DB_USERNAME=${{ secrets.DB_USERNAME }} \
+            --build-arg DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
             --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-          DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
-          DB_HOST: ${{ secrets.DB_HOST }}
-          DB_PORT: ${{ secrets.DB_PORT }}
-          DB_DATABASE: ${{ secrets.DB_DATABASE }}
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
