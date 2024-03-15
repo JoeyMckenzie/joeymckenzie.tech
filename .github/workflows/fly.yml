@@ -51,10 +51,10 @@ jobs:
         run: |
           flyctl deploy \
             -e GIT_COMMIT_SHA=${{ github.sha }} \
-            -e DB_CONNECTION=${{ env.DB_CONNECTION }} \
-            -e DB_HOST=${{ env.DB_HOST }} \
-            -e DB_PORT=${{ env.DB_PORT }} \
-            -e DB_DATABASE=${{ env.DB_DATABASE }} \
-            -e DB_USERNAME=${{ env.DB_USERNAME }} \
-            -e DB_PASSWORD=${{ env.DB_PASSWORD }} \
+            --build-arg DB_CONNECTION=${{ env.DB_CONNECTION }} \
+            --build-arg DB_HOST=${{ env.DB_HOST }} \
+            --build-arg DB_PORT=${{ env.DB_PORT }} \
+            --build-arg DB_DATABASE=${{ env.DB_DATABASE }} \
+            --build-arg DB_USERNAME=${{ env.DB_USERNAME }} \
+            --build-arg DB_PASSWORD=${{ env.DB_PASSWORD }} \
             --remote-only
