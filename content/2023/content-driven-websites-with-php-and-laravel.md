@@ -9,7 +9,7 @@ keywords:
     - laravel
 ---
 
-> UPDATE: I've moved to [fly.io](https://fly.io) for hosting along with migrating my content [neon](https://neon.tech) as I'm lazy and cheap. All same principles still apply, though deployment will differ a bit as I'm no longer using Forge and Digital Ocean.
+> UPDATE: I've since moved to [fly.io](https://fly.io) for hosting along with migrating my content to [neon](https://neon.tech) as I'm lazy and cheap. All the same principles here still apply, though deployment will differ a bit as I'm no longer using Forge and Digital Ocean.
 
 Alright, I'm making this one short (sort of). My pre-New Year's Resolution is to write on my blog here more
 than bi-annually. Since becoming a dad and taking up my jorts-laden mantle and becoming alarmingly interested in grass
