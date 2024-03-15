@@ -33,7 +33,7 @@ jobs:
       # To get the current commit propagated, pull the current production configuration,
       # and append the current commit to the file and push it back up to Forge.
       - name: Download current configuration
-        run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
+        run: forge env:pull ${{ secrets.FORGE_SITE_NAME }} ${{ github.workspace }}/.env
 
       - name: Add current commit and push back to forge
         run: |
@@ -42,7 +42,7 @@ jobs:
         working-directory: ${{ github.workspace }}
 
       - name: Push environment to Forge
-        run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
+        run: forge env:push ${{ secrets.FORGE_SITE_NAME }} ${{ github.workspace }}/.env
 
       - name: Ping deploy URL
         run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
