@@ -16,6 +16,23 @@ LABEL fly_launch_runtime="laravel"
 # copy application code, skipping files based on .dockerignore
 COPY . /var/www/html
 
+# We'll set these environment variables during the build step, both locally and in our Fly instance
+ARG DB_CONNECTION=""
+ARG DB_HOST=""
+ARG DB_PORT=""
+ARG DB_DATABASE=""
+ARG DB_USERNAME=""
+ARG DB_PASSWORD=""
+
+# create a .env file for loading variables
+RUN echo "\n\
+    DB_CONNECTION=${DB_CONNECTION}\n\
+    DB_HOST=${DB_HOST}\n\
+    DB_PORT=${DB_PORT}\n\
+    DB_DATABASE=${DB_DATABASE}\n\
+    DB_USERNAME=${DB_USERNAME}\n\
+    DB_PASSWORD=${DB_PASSWORD}" > ./.env
+
 RUN composer install --optimize-autoloader --no-dev \
     && mkdir -p storage/logs \
     && php artisan optimize:clear \
