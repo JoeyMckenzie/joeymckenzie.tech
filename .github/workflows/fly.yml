@@ -65,7 +65,16 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Deploy to Fly.io
-        run: flyctl deploy -e GIT_COMMIT_SHA=${{ github.sha }} --remote-only
+        run: |
+          flyctl deploy \
+            -e GIT_COMMIT_SHA=${{ github.sha }} \
+            --build-arg DB_CONNECTION=$DB_CONNECTION \
+            --build-arg DB_HOST=$DB_HOST \
+            --build-arg DB_PORT=$DB_PORT \
+            --build-arg DB_DATABASE=$DB_DATABASE \
+            --build-arg DB_USERNAME=$DB_USERNAME \
+            --build-arg DB_PASSWORD=$DB_PASSWORD \
+            --remote-only
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
           DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
