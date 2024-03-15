@@ -26,3 +26,4 @@ fly.toml
 **/.DS_Store
 **/Thumbs.db
 public/hot
+content/
