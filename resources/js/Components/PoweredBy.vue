@@ -26,12 +26,7 @@ const poweredBy = [
     {
         display: 'Fly.io',
         href: 'https://fly.io',
-        icon: 'logos:fly-icon',
-    },
-    {
-        display: 'Neon DB',
-        href: 'https://neon.tech',
-        icon: 'logos:neon-icon',
+        icon: 'logos:digital-ocean-icon',
     },
 ];
 </script>

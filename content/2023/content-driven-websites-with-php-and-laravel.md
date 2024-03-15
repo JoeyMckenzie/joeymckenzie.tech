@@ -9,10 +9,6 @@ keywords:
     - laravel
 ---
 
-> UPDATE: I've since moved to [fly.io](https://fly.io) for hosting along with migrating my content
-> to [neon](https://neon.tech), mostly because I'm lazy and cheap. All the same principles here still apply, though
-> deployment will differ a bit from Forge and Digital Ocean.
-
 Alright, I'm making this one short (sort of). My pre-New Year's Resolution is to write on my blog here more
 than bi-annually. Since becoming a dad and taking up my jorts-laden mantle and becoming alarmingly interested in grass
 mowing techniques and New Balance footwear this past year, finding the time to write has come too far and between

@@ -105,7 +105,7 @@ final readonly class PostRepository implements ContentRepositoryContract
 
         foreach ($contentMeta->frontMatter->data['keywords'] as $keyword) {
             $keyword = Keyword::firstOrCreate(['word' => strtolower($keyword)]);
-            $upsertedBlog->keywords()->attach($keyword);
+            $existingKeywordLink = $upsertedBlog->keywords()->firstOrCreate(['word' => $keyword->word]);
         }
 
         Log::info('blog content updated!');
