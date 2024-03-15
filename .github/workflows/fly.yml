@@ -56,6 +56,13 @@ jobs:
 
       - name: Generate sitemap
         run: php artisan make:sitemap
+        env:
+          DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Deploy to Fly.io
         run: flyctl deploy -e GIT_COMMIT_SHA=${{ github.sha }} --remote-only
