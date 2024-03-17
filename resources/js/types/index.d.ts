@@ -34,6 +34,16 @@ export type User = {
     email_verified_at: string;
 };
 
+export type Brewery = {
+    id: string;
+    name: string;
+    city: string;
+    state: string;
+    country: string;
+    phone: string;
+    website_url: string;
+};
+
 export type PageProps<
     T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
