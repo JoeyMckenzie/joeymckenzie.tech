@@ -8,9 +8,9 @@ public record BreweryAggregate
 
     public required string Name { get; init; }
 
-    public ICollection<Beer> Beers { get; } = [];
+    public ISet<Beer> Beers { get; } = new HashSet<Beer>();
 
-    public ISet<Employee> Employees { get; } = new HashSet<Employee>(new EmployeeComparer());
+    public ISet<Employee> Employees { get; } = new HashSet<Employee>();
 
     public override string ToString()
     {
