@@ -34,5 +34,5 @@ examples/zig/**/zig-out
 examples/dotnet/**/obj
 examples/dotnet/**/bin
 examples/dotnet/**/*.sln
+examples/dotnet/**/.idea/
 *.sln
-

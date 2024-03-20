@@ -2,7 +2,7 @@ default: start
 
 ## Start the database container
 start:
-  docker run --name postgres -p 5432:5432 -v $(pwd)/init:/docker-entrypoint-initdb.d --env-file .env  -d postgres:latest
+  docker run --name postgres -p 5432:5432 -v $(pwd)/init:/docker-entrypoint-initdb.d --env-file .env -d postgres:latest
 
 ## Remove the current postgres container
 rm:
