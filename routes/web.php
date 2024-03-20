@@ -17,4 +17,5 @@ Route::get('blog', [BlogController::class, 'index'])
     ->name('blog');
 
 Route::get('blog/{slug}', [BlogController::class, 'show'])
+    ->where('slug', '[a-zA-Z]+')
     ->name('blog.post');

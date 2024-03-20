@@ -20,3 +20,16 @@ yarn-error.log
 /.vscode
 .DS_Store
 public/sitemap-index.xml
+.mono/
+
+
+# rust
+examples/rust/**/target
+
+# zig
+examples/zig/**/zig-cache
+examples/zig/**/zig-out
+
+# dotnet
+examples/dotnet/**/obj
+examples/dotnet/**/bin
