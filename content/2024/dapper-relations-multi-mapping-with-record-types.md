@@ -11,10 +11,10 @@ keywords:
 ---
 
 The other day I was deep in the weeds of some data access code that relies heavily on Dapper for talking to a Postgres
-database, where most curmudgeonly developers like myself tend to find themselves when fine tuning an application, and
+database, where most curmudgeonly developers like myself tend to find themselves when fine-tuning an application, and
 landed on a solution to a particular problem I was having in the best form possible: removing code entirely.
 
-## It's free value equality
+## Value equality for free
 
 As .NET devs, we've all probably been using `IEqualityComparer<T>` or `IEquatable<T>` for some time well before `record`
 types we're a thing,
@@ -41,7 +41,7 @@ Debug.Assert(instanceA == instanceB);
 public class SomeClass(int SomeValue);
 ```
 
-With C# 8.0 `record` types, this changed the game quite a bit for us:
+With C# 9.0 `record` types, this changed the game quite a bit for us:
 
 ```csharp
 var instanceA = new SomeClass(42069);
@@ -130,7 +130,7 @@ public class SomeClass(int someValue) : IEquatable<SomeClass>
 }
 ```
 
-Okay, great. Now our objects are equivalent by value... but that's a s@$t ton of boiler plater code
+Okay, great. Now our objects are equivalent by value... but that's a s@$t ton of boilerplate code
 that we need to sprinkle across our code base for something as simple as making sure that two objects
 are considered equal if we're only looking at their property values.
 
@@ -139,7 +139,7 @@ concludes my TED talk.
 
 ### Dapper, relationships, and multi-mapping
 
-Okay, I lied, there's more to my TED talk. So I've been blindly using `record` types now for awhile and
+Okay, I lied, there's more to my TED talk. So I've been blindly using `record` types now for a while and
 recently came across a scenario where I _really_ appreciated their power and flexibility while using Dapper to query for
 data that had a few one-to-many relationships going on. The root of the problem was not Dapper nor the relationships
 themselves, but rather Dapper's multi-mapping over model queries that have two or more one-to-many relationships where
@@ -148,14 +148,14 @@ has a differing number of rows that'll relate to the parent model.
 
 Okay, that's a bunch of jargon, so let's break it down using something I think we all can understand: beer.
 
-Suppose we're modeling the relationships within a brewery CRM SaaS app of sorts that manages a breweries beer inventory
-and employees working for said breweries. We can think of this in terms of a data model where a brewery:
+Suppose we're modeling the relationships within a brewery CRM SaaS app called HopTracker that manages a brewery's
+beer inventory and employees working for said brewery. We can think of this in terms of a data model where a brewery:
 
--   has many beers
--   has many employees
+- has many beers
+- has many employees
 
 Though beers and employees associated to the brewery don't necessarily have a direct link to each, if we think in terms
-of a SQL query that's gets us an aggregate view of all of a brewery's beers and employees, it might looks something
+of a SQL query that's gets us an aggregate view of all of a brewery's beers and employees, it might look something
 like:
 
 ```sql
@@ -176,17 +176,17 @@ WHERE br.id = @BreweryId
 We might get something like:
 
 | Brewery ID | Name      | Beer ID | Beer Name | Beer Type | Employee ID | First Name | Last Name |
-| ---------- | --------- | ------- | --------- | --------- | ----------- | ---------- | --------- |
+|------------|-----------|---------|-----------|-----------|-------------|------------|-----------|
 | 1          | Brewery A | 101     | Beer A    | Ale       | 201         | John       | Doe       |
 | 1          | Brewery A | 102     | Beer B    | Lager     | 201         | John       | Doe       |
 | 2          | Brewery B | 103     | Beer X    | Stout     | 202         | Jane       | Smith     |
 | 3          | Brewery C | 104     | Beer Y    | IPA       | 203         | Michael    | Johnson   |
 
-If we're using EF, a lot of the behind the scenes mapping will happen behind the scenes of our `.Include()` relation
-mappings we might have on a `Brewery` entity model. There's a good chance a brewery will have many beers and many
+If we're using EF, a lot of the behind the scenes mapping will happen within the internals of our `.Include()` relation
+mappings that we might have on a `Brewery` entity model. There's a good chance a brewery will have many beers and many
 employees, and we see from our example result set we'll get back some duplicate rows in the case we have different
-numbers of related entities. To capture all the data from this query within a model, I might define an aggregate
-model to pick up all the data I'm interested in:
+numbers of related entities joined on the parent record. To capture all the data from this query within a model,
+I might define an aggregate model to pick up all the data I'm interested in:
 
 ```csharp
 public class BreweryAggregate
@@ -248,7 +248,83 @@ public abstract class EntityBase
 }
 ```
 
-Now within some data access code, I might use this aggregate model to retrieve the data and map it out:
+For the purpose of this example I've spun up
+a [Postgres database](https://github.com/JoeyMckenzie/joeymckenzie.tech/blob/main/examples/dotnet/HopTracker/init/schema.sql)
+with the help of Docker volume mapping and initialization. To model this scenario, our SQL will look something like:
+
+```postgresql
+-- The database initialization script is used for defining your local schema as well as postgres
+-- running within a docker container, where we'll copy this file over and run on startup
+
+DO
+$$
+    BEGIN
+        IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'hop_tracker') THEN
+            CREATE DATABASE hop_tracker;
+        END IF;
+    END
+$$;
+
+\c hop_tracker;
+
+DROP TABLE IF EXISTS breweries CASCADE;
+CREATE TABLE breweries
+(
+    id           SERIAL PRIMARY KEY,
+    brewery_name VARCHAR(255) NOT NULL,
+    created_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at   TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+DROP TABLE IF EXISTS beers CASCADE;
+DROP TYPE IF EXISTS beer_type;
+
+CREATE TYPE beer_type AS ENUM ('ipa', 'double_ipa');
+CREATE TABLE beers
+(
+    id         SERIAL PRIMARY KEY,
+    brewery_id INTEGER      NOT NULL,
+    beer_name  VARCHAR(255) NOT NULL,
+    beer_type  beer_type    NOT NULL,
+    created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_brewery_id FOREIGN KEY (brewery_id) REFERENCES breweries (id)
+);
+
+DROP TABLE IF EXISTS employees CASCADE;
+CREATE TABLE employees
+(
+    id         SERIAL PRIMARY KEY,
+    first_name VARCHAR(255) NOT NULL,
+    last_name  VARCHAR(255) NOT NULL,
+    brewery_id INTEGER      NOT NULL,
+    created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_brewery_id FOREIGN KEY (brewery_id) REFERENCES breweries (id)
+);
+
+-- Seed a brewery into the database that we can attach employees and beers to
+INSERT INTO breweries (brewery_name)
+VALUES ('Fall River Brewery');
+
+-- Next, seed some beer tasty beers
+INSERT INTO beers (brewery_id, beer_name, beer_type)
+VALUES ((SELECT id
+         FROM breweries
+         WHERE brewery_name = 'Fall River Brewery'), 'Hexagenia', 'ipa'),
+       ((SELECT id
+         FROM breweries
+         WHERE brewery_name = 'Fall River Brewery'), 'Widowmaker', 'double_ipa');
+
+-- Then, seed some loyal employees
+INSERT INTO employees (first_name, last_name, brewery_id)
+VALUES ('Sam', 'Adams', (SELECT id
+                         FROM breweries
+                         WHERE brewery_name = 'Fall River Brewery'));
+```
+
+Now within some data access code, I might use the aggregate
+model to retrieve the data and map it out:
 
 ```csharp
 public async Task<BreweryAggregate?> GetBreweryAsync(int id, CancellationToken cancellationToken)
@@ -299,16 +375,17 @@ public async Task<BreweryAggregate?> GetBreweryAsync(int id, CancellationToken c
 
 At a quick glance, the code above:
 
--   Defines a query to pull all the data we need for a brewery with all the included relations to beers and employees
--   Defines some column breaks, or `splitOn` in Dapper terms, to tell Dapper what columns are associated to the models we
-    want mapped
--   Defines a closure for Dapper to callback to for each record we get back in the result
-    -   We'll map the aggregate model on first pass, where subsequent iterations won't be assigned since we're using
-        the `??=` null-coalescing assignment operator
-    -   On each pass, we'll also add the associated beer/employee that Dapper mapped out for us in the brewery aggregates
-        list relationships (_foreshadowing intensifies_)
--   Lastly, we pass the query function an anonymous object to use in order to parameterize the query so our security
-    officers don't slap us with an 8 hour OWASP training on SQL injection
+- Defines a query to pull all the data we need for a brewery with all the included relations to beers and employees
+- Defines some column breaks, or `splitOn` in Dapper terms, to tell Dapper what section of the resulting columns are
+  associated to the models we
+  want mapped
+- Defines a closure for Dapper to callback to for each record we get back in the result
+    - We'll map the aggregate model on first pass, where subsequent iterations won't be assigned since we're using
+      the `??=` null-coalescing assignment operator
+    - On each pass, we'll also add the associated beer/employee that Dapper mapped out for us in the brewery aggregates
+      list relationships (_foreshadowing intensifies_)
+- Lastly, we pass the query function an anonymous object to use in order to parameterize the query so our security
+  officers don't slap us with an 8-hour OWASP training on SQL injection
 
 To use this code, I've spun up a simple console app that uses [Npgsql](https://www.npgsql.org/) as a Postgres driver.
 Using a few helper .NET libraries for configuration, I can run some code to pull from the database and pretty-print to
@@ -345,20 +422,24 @@ Beers: [Hexagenia, Widowmaker]
 Employees: [Sam Adams, Sam Adams] // Oh no, duplicate employees!
 ```
 
-So we've gotta problem. Our multi-mapping closure pushed in the same employee twice, because we had two rows returned
+So we've got ourselves a problem. Our multi-mapping closure pushed in the same employee twice, because we had two rows
+returned
 as we `JOIN`ed on the beers table that had multiple beers associated to the brewery with only one employee (talk about
 bootstrapping your business).
 
-We've gotta few options here to combat this scenario to guarantee that we're only ever returned unique beers and
+We have a few options here to combat this scenario to guarantee that we're only ever returned unique beers and
 employees
 mapped back to the brewery aggregate model:
 
--   Check if the employee/beer already exists in the current list of beers/employees that are mapped to the brewery
-    aggregate
--   Use `record` types
+- Check if the employee/beer already exists in the current list of beers/employees that are mapped to the brewery
+  aggregate
+- Use `record` types
 
 Let's pretend it 2017 and we don't have record types just yet. If we take option 1, we'll probably want an equality
-contract in place on our `Employee` model so we can use a `.Contains()` with the comparer. Implementing
+contract in place on our `Employee` model, so we can use a `.Contains()` with the comparer. While we _could_ just use a
+string comparison directly within the multi-mapping action on the names and brewery ID, equality contracts are a bit
+more
+robust allowing us to reuse the value equality logic elsewhere in our applications. Implementing
 the `IEquatable<Employee>` contract would have our `Employee` now looking something like:
 
 ```csharp
@@ -500,6 +581,25 @@ with `class`/`record` types). What if we could make this code even _leaner_? Tur
 Let's update our `BreweryAggregate` to utilize those instead:
 
 ```csharp
+using HopTracker.Entities;
+
+namespace HopTracker.Aggregates;
+
+public record BreweryAggregate
+{
+    // ...other stuff
+    
+    public ISet<Beer> Beers { get; } = new HashSet<Beer>();
+
+    public ISet<Employee> Employees { get; } = new HashSet<Employee>();
+
+    // ..other stuff
+}
+```
+
+And now our data access method can be updated to remove the call to `.Contains()` within our multi-mapping action:
+
+```csharp
 public async Task<BreweryAggregate?> GetBreweryAsync(int id, CancellationToken cancellationToken)
 {
     // ...other stuff
@@ -537,13 +637,13 @@ Beers: [Hexagenia, Widowmaker]
 Employees: [Sam Adams] // *Still* no duplicates!
 ```
 
-As we expect, no duplicate employees and we got to use even _less_ code. My favorite code to write is the code I don't
-have to write (trademarking that).
+As we expect, no duplicate employees, and we got to use even _less_ code. I don't know about you, but my favorite code
+to write is the code I don't have to write at all (trademarking that).
 
 ### TL;DR
 
 Model relationships and Dapper can be tricky at first, as it requires a bit more elbow grease to get the same niceties
-of EF out-of-the-box. I've always been a fan of slim ORMs and firmly believe in the power of raw SQL. All of the sample
+of EF out-of-the-box, but easily achievable thanks to `record` types and sets. For those interested, all the sample
 code for this post can be
 found [here](https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/main/examples/dotnet/HopTracker) on my GitHub. As
 always, I hope someone out there finds this useful.

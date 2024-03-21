@@ -40,6 +40,6 @@ test:
 ci:
     npm run pre-commit && composer run ci
 
-# import secrets into our fly instance
-secrets:
-    fly secrets import < .env.production
+# continuously sync content
+content:
+    find app/ content/ | entr -s 'php artisan content:sync'

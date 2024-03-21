@@ -7,7 +7,6 @@ namespace App\Services;
 use App\Contracts\ContentUtilityContract;
 use App\ValueObjects\ContentMeta;
 use Illuminate\Support\Facades\Log;
-use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
 use League\CommonMark\Extension\Table\TableExtension;
@@ -16,8 +15,24 @@ use Spatie\LaravelMarkdown\MarkdownRenderer;
 
 final readonly class MarkdownUtility implements ContentUtilityContract
 {
+    private array $config;
+
     public function __construct(private MarkdownRenderer $renderer)
     {
+        $this->config = [
+            'table' => [
+                'wrap' => [
+                    'enabled' => false,
+                    'tag' => 'div',
+                    'attributes' => [],
+                ],
+                'alignment_attributes' => [
+                    'left' => ['align' => 'left'],
+                    'center' => ['align' => 'center'],
+                    'right' => ['align' => 'right'],
+                ],
+            ],
+        ];
     }
 
     #[Override]
@@ -64,7 +79,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
         $frontMatter = $parsedContent->getFrontMatter();
         $markdown = $parsedContent->getContent();
         $html = $this->renderer
-            ->addExtension(new CommonMarkCoreExtension())
+            ->commonmarkOptions($this->config)
             ->addExtension(new TableExtension())
             ->highlightTheme('tokyo-night')
             ->toHtml($markdown);
