@@ -15,6 +15,7 @@ use Spatie\LaravelMarkdown\MarkdownRenderer;
 
 final readonly class MarkdownUtility implements ContentUtilityContract
 {
+    // @phpstan-ignore-next-line
     private array $config;
 
     public function __construct(private MarkdownRenderer $renderer)
