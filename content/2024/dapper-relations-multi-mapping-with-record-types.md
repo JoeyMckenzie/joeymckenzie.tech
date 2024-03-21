@@ -252,20 +252,20 @@ For the purpose of this example I've spun up
 a [Postgres database](https://github.com/JoeyMckenzie/joeymckenzie.tech/blob/main/examples/dotnet/HopTracker/init/schema.sql)
 with the help of Docker volume mapping and initialization. To model this scenario, our SQL will look something like:
 
-```postgresql
+```sql
 -- The database initialization script is used for defining your local schema as well as postgres
 -- running within a docker container, where we'll copy this file over and run on startup
 
 DO
-$$
-    BEGIN
-        IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'hop_tracker') THEN
-            CREATE DATABASE hop_tracker;
-        END IF;
-    END
+    $$
+BEGIN IF NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'hop_tracker') THEN
+CREATE DATABASE hop_tracker;
+END IF;
+END
 $$;
 
-\c hop_tracker;
+\
+c hop_tracker;
 
 DROP TABLE IF EXISTS breweries CASCADE;
 CREATE TABLE breweries
@@ -277,15 +277,17 @@ CREATE TABLE breweries
 );
 
 DROP TABLE IF EXISTS beers CASCADE;
-DROP TYPE IF EXISTS beer_type;
+DROP
+TYPE IF EXISTS beer_type;
 
-CREATE TYPE beer_type AS ENUM ('ipa', 'double_ipa');
+CREATE
+TYPE beer_type AS ENUM ('ipa', 'double_ipa');
 CREATE TABLE beers
 (
     id         SERIAL PRIMARY KEY,
     brewery_id INTEGER      NOT NULL,
     beer_name  VARCHAR(255) NOT NULL,
-    beer_type  beer_type    NOT NULL,
+    beer_type beer_type NOT NULL,
     created_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_brewery_id FOREIGN KEY (brewery_id) REFERENCES breweries (id)
