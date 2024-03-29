@@ -1,13 +1,11 @@
-import { readFileSync } from 'fs';
-import MarkdownIt from 'markdown-it';
-import Shiki from '@shikijs/markdown-it';
-import matter from 'gray-matter';
+import markdownit from 'markdown-it';
+import shiki from '@shikijs/markdown-it';
 
-const filePath = process.argv[2];
-const md = MarkdownIt();
+const fileContents = process.argv[2];
+const md = markdownit();
 
 md.use(
-  await Shiki({
+  await shiki({
     themes: {
       light: 'tokyo-night',
       dark: 'tokyo-night',
@@ -15,8 +13,6 @@ md.use(
   }),
 );
 
-const fileData = readFileSync(filePath, { encoding: 'utf-8' });
-const fileMatter = matter(fileData);
-const parsedHtml = md.render(fileMatter.content);
+const parsedHtml = md.render(fileContents);
 
-// console.log(parsedHtml);
+console.log(parsedHtml);

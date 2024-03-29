@@ -1,34 +1,44 @@
 use std::{env, fs, path::Path, process::Command};
 
-use libsql::Builder;
+use anyhow::Context;
+use gray_matter::engine::YAML;
+use gray_matter::Matter;
+use serde::Deserialize;
+use sqlx::PgPool;
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "camelCase")]
+struct FrontMatter {
+    title: String,
+    description: String,
+    pub_date: String,
+    hero_image: String,
+    category: String,
+    keywords: Vec<String>,
+}
 
 #[tokio::main]
-async fn main() {
+async fn main() -> anyhow::Result<()> {
     dotenvy::dotenv().expect("failed to load environment");
 
-    let url = env::var("LIBSQL_URL").expect("LIBSQL_URL must be set");
-    let token = env::var("LIBSQL_AUTH_TOKEN").unwrap_or_default();
-    let db = Builder::new_remote(url, token)
-        .build()
+    let _pool = PgPool::connect(&env::var("DATABASE_URL")?)
         .await
-        .expect("failed to connect");
-
-    let conn = db.connect().unwrap();
-    let mut rows = conn.query("SELECT * FROM view_counts", ()).await.unwrap();
-
-    while let Some(row) = rows.next().await.unwrap() {
-        dbg!(row);
-    }
+        .context("failed to connect to database")?;
 
     let content_path = Path::new("content");
+    let matter = Matter::<YAML>::new();
 
     if let Ok(entries) = fs::read_dir(content_path) {
         for entry in entries.flatten() {
             if let Ok(content_entries) = fs::read_dir(entry.path()) {
                 for content_entry in content_entries.flatten() {
+                    let file_contents = fs::read_to_string(content_entry.path())
+                        .expect("failed to read contents of the file");
+                    let parsed_content = matter
+                        .parse_with_struct::<FrontMatter>(&file_contents)
+                        .unwrap();
                     let output = Command::new("node")
-                        .arg("bin/shiki.js")
-                        .arg(content_entry.path()) // Specify the script to run
+                        .args(["bin/shiki.js", &parsed_content.content])
                         .output() // Execute the command and capture the output
                         .expect("Failed to execute command");
 
@@ -46,4 +56,6 @@ async fn main() {
             }
         }
     }
+
+    Ok(())
 }
