@@ -41,13 +41,17 @@ async fn main() -> anyhow::Result<()> {
             if let Ok(content_entries) = fs::read_dir(entry.path()) {
                 for content_entry in content_entries.flatten() {
                     let content_file_path = content_entry.path();
+                    if content_file_path.ends_with(".gitkeep") {
+                        continue;
+                    }
 
                     println!(
                         "content file found for {:?}, parsing content",
                         content_file_path
                     );
-
-                    let file_contents = fs::read_to_string(content_entry.path())?;
+                    
+                    let file_name = content_file_path.file_name().unwrap();
+                    let file_contents = fs::read_to_string(content_file_path)?;
                     let parsed_content = matter
                         .parse_with_struct::<FrontMatter>(&file_contents)
                         .unwrap();
