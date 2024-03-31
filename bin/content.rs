@@ -1,10 +1,12 @@
-use std::{env, fs, path::Path, process::Command};
+use std::{env, fs, io, path::Path, process::Command};
 
-use anyhow::Context;
+use gray_matter::{Matter, ParsedEntityStruct};
 use gray_matter::engine::YAML;
-use gray_matter::Matter;
 use serde::Deserialize;
-use sqlx::PgPool;
+use sqlx::{PgPool, Postgres, Transaction};
+use time::OffsetDateTime;
+
+const SHIKI_PATH: &str = "bin/shiki.js";
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -19,43 +21,90 @@ struct FrontMatter {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    dotenvy::dotenv().expect("failed to load environment");
-
-    let _pool = PgPool::connect(&env::var("DATABASE_URL")?)
-        .await
-        .context("failed to connect to database")?;
+    dotenvy::dotenv()?;
 
     let content_path = Path::new("content");
-    let matter = Matter::<YAML>::new();
 
     if let Ok(entries) = fs::read_dir(content_path) {
+        println!("initializing connection to Neon");
+
+        let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
+        let mut tx: Transaction<'_, Postgres> = pool.begin().await?;
+
+        println!("connection initialized, parsing content files");
+
+        let matter = Matter::<YAML>::new();
+
+        println!("content directory found, searching for content files");
+
         for entry in entries.flatten() {
             if let Ok(content_entries) = fs::read_dir(entry.path()) {
                 for content_entry in content_entries.flatten() {
-                    let file_contents = fs::read_to_string(content_entry.path())
-                        .expect("failed to read contents of the file");
+                    let content_file_path = content_entry.path();
+
+                    println!(
+                        "content file found for {:?}, parsing content",
+                        content_file_path
+                    );
+
+                    let file_contents = fs::read_to_string(content_entry.path())?;
                     let parsed_content = matter
                         .parse_with_struct::<FrontMatter>(&file_contents)
                         .unwrap();
-                    let output = Command::new("node")
-                        .args(["bin/shiki.js", &parsed_content.content])
-                        .output() // Execute the command and capture the output
-                        .expect("Failed to execute command");
 
-                    // Check if the command was successful
-                    if output.status.success() {
-                        // Convert the stdout bytes to a String
-                        let stdout = String::from_utf8(output.stdout).unwrap();
-                        println!("Node.js says: {}", stdout.trim());
-                    } else {
-                        // Handle the case where the command failed to execute
+                    println!("content frontmatter parsed {:?}", parsed_content);
+                    println!("calling shiki with markdown content");
+
+                    let output = Command::new("node")
+                        .args([SHIKI_PATH, &parsed_content.content])
+                        .output()?;
+
+                    println!("content highlighted, updating content in database");
+
+                    if !output.status.success() {
                         let stderr = String::from_utf8(output.stderr).unwrap();
+
                         eprintln!("Error: {}", stderr.trim());
+
+                        return Err(anyhow::Error::new(io::Error::new(
+                            io::ErrorKind::InvalidInput,
+                            "an error occurred attempting to highlight content with shiki",
+                        )));
                     }
+
+                    let shiki_output = String::from_utf8(output.stdout)?;
+
+                    upsert_blog_post(parsed_content, shiki_output, &mut tx).await?;
                 }
             }
         }
+
+        tx.commit().await?;
     }
+
+    Ok(())
+}
+
+async fn upsert_blog_post(
+    parsed_content: ParsedEntityStruct<FrontMatter>,
+    shiki_output: String,
+    tx: &mut Transaction<'_, Postgres>,
+) -> anyhow::Result<()> {
+    sqlx::query!(
+        r#"
+INSERT INTO posts (created_at, updated_at, title, description, slug, published_date, hero_image, category, raw_content, parsed_content)
+VALUES (current_timestamp, current_timestamp, $1, $2, $3, $4, $5, $6, $7, $8)
+ON CONFLICT (slug) DO NOTHING
+        "#,
+        parsed_content.data.title,
+        parsed_content.data.description,
+        parsed_content.data.title,
+        OffsetDateTime::now_utc().date(),
+        parsed_content.data.title,
+        parsed_content.data.title,
+        parsed_content.data.title,
+        shiki_output,
+    ).execute(&mut **tx).await?;
 
     Ok(())
 }

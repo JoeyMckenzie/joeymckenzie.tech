@@ -13,6 +13,8 @@ dist
 dist-ssr
 coverage
 *.local
+vendor
+storage
 
 /cypress/videos/
 /cypress/screenshots/
@@ -36,3 +38,18 @@ playwright-report/
 
 vite.config.ts.*
 .env
+.env.*
+
+
+# rust
+examples/rust/**/target
+
+# zig
+examples/zig/**/zig-cache
+examples/zig/**/zig-out
+
+# dotnet
+examples/dotnet/**/obj
+examples/dotnet/**/bin
+examples/dotnet/**/*.sln
+examples/dotnet/**/.idea/

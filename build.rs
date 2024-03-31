@@ -5,12 +5,12 @@ fn main() {
     let output = Command::new("npm")
         .args(["run", "build"])
         .output()
-        .expect("Failed to execute NPM script");
+        .expect("f to execute NPM script");
 
     // Check if the NPM script ran successfully
     if !output.status.success() {
-        panic!("NPM script failed to run");
+        panic!("failed to build frontend assets");
     }
 
-    println!("NPM script ran successfully");
+    println!("successfully compiled frontend assets");
 }
