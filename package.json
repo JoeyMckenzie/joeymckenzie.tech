@@ -50,7 +50,7 @@
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.0",
         "radix-vue": "^1.4.9",
-        "shiki": "^1.1.7",
+        "shiki": "^1.2.2",
         "tailwind-merge": "^2.2.2",
         "tailwindcss-animate": "^1.0.7"
     }
