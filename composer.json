@@ -20,7 +20,7 @@
         "spatie/laravel-markdown": "^2.5",
         "spatie/laravel-sitemap": "^7.2",
         "symfony/yaml": "^7.0",
-        "tightenco/ziggy": "^1.0"
+        "tightenco/ziggy": "^2.1"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
