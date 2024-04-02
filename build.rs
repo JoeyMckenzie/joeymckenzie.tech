@@ -5,7 +5,7 @@ fn main() {
     let output = Command::new("npm")
         .args(["run", "build"])
         .output()
-        .expect("f to execute NPM script");
+        .expect("failed to execute NPM script");
 
     // Check if the NPM script ran successfully
     if !output.status.success() {

@@ -1,13 +1,13 @@
 ---
 title: 'React data fetching with RxJS'
 description: 'Use RxJS to implement simple data fetching, making ALL THE THINGS reactive!'
-pubDate: 'Mar 3 2022'
+pubDate: 'Mar 03 2022'
 heroImage: '/images/react-data-fetching/react-data-fetching-meme.jpg'
 category: 'react'
 keywords:
-    - react
-    - nextjs
-    - rxjs
+  - react
+  - nextjs
+  - rxjs
 ---
 
 Data fetching with React offers a wide selection of tools to do the job, from simple promises, to more sophisticated
@@ -41,12 +41,12 @@ To keep things simple, I'll run through four scenarios using a sample next.js ap
 
 Okay, timeout. SSR? CSR?
 
--   SSR - **S**erver-**s**ide **r**ending (or prerendering), the act of rendering the template data into said
-    template _on_ the server before handing it back to the client. In essence, retrieving all the necessary data for an
-    HTML page then rendering said data in the markup and handing it back to the browser.
--   CSR - **C**lient-**s**ide **r**endering, the act of rending template data _after_ the route has been served
-    to/rendered by the client, or simply making our calls to fetch data after the markup is rendered, which we'll update
-    once the data has been fetched.
+- SSR - **S**erver-**s**ide **r**ending (or prerendering), the act of rendering the template data into said
+  template _on_ the server before handing it back to the client. In essence, retrieving all the necessary data for an
+  HTML page then rendering said data in the markup and handing it back to the browser.
+- CSR - **C**lient-**s**ide **r**endering, the act of rending template data _after_ the route has been served
+  to/rendered by the client, or simply making our calls to fetch data after the markup is rendered, which we'll update
+  once the data has been fetched.
 
 Within the context of next.js, what this means is that we'll have three separate page routes that will invoke
 `getServerSideProps` to fetch data for our page before serving it up to the client. This content is rendered on the
@@ -71,8 +71,8 @@ they happen -
 we're simply _reacting_ to data as it's published through the stream. In code:
 
 ```js
-import { interval, take } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import {interval, take} from 'rxjs';
+import {finalize} from 'rxjs/operators';
 
 const dataSource$ = interval(1000);
 
@@ -132,11 +132,11 @@ With our dependencies installed, let's add a page for our first scenario: SSR wi
 #### pages/with-promises.tsx
 
 ```tsx
-import { GetServerSideProps, NextPage } from 'next';
-import { useEffect } from 'react';
-import { githubBaseUrl } from '../lib/constants';
-import { GitHubRepoMeta, WithFetcherProps } from '../lib/types';
-import { mapRepos } from '../lib/utilities';
+import {GetServerSideProps, NextPage} from 'next';
+import {useEffect} from 'react';
+import {githubBaseUrl} from '../lib/constants';
+import {GitHubRepoMeta, WithFetcherProps} from '../lib/types';
+import {mapRepos} from '../lib/utilities';
 
 export const getServerSideProps: GetServerSideProps = async () => {
     const mappedGitHubRepos = await fetch(githubBaseUrl, {
@@ -158,7 +158,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     };
 };
 
-const WithPromises: NextPage<WithFetcherProps> = ({ mappedGitHubRepos }) => {
+const WithPromises: NextPage<WithFetcherProps> = ({mappedGitHubRepos}) => {
     useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos]);
 
     return (
@@ -183,7 +183,7 @@ export const githubBaseUrl =
 #### lib/utilities.ts
 
 ```ts
-import { GitHubReposApiResponse } from './types';
+import {GitHubReposApiResponse} from './types';
 
 export function mapRepos(repos: GitHubReposApiResponse[]) {
     return repos.map((repo) => ({
@@ -329,9 +329,9 @@ export interface WithFetcherProps {
 
 Breaking it down:
 
--   `constants.ts` is just a constant string, update it with your GitHub username
--   `utilties.ts` will house some common mapping/retrieving functions to be reused amongst components and pages
--   `types.ts` houses all the type information we expect back from the API and the prop shapes our pages will expect
+- `constants.ts` is just a constant string, update it with your GitHub username
+- `utilties.ts` will house some common mapping/retrieving functions to be reused amongst components and pages
+- `types.ts` houses all the type information we expect back from the API and the prop shapes our pages will expect
 
 Before you ask, no, I didn't manually write out the interface for the GitHub API response, I
 used [json2ts](http://www.json2ts.com/) to quickly model out the response object to TypeScript based on the JSON data
@@ -393,14 +393,14 @@ import {
     InferGetServerSidePropsType,
     NextPage,
 } from 'next';
-import { useEffect } from 'react';
-import { githubBaseUrl } from '../lib/constants';
+import {useEffect} from 'react';
+import {githubBaseUrl} from '../lib/constants';
 import {
     GitHubRepoMeta,
     GitHubReposApiResponse,
     WithFetcherProps,
 } from '../lib/types';
-import { mapRepos } from '../lib/utilities';
+import {mapRepos} from '../lib/utilities';
 
 export const getServerSideProps: GetServerSideProps = async () => {
     let mappedGitHubRepos: GitHubRepoMeta[] = [];
@@ -426,7 +426,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     };
 };
 
-const WithTryCatch: NextPage<WithFetcherProps> = ({ mappedGitHubRepos }) => {
+const WithTryCatch: NextPage<WithFetcherProps> = ({mappedGitHubRepos}) => {
     useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos]);
 
     return (
@@ -455,11 +455,11 @@ same data from the same GH API endpoint:
 #### pages/with-rxjs.tsx
 
 ```tsx
-import { GetServerSideProps, NextPage } from 'next';
-import { useEffect } from 'react';
-import { githubBaseUrl } from '../lib/constants';
-import { WithFetcherProps } from '../lib/types';
-import { fetchFirstReposValue } from '../lib/utilities';
+import {GetServerSideProps, NextPage} from 'next';
+import {useEffect} from 'react';
+import {githubBaseUrl} from '../lib/constants';
+import {WithFetcherProps} from '../lib/types';
+import {fetchFirstReposValue} from '../lib/utilities';
 
 export const getServerSideProps: GetServerSideProps = async () => ({
     props: {
@@ -467,7 +467,7 @@ export const getServerSideProps: GetServerSideProps = async () => ({
     } as WithFetcherProps,
 });
 
-const WithRxJS: NextPage<WithFetcherProps> = ({ mappedGitHubRepos }) => {
+const WithRxJS: NextPage<WithFetcherProps> = ({mappedGitHubRepos}) => {
     useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos]);
 
     return (
@@ -599,13 +599,13 @@ function:
 #### pages/with-csr.tsx
 
 ```tsx
-import { NextPage } from 'next';
+import {NextPage} from 'next';
 import useSWR from 'swr';
-import { githubBaseUrl } from '../lib/constants';
-import { fetchFirstReposValue } from '../lib/utilities';
+import {githubBaseUrl} from '../lib/constants';
+import {fetchFirstReposValue} from '../lib/utilities';
 
 const WithCSR: NextPage = () => {
-    const { data: mappedGitHubRepos } = useSWR(
+    const {data: mappedGitHubRepos} = useSWR(
         githubBaseUrl,
         fetchFirstReposValue,
     );

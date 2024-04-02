@@ -1,0 +1,21 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nUPDATE posts\nSET updated_at = current_timestamp,\n    title = $1,\n    description = $2,\n    published_date = $3,\n    hero_image = $4,\n    category = $5,\n    raw_content = $6,\n    parsed_content = $7\nWHERE id = $8\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Varchar",
+        "Date",
+        "Varchar",
+        "Varchar",
+        "Text",
+        "Text",
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "165950bf51bfa10696c69e22e818f6b2030a652e8c891f85e32fc90cd0e36d0b"
+}

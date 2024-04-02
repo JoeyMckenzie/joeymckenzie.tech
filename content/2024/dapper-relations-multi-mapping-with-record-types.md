@@ -5,9 +5,9 @@ pubDate: 'Mar 20 2024'
 heroImage: '/images/dapper-value-equality/meme.jpeg'
 category: '.NET'
 keywords:
-    - .NET
-    - Dapper
-    - SQL
+  - .NET
+  - Dapper
+  - SQL
 ---
 
 The other day I was deep in the weeds of some data access code that relies heavily on Dapper for talking to a Postgres
@@ -151,8 +151,8 @@ Okay, that's a bunch of jargon, so let's break it down using something I think w
 Suppose we're modeling the relationships within a brewery CRM SaaS app of sorts that manages a breweries beer inventory
 and employees working for said breweries. We can think of this in terms of a data model where a brewery:
 
--   has many beers
--   has many employees
+- has many beers
+- has many employees
 
 Though beers and employees associated to the brewery don't necessarily have a direct link to each, if we think in terms
 of a SQL query that's gets us an aggregate view of all of a brewery's beers and employees, it might looks something
@@ -176,7 +176,7 @@ WHERE br.id = @BreweryId
 We might get something like:
 
 | Brewery ID | Name      | Beer ID | Beer Name | Beer Type | Employee ID | First Name | Last Name |
-| ---------- | --------- | ------- | --------- | --------- | ----------- | ---------- | --------- |
+|------------|-----------|---------|-----------|-----------|-------------|------------|-----------|
 | 1          | Brewery A | 101     | Beer A    | Ale       | 201         | John       | Doe       |
 | 1          | Brewery A | 102     | Beer B    | Lager     | 201         | John       | Doe       |
 | 2          | Brewery B | 103     | Beer X    | Stout     | 202         | Jane       | Smith     |
@@ -299,16 +299,16 @@ public async Task<BreweryAggregate?> GetBreweryAsync(int id, CancellationToken c
 
 At a quick glance, the code above:
 
--   Defines a query to pull all the data we need for a brewery with all the included relations to beers and employees
--   Defines some column breaks, or `splitOn` in Dapper terms, to tell Dapper what columns are associated to the models we
-    want mapped
--   Defines a closure for Dapper to callback to for each record we get back in the result
-    -   We'll map the aggregate model on first pass, where subsequent iterations won't be assigned since we're using
-        the `??=` null-coalescing assignment operator
-    -   On each pass, we'll also add the associated beer/employee that Dapper mapped out for us in the brewery aggregates
-        list relationships (_foreshadowing intensifies_)
--   Lastly, we pass the query function an anonymous object to use in order to parameterize the query so our security
-    officers don't slap us with an 8 hour OWASP training on SQL injection
+- Defines a query to pull all the data we need for a brewery with all the included relations to beers and employees
+- Defines some column breaks, or `splitOn` in Dapper terms, to tell Dapper what columns are associated to the models we
+  want mapped
+- Defines a closure for Dapper to callback to for each record we get back in the result
+    - We'll map the aggregate model on first pass, where subsequent iterations won't be assigned since we're using
+      the `??=` null-coalescing assignment operator
+    - On each pass, we'll also add the associated beer/employee that Dapper mapped out for us in the brewery aggregates
+      list relationships (_foreshadowing intensifies_)
+- Lastly, we pass the query function an anonymous object to use in order to parameterize the query so our security
+  officers don't slap us with an 8 hour OWASP training on SQL injection
 
 To use this code, I've spun up a simple console app that uses [Npgsql](https://www.npgsql.org/) as a Postgres driver.
 Using a few helper .NET libraries for configuration, I can run some code to pull from the database and pretty-print to
@@ -353,9 +353,9 @@ We've gotta few options here to combat this scenario to guarantee that we're onl
 employees
 mapped back to the brewery aggregate model:
 
--   Check if the employee/beer already exists in the current list of beers/employees that are mapped to the brewery
-    aggregate
--   Use `record` types
+- Check if the employee/beer already exists in the current list of beers/employees that are mapped to the brewery
+  aggregate
+- Use `record` types
 
 Let's pretend it 2017 and we don't have record types just yet. If we take option 1, we'll probably want an equality
 contract in place on our `Employee` model so we can use a `.Contains()` with the comparer. Implementing

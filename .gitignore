@@ -15,6 +15,7 @@ coverage
 *.local
 vendor
 storage
+bootstrap
 
 /cypress/videos/
 /cypress/screenshots/

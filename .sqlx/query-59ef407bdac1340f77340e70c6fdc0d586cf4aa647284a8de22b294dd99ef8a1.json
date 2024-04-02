@@ -1,0 +1,22 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT word\nFROM keywords k\nJOIN keyword_post kp ON k.id = kp.keyword_id\nJOIN posts p ON p.id = kp.post_id\nWHERE p.slug = $1\n                ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "word",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "59ef407bdac1340f77340e70c6fdc0d586cf4aa647284a8de22b294dd99ef8a1"
+}

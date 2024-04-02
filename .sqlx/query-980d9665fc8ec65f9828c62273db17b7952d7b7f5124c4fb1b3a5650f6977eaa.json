@@ -1,0 +1,58 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT title,\n       description,\n       published_date,\n       hero_image,\n       category,\n       views,\n       parsed_content AS content\nFROM posts\nWHERE slug = $1\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "title",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "description",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "published_date",
+        "type_info": "Date"
+      },
+      {
+        "ordinal": 3,
+        "name": "hero_image",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "category",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 5,
+        "name": "views",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 6,
+        "name": "content",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "980d9665fc8ec65f9828c62273db17b7952d7b7f5124c4fb1b3a5650f6977eaa"
+}

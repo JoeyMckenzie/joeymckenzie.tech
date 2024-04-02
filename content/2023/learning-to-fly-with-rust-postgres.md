@@ -1,13 +1,13 @@
 ---
 title: 'Learning to fly with Rust and Postgres'
 description: 'If it can be Dockerized, it can be deployed.'
-pubDate: 'Apr 5 2023'
+pubDate: 'Apr 05 2023'
 heroImage: '/images/learning-to-fly-rust-postgres/fly_meme.jpg'
 category: 'rust'
 keywords:
-    - rust
-    - postgres
-    - fly.io
+  - rust
+  - postgres
+  - fly.io
 ---
 
 After a long weekend of random life events, I decided I needed to scratch an itch to learn something new. I've been
@@ -291,33 +291,33 @@ processes = []
 [env]
 
 [experimental]
-  auto_rollback = true
+auto_rollback = true
 
 [[services]]
-  http_checks = []
-  internal_port = 80
-  processes = ["app"]
-  protocol = "tcp"
-  script_checks = []
-  [services.concurrency]
-    hard_limit = 25
-    soft_limit = 20
-    type = "connections"
+http_checks = []
+internal_port = 80
+processes = ["app"]
+protocol = "tcp"
+script_checks = []
+[services.concurrency]
+hard_limit = 25
+soft_limit = 20
+type = "connections"
 
-  [[services.ports]]
-    force_https = true
-    handlers = ["http"]
-    port = 80
+[[services.ports]]
+force_https = true
+handlers = ["http"]
+port = 80
 
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
+[[services.ports]]
+handlers = ["tls", "http"]
+port = 443
 
-  [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
+[[services.tcp_checks]]
+grace_period = "1s"
+interval = "15s"
+restart_limit = 0
+timeout = "2s"
 ```
 
 We wait a bit, and check the console as we sit on the edge of our seats in anticipation of a successful deployment,
@@ -500,9 +500,10 @@ Nice! We've got a `/migrations` folder added, let's add some SQL to the script:
 -- Add migration script here
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE beer_logs (
-    id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-    name TEXT NOT NULL,
+CREATE TABLE beer_logs
+(
+    id    uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name  TEXT NOT NULL,
     notes TEXT NOT NULL,
 );
 ```
@@ -676,10 +677,10 @@ async fn create_log(
         beer_notes_request.name,
         beer_notes_request.notes
     )
-    .fetch_one(&state.pool)
-    .await
-    // DON'T panic in production... this is not an endorsement!
-    .unwrap_or_else(|_| panic!("inserting beer log {:?} failed", beer_notes_request));
+        .fetch_one(&state.pool)
+        .await
+        // DON'T panic in production... this is not an endorsement!
+        .unwrap_or_else(|_| panic!("inserting beer log {:?} failed", beer_notes_request));
 
     Json(result)
 }
@@ -766,10 +767,10 @@ async fn get_log(State(state): State<Arc<AppState>>, Path(id): Path<Uuid>) -> Js
         ",
         id,
     )
-    .fetch_one(&state.pool)
-    .await
-    // DON'T panic in production... this is not an endorsement!
-    .unwrap_or_else(|_| panic!("retrieving beer log {:?} failed", id));
+        .fetch_one(&state.pool)
+        .await
+        // DON'T panic in production... this is not an endorsement!
+        .unwrap_or_else(|_| panic!("retrieving beer log {:?} failed", id));
 
     Json(result)
 }
@@ -860,10 +861,10 @@ async fn create_log(
         beer_notes_request.name,
         beer_notes_request.notes
     )
-    .fetch_one(&state.pool)
-    .await
-    // DON'T panic in production... this is not an endorsement!
-    .unwrap_or_else(|_| panic!("inserting beer log {:?} failed", beer_notes_request));
+        .fetch_one(&state.pool)
+        .await
+        // DON'T panic in production... this is not an endorsement!
+        .unwrap_or_else(|_| panic!("inserting beer log {:?} failed", beer_notes_request));
 
     Json(result)
 }
@@ -879,10 +880,10 @@ async fn get_log(State(state): State<Arc<AppState>>, Path(id): Path<Uuid>) -> Js
         ",
         id,
     )
-    .fetch_one(&state.pool)
-    .await
-    // DON'T panic in production... this is not an endorsement!
-    .unwrap_or_else(|_| panic!("retrieving beer log {:?} failed", id));
+        .fetch_one(&state.pool)
+        .await
+        // DON'T panic in production... this is not an endorsement!
+        .unwrap_or_else(|_| panic!("retrieving beer log {:?} failed", id));
 
     Json(result)
 }
