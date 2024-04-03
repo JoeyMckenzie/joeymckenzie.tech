@@ -1,0 +1,24 @@
+# fly.toml app configuration file generated for joeymckenzietech on 2024-04-02T13:07:37-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "joeymckenzietech"
+primary_region = "sjc"
+
+[env]
+RUST_ENV = "production"
+PORT = "80"
+
+[http_service]
+  internal_port = 80
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+[[vm]]
+  memory = "1gb"
+  cpu_kind = "shared"
+  cpus = 1

@@ -1,5 +1,3 @@
-set dotenv-load
-
 default: clippy
 
 # continuously lint with clippy
@@ -10,25 +8,28 @@ clippy:
 run:
     cargo watch -x "run --bin server"
 
+# continuously run the dev server
+dev:
+    find src/ | entr -s 'npm run build'
+
 # run content sync
 content:
     cargo run --bin content
 
 # builds the docker container with all relevant environment variables
 docker-build:
-    docker build . \
-        --build-arg \
-        SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN} \
-        --build-arg \
-        SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID} \
-        --build-arg \
-        SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET} \
-        --build-arg \
-        DATABASE_URL=${DATABASE_URL} \
-        --build-arg \
-        RUST_ENV=${RUST_ENV} \
-        -t \
-        blog
+    docker build -t blog:latest .
 
 docker-run:
-    docker run --env-file ./.env -it blog
+    docker run -d --name blog -p 8080:8080 --env-file ./.env blog:latest
+
+docker-stop:
+    docker stop blog
+
+docker-rm:
+    docker rm blog
+
+docker-restart: docker-stop docker-rm docker-build docker-run
+
+secrets:
+    fly secrets import < .env.production

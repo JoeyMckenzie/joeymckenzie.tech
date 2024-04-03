@@ -13,6 +13,16 @@ const router = createRouter({
       name: 'now',
       component: () => import('./pages/NowPage.vue'),
     },
+    {
+      path: '/blog',
+      name: 'blog',
+      component: () => import('./pages/BlogPage.vue'),
+    },
+    {
+      path: '/blog/:slug',
+      name: 'post',
+      component: () => import('./pages/BlogPostPage.vue'),
+    },
   ],
 });
 

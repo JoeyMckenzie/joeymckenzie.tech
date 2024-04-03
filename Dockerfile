@@ -8,12 +8,17 @@ ARG NODE_VERSION=21.6.2
 # after containerization, this manages to come in at a whopping ~163mb, still a bit to we could optimize but this should do for now
 
 # stage one - copy over our build files for compilation, including workspace and .env files
-FROM rust:${RUST_VERSION}-slim-bullseye AS blazing_fast_tm
+FROM rust:${RUST_VERSION}-slim-bullseye AS blazingly_fast_tm
 
+RUN mkdir /app
+RUN mkdir -p /app
 WORKDIR /app
 
 # we'll copy everything over, including all rust and TS/vue files since we're serving our vue app via tower/axum
-COPY . .
+COPY ./Cargo.lock .
+COPY ./Cargo.toml .
+COPY ./src ./src
+COPY ./.sqlx ./.sqlx
 
 # on rebuilds, we explicitly cache our rust build dependencies to speed things up
 RUN set -eux; \
@@ -52,11 +57,18 @@ RUN echo "\n\
 FROM node:${NODE_VERSION} as node_modules_go_brrr
 
 RUN mkdir /app
-
-RUN mkdir -p  /app
+RUN mkdir -p /app
 WORKDIR /app
 
-COPY . .
+# we'll copy everything over, including all rust and TS/vue files since we're serving our vue app via tower/axum
+COPY ./package.json .
+COPY ./package-lock.json .
+COPY ./vite.config.ts .
+COPY ./public ./public
+COPY ./src ./src
+COPY ./tsconfig.* .
+COPY ./index.html .
+COPY /env.d.ts .
 
 RUN npm ci --no-audit; \
     npm run build;
@@ -72,11 +84,13 @@ RUN set -eux; \
     apt autoremove --yes; \
     rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-WORKDIR /deploy
+RUN mkdir /app
+RUN mkdir -p /app
+WORKDIR /app
 
 # copy over build artifacts from the build stage
-COPY --from=blazing_fast_tm /app/server ./
-COPY --from=blazing_fast_tm /app/.env ./
+COPY --from=blazingly_fast_tm /app/server ./
+COPY --from=blazingly_fast_tm /app/.env ./
 COPY --from=node_modules_go_brrr /app/dist ./dist
 
 EXPOSE 80
