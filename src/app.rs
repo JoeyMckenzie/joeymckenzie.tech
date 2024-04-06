@@ -1,4 +1,4 @@
-use crate::error_template::{AppError, ErrorTemplate};
+use crate::{error_template::{AppError, ErrorTemplate}, routes::home::HomePage};
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
@@ -9,9 +9,14 @@ pub fn App() -> impl IntoView {
     provide_meta_context();
 
     view! {
-        // injects a stylesheet into the document <head>
-        // id=leptos means cargo-leptos will hot-reload this stylesheet
         <Stylesheet id="leptos" href="/pkg/blog.css"/>
+
+        // fonts
+        <link rel="preconnect" href="https://fonts.bunny.net"/>
+        <link
+            href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap"
+            rel="stylesheet"
+        />
 
         // sets the document title
         <Title text="Welcome to Leptos"/>
@@ -20,31 +25,14 @@ pub fn App() -> impl IntoView {
         <Router fallback=|| {
             let mut outside_errors = Errors::default();
             outside_errors.insert_with_default_key(AppError::NotFound);
-            view! {
-                <ErrorTemplate outside_errors/>
-            }
-            .into_view()
+            view! { <ErrorTemplate outside_errors/> }.into_view()
         }>
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                <main>
-                    <Routes>
-                        <Route path="" view=HomePage/>
-                    </Routes>
-                </main>
-            </div>
+            <Html attr:data-theme="forest"/>
+            <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <Routes>
+                    <Route path="" view=HomePage/>
+                </Routes>
+            </main>
         </Router>
-    }
-}
-
-/// Renders the home page of your application.
-#[component]
-fn HomePage() -> impl IntoView {
-    // Creates a reactive value to update the button
-    let (count, set_count) = create_signal(0);
-    let on_click = move |_| set_count.update(|count| *count += 1);
-
-    view! {
-        <h1 class="text-xl">"Welcome to Leptos!"</h1>
-        <button class="btn" on:click=on_click>"Click Me: " {count}</button>
     }
 }

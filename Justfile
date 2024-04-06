@@ -5,3 +5,6 @@ watch:
 
 tailwind:
     npx tailwindcss -i ./styles/tailwind.css -o ./styles/main.css --watch
+
+fmt:
+    leptosfmt src/**/*.rs
