@@ -1,4 +1,8 @@
-use crate::{error_template::{AppError, ErrorTemplate}, routes::home::HomePage};
+use crate::{
+    components::navbar::Navbar,
+    error_template::{AppError, ErrorTemplate},
+    routes::home::HomePage,
+};
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
@@ -29,6 +33,7 @@ pub fn App() -> impl IntoView {
         }>
             <Html attr:data-theme="forest"/>
             <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <Navbar />
                 <Routes>
                     <Route path="" view=HomePage/>
                 </Routes>

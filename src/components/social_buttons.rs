@@ -4,10 +4,10 @@ use leptos::*;
 pub fn SocialButtons() -> impl IntoView {
     view! {
         <div class="flex flex-row mx-auto justify-center">
-            <button class="btn">
+            <a type="button" href="https://github.com/joeymckenzie" class="btn">
                 <span class="icon-[mdi--github]"></span>
                 "GitHub"
-            </button>
+            </a>
         </div>
     }
 }
