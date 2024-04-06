@@ -4,6 +4,7 @@
     "source.organizeImports": "always"
   },
   "rust-analyzer.linkedProjects": ["./Cargo.toml"],
+  "rust-analyzer.cargo.features": "all",
   "tailwindCSS.includeLanguages": {
     "rs": "html"
   }

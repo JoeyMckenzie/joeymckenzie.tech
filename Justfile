@@ -3,6 +3,9 @@ default: watch
 watch:
     cargo leptos watch
 
+content:
+    cargo build --bin content --features content
+
 tailwind:
     npx tailwindcss -i ./styles/tailwind.css -o ./styles/main.css --watch
 

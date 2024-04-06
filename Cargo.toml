@@ -6,14 +6,19 @@ edition = "2021"
 [lib]
 crate-type = ["cdylib", "rlib"]
 
+[[bin]]
+name = "content"
+path = "bin/content.rs"
+
 [dependencies]
+# default leptos crates
 axum = { version = "0.7", optional = true }
 console_error_panic_hook = "0.1"
 leptos = { version = "0.6", features = ["nightly"] }
 leptos_axum = { version = "0.6", optional = true }
 leptos_meta = { version = "0.6", features = ["nightly"] }
 leptos_router = { version = "0.6", features = ["nightly"] }
-tokio = { version = "1", features = ["rt-multi-thread"], optional = true }
+tokio = { version = "1", features = ["full"], optional = true }
 tower = { version = "0.4", optional = true }
 tower-http = { version = "0.5", features = ["fs"], optional = true }
 wasm-bindgen = "=0.2.92"
@@ -21,8 +26,26 @@ thiserror = "1"
 tracing = { version = "0.1", optional = true }
 http = "1"
 
+# data cates
+sqlx = { version = "0.7", features = [
+    "postgres",
+    "runtime-tokio",
+    "tls-rustls",
+    "time",
+], optional = true }
+
+# utility crates
+dotenvy = "0.15"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+gray_matter = "0.2"
+serde = { version = "1", features = ["derive"] }
+anyhow = "1"
+time = { version = "0.3", features = ["macros", "serde"] }
+serde_json = "1"
+
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
+content = ["dep:tokio", "dep:sqlx", "dep:tracing"]
 ssr = [
     "dep:axum",
     "dep:tokio",
@@ -80,6 +103,9 @@ browserquery = "defaults"
 
 # The environment Leptos will run in, usually either "DEV" or "PROD"
 env = "DEV"
+
+# Primary bin target since we have some other binaries that can execute
+bin-target = "blog"
 
 # The features to use when compiling the bin target
 #
