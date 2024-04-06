@@ -1,0 +1,11 @@
+.vscode/
+node_modules/
+styles/main.css
+target/
+.env
+.gitignore
+.prettierrc.json
+Dockerfile
+Justfile
+LICENSE
+README.md
