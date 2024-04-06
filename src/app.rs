@@ -25,11 +25,13 @@ pub fn App() -> impl IntoView {
             }
             .into_view()
         }>
-            <main>
-                <Routes>
-                    <Route path="" view=HomePage/>
-                </Routes>
-            </main>
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <main>
+                    <Routes>
+                        <Route path="" view=HomePage/>
+                    </Routes>
+                </main>
+            </div>
         </Router>
     }
 }
@@ -42,7 +44,7 @@ fn HomePage() -> impl IntoView {
     let on_click = move |_| set_count.update(|count| *count += 1);
 
     view! {
-        <h1>"Welcome to Leptos!"</h1>
-        <button on:click=on_click>"Click Me: " {count}</button>
+        <h1 class="text-xl">"Welcome to Leptos!"</h1>
+        <button class="btn" on:click=on_click>"Click Me: " {count}</button>
     }
 }

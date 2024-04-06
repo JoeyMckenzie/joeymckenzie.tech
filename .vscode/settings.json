@@ -1,0 +1,10 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.organizeImports": "always"
+  },
+  "rust-analyzer.linkedProjects": ["./Cargo.toml"],
+  "tailwindCSS.includeLanguages": {
+    "rs": "html"
+  }
+}
