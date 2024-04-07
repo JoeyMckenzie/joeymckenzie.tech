@@ -29,10 +29,10 @@ pub fn Navbar() -> impl IntoView {
             <For
                 each=links
                 key=|link| link.display.clone()
-                let:child
+                let:link
             >
-                <A href=child.href class="hover:underline">
-                    {child.display}
+                <A href=link.href class="hover:underline">
+                    {link.display}
                 </A>
             </For>
         </div>

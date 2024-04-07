@@ -1,5 +1,5 @@
 use crate::{
-    components::navbar::Navbar,
+    components::{footer::Footer, navbar::Navbar},
     error_template::{AppError, ErrorTemplate},
     routes::home::HomePage,
 };
@@ -32,11 +32,12 @@ pub fn App() -> impl IntoView {
             view! { <ErrorTemplate outside_errors/> }.into_view()
         }>
             <Html attr:data-theme="forest"/>
-            <main class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <Navbar />
                 <Routes>
                     <Route path="" view=HomePage/>
                 </Routes>
+                <Footer />
             </main>
         </Router>
     }
