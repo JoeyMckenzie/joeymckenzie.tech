@@ -25,11 +25,7 @@ pub fn Navbar() -> impl IntoView {
 
     view! {
         <div class="flex flex-row gap-x-4 mx-auto justify-center pt-8">
-            <For
-                each=links
-                key=|link| link.display
-                let:link
-            >
+            <For each=links key=|link| link.display let:link>
                 <A href=link.href class="hover:underline">
                     {link.display}
                 </A>
