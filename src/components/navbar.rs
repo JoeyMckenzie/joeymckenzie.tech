@@ -1,26 +1,25 @@
 use leptos::*;
 use leptos_router::*;
 
-#[derive(Debug, Clone)]
-struct NavbarLink {
-    display: String,
-    href: String,
-}
+use crate::components::DisplayableIcon;
 
 #[component]
 pub fn Navbar() -> impl IntoView {
     let links = create_rw_signal(vec![
-        NavbarLink {
-            display: String::from("Home"),
-            href: String::from("/"),
+        DisplayableIcon {
+            display: "Home",
+            href: "/",
+            icon: None,
         },
-        NavbarLink {
-            display: String::from("Now"),
-            href: String::from("/now"),
+        DisplayableIcon {
+            display: "Now",
+            href: "/now",
+            icon: None,
         },
-        NavbarLink {
-            display: String::from("Blog"),
-            href: String::from("/blog"),
+        DisplayableIcon {
+            display: "Blog",
+            href: "/blog",
+            icon: None,
         },
     ]);
 
@@ -28,7 +27,7 @@ pub fn Navbar() -> impl IntoView {
         <div class="flex flex-row gap-x-4 mx-auto justify-center pt-8">
             <For
                 each=links
-                key=|link| link.display.clone()
+                key=|link| link.display
                 let:link
             >
                 <A href=link.href class="hover:underline">

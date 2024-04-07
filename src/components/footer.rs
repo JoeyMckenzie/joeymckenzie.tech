@@ -1,6 +1,6 @@
 use leptos::*;
 
-use crate::components::social_icons::SocialIcons;
+use crate::components::{powered_by::PoweredBy, social_icons::SocialIcons};
 
 #[component]
 pub fn Footer() -> impl IntoView {
@@ -10,7 +10,7 @@ pub fn Footer() -> impl IntoView {
             // <SpotifyTracker>
             //     <Icon class="h-6 w-6 text-green-500" icon="logos:spotify-icon" />
             // </SpotifyTracker>
-            // <PoweredBy />
+            <PoweredBy />
         </div>
     }
 }

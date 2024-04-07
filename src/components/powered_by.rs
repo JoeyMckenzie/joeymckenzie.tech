@@ -4,32 +4,22 @@ use leptos_router::*;
 use crate::components::DisplayableIcon;
 
 #[component]
-pub fn SocialIcons() -> impl IntoView {
+pub fn PoweredBy() -> impl IntoView {
     let socials = create_rw_signal(vec![
         DisplayableIcon {
-            href: "https://twitter.com/_joeyMcKenzie",
-            display: "Twitter",
-            icon: Some("icon-[mdi--twitter]"),
-        },
-        DisplayableIcon {
-            href: "https://github.com/JoeyMcKenzie",
+            href: "https://www.rust-lang.org/",
             display: "GitHub",
-            icon: Some("icon-[mdi--github]"),
+            icon: Some("icon-[simple-icons--rust]"),
         },
         DisplayableIcon {
-            href: "https://www.youtube.com/channel/UCkdpN-mQSyJ_2XJMU1kQ5fA#",
-            display: "YouTube",
-            icon: Some("icon-[mdi--youtube]"),
+            href: "https://leptos.dev",
+            display: "Leptos",
+            icon: Some("icon-[simple-icons--leptos]"),
         },
         DisplayableIcon {
-            href: "https://twitch.tv/JoeTheDevMan",
-            display: "Twitch",
-            icon: Some("icon-[mdi--twitch]"),
-        },
-        DisplayableIcon {
-            href: "https://linkedin.com/in/JoeyMcKenzie",
-            display: "LinkedIn",
-            icon: Some("icon-[mdi--linkedin]"),
+            href: "https://fly.io",
+            display: "Twitter",
+            icon: Some("icon-[logos--fly-icon]"),
         },
     ]);
 
