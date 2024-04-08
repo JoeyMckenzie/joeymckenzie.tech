@@ -1,4 +1,7 @@
-default: watch
+default: dev
+
+dev:
+    just watch & find src/ | entr -s 'just fmt'
 
 watch:
     cargo leptos watch
@@ -6,11 +9,11 @@ watch:
 content:
     cargo build --bin content --features content
 
-tailwind:
-    npx tailwindcss -i ./styles/tailwind.css -o ./styles/main.css --watch
-
 fmt:
     leptosfmt src/**/*.rs
+
+deploy:
+    fly deploy
 
 docker-build:
     docker build -t blog:latest .

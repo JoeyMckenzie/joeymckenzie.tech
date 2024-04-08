@@ -1,9 +1,13 @@
 pub mod footer;
 pub mod intro;
 pub mod navbar;
-pub mod powered_by;
+mod powered_by;
 pub mod social_buttons;
-pub mod social_icons;
+mod social_icons;
+pub mod spotify_not_playing;
+mod spotify_now_playing;
+mod spotify_tracker;
+mod theme_toggle;
 
 #[derive(Clone, Copy, Debug)]
 struct DisplayableIcon<'a> {

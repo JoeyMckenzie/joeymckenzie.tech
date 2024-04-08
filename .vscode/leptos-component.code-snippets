@@ -1,0 +1,18 @@
+{
+	"Leptos component": {
+		"prefix": "lc",
+		"body": [
+			"use leptos::*;",
+			"",
+			"#[component]",
+			"pub fn $1() -> impl IntoView {",
+			"    view! {",
+			"       <div>",
+			"           \"$1\"",
+			"       </div>",
+			"    }",
+			"}"
+		],
+		"description": "Creates a simple Rust Leptos component with #[component] attribute."
+	}
+}
