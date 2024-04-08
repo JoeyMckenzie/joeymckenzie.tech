@@ -12,6 +12,10 @@ crate-type = ["cdylib", "rlib"]
 name = "content"
 path = "bin/content.rs"
 
+[[bin]]
+name = "sitemap"
+path = "bin/sitemap.rs"
+
 [dependencies]
 # default leptos crates
 axum = { version = "0.7", optional = true }
@@ -45,10 +49,12 @@ anyhow = "1"
 time = { version = "0.3", features = ["macros", "serde"] }
 serde_json = "1"
 reqwest = { version = "0.11", features = ["json"] }
+xml = { version = "0.8", optional = true }
 
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
 content = ["dep:tokio", "dep:sqlx", "dep:tracing"]
+sitemap = ["dep:tokio", "dep:sqlx", "dep:xml"]
 ssr = [
     "dep:axum",
     "dep:tokio",

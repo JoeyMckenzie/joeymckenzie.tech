@@ -9,6 +9,9 @@ watch:
 content:
     cargo build --bin content --features content
 
+sitemap:
+    cargo run --bin sitemap --features sitemap
+
 fmt:
     leptosfmt src/**/*.rs
 
