@@ -53,7 +53,7 @@ RUN cargo leptos build --release -vv
 # RUN cargo run --bin content --no-default-features --features content
 
 # Build the sitemap
-# RUN cargo run --bin sitemap --no-default-features --features sitemap
+RUN cargo run --bin sitemap --no-default-features --features sitemap
 
 
 # Deployment container

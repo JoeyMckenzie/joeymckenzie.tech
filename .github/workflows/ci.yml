@@ -24,10 +24,10 @@ jobs:
       - name: Run rust formatter checks
         run: cargo fmt --all -- --check
 
-      - name: Content sync
-        run: cargo run --bin content --no-default-features --features content
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      # - name: Content sync
+      #   run: cargo run --bin content --no-default-features --features content
+      #   env:
+      #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Build sitemap
         run: cargo run --bin sitemap --no-default-features --features sitemap
