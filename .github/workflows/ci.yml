@@ -1,0 +1,35 @@
+name: Rust CI
+
+on:
+  push:
+    branches: ['poc/leptos']
+  pull_request:
+    branches: ['poc/leptos']
+
+env:
+  CARGO_TERM_COLOR: always
+  SQLX_OFFLINE: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v3
+      - uses: rui314/setup-mold@v1
+
+      - name: Add rust fmt
+        run: rustup component add rustfmt --toolchain nightly-x86_64-unknown-linux-gnu
+
+      - name: Run rust formatter checks
+        run: cargo fmt --all -- --check
+
+      - name: Content sync
+        run: cargo run --bin content --no-default-features --features content
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+      - name: Build sitemap
+        run: cargo run --bin sitemap --no-default-features --features sitemap
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

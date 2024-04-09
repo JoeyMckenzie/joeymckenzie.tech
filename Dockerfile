@@ -50,10 +50,10 @@ COPY --from=node_modules_go_brrr /app/styles/main.css /app/styles/main.css
 RUN cargo leptos build --release -vv
 
 # Run content sync
-RUN cargo run --bin content --no-default-features --features content
+# RUN cargo run --bin content --no-default-features --features content
 
 # Build the sitemap
-RUN cargo run --bin sitemap --no-default-features --features sitemap
+# RUN cargo run --bin sitemap --no-default-features --features sitemap
 
 
 # Deployment container
@@ -67,6 +67,7 @@ COPY --from=builder /app/target/site /app/site
 
 # Copy Cargo.toml if it’s needed at runtime
 COPY --from=builder /app/Cargo.toml /app/
+
 WORKDIR /app
 
 # Set any required env variables

@@ -2,6 +2,7 @@
   "name": "blog",
   "version": "1.0.0",
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "tailwind:compile": "npx tailwindcss -i ./styles/tailwind.css -o ./styles/main.css"
   },
@@ -11,6 +12,7 @@
     "@iconify-json/simple-icons": "^1.1.98",
     "@iconify-json/solar": "^1.1.9",
     "@iconify/tailwind": "^0.1.4",
+    "@shikijs/markdown-it": "^1.3.0",
     "daisyui": "^4.10.1",
     "markdown-it": "^14.1.0",
     "prettier": "^3.2.5",

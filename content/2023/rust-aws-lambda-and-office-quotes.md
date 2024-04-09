@@ -1,13 +1,13 @@
 ---
 title: 'Rust, AWS Lambda, and too many Office quotes'
 description: 'Identity theft is not a joke, Jim!'
-pubDate: 'Nov 2 2023'
+pubDate: 'Nov 02 2023'
 heroImage: '/images/rust-aws-lambda-office-quotes/meme.jpeg'
 category: 'aws'
 keywords:
-    - rust
-    - aws lambda
-    - terraform
+  - rust
+  - aws lambda
+  - terraform
 ---
 
 Back from a hard fought battle against writer's block, I've been looking for a way to convince my boss to let me use
@@ -119,17 +119,17 @@ Our quotes file is pretty standard JSON:
 
 ```json
 {
-    "quotes": [
-        {
-            "quote": "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.",
-            "author": "Michael Scott"
-        },
-        {
-            "quote": "Whenever I'm about to do something, I think, 'Would an idiot do that?' and if they would, I do not do that thing.",
-            "author": "Dwight Schrute"
-        }
-        // And many more...
-    ]
+  "quotes": [
+    {
+      "quote": "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.",
+      "author": "Michael Scott"
+    },
+    {
+      "quote": "Whenever I'm about to do something, I think, 'Would an idiot do that?' and if they would, I do not do that thing.",
+      "author": "Dwight Schrute"
+    }
+    // And many more...
+  ]
 }
 ```
 
@@ -187,7 +187,7 @@ pub fn get_quotes() -> anyhow::Result<QuotesData> {
         "{}/quotes.json",
         quotes_file_path.to_str().unwrap()
     ))
-    .context("unable to read quotes file")?;
+        .context("unable to read quotes file")?;
 
     let mut file_contents = String::new();
 
@@ -272,8 +272,8 @@ async fn function_handler(event: Request) -> Result<Response<Body>, Error> {
                     json!({
                         "error": "Quote by that author does not exist."
                     })
-                    .to_string()
-                    .into(),
+                        .to_string()
+                        .into(),
                 )
                 .context("error attempting build the error response")?;
 

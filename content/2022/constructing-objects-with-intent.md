@@ -1,14 +1,14 @@
 ---
 title: 'Constructing objects with intent'
 description: 'Build better object APIs with named constructors and fluent builders!'
-pubDate: 'Nov 3 2022'
+pubDate: 'Nov 03 2022'
 heroImage: '/images/objects-with-intent/constructors_meme.jpg'
 category: 'design'
 keywords:
-    - design
-    - software patterns
-    - .net
-    - rust
+  - design
+  - software patterns
+  - .net
+  - rust
 ---
 
 I've been becoming increasingly annoyed, both by legacy code and modern frameworks, with the amount of non-constrained
@@ -272,9 +272,9 @@ offer them a convenient way to make pizzas without worrying about the internal d
 
 We can think of it as the exchange of transactions that occurs when one walks into their favorite pizza joint:
 
--   We order at the register providing the establishment with a list of requirements we'd like our pizza to meet
--   We make an exchange of currency after detailing what our pizza should look/taste like
--   After some time, we receive a pizza at our table - hopefully accompanied by a nice cold adult beverage
+- We order at the register providing the establishment with a list of requirements we'd like our pizza to meet
+- We make an exchange of currency after detailing what our pizza should look/taste like
+- After some time, we receive a pizza at our table - hopefully accompanied by a nice cold adult beverage
 
 Let's see if we can model this scenario in code:
 
