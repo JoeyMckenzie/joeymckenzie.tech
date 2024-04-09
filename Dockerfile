@@ -49,6 +49,12 @@ COPY --from=node_modules_go_brrr /app/styles/main.css /app/styles/main.css
 # Build the app
 RUN cargo leptos build --release -vv
 
+# Run content sync
+RUN cargo run --bin content --features content
+
+# Build the sitemap
+RUN cargo run --bin sitemap --features sitemap
+
 
 # Deployment container
 FROM rustlang/rust:nightly-bullseye as runner

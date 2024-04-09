@@ -12,8 +12,11 @@ content:
 sitemap:
     cargo run --bin sitemap --features sitemap
 
+prepare:
+    cargo sqlx prepare -- --all-targets --all-features
+
 fmt:
-    leptosfmt src/**/*.rs
+    cargo fmt && leptosfmt src/*.rs src/**/*.rs
 
 deploy:
     fly deploy
