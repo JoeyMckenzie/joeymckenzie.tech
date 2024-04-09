@@ -19,7 +19,7 @@ jobs:
       - uses: rui314/setup-mold@v1
 
       - name: Add rust fmt
-        run: rustup component add rustfmt --toolchain nightly-x86_64-unknown-linux-gnu
+        run: rustup component add rustfmt
 
       - name: Run rust formatter checks
         run: cargo fmt --all -- --check
