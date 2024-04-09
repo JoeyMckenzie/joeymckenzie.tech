@@ -5,7 +5,7 @@ use crate::spotify::SpotifyTracking;
 #[component]
 pub fn SpotifyNowPlaying(
     now_playing: ReadSignal<SpotifyTracking>,
-    children: Children,
+    // children: Children,
 ) -> impl IntoView {
     view! {
         <a
@@ -16,7 +16,7 @@ pub fn SpotifyNowPlaying(
         >
             <h2 class="font-ubuntu inline-flex justify-center text-xs">"Now listening"</h2>
             <div class="flex flex-row items-center justify-center space-x-2">
-                {children()}
+                // {children()}
                 <img
                     src=now_playing.get().album_image_src
                     alt="Spotify listening to"

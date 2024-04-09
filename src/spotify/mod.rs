@@ -1,3 +1,4 @@
+#[cfg(feature = "ssr")]
 pub mod client;
 pub mod responses;
 
@@ -45,11 +46,11 @@ impl From<SpotifyNowPlayingResponse> for SpotifyTracking {
         // The playing type will either be `"show"` or `"track"` based on a podcast or artist song
         // There's _a lot_ of presumptive `unwrap()`ing going here, should probably clean up eventually
         if now_playing.currently_playing_type.eq("track") {
-            let album_image = item.album.as_ref().unwrap().images.get(0).unwrap();
+            let album_image = item.album.as_ref().unwrap().images.first().unwrap();
             let artist = item
                 .artists
                 .unwrap()
-                .get(0)
+                .first()
                 .unwrap()
                 .to_owned()
                 .name
@@ -58,7 +59,7 @@ impl From<SpotifyNowPlayingResponse> for SpotifyTracking {
             Self::new(href, album_image.url.to_string(), track_title, artist)
         } else {
             let show = item.show.as_ref().unwrap();
-            let show_image = show.images.get(0).unwrap();
+            let show_image = show.images.first().unwrap();
             let show_title = show.name.clone();
 
             Self::new(href, show_image.url.to_string(), track_title, show_title)
