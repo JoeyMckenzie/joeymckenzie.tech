@@ -37,7 +37,7 @@ async fn main() -> anyhow::Result<()> {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let content_path = Path::new("contents");
+    let content_path = Path::new("content");
 
     if let Ok(entries) = fs::read_dir(content_path) {
         info!("initializing connection to Neon");
