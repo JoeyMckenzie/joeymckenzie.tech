@@ -9,6 +9,7 @@ on:
 env:
   CARGO_TERM_COLOR: always
   SQLX_OFFLINE: true
+  APP_URL: https://joeymckenzie.tech
 
 jobs:
   build:
@@ -24,12 +25,13 @@ jobs:
       - name: Run rust formatter checks
         run: cargo fmt --all -- --check
 
-      # - name: Content sync
-      #   run: cargo run --bin content --no-default-features --features content
-      #   env:
-      #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      - name: Content sync
+        run: cargo run --bin content --no-default-features --features content
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Build sitemap
         run: cargo run --bin sitemap --no-default-features --features sitemap
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          APP_URL: ${{ env.APP_URL }}
