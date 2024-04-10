@@ -5,7 +5,7 @@ use reqwest::{Client, StatusCode};
 
 use crate::spotify::{
     responses::{SpotifyAuthResponse, SpotifyNowPlayingResponse},
-    SpotifyTracking,
+    NowPlaying,
 };
 
 const TOKEN_ENDPOINT: &str = "https://accounts.spotify.com/api/token";
@@ -68,7 +68,7 @@ impl SpotifyClient {
 
     /// Retrieves the current track or podcast we're listening to at the moment, marshaling
     /// the raw API responses from Spotify into a simple format to consume on the frontend.
-    pub async fn get_listening_to(&self, access_token: String) -> anyhow::Result<SpotifyTracking> {
+    pub async fn get_listening_to(&self, access_token: String) -> anyhow::Result<NowPlaying> {
         info!("requesting now playing information from spotify");
 
         let response = self
@@ -87,7 +87,7 @@ impl SpotifyClient {
         // In the case we get a 204 back from Spotify, assume we're not currently listening to anything
         if status == StatusCode::NO_CONTENT {
             info!("no content currently playing");
-            return Ok(SpotifyTracking::default());
+            return Ok(NowPlaying::default());
         }
 
         info!("currently playing content identified");

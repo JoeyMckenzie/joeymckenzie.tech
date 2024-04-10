@@ -1,15 +1,15 @@
-#[cfg(feature = "ssr")]
+#[cfg(any(feature = "ssr", feature = "hydrate"))]
 pub mod client;
 pub mod responses;
 
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 
 use self::responses::SpotifyNowPlayingResponse;
 
 /// The response type we'll marshal and send back to the UI, transforming properties to more common JS-camel case for sanity.
-#[derive(Serialize, Clone, Debug, Default)]
+#[derive(Serialize, Deserialize, Clone, Debug, Default)]
 #[serde(rename_all = "camelCase")]
-pub struct SpotifyTracking {
+pub struct NowPlaying {
     pub href: String,
     pub album_image_src: String,
     pub track_title: String,
@@ -17,13 +17,13 @@ pub struct SpotifyTracking {
     pub now_playing: bool,
 }
 
-impl SpotifyTracking {
+impl NowPlaying {
     pub fn new(
         href: String,
         album_image_src: String,
         track_title: String,
         artist: String,
-    ) -> SpotifyTracking {
+    ) -> NowPlaying {
         Self {
             href,
             album_image_src,
@@ -35,7 +35,7 @@ impl SpotifyTracking {
 }
 
 /// Maps the raw Spotify response into the expected UI response.
-impl From<SpotifyNowPlayingResponse> for SpotifyTracking {
+impl From<SpotifyNowPlayingResponse> for NowPlaying {
     fn from(now_playing: SpotifyNowPlayingResponse) -> Self {
         // Most of the linking and track/show information come from the `item` and `context` node and we can largely ignore the majority of the response
         let item = now_playing.item;
