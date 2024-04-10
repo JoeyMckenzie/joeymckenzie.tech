@@ -7,7 +7,7 @@ use serde::Deserialize;
 use sqlx::{PgPool, Postgres, Transaction};
 use time::macros::format_description;
 use time::Date;
-use tracing::{error, info};
+use tracing::{error, info, warn};
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 
@@ -27,8 +27,6 @@ struct FrontMatter {
 #[cfg(feature = "content")]
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    dotenvy::dotenv()?;
-
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env()
@@ -36,6 +34,13 @@ async fn main() -> anyhow::Result<()> {
         )
         .with(tracing_subscriber::fmt::layer())
         .init();
+
+    match dotenvy::dotenv() {
+        Ok(_) => info!(".env file found, configuration loaded"),
+        Err(_) => warn!("no .env file, assuming environment variables have been provided"),
+    }
+
+    info!("determining path for content files");
 
     let content_path = Path::new("content");
 

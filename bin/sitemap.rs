@@ -14,14 +14,17 @@ struct PostMetadata {
 #[cfg(feature = "sitemap")]
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    dotenvy::dotenv()?;
-
     let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
     let file = File::create("public/sitemap-index.xml")?;
     let file = BufWriter::new(file);
     let mut writer = EmitterConfig::new()
         .perform_indent(true)
         .create_writer(file);
+
+    match dotenvy::dotenv() {
+        Ok(_) => println!(".env file found, configuration loaded"),
+        Err(_) => println!("no .env file, assuming environment variables have been provided"),
+    }
 
     writer.write(
         XmlEvent::start_element("urlset")

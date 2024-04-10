@@ -50,7 +50,7 @@ COPY --from=node_modules_go_brrr /app/styles/main.css /app/styles/main.css
 RUN cargo leptos build --release -vv
 
 # Run content sync
-# RUN cargo run --bin content --no-default-features --features content
+RUN cargo run --bin content --no-default-features --features content
 
 # Build the sitemap
 RUN cargo run --bin sitemap --no-default-features --features sitemap
