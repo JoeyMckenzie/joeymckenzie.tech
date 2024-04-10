@@ -1,4 +1,3 @@
-#[cfg(any(feature = "ssr", feature = "hydrate"))]
 pub mod client;
 pub mod responses;
 

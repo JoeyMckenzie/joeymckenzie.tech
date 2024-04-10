@@ -4,11 +4,13 @@ use leptos::*;
 
 use crate::{
     components::{spotify_not_playing::SpotifyNotPlaying, spotify_now_playing::SpotifyNowPlaying},
-    spotify::{client::SpotifyClient, NowPlaying},
+    spotify::NowPlaying,
 };
 
 #[server(GetNotPlaying, "/spotify")]
 pub async fn get_now_playing() -> Result<NowPlaying, ServerFnError> {
+    use crate::spotify::client::SpotifyClient;
+
     dotenvy::dotenv()?;
 
     logging::log!("requesting now playing from spotify");
