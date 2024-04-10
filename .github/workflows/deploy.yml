@@ -1,0 +1,21 @@
+name: Deploy to Fly
+
+on:
+  workflow_run:
+    workflows: ['CI']
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: github.event.workflow_run.conclusion == 'success' && ${{ !github.actor == 'dependabot[bot]' }}
+    name: build and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - uses: actions/checkout@v3
+
+      - name: Deploy to fly
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_TOKEN }}
