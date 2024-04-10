@@ -1,10 +1,10 @@
 default: dev
 
 dev:
-    just watch & find src/ | entr -s 'just fmt && npm run tailwind:compile'
+    just watch & find src/ | entr -s 'just fmt'
 
 watch:
-    cargo leptos watch
+    cargo leptos watch & npm run tailwind:watch
 
 content:
     cargo build --bin content --features content
@@ -17,6 +17,9 @@ prepare:
 
 fmt:
     cargo fmt && leptosfmt src/*.rs src/**/*.rs
+
+import:
+    fly secrets import < .env.production
 
 deploy:
     fly deploy

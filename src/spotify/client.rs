@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use leptos::tracing::info;
+use leptos::logging;
 use reqwest::{Client, StatusCode};
 
 use crate::spotify::{
@@ -42,14 +42,14 @@ impl SpotifyClient {
     /// Retrieves an access token to use for calling Spotify APIs that require authentication.
     /// To retrive an access token, we send a basic authentication header along with the
     /// grant type and refresh token on the request, and in turn receive an access token.
-    pub async fn get_access_token(&self) -> anyhow::Result<String> {
-        info!("building authentication request for spotify");
+    async fn get_access_token(&self) -> anyhow::Result<String> {
+        logging::log!("building authentication request for spotify");
 
         let mut auth_params = HashMap::new();
         auth_params.insert("grant_type", "refresh_token");
         auth_params.insert("refresh_token", &self.refresh_token);
 
-        info!("requesting access token from spotify");
+        logging::log!("requesting access token from spotify");
 
         let response = self
             .client
@@ -61,16 +61,17 @@ impl SpotifyClient {
             .json::<SpotifyAuthResponse>()
             .await?;
 
-        info!("access token successfully retrieved");
+        logging::log!("access token successfully retrieved");
 
         Ok(response.access_token)
     }
 
     /// Retrieves the current track or podcast we're listening to at the moment, marshaling
     /// the raw API responses from Spotify into a simple format to consume on the frontend.
-    pub async fn get_listening_to(&self, access_token: String) -> anyhow::Result<NowPlaying> {
-        info!("requesting now playing information from spotify");
+    pub async fn get_listening_to(&self) -> anyhow::Result<NowPlaying> {
+        logging::log!("requesting now playing information from spotify");
 
+        let access_token = self.get_access_token().await?;
         let response = self
             .client
             .get(NOW_PLAYING_ENDPOINT)
@@ -79,26 +80,33 @@ impl SpotifyClient {
             .await?;
         let status = response.status();
 
-        info!(
+        logging::log!(
             "now playing successfully retrieved with status: {:?}",
             status
         );
 
         // In the case we get a 204 back from Spotify, assume we're not currently listening to anything
         if status == StatusCode::NO_CONTENT {
-            info!("no content currently playing");
+            logging::log!("no content currently playing");
             return Ok(NowPlaying::default());
         }
 
-        info!("currently playing content identified");
+        logging::log!("currently playing content identified");
 
-        let now_playing_response = response.json::<SpotifyNowPlayingResponse>().await?;
+        let now_playing_response = response.json::<SpotifyNowPlayingResponse>().await;
+        match now_playing_response {
+            Ok(response) => {
+                logging::log!(
+                    "successfully retrieve spotify listening to response: {:?}",
+                    response
+                );
 
-        info!(
-            "successfully retrieve spotify listening to response: {:?}",
-            now_playing_response
-        );
-
-        Ok(now_playing_response.into())
+                Ok(response.into())
+            }
+            Err(e) => {
+                dbg!(&e);
+                Err(e.into())
+            }
+        }
     }
 }

@@ -4,7 +4,8 @@
   "license": "ISC",
   "type": "module",
   "scripts": {
-    "tailwind:compile": "npx tailwindcss -i ./styles/tailwind.css -o ./styles/main.css"
+    "tailwind:compile": "npx tailwindcss -i ./styles/tailwind.css -o ./styles/main.css",
+    "tailwind:watch": "npm run tailwind:compile -- --watch"
   },
   "devDependencies": {
     "@iconify-json/logos": "^1.1.42",

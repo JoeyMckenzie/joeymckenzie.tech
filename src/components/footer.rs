@@ -7,11 +7,9 @@ use crate::components::{
 #[component]
 pub fn Footer() -> impl IntoView {
     view! {
-        <div class="max-w-screen-4xl mx-auto mt-auto flex w-full flex-col items-center justify-evenly gap-y-8 p-12 sm:flex-row sm:items-end">
+        <div class="max-w-screen-4xl mx-auto mt-auto flex w-full flex-col items-center justify-evenly gap-y-8 p-12 md:flex-row md:items-end">
             <SocialIcons/>
-            <SpotifyTracker>
-                <span class="w-6 h-6 icon-[logos--spotify-icon]"></span>
-            </SpotifyTracker>
+            <SpotifyTracker/>
             <PoweredBy/>
         </div>
     }
