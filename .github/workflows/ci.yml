@@ -25,6 +25,14 @@ jobs:
       - name: Run rust formatter checks
         run: cargo fmt --all -- --check
 
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: latest
+
+      - name: Install node dependencies
+        run: npm install
+
       - name: Content sync
         run: cargo run --bin content --no-default-features --features content
         env:
