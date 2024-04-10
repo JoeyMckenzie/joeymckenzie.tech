@@ -49,8 +49,11 @@ COPY --from=node_modules_go_brrr /app/styles/main.css /app/styles/main.css
 # Build the app
 RUN cargo leptos build --release -vv
 
+ARG DATABASE_URL=""
+ARG APP_URL=""
+
 # Build sitemap
-RUN cargo run --bin sitemap --no-default-features --features sitemap
+RUN DATABASE_URL=${DATABASE_URL} APP_URL=${APP_URL} cargo run --bin sitemap --no-default-features --features sitemap
 
 
 # Deployment container
