@@ -9,7 +9,6 @@ on:
 env:
   CARGO_TERM_COLOR: always
   SQLX_OFFLINE: true
-  APP_URL: https://joeymckenzie.tech
 
 jobs:
   build:
