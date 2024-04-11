@@ -37,13 +37,13 @@ pub fn App() -> impl IntoView {
             outside_errors.insert_with_default_key(AppError::NotFound);
             view! { <ErrorTemplate outside_errors/> }.into_view()
         }>
-            <Html attr:data-theme="forest"/>
+            <Html attr:data-theme="dracula"/>
             <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <Navbar/>
                 <Routes>
                     <Route path="" view=HomePage/>
                     <Route path="now" view=NowPage/>
-                    <Route path="blog" view=BlogPage/>
+                    <Route path="blog" view=BlogPage ssr=SsrMode::Async/>
                 </Routes>
                 <Footer/>
             </main>

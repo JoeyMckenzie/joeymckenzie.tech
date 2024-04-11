@@ -19,12 +19,12 @@ pub fn SocialButtons() -> impl IntoView {
         DisplayableIcon {
             href: "https://twitter.com/_joeyMcKenzie",
             display: "Twitter",
-            icon: Some("icon-[logos--twitter]"),
+            icon: Some("icon-[pajamas--twitter]"),
         },
     ]);
 
     view! {
-        <div class="mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-4 py-8 sm:grid-cols-3">
+        <div class="flex justify-center mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-4 py-8 sm:grid-cols-3">
             <For each=socials key=|social| social.display let:social>
                 <A href=social.href class="btn">
                     <span class=format!("w-5 h-5 {}", social.icon.unwrap())></span>
