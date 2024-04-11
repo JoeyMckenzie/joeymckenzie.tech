@@ -1,10 +1,10 @@
 default: dev
 
 dev:
-    just watch & find src/ | entr -s 'just fmt'
+    just watch & find src/ | entr -s 'just fmt && npm run tailwind:compile'
 
 watch:
-    cargo leptos watch & npm run tailwind:watch
+    cargo leptos watch
 
 content:
     cargo build --bin content --features content
