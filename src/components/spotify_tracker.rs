@@ -33,7 +33,7 @@ pub fn SpotifyTracker() -> impl IntoView {
 
     view! {
         <Suspense fallback=move || {
-            view! { <SpotifyNotPlaying/> }
+            view! { <SpotifyNotPlaying loading=true/> }
         }>
             {move || match response.get() {
                 Some(now_playing_result) => {

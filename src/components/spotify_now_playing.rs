@@ -20,7 +20,9 @@ pub fn SpotifyNowPlaying(now_playing: NowPlaying) -> impl IntoView {
                     <h4 class="line-clamp-1 overflow-hidden text-ellipsis text-xs font-semibold">
                         {now_playing.track_title}
                     </h4>
-                    <p class="text-xs">{now_playing.artist}</p>
+                    <p class="line-clamp-1 overflow-hidden text-ellipsis text-xs">
+                        {now_playing.artist}
+                    </p>
                 </div>
             </div>
         </a>

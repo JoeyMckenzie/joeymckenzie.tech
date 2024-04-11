@@ -40,7 +40,13 @@ impl From<SpotifyNowPlayingResponse> for NowPlaying {
         let item = now_playing.item;
         let context = now_playing.context;
         let track_title = item.name;
-        let href = context.external_urls.spotify;
+        let href = match context {
+            Some(existing_context) => existing_context.external_urls.spotify,
+            None => match item.external_urls {
+                Some(urls) => urls.spotify,
+                None => "".into(),
+            },
+        };
 
         // The playing type will either be `"show"` or `"track"` based on a podcast or artist song
         // There's _a lot_ of presumptive `unwrap()`ing going here, should probably clean up eventually

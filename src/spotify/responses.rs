@@ -8,7 +8,7 @@ pub struct SpotifyAuthResponse {
 #[derive(Deserialize, Debug)]
 pub struct SpotifyNowPlayingResponse {
     pub currently_playing_type: String,
-    pub context: Context,
+    pub context: Option<Context>,
     pub item: Item,
 }
 
@@ -29,6 +29,7 @@ pub struct Item {
     pub album: Option<Album>,
     pub show: Option<Show>,
     pub artists: Option<Vec<Artist>>,
+    pub external_urls: Option<ContextUrls>,
 }
 
 #[derive(Deserialize, Debug)]
