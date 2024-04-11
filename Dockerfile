@@ -51,6 +51,7 @@ RUN cargo leptos build --release -vv
 
 ARG DATABASE_URL=""
 ARG APP_URL=""
+ARG SQLX_OFFLINE=""
 
 # Build sitemap
 RUN DATABASE_URL=${DATABASE_URL} \
