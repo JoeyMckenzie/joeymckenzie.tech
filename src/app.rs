@@ -1,7 +1,7 @@
 use crate::{
     components::{footer::Footer, navbar::Navbar},
     error_template::{AppError, ErrorTemplate},
-    routes::home::HomePage,
+    routes::{blog::BlogPage, home::HomePage, now::NowPage},
 };
 use leptos::*;
 use leptos_meta::*;
@@ -42,6 +42,8 @@ pub fn App() -> impl IntoView {
                 <Navbar/>
                 <Routes>
                     <Route path="" view=HomePage/>
+                    <Route path="now" view=NowPage/>
+                    <Route path="blog" view=BlogPage/>
                 </Routes>
                 <Footer/>
             </main>
