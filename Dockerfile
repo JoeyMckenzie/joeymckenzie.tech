@@ -53,7 +53,10 @@ ARG DATABASE_URL=""
 ARG APP_URL=""
 
 # Build sitemap
-RUN DATABASE_URL=${DATABASE_URL} APP_URL=${APP_URL} cargo run --bin sitemap --no-default-features --features sitemap
+RUN DATABASE_URL=${DATABASE_URL} \
+    APP_URL=${APP_URL} \
+    SQLX_OFFLINE=${SQLX_OFFLINE} \
+    cargo run --bin sitemap --no-default-features --features sitemap
 
 
 # Deployment container
