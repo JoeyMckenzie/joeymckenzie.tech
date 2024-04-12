@@ -6,7 +6,6 @@ on:
 
 env:
   APP_URL: https://joeymckenzie.tech
-  SQLX_OFFLINE: true
 
 jobs:
   deploy:
@@ -22,6 +21,5 @@ jobs:
           flyctl deploy --remote-only \
             --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
             --build-arg APP_URL=${{ env.APP_URL }}
-            --build-arg SQLX_OFFLINE=${{ env.SQLX_OFFLINE }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_TOKEN }}

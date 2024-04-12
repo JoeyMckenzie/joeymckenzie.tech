@@ -10,7 +10,7 @@ content:
     cargo build --bin content --features content
 
 sitemap:
-    cargo run --bin sitemap --features sitemap
+    cargo run --bin sitemap --no-default-features --features sitemap
 
 prepare:
     cargo sqlx prepare -- --all-targets --all-features

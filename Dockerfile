@@ -51,12 +51,10 @@ RUN cargo leptos build --release -vv
 
 ARG DATABASE_URL=""
 ARG APP_URL=""
-ARG SQLX_OFFLINE=""
 
 # Build sitemap
 RUN DATABASE_URL=${DATABASE_URL} \
     APP_URL=${APP_URL} \
-    SQLX_OFFLINE=${SQLX_OFFLINE} \
     cargo run --bin sitemap --no-default-features --features sitemap
 
 
