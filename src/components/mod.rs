@@ -7,6 +7,7 @@ pub mod footer;
 pub mod intro;
 pub mod navbar;
 mod powered_by;
+pub mod section_intro;
 pub mod social_buttons;
 mod social_icons;
 pub mod spotify_not_playing;

@@ -3,7 +3,7 @@ use std::env;
 use leptos::*;
 use leptos_meta::*;
 
-use crate::components::{blog_previews::BlogPreviews, PostMetadata};
+use crate::components::{blog_previews::BlogPreviews, section_intro::SectionIntro, PostMetadata};
 
 #[server(GetBlogPosts, "/blogs", "GetJson")]
 pub async fn get_blog_posts() -> Result<Vec<PostMetadata>, ServerFnError> {
@@ -47,21 +47,17 @@ pub fn BlogPage() -> impl IntoView {
         <Title text="Blog. | joeymckenzie.tech"/>
 
         <div class="py-12 sm:px-6 lg:px-8">
-            <div class="mx-auto max-w-2xl pb-12">
-                <h2 class="text-center text-4xl font-extrabold tracking-tight sm:text-4xl">
-                    "Blog."
-                </h2>
-                <p class="mx-auto mt-6 max-w-xl text-justify">
-                    "I write about a lot of things, mainly languages, ecosystems,
-                    and software design. I consider my writing a journal of
-                    technologies I've worked with at some point during my
-                    career, and I'm always happy to field questions and
-                    conversations from interested readers. Feel free to"
-                    <a href="mailto:joey.mckenzie.dev@gmail.com">"contact me"</a>
-                    "about any of the writing I do here, or to simply say hello!"
-                </p>
-            </div>
-            // <BlogPreviews :front-matters="frontMatters" />
+            <SectionIntro title=String::from(
+                "Blog.",
+            )>
+                "I write about a lot of things, mainly languages, ecosystems,
+                and software design. I consider my writing a journal of
+                technologies I've worked with at some point during my
+                career, and I'm always happy to field questions and
+                conversations from interested readers. Feel free to"
+                <a href="mailto:joey.mckenzie.dev@gmail.com">"contact me"</a>
+                "about any of the writing I do here, or to simply say hello!"
+            </SectionIntro>
             <Suspense fallback=|| {
                 view! {
                     <span class="py-12 flex justify-center mx-auto loading loading-ring loading-md"></span>

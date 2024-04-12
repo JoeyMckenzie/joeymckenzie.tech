@@ -1,4 +1,5 @@
 use leptos::*;
+use leptos_meta::*;
 
 use crate::components::{
     blog_previews::BlogPreviews, intro::Intro, social_buttons::SocialButtons, PostMetadata,
@@ -45,6 +46,8 @@ pub fn HomePage() -> impl IntoView {
     let posts = create_resource(|| (), move |_| get_latest_blog_posts());
 
     view! {
+        <Title text="Hi, I'm Joey. | joeymckenzie.tech"/>
+
         <Intro/>
         <SocialButtons/>
         <Suspense fallback=|| {

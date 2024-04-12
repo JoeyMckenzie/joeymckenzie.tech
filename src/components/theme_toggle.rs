@@ -33,25 +33,19 @@ pub fn ThemeToggle() -> impl IntoView {
                 on:click=move |_| {
                     if theme.get() == DARK_THEME {
                         set_theme(LIGHT_THEME);
-                        let _ = gloo_storage::LocalStorage::set(
-                            THEME_KEY,
-                            LIGHT_THEME,
-                        );
+                        let _ = gloo_storage::LocalStorage::set(THEME_KEY, LIGHT_THEME);
                     } else {
                         set_theme(DARK_THEME);
-                        let _ = gloo_storage::LocalStorage::set(
-                            THEME_KEY,
-                            DARK_THEME,
-                        );
+                        let _ = gloo_storage::LocalStorage::set(THEME_KEY, DARK_THEME);
                     }
                 }
             />
 
             <Show
                 when=move || theme.get() == LIGHT_THEME
-                fallback=|| view! { <span class="w-5 h-5 icon-[pixelarticons--moon]"></span> }
+                fallback=|| view! { <span class="w-5 h-5 icon-[pixelarticons--sun]"></span> }
             >
-                <span class="w-5 h-5 icon-[pixelarticons--sun]"></span>
+                <span class="w-5 h-5 icon-[pixelarticons--moon]"></span>
             </Show>
 
         </label>

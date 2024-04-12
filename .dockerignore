@@ -9,4 +9,3 @@ Dockerfile
 Justfile
 LICENSE
 README.md
-build.rs

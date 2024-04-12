@@ -13,7 +13,7 @@ pub fn BlogPreview(post: PostMetadata) -> impl IntoView {
     let datetime_date = post.published_date.format(&format_for_datetime).unwrap();
 
     view! {
-        <article class="flex max-w-xl flex-col items-start">
+        <article class="flex max-w-xl flex-col items-start hover:scale-102 transition duration-150 ease-in-out hover:-translate-y-1">
             <div class="flex items-center gap-x-4 text-xs">
                 <time datetime=datetime_date>{display_date}</time>
                 <div class="badge badge-neutral">{post.category}</div>
