@@ -24,9 +24,10 @@ pub fn PoweredBy() -> impl IntoView {
     ]);
 
     view! {
-        <div class="flex justify-center space-x-4">
+        <div class="flex justify-center items-center space-x-4">
+            <p class="my-auto text-xs">"Powered by"</p>
             <For each=socials key=|social| social.display let:social>
-                <A href=social.href class="hover:underline">
+                <A href=social.href class="flex my-auto hover:underline">
                     <span class="sr-only">{social.display}</span>
                     <span class=format!(
                         "h-5 w-5 transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110 {}",
@@ -34,7 +35,9 @@ pub fn PoweredBy() -> impl IntoView {
                     )></span>
                 </A>
             </For>
-            <ThemeToggle/>
+            <div class="flex my-auto">
+                <ThemeToggle/>
+            </div>
         </div>
     }
 }
