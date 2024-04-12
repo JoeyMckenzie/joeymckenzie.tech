@@ -1,7 +1,7 @@
 use leptos::*;
 use leptos_router::A;
 
-use crate::components::DisplayableIcon;
+use crate::components::{theme_toggle::ThemeToggle, DisplayableIcon};
 
 #[component]
 pub fn PoweredBy() -> impl IntoView {
@@ -34,6 +34,7 @@ pub fn PoweredBy() -> impl IntoView {
                     )></span>
                 </A>
             </For>
+            <ThemeToggle/>
         </div>
     }
 }

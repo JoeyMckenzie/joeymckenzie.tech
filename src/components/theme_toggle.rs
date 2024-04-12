@@ -1,8 +1,54 @@
+use gloo_storage::Storage;
 use leptos::*;
+
+const THEMES: [&str; 32] = [
+    "light",
+    "dark",
+    "cupcake",
+    "bumblebee",
+    "emerald",
+    "corporate",
+    "synthwave",
+    "retro",
+    "cyberpunk",
+    "valentine",
+    "halloween",
+    "garden",
+    "forest",
+    "aqua",
+    "lofi",
+    "pastel",
+    "fantasy",
+    "wireframe",
+    "black",
+    "luxury",
+    "dracula",
+    "cmyk",
+    "autumn",
+    "business",
+    "acid",
+    "lemonade",
+    "night",
+    "coffee",
+    "winter",
+    "dim",
+    "nord",
+    "sunset",
+];
 
 #[component]
 pub fn ThemeToggle() -> impl IntoView {
-    let (theme, set_theme) = create_signal("forest");
+    let (theme, set_theme) = create_signal("light");
+    let html_element: NodeRef<html::Html> = create_node_ref();
+
+    create_effect(move |_| {
+        let storage = gloo_storage::LocalStorage::raw();
+        logging::log!("{storage:?}");
+    });
+
+    create_effect(move |_| {
+        logging::log!("{:?}", html_element.get().unwrap().get_attribute_names());
+    });
 
     view! {
         <label class="swap swap-rotate">

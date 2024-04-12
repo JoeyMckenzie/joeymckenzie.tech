@@ -29,7 +29,7 @@ pub fn App() -> impl IntoView {
         <link rel="manifest" href="/site.webmanifest"/>
 
         // sets the document title
-        <Title text="Hi, I'm Joey."/>
+        <Title text="Hi, I'm Joey. | joeymckenzie.tech"/>
 
         // content for this welcome page
         <Router fallback=|| {
