@@ -1,6 +1,7 @@
 use gloo_storage::Storage;
 use leptos::*;
 
+const THEME_KEY: &str = "joeymckenzie.tech-theme";
 const DARK_THEME: &str = "forest";
 const LIGHT_THEME: &str = "light";
 
@@ -33,13 +34,13 @@ pub fn ThemeToggle() -> impl IntoView {
                     if theme.get() == DARK_THEME {
                         set_theme(LIGHT_THEME);
                         let _ = gloo_storage::LocalStorage::set(
-                            "joeymckenzie.tech-theme",
+                            THEME_KEY,
                             LIGHT_THEME,
                         );
                     } else {
                         set_theme(DARK_THEME);
                         let _ = gloo_storage::LocalStorage::set(
-                            "joeymckenzie.tech-theme",
+                            THEME_KEY,
                             DARK_THEME,
                         );
                     }
