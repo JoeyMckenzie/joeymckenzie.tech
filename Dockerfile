@@ -46,6 +46,21 @@ COPY . .
 # Copy tailwind output over
 COPY --from=node_modules_go_brrr /app/styles/main.css /app/styles/main.css
 
+# @e'll set these environment variables during the build step, both locally and in our Fly instance
+ARG SPOTIFY_REFRESH_TOKEN=""
+ARG SPOTIFY_CLIENT_ID=""
+ARG SPOTIFY_CLIENT_SECRET=""
+ARG DATABASE_URL=""
+ARG APP_URL=""
+
+# Create a .env file for loading variables
+RUN echo "\
+    SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}\n\
+    SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}\n\
+    SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}\n\
+    APP_URL=${APP_URL}\n\
+    DATABASE_URL=${DATABASE_URL}" > ./.env
+
 # Build the app
 RUN cargo leptos build --release -vv
 
@@ -64,6 +79,9 @@ COPY --from=builder /app/target/site /app/site
 
 # Copy Cargo.toml if it’s needed at runtime
 COPY --from=builder /app/Cargo.toml /app/
+
+# Copy the .env file over
+COPY --from=builder /app/.env /app/
 
 WORKDIR /app
 

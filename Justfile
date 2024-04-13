@@ -1,3 +1,5 @@
+set dotenv-load
+
 default: dev
 
 dev:
@@ -25,15 +27,21 @@ deploy:
     fly deploy
 
 docker-build:
-    sudo docker build -t blog:latest .
+    docker build \
+    --build-arg SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN} \
+    --build-arg SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID} \
+    --build-arg SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET} \
+    --build-arg APP_URL=${APP_URL} \
+    --build-arg DATABASE_URL=${DATABASE_URL} \
+    -t blog:latest .
 
 docker-run:
-    sudo docker run -d --name blog -p 8080:8080 --env-file ./.env blog:latest
+    docker run -d --name blog -p 8080:8080 --env-file ./.env blog:latest
 
 docker-stop:
-    sudo docker stop blog
+    docker stop blog
 
 docker-rm:
-    sudo docker rm blog
+    docker rm blog
 
 docker-restart: docker-stop docker-rm docker-build docker-run
