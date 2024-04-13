@@ -19,7 +19,8 @@ jobs:
       - name: Deploy to fly
         run: |
           flyctl deploy --remote-only \
-            --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            --build-arg DATABASE_URL=${{ env.DATABASE_URL }} \
             --build-arg APP_URL=${{ env.APP_URL }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
