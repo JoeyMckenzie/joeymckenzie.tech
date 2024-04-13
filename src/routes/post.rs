@@ -1,4 +1,4 @@
-use leptos::{html::P, *};
+use leptos::*;
 use leptos_router::*;
 use serde::{Deserialize, Serialize};
 use time::{format_description, Date};
@@ -19,7 +19,6 @@ pub struct Post {
 }
 
 #[server(GetBlogPost, "/blog", "GetJson")]
-#[tracing::instrument]
 pub async fn get_blog_post(slug: String) -> Result<Option<Post>, ServerFnError> {
     use axum::http::{header, HeaderValue};
     use leptos_axum::ResponseOptions;
