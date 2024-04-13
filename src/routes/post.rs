@@ -28,17 +28,18 @@ pub async fn get_blog_post() -> Result<Option<Post>, ServerFnError> {
     use sqlx::PgPool;
     use std::env;
 
-    let (_, path): (Method, Path<String>) = extract().await?;
+    logging::log!("getting path");
+
+    let Path(path): Path<String> = extract().await?;
 
     logging::log!("{path:?}");
 
-    if let Ok(slug) = path.parse::<String>() {
-        dotenvy::dotenv()?;
+    dotenvy::dotenv()?;
 
-        let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
-        let post: sqlx::Result<Option<Post>> = sqlx::query_as!(
-            Post,
-            r#"
+    let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
+    let post: sqlx::Result<Option<Post>> = sqlx::query_as!(
+        Post,
+        r#"
 SELECT title,
        published_date,
        views,
@@ -47,19 +48,14 @@ SELECT title,
 FROM posts
 WHERE slug = $1
         "#,
-            slug
-        )
-        .fetch_optional(&pool)
-        .await;
+        slug
+    )
+    .fetch_optional(&pool)
+    .await;
 
-        if let Ok(Some(existing_post)) = post {
-            let response = expect_context::<ResponseOptions>();
-            response.insert_header(
-                header::CACHE_CONTROL,
-                HeaderValue::from_static("max-age=300"),
-            );
-            return Ok(Some(existing_post));
-        }
+    if let Ok(Some(existing_post)) = post {
+        let response = expect_context::<ResponseOptions>();
+        return Ok(Some(existing_post));
     }
 
     leptos_axum::redirect("/");
