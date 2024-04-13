@@ -28,6 +28,7 @@ tower-http = { version = "0.5", features = ["fs"], optional = true }
 wasm-bindgen = "=0.2.92"
 thiserror = "1"
 tracing = { version = "0.1", optional = true }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 http = "1"
 
 # data cates
@@ -40,7 +41,6 @@ sqlx = { version = "0.7", features = [
 
 # utility crates
 dotenvy = "0.15"
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 gray_matter = "0.2"
 serde = { version = "1", features = ["derive"] }
 anyhow = "1"

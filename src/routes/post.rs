@@ -1,4 +1,5 @@
 use leptos::*;
+use leptos_meta::*;
 use leptos_router::*;
 use serde::{Deserialize, Serialize};
 use time::{format_description, Date};
@@ -16,6 +17,7 @@ pub struct Post {
     pub category: String,
     pub content: String,
     pub hero_image: String,
+    pub description: String,
 }
 
 #[server(GetBlogPost, "/blog", "GetJson")]
@@ -36,7 +38,8 @@ SELECT title,
        views,
        category,
        parsed_content as content,
-       hero_image
+       hero_image,
+       description
 FROM posts
 WHERE slug = $1
         "#,
@@ -70,7 +73,7 @@ pub fn PostPage() -> impl IntoView {
                 .unwrap_or_default()
         })
     };
-    let post_resource = create_resource(slug, get_blog_post);
+    let post_resource = create_blocking_resource(slug, get_blog_post);
 
     view! {
         <div class="flex flex-col justify-center pt-12">
@@ -94,6 +97,8 @@ pub fn PostPage() -> impl IntoView {
                             .unwrap();
                         view! {
                             <article class="prose mx-auto w-full overflow-hidden pb-6 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
+                                <Title text=format!("{} | joeymckenzie.tech", post.title.clone())/>
+                                <Meta name="description" content=post.description/>
                                 <h1 class="text-center text-2xl font-semibold">
                                     {post.title.clone()}
                                 </h1>
