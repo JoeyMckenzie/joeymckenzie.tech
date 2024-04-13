@@ -49,6 +49,19 @@ WHERE slug = $1
     .await;
 
     if let Ok(Some(existing_post)) = post {
+        // Not too concerned if there's an error during the update
+        let _ = sqlx::query!(
+            r#"
+UPDATE posts
+SET views = $1
+WHERE slug = $2
+            "#,
+            existing_post.views as i32 + 1,
+            slug
+        )
+        .execute(&pool)
+        .await;
+
         let response = expect_context::<ResponseOptions>();
         response.insert_header(
             header::CACHE_CONTROL,

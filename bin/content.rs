@@ -27,6 +27,8 @@ struct FrontMatter {
 #[cfg(feature = "content")]
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    dotenvy::dotenv()?;
+
     tracing_subscriber::registry()
         .with(
             tracing_subscriber::EnvFilter::try_from_default_env()
@@ -34,11 +36,6 @@ async fn main() -> anyhow::Result<()> {
         )
         .with(tracing_subscriber::fmt::layer())
         .init();
-
-    match dotenvy::dotenv() {
-        Ok(_) => info!(".env file found, configuration loaded"),
-        Err(_) => warn!("no .env file, assuming environment variables have been provided"),
-    }
 
     info!("determining path for content files");
 

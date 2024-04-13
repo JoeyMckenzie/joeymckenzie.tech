@@ -14,10 +14,7 @@ struct PostMetadata {
 #[cfg(feature = "sitemap")]
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    match dotenvy::dotenv() {
-        Ok(_) => println!(".env file found, configuration loaded"),
-        Err(_) => println!("no .env file, assuming environment variables have been provided"),
-    }
+    dotenvy::dotenv()?;
 
     let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
     let file = File::create("public/sitemap-index.xml")?;
