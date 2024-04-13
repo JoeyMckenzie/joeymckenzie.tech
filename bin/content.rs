@@ -7,7 +7,7 @@ use serde::Deserialize;
 use sqlx::{PgPool, Postgres, Transaction};
 use time::macros::format_description;
 use time::Date;
-use tracing::{error, info, warn};
+use tracing::{error, info};
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
 

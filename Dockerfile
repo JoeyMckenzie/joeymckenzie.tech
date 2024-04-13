@@ -59,7 +59,8 @@ RUN echo "\
     SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}\n\
     SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}\n\
     APP_URL=${APP_URL}\n\
-    DATABASE_URL=\"${DATABASE_URL}\"" > ./.env
+    NEON_URL=${NEON_URL}\n\
+    DATABASE_URL=\"${NEON_URL}\"" > ./.env
 
 # Build the app
 RUN cargo leptos build --release -vv

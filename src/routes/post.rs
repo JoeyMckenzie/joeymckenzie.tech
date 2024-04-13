@@ -22,8 +22,6 @@ pub struct Post {
 
 #[server(GetBlogPost, "/blog", "GetJson")]
 pub async fn get_blog_post(slug: String) -> Result<Option<Post>, ServerFnError> {
-    use axum::http::{header, HeaderValue};
-    use leptos_axum::ResponseOptions;
     use sqlx::PgPool;
     use std::env;
 
