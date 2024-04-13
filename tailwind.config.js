@@ -1,4 +1,5 @@
 import { addDynamicIconSelectors } from '@iconify/tailwind';
+import typography from '@tailwindcss/typography';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
 /** @type {import('tailwindcss').Config} */
@@ -48,5 +49,5 @@ module.exports = {
       },
     },
   },
-  plugins: [addDynamicIconSelectors(), require('daisyui')],
+  plugins: [typography, addDynamicIconSelectors(), require('daisyui')],
 };

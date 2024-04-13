@@ -72,7 +72,6 @@ impl SpotifyClient {
         logging::log!("requesting now playing information from spotify");
 
         let access_token = self.get_access_token().await?;
-        dbg!(&access_token);
         let response = self
             .client
             .get(NOW_PLAYING_ENDPOINT)
