@@ -113,8 +113,6 @@ pub fn PostPage() -> impl IntoView {
                             </article>
                         }
                     } else {
-                        let navigate = leptos_router::use_navigate();
-                        navigate("/", Default::default());
                         view! {
                             // Even though we redirect back to home, need to make the compiler happy here
                             <article></article>
