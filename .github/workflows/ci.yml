@@ -31,7 +31,13 @@ jobs:
       - name: Install node dependencies
         run: npm install
 
+      - name: Build .env file
+        run: |
+          echo "\
+          NEON_URL=${NEON_URL}\n\
+          DATABASE_URL=\"${NEON_URL}\"" > ./.env
+        env:
+          NEON_URL: ${{ secrets.DATABASE_URL }}
+
       - name: Content sync
         run: cargo run --bin content --no-default-features --features content
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
