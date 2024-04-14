@@ -65,7 +65,7 @@ RUN echo "\
 RUN cargo leptos build --release -vv
 
 # Build sitemap
-# RUN cargo run --bin sitemap --no-default-features --features sitemap
+RUN cargo run --bin sitemap --no-default-features --features sitemap
 
 
 # Deployment container
