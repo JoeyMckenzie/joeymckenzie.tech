@@ -27,7 +27,7 @@ tower = { version = "0.4", optional = true }
 tower-http = { version = "0.5", features = ["fs"], optional = true }
 wasm-bindgen = "=0.2.92"
 thiserror = "1"
-tracing = { version = "0.1", optional = true }
+tracing = { version = "0.1" }
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 http = "1"
 
@@ -52,7 +52,7 @@ gloo-storage = "0.3"
 
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
-content = ["dep:tokio", "dep:sqlx", "dep:tracing"]
+content = ["dep:tokio", "dep:sqlx"]
 sitemap = ["dep:tokio", "dep:sqlx", "dep:xml"]
 ssr = [
     "dep:axum",
@@ -63,7 +63,6 @@ ssr = [
     "leptos/ssr",
     "leptos_meta/ssr",
     "leptos_router/ssr",
-    "dep:tracing",
     "dep:sqlx",
 ]
 

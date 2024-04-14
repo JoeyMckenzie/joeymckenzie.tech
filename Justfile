@@ -24,7 +24,12 @@ import:
     fly secrets import < .env.production
 
 deploy:
-    fly deploy
+    fly deploy \
+    --build-arg SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN} \
+    --build-arg SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID} \
+    --build-arg SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET} \
+    --build-arg APP_URL=${APP_URL} \
+    --build-arg DATABASE_URL=${DATABASE_URL}
 
 docker-build:
     docker build \
@@ -32,7 +37,7 @@ docker-build:
     --build-arg SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID} \
     --build-arg SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET} \
     --build-arg APP_URL=${APP_URL} \
-    --build-arg NEON_URL=${NEON_URL} \
+    --build-arg DATABASE_URL=${DATABASE_URL} \
     -t blog:latest .
 
 docker-run:

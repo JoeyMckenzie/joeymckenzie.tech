@@ -27,6 +27,8 @@ pub async fn get_blog_post(slug: String) -> Result<Option<Post>, ServerFnError> 
 
     dotenvy::dotenv()?;
 
+    dbg!(env::var("DATABASE_URL"));
+
     let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
     let post: sqlx::Result<Option<Post>> = sqlx::query_as!(
         Post,

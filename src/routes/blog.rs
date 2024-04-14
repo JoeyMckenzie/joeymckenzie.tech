@@ -11,6 +11,8 @@ pub async fn get_blog_posts() -> Result<Vec<PostMetadata>, ServerFnError> {
 
     dotenvy::dotenv()?;
 
+    dbg!(env::var("DATABASE_URL"));
+
     let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
     let posts = sqlx::query_as!(
         PostMetadata,
