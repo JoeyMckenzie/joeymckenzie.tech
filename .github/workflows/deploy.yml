@@ -18,7 +18,7 @@ jobs:
 
       - name: Deploy to fly
         run: |
-          fly deploy \
+          flyctl deploy --remote-only \
           --build-arg SPOTIFY_REFRESH_TOKEN=${{ secrets.SPOTIFY_REFRESH_TOKEN }} \
           --build-arg SPOTIFY_CLIENT_ID=${{ secrets.SPOTIFY_CLIENT_ID }} \
           --build-arg SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFY_CLIENT_SECRET }} \
