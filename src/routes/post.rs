@@ -48,7 +48,7 @@ WHERE slug = $1
 
     if let Ok(Some(existing_post)) = post {
         tokio::spawn(async move {
-            // Not too concerned if there's an error during the update
+            // Not too concerned if there's an error during the updates
             let _ = sqlx::query!(
                 r#"
 UPDATE posts

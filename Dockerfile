@@ -50,7 +50,7 @@ COPY --from=node_modules_go_brrr /app/styles/main.css /app/styles/main.css
 ARG SPOTIFY_REFRESH_TOKEN=""
 ARG SPOTIFY_CLIENT_ID=""
 ARG SPOTIFY_CLIENT_SECRET=""
-ARG DATABASE_URL=""
+ARG NEON_URL=""
 ARG APP_URL=""
 
 # Create a .env file for loading variables
