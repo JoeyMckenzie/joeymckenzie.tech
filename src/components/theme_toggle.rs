@@ -1,5 +1,6 @@
 use gloo_storage::Storage;
 use leptos::*;
+use leptos_meta::*;
 
 const THEME_KEY: &str = "joeymckenzie.tech-theme";
 const DARK_THEME: &str = "forest";
@@ -10,26 +11,25 @@ pub fn ThemeToggle() -> impl IntoView {
     let (theme, set_theme) = create_signal(LIGHT_THEME);
 
     create_effect(move |_| {
-        let current_theme = gloo_storage::LocalStorage::get::<String>("joeymckenzie.tech-theme");
-
-        match current_theme {
+        match gloo_storage::LocalStorage::get::<String>("joeymckenzie.tech-theme") {
             Ok(stored_theme) => {
                 if stored_theme == DARK_THEME {
                     set_theme(DARK_THEME);
                 } else {
-                    set_theme(LIGHT_THEME)
+                    set_theme(LIGHT_THEME);
                 }
             }
-            Err(_) => set_theme(DARK_THEME),
+            Err(_) => logging::warn!("theme not found"),
         }
     });
 
     view! {
+        <Html attr:data-theme=move || theme.get()/>
         <label class="swap swap-rotate">
             <input
                 type="checkbox"
                 class="theme-controller"
-                value=theme.get_untracked()
+                value=move || theme.get()
                 on:click=move |_| {
                     if theme.get() == DARK_THEME {
                         set_theme(LIGHT_THEME);

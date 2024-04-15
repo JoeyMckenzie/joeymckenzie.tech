@@ -14,7 +14,6 @@ pub async fn get_latest_blog_posts() -> Result<Vec<PostMetadata>, ServerFnError>
 
     dotenvy::dotenv()?;
 
-    let response = expect_context::<ResponseOptions>();
     let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
     let posts = sqlx::query_as!(
         PostMetadata,
@@ -33,6 +32,7 @@ LIMIT 3
     .fetch_all(&pool)
     .await?;
 
+    let response = expect_context::<ResponseOptions>();
     response.insert_header(
         header::CACHE_CONTROL,
         HeaderValue::from_static("max-age=300"),
