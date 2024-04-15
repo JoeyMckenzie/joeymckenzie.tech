@@ -48,7 +48,7 @@ time = { version = "0.3", features = ["macros", "serde", "formatting"] }
 serde_json = "1"
 reqwest = { version = "0.11", features = ["json"] }
 xml = { version = "0.8", optional = true }
-gloo-storage = "0.3"
+leptos-use = "0.10.7"
 
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
@@ -63,6 +63,7 @@ ssr = [
     "leptos/ssr",
     "leptos_meta/ssr",
     "leptos_router/ssr",
+    "leptos-use/ssr",
     "dep:sqlx",
 ]
 
