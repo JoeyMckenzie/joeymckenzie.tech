@@ -8,6 +8,6 @@
   ],
   "rust-analyzer.cargo.features": "all",
   "tailwindCSS.includeLanguages": {
-    "rs": "html"
+    "rust": "html"
   }
 }

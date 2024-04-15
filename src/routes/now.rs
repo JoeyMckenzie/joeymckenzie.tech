@@ -1,7 +1,6 @@
 use leptos::*;
 use leptos_meta::*;
-
-use crate::components::section_intro::SectionIntro;
+use leptos_router::*;
 
 #[component]
 pub fn NowPage() -> impl IntoView {
@@ -9,17 +8,44 @@ pub fn NowPage() -> impl IntoView {
         <Title text="Now. | joeymckenzie.tech"/>
 
         <div class="py-12 sm:px-6 lg:px-8">
-            <SectionIntro title=String::from(
-                "Now.",
-            )>
-                "I write about a lot of things, mainly languages, ecosystems,
-                and software design. I consider my writing a journal of
-                technologies I've worked with at some point during my
-                career, and I'm always happy to field questions and
-                conversations from interested readers. Feel free to"
-                <a href="mailto:joey.mckenzie.dev@gmail.com">"contact me"</a>
-                "about any of the writing I do here, or to simply say hello!"
-            </SectionIntro>
+            <div class="mx-auto max-w-2xl">
+                <h2 class="text-center text-4xl font-extrabold tracking-tight sm:text-4xl">
+                    "Now."
+                </h2>
+                <div class="prose max-w-2xl flex-col leading-6 dark:prose-invert">
+                    <p class="mt-6 max-w-xl">
+                        "A few things I'm working on "
+                        <a class="font-bold" href="https://nownownow.com/about">
+                            "now"
+                        </a> ":"
+                    </p>
+                    <ul>
+                        <li>
+                            "I'm part of team modernizing financial systems for a lending company with things like "
+                            <a href="https://dotnet.microsoft.com/en-us/">".NET"</a> ", "
+                            <a href="https://aws.amazon.com/">"AWS"</a> ", "
+                            <a href="https://www.docker.com/">"Docker"</a> ", "
+                            <a href="https://www.terraform.io/">"Terraform"</a>
+                            ", and a bunch of other key resume buzzwords. I like breaking things and
+                            convincing people that you're legally allowed to deploy .NET services to places other than Azure."
+                        </li>
+                        <li>
+                            "I have a secret love for PHP and Laravel and have written a few things about them on my "
+                            <A href="/blog">"blog"</A> ". I'm even working on a "
+                            <a href="https://hopjobs.xyz">"job board"</a>
+                            " breweries. If you're hiring .NET-to-PHP-converts... I know a guy."
+                        </li>
+                        <li>
+                            "I write a lot of " <a href="https://www.rust-lang.org/">"Rust"</a> "
+                            in my spare time and have contributed some small libraries and crates "
+                            <a href="https://crates.io/crates/newswrap">"here"</a> " and "
+                            <a href="https://github.com/JoeyMckenzie/bubblehearth">"there"</a>
+                            ". Heck, the very website you're reading is even powered by "
+                            <a href="https://leptos.dev">"Leptos"</a> "!"
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     }
 }
