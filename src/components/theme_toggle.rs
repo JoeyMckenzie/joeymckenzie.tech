@@ -1,4 +1,4 @@
-use leptos::{html::Html, *};
+use leptos::*;
 use leptos_meta::*;
 use leptos_use::{use_color_mode_with_options, ColorMode, UseColorModeOptions, UseColorModeReturn};
 
@@ -26,7 +26,6 @@ pub fn ThemeToggle() -> impl IntoView {
     let initial_color_mode = create_local_resource(|| (), move |_| get_color_mode());
     let UseColorModeReturn { mode, set_mode, .. } =
         use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
-    let html_ref = create_node_ref::<Html>();
 
     create_effect(move |_| {
         if let Some(Ok(color_mode)) = initial_color_mode.get() {
@@ -56,15 +55,15 @@ pub fn ThemeToggle() -> impl IntoView {
                     }
                 }
             }}
-            {move || match mode.get() {
-                ColorMode::Light => {
-                    view! { <Html attr:data-theme=LIGHT_THEME/> }
-                }
-                ColorMode::Dark => {
-                    view! { <Html attr:data-theme=DARK_THEME/> }
-                }
-                _ => view! {}.into_view(),
-            }}
+            // {move || match mode.get() {
+            // ColorMode::Light => {
+            // view! { <Html attr:data-theme=LIGHT_THEME/> }
+            // }
+            // ColorMode::Dark => {
+            // view! { <Html attr:data-theme=DARK_THEME/> }
+            // }
+            // _ => view! {}.into_view(),
+            // }}
             <label class="swap swap-rotate">
                 <input
                     type="checkbox"
