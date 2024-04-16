@@ -1,17 +1,13 @@
 use leptos::{html::Html, *};
 use leptos_meta::*;
-use leptos_use::{
-    use_color_mode_with_options, use_document, use_preferred_dark, ColorMode, UseColorModeOptions,
-    UseColorModeReturn,
-};
+use leptos_use::{use_color_mode_with_options, ColorMode, UseColorModeOptions, UseColorModeReturn};
 
 const DARK_THEME: &str = "forest";
 const LIGHT_THEME: &str = "light";
 
 #[server(GetMode, "/api/mode")]
 pub async fn get_color_mode() -> Result<String, ServerFnError> {
-    use axum::{extract::Query, http::Method};
-    use axum_extra::extract::{cookie::Cookie, CookieJar};
+    use axum_extra::extract::CookieJar;
     use leptos_axum::*;
 
     let jar: CookieJar = extract().await?;
@@ -27,10 +23,23 @@ pub async fn get_color_mode() -> Result<String, ServerFnError> {
 
 #[component]
 pub fn ThemeToggle() -> impl IntoView {
-    let initial_color_mode = create_resource(|| (), move |_| get_color_mode());
+    let initial_color_mode = create_local_resource(|| (), move |_| get_color_mode());
     let UseColorModeReturn { mode, set_mode, .. } =
         use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
     let html_ref = create_node_ref::<Html>();
+
+    create_effect(move |_| {
+        if let Some(Ok(color_mode)) = initial_color_mode.get() {
+            if color_mode.eq(DARK_THEME) {
+                set_mode(ColorMode::Dark);
+            } else {
+                set_mode(ColorMode::Light);
+            }
+        } else {
+            logging::log!("no color");
+        }
+    });
+
     view! {
         <Suspense>
             {move || match initial_color_mode.get() {
@@ -46,6 +55,15 @@ pub fn ThemeToggle() -> impl IntoView {
                         }/>
                     }
                 }
+            }}
+            {move || match mode.get() {
+                ColorMode::Light => {
+                    view! { <Html attr:data-theme=LIGHT_THEME/> }
+                }
+                ColorMode::Dark => {
+                    view! { <Html attr:data-theme=DARK_THEME/> }
+                }
+                _ => view! {}.into_view(),
             }}
             <label class="swap swap-rotate">
                 <input
