@@ -1,17 +1,34 @@
 use leptos::*;
-use leptos_meta::*;
+use leptos_router::*;
 use leptos_use::{use_color_mode_with_options, ColorMode, UseColorModeOptions, UseColorModeReturn};
 
 const DARK_THEME: &str = "forest";
 const LIGHT_THEME: &str = "light";
 
-#[server(GetMode, "/api/mode")]
+#[server(ToggleDarkMode, "/api/mode/toggle")]
+pub async fn toggle_dark_mode() -> Result<(), ServerFnError> {
+    let UseColorModeReturn { mode, set_mode, .. } =
+        use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
+
+    match mode.get() {
+        ColorMode::Light => set_mode.set(ColorMode::Dark),
+        ColorMode::Dark => set_mode.set(ColorMode::Light),
+        _ => set_mode.set(ColorMode::Auto),
+    }
+
+    Ok(())
+}
+
+#[server(GetColorMode, "/api/mode")]
 pub async fn get_color_mode() -> Result<String, ServerFnError> {
     use axum_extra::extract::CookieJar;
     use leptos_axum::*;
 
+    let UseColorModeReturn { mode, .. } =
+        use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
     let jar: CookieJar = extract().await?;
     let mode = jar.get("leptos-use-color-scheme");
+
     if let Some(cookie_mode) = mode {
         if cookie_mode.value().eq_ignore_ascii_case("dark") {
             return Ok(DARK_THEME.to_string());
@@ -23,57 +40,14 @@ pub async fn get_color_mode() -> Result<String, ServerFnError> {
 
 #[component]
 pub fn ThemeToggle() -> impl IntoView {
-    let initial_color_mode = create_local_resource(|| (), move |_| get_color_mode());
     let UseColorModeReturn { mode, set_mode, .. } =
         use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
-
-    create_effect(move |_| {
-        if let Some(Ok(color_mode)) = initial_color_mode.get() {
-            if color_mode.eq(DARK_THEME) {
-                set_mode(ColorMode::Dark);
-            } else {
-                set_mode(ColorMode::Light);
-            }
-        } else {
-            logging::log!("no color");
-        }
-    });
+    let toggle_dark_mode = create_server_action::<ToggleDarkMode>();
 
     view! {
-        <Suspense>
-            {move || match initial_color_mode.get() {
-                Some(matched_mode) => {
-                    view! { <Html attr:data-theme=matched_mode.unwrap()/> }
-                }
-                None => {
-                    view! {
-                        <Html attr:data-theme=move || match mode.get() {
-                            ColorMode::Light => LIGHT_THEME,
-                            ColorMode::Dark => DARK_THEME,
-                            _ => DARK_THEME,
-                        }/>
-                    }
-                }
-            }}
-            // {move || match mode.get() {
-            // ColorMode::Light => {
-            // view! { <Html attr:data-theme=LIGHT_THEME/> }
-            // }
-            // ColorMode::Dark => {
-            // view! { <Html attr:data-theme=DARK_THEME/> }
-            // }
-            // _ => view! {}.into_view(),
-            // }}
+        <ActionForm action=toggle_dark_mode>
             <label class="swap swap-rotate">
-                <input
-                    type="checkbox"
-                    class="theme-controller"
-                    on:click=move |_| match mode.get() {
-                        ColorMode::Light => set_mode(ColorMode::Dark),
-                        ColorMode::Dark => set_mode(ColorMode::Light),
-                        _ => logging::warn!("color mode invalid"),
-                    }
-                />
+                <input type="submit" class="theme-controller"/>
 
                 {move || match mode.get() {
                     ColorMode::Light => {
@@ -86,6 +60,6 @@ pub fn ThemeToggle() -> impl IntoView {
                 }}
 
             </label>
-        </Suspense>
+        </ActionForm>
     }
 }
