@@ -22,12 +22,15 @@ pub struct Post {
 
 #[server(GetBlogPost, "/blog", "GetJson")]
 pub async fn get_blog_post(slug: String) -> Result<Option<Post>, ServerFnError> {
-    use sqlx::PgPool;
-    use std::env;
+    use crate::state::AppState;
 
     dotenvy::dotenv()?;
 
-    let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
+    let state = use_context::<AppState>().ok_or(
+        ServerFnError::<server_fn::error::NoCustomError>::ServerError(
+            "unable to get app state".to_string(),
+        ),
+    )?;
     let post: sqlx::Result<Option<Post>> = sqlx::query_as!(
         Post,
         r#"
@@ -43,7 +46,7 @@ WHERE slug = $1
         "#,
         slug
     )
-    .fetch_optional(&pool)
+    .fetch_optional(&state.pool)
     .await;
 
     if let Ok(Some(existing_post)) = post {
@@ -58,7 +61,7 @@ WHERE slug = $2
                 existing_post.views as i32 + 1,
                 slug
             )
-            .execute(&pool)
+            .execute(&state.pool)
             .await;
         });
 
