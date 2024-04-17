@@ -7,11 +7,13 @@ use std::{
     path::Path,
 };
 
-use axum::body::Body;
 use axum::response::{IntoResponse, Response};
-use sqlx::PgPool;
+use axum::{body::Body, extract::State};
+use sqlx::{Pool, Postgres};
 use time::{format_description, PrimitiveDateTime};
 use xml::{writer::XmlEvent, EmitterConfig, EventWriter};
+
+use crate::state::AppState;
 
 #[derive(Debug)]
 struct PostMetadata {
@@ -19,14 +21,14 @@ struct PostMetadata {
     updated_at: PrimitiveDateTime,
 }
 
-pub async fn generate_sitemap() -> impl IntoResponse {
+pub async fn generate_sitemap(State(state): State<AppState>) -> impl IntoResponse {
     dotenvy::dotenv().ok();
 
     let sitemap_path = format!("{}/sitemap.xml", &current_dir().unwrap().to_str().unwrap());
     let path = Path::new(&sitemap_path);
 
     if !path.exists() {
-        create_sitemap_file(path).await.ok();
+        create_sitemap_file(path, state.pool).await.ok();
     }
 
     let mut file = File::open(sitemap_path).unwrap();
@@ -41,8 +43,7 @@ pub async fn generate_sitemap() -> impl IntoResponse {
         .unwrap()
 }
 
-async fn create_sitemap_file(path: &Path) -> anyhow::Result<()> {
-    let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
+async fn create_sitemap_file(path: &Path, pool: Pool<Postgres>) -> anyhow::Result<()> {
     let file = File::create(path)?;
     let file = BufWriter::new(file);
     let mut writer = EmitterConfig::new()

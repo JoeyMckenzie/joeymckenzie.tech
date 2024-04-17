@@ -7,6 +7,8 @@ mod routes;
 #[cfg(feature = "ssr")]
 pub mod sitemap;
 pub mod spotify;
+#[cfg(feature = "ssr")]
+pub mod state;
 
 #[cfg(feature = "hydrate")]
 #[wasm_bindgen::prelude::wasm_bindgen]

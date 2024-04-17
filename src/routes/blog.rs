@@ -7,13 +7,17 @@ use crate::components::{blog_previews::BlogPreviews, section_intro::SectionIntro
 
 #[server(GetBlogPosts, "/blogs", "GetJson")]
 pub async fn get_blog_posts() -> Result<Vec<PostMetadata>, ServerFnError> {
+    use crate::state::AppState;
     use axum::http::{header, HeaderValue};
     use leptos_axum::ResponseOptions;
-    use sqlx::PgPool;
 
     dotenvy::dotenv()?;
 
-    let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
+    let state = use_context::<AppState>().ok_or(
+        ServerFnError::<server_fn::error::NoCustomError>::ServerError(
+            "unable to get app state".to_string(),
+        ),
+    )?;
     let posts = sqlx::query_as!(
         PostMetadata,
         r#"
@@ -27,7 +31,7 @@ FROM posts
 ORDER BY published_date DESC
         "#
     )
-    .fetch_all(&pool)
+    .fetch_all(&state.pool)
     .await?;
 
     let response = expect_context::<ResponseOptions>();

@@ -3,6 +3,7 @@ use crate::{
     error_template::{AppError, ErrorTemplate},
     routes::{blog::BlogPage, home::HomePage, now::NowPage, post::PostPage},
 };
+
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
