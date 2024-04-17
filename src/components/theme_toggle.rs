@@ -47,18 +47,9 @@ pub fn ThemeToggle() -> impl IntoView {
     view! {
         <ActionForm action=toggle_dark_mode>
             <label class="swap swap-rotate">
-                <input type="submit" class="theme-controller"/>
-
-                {move || match mode.get() {
-                    ColorMode::Light => {
-                        view! { <span class="w-5 h-5 icon-[pixelarticons--moon]"></span> }
-                    }
-                    ColorMode::Dark => {
-                        view! { <span class="w-5 h-5 icon-[pixelarticons--sun]"></span> }
-                    }
-                    _ => view! { <span></span> },
-                }}
-
+                <input type="checkbox" class="theme-controller" value="forest"/>
+                <span class="w-5 h-5 swap-off fill-current icon-[pixelarticons--moon]"></span>
+                <span class="w-5 h-5 swap-on fill-current icon-[pixelarticons--sun]"></span>
             </label>
         </ActionForm>
     }

@@ -3,7 +3,7 @@ set dotenv-load
 default: dev
 
 dev:
-    just watch & find src/ | entr -s 'just fmt'
+    just watch & find src/ | entr -s 'just fmt && npm run tailwind:compile'
 
 build:
     npm run tailwind:compile && just content && just sitemap && cargo leptos build --release -vv
