@@ -13,14 +13,12 @@ path = "bin/content.rs"
 [dependencies]
 # default leptos crates
 axum = { version = "0.7", optional = true }
-axum-extra = { version = "0.9", features = ["cookie"], optional = true }
 console_error_panic_hook = "0.1"
 leptos = { version = "0.6", features = ["nightly"] }
 leptos_axum = { version = "0.6", optional = true }
 leptos_meta = { version = "0.6", features = ["nightly"] }
 leptos_router = { version = "0.6", features = ["nightly"] }
 tokio = { version = "1", features = ["full"], optional = true }
-tokio-util = { version = "0.7", features = ["io"], optional = true }
 tower = { version = "0.4", optional = true }
 tower-http = { version = "0.5", features = ["fs"], optional = true }
 wasm-bindgen = "=0.2.92"
@@ -54,9 +52,7 @@ content = ["dep:tokio", "dep:sqlx"]
 sitemap = ["dep:tokio", "dep:sqlx", "dep:xml"]
 ssr = [
     "dep:axum",
-    "dep:axum-extra",
     "dep:tokio",
-    "dep:tokio-util",
     "dep:tower",
     "dep:tower-http",
     "dep:leptos_axum",

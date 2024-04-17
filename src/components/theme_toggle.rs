@@ -1,4 +1,5 @@
 use leptos::*;
+use leptos_meta::*;
 use leptos_router::*;
 use leptos_use::{use_color_mode_with_options, ColorMode, UseColorModeOptions, UseColorModeReturn};
 
@@ -11,43 +12,39 @@ pub async fn toggle_dark_mode() -> Result<(), ServerFnError> {
         use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
 
     match mode.get() {
-        ColorMode::Light => set_mode.set(ColorMode::Dark),
-        ColorMode::Dark => set_mode.set(ColorMode::Light),
+        ColorMode::Light => {
+            logging::log!("setting theme to dark");
+            set_mode.set(ColorMode::Dark);
+        }
+        ColorMode::Dark => {
+            logging::log!("setting theme to light");
+            set_mode.set(ColorMode::Light);
+        }
         _ => set_mode.set(ColorMode::Auto),
     }
 
     Ok(())
 }
 
-#[server(GetColorMode, "/api/mode")]
-pub async fn get_color_mode() -> Result<String, ServerFnError> {
-    use axum_extra::extract::CookieJar;
-    use leptos_axum::*;
-
-    let UseColorModeReturn { mode, .. } =
-        use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
-    let jar: CookieJar = extract().await?;
-    let mode = jar.get("leptos-use-color-scheme");
-
-    if let Some(cookie_mode) = mode {
-        if cookie_mode.value().eq_ignore_ascii_case("dark") {
-            return Ok(DARK_THEME.to_string());
-        }
-    }
-
-    Ok(LIGHT_THEME.to_string())
-}
-
 #[component]
 pub fn ThemeToggle() -> impl IntoView {
-    let UseColorModeReturn { mode, set_mode, .. } =
+    let UseColorModeReturn { mode, .. } =
         use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
     let toggle_dark_mode = create_server_action::<ToggleDarkMode>();
+    let theme = move || match mode.get() {
+        ColorMode::Light => LIGHT_THEME,
+        ColorMode::Dark => DARK_THEME,
+        _ => {
+            logging::warn!("no theme detected");
+            LIGHT_THEME
+        }
+    };
 
     view! {
+        <Html attr:data-theme=theme/>
         <ActionForm action=toggle_dark_mode>
             <label class="swap swap-rotate">
-                <input type="checkbox" class="theme-controller" value="forest"/>
+                <input type="submit" class="theme-controller" value="forest"/>
                 <span class="w-5 h-5 swap-off fill-current icon-[pixelarticons--moon]"></span>
                 <span class="w-5 h-5 swap-on fill-current icon-[pixelarticons--sun]"></span>
             </label>
