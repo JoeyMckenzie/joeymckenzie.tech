@@ -1,9 +1,9 @@
 #[cfg(feature = "ssr")]
 #[tokio::main]
 async fn main() {
-    use axum::Router;
-    use blog::app::*;
+    use axum::{routing::get, Router};
     use blog::fileserv::file_and_error_handler;
+    use blog::{app::*, sitemap::generate_sitemap};
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
 
@@ -19,6 +19,7 @@ async fn main() {
 
     // build our application with a route
     let app = Router::new()
+        .route("/sitemap-index.xml", get(generate_sitemap))
         .leptos_routes(&leptos_options, routes, App)
         .fallback(file_and_error_handler)
         .with_state(leptos_options);

@@ -4,6 +4,8 @@ pub mod error_template;
 #[cfg(feature = "ssr")]
 pub mod fileserv;
 mod routes;
+#[cfg(feature = "ssr")]
+pub mod sitemap;
 pub mod spotify;
 
 #[cfg(feature = "hydrate")]

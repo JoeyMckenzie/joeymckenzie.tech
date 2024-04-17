@@ -64,9 +64,6 @@ RUN echo "\
 # Build the app
 RUN cargo leptos build --release -vv
 
-# Build sitemap
-RUN cargo run --bin sitemap --no-default-features --features sitemap
-
 
 # Deployment container
 FROM rustlang/rust:nightly-bullseye as runner
