@@ -13,7 +13,6 @@ path = "bin/content.rs"
 [dependencies]
 # default leptos crates
 axum = { version = "0.7", features = ["macros"], optional = true }
-axum-extra = { version = "0.9", features = ["cookie"], optional = true }
 console_error_panic_hook = "0.1"
 leptos = { version = "0.6", features = ["nightly"] }
 leptos_axum = { version = "0.6", optional = true }
@@ -52,7 +51,6 @@ hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
 content = ["dep:tokio", "dep:sqlx"]
 ssr = [
     "dep:axum",
-    "dep:axum-extra",
     "dep:tokio",
     "dep:tower",
     "dep:tower-http",
