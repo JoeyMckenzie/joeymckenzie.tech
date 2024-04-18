@@ -57,6 +57,7 @@ fn initial_prefers_dark() -> bool {
     prefers_dark
 }
 
+/// All credit to Greg here: https://github.com/leptos-rs/example-darkmode/blob/main/src/dark_mode.rs#L52
 #[component]
 pub fn ThemeToggle() -> impl IntoView {
     let toggle_dark_mode_action = create_server_action::<ToggleDarkMode>();

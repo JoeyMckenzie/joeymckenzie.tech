@@ -12,7 +12,7 @@ const TOKEN_ENDPOINT: &str = "https://accounts.spotify.com/api/token";
 const NOW_PLAYING_ENDPOINT: &str = "https://api.spotify.com/v1/me/player?type=track,episode";
 
 /// An API client accessible to all serverless routes allowing us to encapsulate all API interaction with Spotify.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SpotifyClient {
     /// Reqwest HTTP client, provided at startup.
     client: Client,
@@ -72,7 +72,6 @@ impl SpotifyClient {
         logging::log!("requesting now playing information from spotify");
 
         let access_token = self.get_access_token().await?;
-        dbg!(&access_token);
         let response = self
             .client
             .get(NOW_PLAYING_ENDPOINT)

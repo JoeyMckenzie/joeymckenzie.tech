@@ -9,19 +9,12 @@ use crate::{
 
 #[server(GetNotPlaying, "/spotify")]
 pub async fn get_now_playing() -> Result<NowPlaying, ServerFnError> {
-    use crate::spotify::client::SpotifyClient;
+    use crate::state::AppState;
 
-    dotenvy::dotenv()?;
+    let state = expect_context::<AppState>();
 
-    logging::log!("requesting now playing from spotify");
-
-    let client = reqwest::Client::new();
-    let refresh_token = env::var("SPOTIFY_REFRESH_TOKEN")?;
-    let client_id = env::var("SPOTIFY_CLIENT_ID")?;
-    let client_secret = env::var("SPOTIFY_CLIENT_SECRET")?;
-    let client = SpotifyClient::new(client, refresh_token, client_id, client_secret);
-
-    client
+    state
+        .spotify_client
         .get_listening_to()
         .await
         .map_err(|e| ServerFnError::ServerError(e.to_string()))

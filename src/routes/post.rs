@@ -24,13 +24,7 @@ pub struct Post {
 pub async fn get_blog_post(slug: String) -> Result<Option<Post>, ServerFnError> {
     use crate::state::AppState;
 
-    dotenvy::dotenv()?;
-
-    let state = use_context::<AppState>().ok_or(
-        ServerFnError::<server_fn::error::NoCustomError>::ServerError(
-            "unable to get app state".to_string(),
-        ),
-    )?;
+    let state = expect_context::<AppState>();
     let post: sqlx::Result<Option<Post>> = sqlx::query_as!(
         Post,
         r#"

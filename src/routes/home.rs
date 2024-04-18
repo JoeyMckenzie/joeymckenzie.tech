@@ -11,13 +11,7 @@ pub async fn get_latest_blog_posts() -> Result<Vec<PostMetadata>, ServerFnError>
     use axum::http::{header, HeaderValue};
     use leptos_axum::ResponseOptions;
 
-    dotenvy::dotenv()?;
-
-    let state = use_context::<AppState>().ok_or(
-        ServerFnError::<server_fn::error::NoCustomError>::ServerError(
-            "unable to get app state".to_string(),
-        ),
-    )?;
+    let state = expect_context::<AppState>();
     let posts = sqlx::query_as!(
         PostMetadata,
         r#"
@@ -50,7 +44,6 @@ pub fn HomePage() -> impl IntoView {
 
     view! {
         <Title text="Hi, I'm Joey. | joeymckenzie.tech"/>
-
         <Intro/>
         <SocialButtons/>
         <Suspense fallback=|| {
