@@ -46,7 +46,7 @@ LIMIT 3
 
 #[component]
 pub fn HomePage() -> impl IntoView {
-    let posts = create_resource(|| (), move |_| get_latest_blog_posts());
+    let posts = create_resource(|| (), move |_| async move { get_latest_blog_posts().await });
 
     view! {
         <Title text="Hi, I'm Joey. | joeymckenzie.tech"/>

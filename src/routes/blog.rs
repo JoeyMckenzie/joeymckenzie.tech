@@ -45,7 +45,7 @@ ORDER BY published_date DESC
 
 #[component]
 pub fn BlogPage() -> impl IntoView {
-    let posts = create_resource(|| (), move |_| get_blog_posts());
+    let posts = create_resource(|| (), move |_| async move { get_blog_posts().await });
 
     view! {
         <Title text="Blog. | joeymckenzie.tech"/>

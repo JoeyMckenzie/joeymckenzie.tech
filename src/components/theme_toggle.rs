@@ -2,7 +2,7 @@ use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
 
-const COOKIE_NAME: &str = "joeymckenzie.tech-theme";
+const COOKIE_NAME: &str = "prefersdarkmode";
 const DARK_THEME: &str = "forest";
 const LIGHT_THEME: &str = "light";
 
@@ -13,62 +13,84 @@ pub async fn toggle_theme() -> Result<String, ServerFnError> {
     use leptos_axum::{extract, ResponseOptions, ResponseParts};
 
     let cookies: CookieJar = extract().await?;
-    let mut updated_theme = LIGHT_THEME;
-
-    if let Some(theme) = cookies.get(COOKIE_NAME) {
-        updated_theme = if theme.value().eq(LIGHT_THEME) {
-            DARK_THEME
-        } else {
-            LIGHT_THEME
-        };
-    }
-
+    let prefers_dark = cookies
+        .get(COOKIE_NAME)
+        .is_some_and(|cookie| cookie.value().parse::<bool>().unwrap_or(false));
     let response = expect_context::<ResponseOptions>();
     let mut response_parts = ResponseParts::default();
     let mut headers = HeaderMap::new();
+
     headers.insert(
         header::SET_COOKIE,
         HeaderValue::from_str(&format!(
             "{}={}; Path=/; SameSite=Lax",
-            COOKIE_NAME, updated_theme,
+            COOKIE_NAME, prefers_dark,
         ))?,
     );
     response_parts.headers = headers;
     response.overwrite(response_parts);
 
-    Ok(updated_theme.to_string())
+    Ok(prefers_dark.to_string())
 }
 
-#[server(GetCurrentTheme, "/api/mode")]
-pub async fn get_current_theme() -> Result<String, ServerFnError> {
+#[cfg(not(feature = "ssr"))]
+fn initial_prefers_dark() -> bool {
+    use wasm_bindgen::JsCast;
+
+    logging::log!("checking theme for wasm");
+
+    let doc = document().unchecked_into::<web_sys::HtmlDocument>();
+    let cookie = doc.cookie().unwrap_or_default();
+    let initial = cookie.contains(&format!("{}=true", COOKIE_NAME));
+
+    logging::log!("theme is {initial}");
+
+    initial
+}
+
+#[cfg(feature = "ssr")]
+fn initial_prefers_dark() -> bool {
+    use axum::http::HeaderMap;
     use axum_extra::extract::CookieJar;
-    use leptos_axum::extract;
 
-    let cookies: CookieJar = extract().await?;
+    logging::log!("checking theme for ssr");
 
-    if let Some(theme) = cookies.get(COOKIE_NAME) {
-        dbg!(&theme);
-        return Ok(theme.value().to_string());
-    }
+    let context = use_context::<axum::http::Request<HeaderMap>>();
+    dbg!(&context);
 
-    Ok(LIGHT_THEME.to_string())
+    // let initial = context.is_some_and(|cookies| {
+    //     dbg!(&cookies);
+    //     cookies
+    //         .get(COOKIE_NAME)
+    //         .is_some_and(|cookie| cookie.value().parse::<bool>().unwrap_or(false))
+    // });
+    let initial = false;
+
+    logging::log!("theme is {initial}");
+
+    initial
 }
 
 #[component]
 pub fn ThemeToggle() -> impl IntoView {
-    let initial_mode = create_resource(|| (), move |_| get_current_theme());
+    let prefers_dark = initial_prefers_dark();
     let toggle_theme = create_server_action::<ToggleTheme>();
 
     create_effect(move |_| {
         logging::log!("{:?}", toggle_theme.value().get());
     });
 
+    let theme = move || {
+        if prefers_dark {
+            DARK_THEME
+        } else {
+            LIGHT_THEME
+        }
+    };
+
     view! {
         <Suspense>
-            <Html attr:data-theme=move || match initial_mode.get() {
-                Some(theme) => theme.unwrap_or(LIGHT_THEME.to_string()),
-                None => LIGHT_THEME.to_string(),
-            }/>
+            <Html attr:data-theme=theme()/>
             <ActionForm action=toggle_theme>
                 <button type="submit" class="flex items-center">
                     <Show
