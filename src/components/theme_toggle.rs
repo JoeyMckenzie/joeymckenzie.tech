@@ -2,7 +2,6 @@ use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
 
-const COOKIE_NAME: &str = "prefersdarkmode";
 const DARK_THEME: &str = "forest";
 const LIGHT_THEME: &str = "light";
 
@@ -41,14 +40,17 @@ fn initial_prefers_dark() -> bool {
 
 #[cfg(feature = "ssr")]
 fn initial_prefers_dark() -> bool {
-    logging::log!("running on ssr");
     let prefers_dark = use_context::<http::request::Parts>()
-        .and_then(|request| match request.headers.get("cookie") {
-            Some(cookie) => match cookie.to_str() {
-                Ok(value) => Some(value.contains("prefersdarkmode=true")),
-                Err(_) => Some(false),
-            },
-            None => Some(false),
+        .map(|request| {
+            request
+                .headers
+                .get("cookie")
+                .map(|cookie| {
+                    cookie
+                        .to_str()
+                        .map_or(false, |value| value.contains("prefersdarkmode=true"))
+                })
+                .unwrap_or(false)
         })
         .unwrap_or(false);
 
@@ -72,8 +74,6 @@ pub fn ThemeToggle() -> impl IntoView {
     };
 
     let color_scheme = move || {
-        let dark_value = prefers_dark();
-        logging::log!("prefers dark value from component: {dark_value}");
         if prefers_dark() {
             DARK_THEME.to_string()
         } else {
@@ -85,13 +85,20 @@ pub fn ThemeToggle() -> impl IntoView {
         <Html attr:data-theme=color_scheme/>
         <ActionForm action=toggle_dark_mode_action>
             <input type="hidden" name="prefers_dark" value=move || (!prefers_dark()).to_string()/>
-            <input
-                type="submit"
-                value=move || {
-                    if prefers_dark() { "Switch to Light Mode" } else { "Switch to Dark Mode" }
-                }
-            />
+            <button type="submit" class="flex items-center">
+                {move || {
+                    if prefers_dark() {
+                        view! {
+                            <span class="w-5 h-5 swap-off fill-current icon-[pixelarticons--sun]"></span>
+                        }
+                    } else {
+                        view! {
+                            <span class="w-5 h-5 swap-off fill-current icon-[pixelarticons--moon]"></span>
+                        }
+                    }
+                }}
 
+            </button>
         </ActionForm>
     }
 }
