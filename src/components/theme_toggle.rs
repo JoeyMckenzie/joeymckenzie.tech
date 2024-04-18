@@ -6,110 +6,92 @@ const COOKIE_NAME: &str = "prefersdarkmode";
 const DARK_THEME: &str = "forest";
 const LIGHT_THEME: &str = "light";
 
-#[server(ToggleTheme, "/api/mode/toggle")]
-pub async fn toggle_theme() -> Result<String, ServerFnError> {
-    use axum_extra::extract::CookieJar;
-    use http::{header, HeaderMap, HeaderValue};
-    use leptos_axum::{extract, ResponseOptions, ResponseParts};
+#[server(ToggleDarkMode, "/api/mode/toggle")]
+pub async fn toggle_dark_mode(prefers_dark: bool) -> Result<bool, ServerFnError> {
+    use http::{header::SET_COOKIE, HeaderMap, HeaderValue};
+    use leptos_axum::{ResponseOptions, ResponseParts};
 
-    let cookies: CookieJar = extract().await?;
-    let prefers_dark = cookies
-        .get(COOKIE_NAME)
-        .is_some_and(|cookie| cookie.value().parse::<bool>().unwrap_or(false));
     let response = expect_context::<ResponseOptions>();
     let mut response_parts = ResponseParts::default();
     let mut headers = HeaderMap::new();
-
     headers.insert(
-        header::SET_COOKIE,
+        SET_COOKIE,
         HeaderValue::from_str(&format!(
-            "{}={}; Path=/; SameSite=Lax",
-            COOKIE_NAME, prefers_dark,
-        ))?,
+            "prefersdarkmode={prefers_dark}; Path=/; SameSite=lax"
+        ))
+        .expect("to create header value"),
     );
     response_parts.headers = headers;
     response.overwrite(response_parts);
 
-    Ok(prefers_dark.to_string())
+    Ok(prefers_dark)
 }
 
 #[cfg(not(feature = "ssr"))]
 fn initial_prefers_dark() -> bool {
     use wasm_bindgen::JsCast;
 
-    logging::log!("checking theme for wasm");
+    logging::log!("running on client");
 
     let doc = document().unchecked_into::<web_sys::HtmlDocument>();
     let cookie = doc.cookie().unwrap_or_default();
-    let initial = cookie.contains(&format!("{}=true", COOKIE_NAME));
 
-    logging::log!("theme is {initial}");
-
-    initial
+    cookie.contains("prefersdarkmode=true")
 }
 
 #[cfg(feature = "ssr")]
 fn initial_prefers_dark() -> bool {
-    use axum::http::HeaderMap;
-    use axum_extra::extract::CookieJar;
+    logging::log!("running on ssr");
+    let prefers_dark = use_context::<http::request::Parts>()
+        .and_then(|request| match request.headers.get("cookie") {
+            Some(cookie) => match cookie.to_str() {
+                Ok(value) => Some(value.contains("prefersdarkmode=true")),
+                Err(_) => Some(false),
+            },
+            None => Some(false),
+        })
+        .unwrap_or(false);
 
-    logging::log!("checking theme for ssr");
-
-    let context = use_context::<axum::http::Request<HeaderMap>>();
-    dbg!(&context);
-
-    // let initial = context.is_some_and(|cookies| {
-    //     dbg!(&cookies);
-    //     cookies
-    //         .get(COOKIE_NAME)
-    //         .is_some_and(|cookie| cookie.value().parse::<bool>().unwrap_or(false))
-    // });
-    let initial = false;
-
-    logging::log!("theme is {initial}");
-
-    initial
+    prefers_dark
 }
 
 #[component]
 pub fn ThemeToggle() -> impl IntoView {
-    let prefers_dark = initial_prefers_dark();
-    let toggle_theme = create_server_action::<ToggleTheme>();
+    let toggle_dark_mode_action = create_server_action::<ToggleDarkMode>();
+    let input = toggle_dark_mode_action.input();
+    let value = toggle_dark_mode_action.value();
+    let prefers_dark = move || {
+        match (input(), value()) {
+            // if there's some current input, use that optimistically
+            (Some(submission), _) => submission.prefers_dark,
+            // otherwise, if there was a previous value confirmed by server, use that
+            (_, Some(Ok(value))) => value,
+            // otherwise, use the initial value
+            _ => initial_prefers_dark(),
+        }
+    };
 
-    create_effect(move |_| {
-        logging::log!("{:?}", toggle_theme.value().get());
-    });
-
-    let theme = move || {
-        if prefers_dark {
-            DARK_THEME
+    let color_scheme = move || {
+        let dark_value = prefers_dark();
+        logging::log!("prefers dark value from component: {dark_value}");
+        if prefers_dark() {
+            DARK_THEME.to_string()
         } else {
-            LIGHT_THEME
+            LIGHT_THEME.to_string()
         }
     };
 
     view! {
-        <Suspense>
-            <Html attr:data-theme=theme()/>
-            <ActionForm action=toggle_theme>
-                <button type="submit" class="flex items-center">
-                    <Show
-                        when=move || match toggle_theme.value().get() {
-                            Some(theme) => theme.unwrap_or(LIGHT_THEME.to_string()).eq(LIGHT_THEME),
-                            None => false,
-                        }
+        <Html attr:data-theme=color_scheme/>
+        <ActionForm action=toggle_dark_mode_action>
+            <input type="hidden" name="prefers_dark" value=move || (!prefers_dark()).to_string()/>
+            <input
+                type="submit"
+                value=move || {
+                    if prefers_dark() { "Switch to Light Mode" } else { "Switch to Dark Mode" }
+                }
+            />
 
-                        fallback=|| {
-                            view! {
-                                <span class="w-5 h-5 fill-current icon-[pixelarticons--sun]"></span>
-                            }
-                        }
-                    >
-
-                        <span class="w-5 h-5 fill-current icon-[pixelarticons--moon]"></span>
-                    </Show>
-                </button>
-            </ActionForm>
-        </Suspense>
+        </ActionForm>
     }
 }
