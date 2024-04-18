@@ -40,7 +40,7 @@ RUN rustup target add wasm32-unknown-unknown
 
 # See: https://github.com/rust-lang/rust/issues/124054
 # Current issue with opaque subtypes on leptos nightly
-RUN rustup override set nightly-2024-04-14
+RUN rustup update nightly
 
 # Make an /app dir, which everything will eventually live in
 RUN mkdir -p /app
