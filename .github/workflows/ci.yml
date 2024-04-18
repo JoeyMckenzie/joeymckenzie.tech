@@ -33,8 +33,7 @@ jobs:
 
       - name: Build .env file
         run: |
-          echo "NEON_URL=${{ secrets.DATABASE_URL }}" > .env
-          echo "DATABASE_URL=\"\${NEON_URL}\"" >> .env
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
 
       - name: Content sync
         run: cargo run --bin content --no-default-features --features content

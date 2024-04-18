@@ -1,53 +1,48 @@
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
-use leptos_use::{use_color_mode_with_options, ColorMode, UseColorModeOptions, UseColorModeReturn};
 
+const COOKIE_NAME: &str = "joeymckenzie.tech-theme";
 const DARK_THEME: &str = "forest";
 const LIGHT_THEME: &str = "light";
 
-#[server(ToggleDarkMode, "/api/mode/toggle")]
-pub async fn toggle_dark_mode() -> Result<(), ServerFnError> {
-    let UseColorModeReturn { mode, set_mode, .. } =
-        use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
+#[server(ToggleTheme, "/api/mode/toggle")]
+pub async fn toggle_theme() -> Result<(), ServerFnError> {
+    use http::{header, HeaderMap, HeaderValue, StatusCode};
+    use leptos_axum::{extract, ResponseOptions, ResponseParts};
 
-    match mode.get() {
-        ColorMode::Light => {
-            logging::log!("setting theme to dark");
-            set_mode.set(ColorMode::Dark);
-        }
-        ColorMode::Dark => {
-            logging::log!("setting theme to light");
-            set_mode.set(ColorMode::Light);
-        }
-        _ => set_mode.set(ColorMode::Auto),
-    }
+    let response =
+        use_context::<ResponseOptions>().expect("to have leptos_actix::ResponseOptions provided");
+    let mut response_parts = ResponseParts::default();
+    let mut headers = HeaderMap::new();
+    headers.insert(
+        header::SET_COOKIE,
+        HeaderValue::from_str("darkmode=true; Path=/").expect("to create header value"),
+    );
+    response_parts.headers = headers;
+    response.overwrite(response_parts);
 
     Ok(())
 }
 
+fn get_initial_theme() -> String {
+    use leptos_use::{use_cookie, utils::FromToStringCodec};
+
+    let (counter, set_counter) = use_cookie::<u32, FromToStringCodec>("counter");
+
+    LIGHT_THEME.to_string()
+}
+
 #[component]
 pub fn ThemeToggle() -> impl IntoView {
-    let UseColorModeReturn { mode, .. } =
-        use_color_mode_with_options(UseColorModeOptions::default().cookie_enabled(true));
-    let toggle_dark_mode = create_server_action::<ToggleDarkMode>();
-    let theme = move || match mode.get() {
-        ColorMode::Light => LIGHT_THEME,
-        ColorMode::Dark => DARK_THEME,
-        _ => {
-            logging::warn!("no theme detected");
-            LIGHT_THEME
-        }
-    };
+    let toggle_theme = create_server_action::<ToggleTheme>();
 
     view! {
-        <Html attr:data-theme=theme/>
-        <ActionForm action=toggle_dark_mode>
-            <label class="swap swap-rotate">
-                <input type="submit" class="theme-controller" value="forest"/>
+        <Html attr:data-theme=LIGHT_THEME/>
+        <ActionForm action=toggle_theme>
+            <button type="submit" class="flex items-center">
                 <span class="w-5 h-5 swap-off fill-current icon-[pixelarticons--moon]"></span>
-                <span class="w-5 h-5 swap-on fill-current icon-[pixelarticons--sun]"></span>
-            </label>
+            </button>
         </ActionForm>
     }
 }
