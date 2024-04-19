@@ -10,7 +10,14 @@ struct PostParams {
 }
 
 #[derive(Clone, Serialize, Deserialize, PartialEq, Eq, Debug)]
+struct PostAggregate {
+    pub post: Post,
+    pub keywords: Vec<String>,
+}
+
+#[derive(Clone, Serialize, Deserialize, PartialEq, Eq, Debug)]
 pub struct Post {
+    pub id: i64,
     pub title: String,
     pub published_date: Date,
     pub views: i64,
@@ -18,6 +25,11 @@ pub struct Post {
     pub content: String,
     pub hero_image: String,
     pub description: String,
+}
+
+#[derive(Clone, Serialize, Deserialize, PartialEq, Eq, Debug)]
+pub struct Keyword {
+    pub word: String,
 }
 
 #[server(GetBlogPost, "/blog", "GetJson")]
@@ -28,7 +40,8 @@ pub async fn get_blog_post(slug: String) -> Result<Option<Post>, ServerFnError> 
     let post: sqlx::Result<Option<Post>> = sqlx::query_as!(
         Post,
         r#"
-SELECT title,
+SELECT id,
+       title,
        published_date,
        views,
        category,
@@ -44,6 +57,8 @@ WHERE slug = $1
     .await;
 
     if let Ok(Some(existing_post)) = post {
+        let pool = state.pool.clone();
+
         tokio::spawn(async move {
             // Not too concerned if there's an error during the updates
             let _ = sqlx::query!(
@@ -55,9 +70,29 @@ WHERE slug = $2
                 existing_post.views as i32 + 1,
                 slug
             )
-            .execute(&state.pool)
+            .execute(&pool)
             .await;
         });
+
+        let keywords: sqlx::Result<Vec<Keyword>> = sqlx::query_as!(
+            Keyword,
+            r#"
+SELECT k.word
+FROM keyword_post kp
+JOIN keywords k ON k.id = kp.keyword_id
+WHERE kp.post_id = $1
+        "#,
+            existing_post.id
+        )
+        .fetch_all(&state.pool)
+        .await;
+
+        if let Ok(existing_keywords) = keywords {
+            let parsed_keywords = existing_keywords
+                .into_iter()
+                .map(|kw| kw.word)
+                .collect::<Vec<String>>();
+        }
 
         return Ok(Some(existing_post));
     }
@@ -120,11 +155,23 @@ pub fn PostPage() -> impl IntoView {
                                 />
                                 <div inner_html=post.content></div>
                             </article>
+                            <A href="/blog" class="flex justify-center">
+                                <button class="btn">
+                                    <span class="h-4 w-4 icon-[mdi--arrow-right]"></span>
+                                    "Blogs"
+                                </button>
+                            </A>
                         }
                     } else {
                         view! {
                             // Even though we redirect back to home, need to make the compiler happy here
                             <article></article>
+                            <A href="/blog" class="flex justify-center">
+                                <button class="btn">
+                                    <span class="h-4 w-4 icon-[mdi--arrow-left]"></span>
+                                    "Blogs"
+                                </button>
+                            </A>
                         }
                     }
                 }}
