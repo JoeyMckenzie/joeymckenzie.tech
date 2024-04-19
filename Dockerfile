@@ -38,10 +38,6 @@ RUN cargo binstall cargo-leptos -y
 # Add the WASM target
 RUN rustup target add wasm32-unknown-unknown
 
-# See: https://github.com/rust-lang/rust/issues/124054
-# Current issue with opaque subtypes on leptos nightly
-RUN rustup update nightly
-
 # Make an /app dir, which everything will eventually live in
 RUN mkdir -p /app
 WORKDIR /app
@@ -66,7 +62,7 @@ RUN echo "\
     DATABASE_URL=${DATABASE_URL}" > ./.env
 
 # Build the app
-RUN cargo +nighty-2024-04-14 leptos build --release -vv
+RUN cargo leptos build --release -vv
 
 
 # Deployment container

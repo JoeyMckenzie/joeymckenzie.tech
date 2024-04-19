@@ -1,4 +1,6 @@
 pub mod app;
+#[cfg(feature = "ssr")]
+pub mod cache;
 mod components;
 pub mod error_template;
 #[cfg(feature = "ssr")]

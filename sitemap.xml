@@ -1,158 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
-    <loc>http://localhost:3000/blog/react-data-fetching-with-rxjs</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog/constructing-objects-with-intent</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog/jamstack-angular-apps-with-scully-and-netlify</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog/ziggin-around-with-linked-lists</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>http://localhost:3000/blog/learning-to-fly-with-rust-postgres</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog/rust-aws-lambda-and-office-quotes</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog/templates-with-rust-axum-htmx-askama</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog/content-driven-websites-with-php-and-laravel</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:3000/blog/serverless-rust-with-shuttle</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/rust-aws-lambda-and-office-quotes</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/templates-with-rust-axum-htmx-askama</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/ziggin-around-with-linked-lists</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:3000/blog/shiki-rust-content-highlighting</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:3000/blog/exploring-developer-experience-with-php-public-apis-and-beer</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/jamstack-angular-apps-with-scully-and-netlify</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/constructing-objects-with-intent</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:3000/blog/rethinking-exceptions-in-dotnet</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/blog/service-lifetimes-in-plain-english</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <loc>http://localhost:3000/blog/react-data-fetching-with-rxjs</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/blog/state-management-with-fluxor-blazor-part-1</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <loc>http://localhost:3000/blog/content-driven-websites-with-php-and-laravel</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:3000/blog/state-management-with-fluxor-blazor-part-2</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:3000/blog/decoupling-controllers-with-api-endpoints</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:3000/blog/migrating-to-astro</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/blog/net-core-dapper-and-crud-buzzword-bingo</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <loc>http://localhost:3000/blog/state-management-with-fluxor-blazor-part-1</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/service-lifetimes-in-plain-english</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:3000/blog/net-core-dapper-and-crud-buzzword-bingo-part-2</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog/implementing-tailwind-dark-mode-in-angular</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog/build-a-tailwind-modal-with-angular-and-ngrx</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog/hitchhikers-guide-to-angular-nx-development</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>http://localhost:3000/blog/dapper-relations-multi-mapping-with-record-types</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:3000/blog/net-core-dapper-and-crud-buzzword-bingo-part-4</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>http://localhost:3000/blog/csharp-8-nullable-reference-types</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <loc>http://localhost:3000/blog/build-a-tailwind-modal-with-angular-and-ngrx</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/hitchhikers-guide-to-angular-nx-development</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/implementing-tailwind-dark-mode-in-angular</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>http://localhost:3000/blog/net-core-dapper-and-crud-buzzword-bingo-part-3</loc>
-    <lastmod>2024-04-16T23:26:56Z</lastmod>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/net-core-dapper-and-crud-buzzword-bingo</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/dapper-relations-multi-mapping-with-record-types</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>http://localhost:3000/blog/csharp-8-nullable-reference-types</loc>
+    <lastmod>2024-04-18T23:40:04Z</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.5</priority>
   </url>
