@@ -1,8 +1,6 @@
 use leptos::*;
 
-use crate::components::blog_preview::BlogPreview;
-
-use super::PostMetadata;
+use crate::{components::blog_preview::BlogPreview, models::PostMetadata};
 
 #[component]
 pub fn BlogPreviews(posts: Vec<PostMetadata>) -> impl IntoView {

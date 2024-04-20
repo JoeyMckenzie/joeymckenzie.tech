@@ -5,6 +5,7 @@ pub mod db;
 pub mod error_template;
 #[cfg(feature = "ssr")]
 pub mod fileserv;
+pub mod models;
 mod routes;
 #[cfg(feature = "ssr")]
 pub mod sitemap;

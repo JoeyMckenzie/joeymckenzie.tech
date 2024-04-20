@@ -54,7 +54,12 @@ async fn main() -> anyhow::Result<()> {
         info!("content directory found, searching for content files");
 
         for entry in entries.flatten() {
-            if let Ok(content_entries) = fs::read_dir(entry.path()) {
+            let path = entry.path();
+            if path.ends_with("draft") {
+                continue;
+            }
+
+            if let Ok(content_entries) = fs::read_dir(path) {
                 for content_entry in content_entries.flatten() {
                     let content_file_path = content_entry.path();
                     if content_file_path.ends_with(".gitkeep") {

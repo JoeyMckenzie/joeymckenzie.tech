@@ -1,100 +1,23 @@
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
-use serde::{Deserialize, Serialize};
-use time::{format_description, Date};
+use time::format_description;
+
+use crate::models::PostAggregate;
 
 #[derive(Params, PartialEq)]
 struct PostParams {
     slug: String,
 }
 
-#[derive(Clone, Serialize, Deserialize, PartialEq, Eq, Debug)]
-struct PostAggregate {
-    pub post: Post,
-    pub keywords: Vec<String>,
-}
-
-#[derive(Clone, Serialize, Deserialize, PartialEq, Eq, Debug)]
-pub struct Post {
-    pub id: i64,
-    pub title: String,
-    pub published_date: Date,
-    pub views: i64,
-    pub category: String,
-    pub content: String,
-    pub hero_image: String,
-    pub description: String,
-}
-
-#[derive(Clone, Serialize, Deserialize, PartialEq, Eq, Debug)]
-pub struct Keyword {
-    pub word: String,
-}
-
 #[server(GetBlogPost, "/blog", "GetJson")]
-pub async fn get_blog_post(slug: String) -> Result<Option<Post>, ServerFnError> {
+pub async fn get_blog_post(slug: String) -> Result<Option<PostAggregate>, ServerFnError> {
     use crate::state::AppState;
 
     let state = expect_context::<AppState>();
-    let post: sqlx::Result<Option<Post>> = sqlx::query_as!(
-        Post,
-        r#"
-SELECT id,
-       title,
-       published_date,
-       views,
-       category,
-       parsed_content as content,
-       hero_image,
-       description
-FROM posts
-WHERE slug = $1
-        "#,
-        slug
-    )
-    .fetch_optional(&state.pool)
-    .await;
 
-    if let Ok(Some(existing_post)) = post {
-        let pool = state.pool.clone();
-
-        tokio::spawn(async move {
-            // Not too concerned if there's an error during the updates
-            let _ = sqlx::query!(
-                r#"
-UPDATE posts
-SET views = $1
-WHERE slug = $2
-            "#,
-                existing_post.views as i32 + 1,
-                slug
-            )
-            .execute(&pool)
-            .await;
-        });
-
-        let keywords: sqlx::Result<Vec<Keyword>> = sqlx::query_as!(
-            Keyword,
-            r#"
-SELECT k.word
-FROM keyword_post kp
-JOIN keywords k ON k.id = kp.keyword_id
-WHERE kp.post_id = $1
-        "#,
-            existing_post.id
-        )
-        .fetch_all(&state.pool)
-        .await;
-
-        if let Ok(existing_keywords) = keywords {
-            let parsed_keywords = existing_keywords
-                .into_iter()
-                .map(|kw| kw.word)
-                .collect::<Vec<String>>();
-        }
-
-        return Ok(Some(existing_post));
+    if let Ok(post) = state.db.find_post(slug).await {
+        return Ok(post);
     }
 
     leptos_axum::redirect("/");
@@ -113,7 +36,7 @@ pub fn PostPage() -> impl IntoView {
                 .unwrap_or_default()
         })
     };
-    let post_resource = create_blocking_resource(slug, get_blog_post);
+    let post_resource = create_resource(slug, get_blog_post);
 
     view! {
         <div class="flex flex-col justify-center pt-12">
@@ -123,7 +46,8 @@ pub fn PostPage() -> impl IntoView {
                 }
             }>
                 {move || {
-                    if let Some(Ok(Some(post))) = post_resource.get() {
+                    if let Some(Ok(Some(post_aggregate))) = post_resource.get() {
+                        let post = post_aggregate.post;
                         let format_for_display = format_description::parse(
                                 "[month repr:short] [day padding:none], [year]",
                             )
@@ -135,10 +59,12 @@ pub fn PostPage() -> impl IntoView {
                             .published_date
                             .format(&format_for_datetime)
                             .unwrap();
+                        let keywords: String = post_aggregate.keywords.unwrap_or(vec![]).join(",");
                         view! {
                             <article class="prose mx-auto w-full overflow-hidden pb-6 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
                                 <Title text=format!("{} | joeymckenzie.tech", post.title.clone())/>
                                 <Meta name="description" content=post.description/>
+                                <Meta name="keywords" content=keywords/>
                                 <h1 class="text-center text-2xl font-semibold">
                                     {post.title.clone()}
                                 </h1>

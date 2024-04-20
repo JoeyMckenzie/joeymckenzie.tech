@@ -3,7 +3,10 @@ use std::env;
 use leptos::*;
 use leptos_meta::*;
 
-use crate::components::{blog_previews::BlogPreviews, section_intro::SectionIntro, PostMetadata};
+use crate::{
+    components::{blog_previews::BlogPreviews, section_intro::SectionIntro},
+    models::PostMetadata,
+};
 
 #[server(GetBlogPosts, "/blogs", "GetJson")]
 pub async fn get_blog_posts() -> Result<Vec<PostMetadata>, ServerFnError> {
@@ -12,22 +15,7 @@ pub async fn get_blog_posts() -> Result<Vec<PostMetadata>, ServerFnError> {
     use leptos_axum::ResponseOptions;
 
     let state = expect_context::<AppState>();
-    let posts = sqlx::query_as!(
-        PostMetadata,
-        r#"
-SELECT title,
-       description,
-       slug,
-       published_date,
-       views,
-       category
-FROM posts
-ORDER BY published_date DESC
-        "#
-    )
-    .fetch_all(&state.pool)
-    .await?;
-
+    let posts = state.db.get_posts().await?;
     let response = expect_context::<ResponseOptions>();
     response.insert_header(
         header::CACHE_CONTROL,

@@ -2,7 +2,7 @@ use leptos::*;
 use leptos_router::*;
 use time::format_description;
 
-use super::PostMetadata;
+use crate::models::PostMetadata;
 
 #[component]
 pub fn BlogPreview(post: PostMetadata) -> impl IntoView {

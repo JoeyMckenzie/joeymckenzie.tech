@@ -11,12 +11,14 @@ pub struct AppState {
     pub leptos_options: LeptosOptions,
     pub pool: PgPool,
     pub spotify_client: SpotifyClient,
+    pub db: PostRepository,
 }
 
 impl AppState {
     pub async fn try_from_leptos_state(leptos_options: LeptosOptions) -> anyhow::Result<Self> {
         let pool = PgPool::connect(&env::var("DATABASE_URL")?).await?;
-        let repository = PostRepository::new(pool.clone());
+        let db = PostRepository::new(pool.clone());
+
         let client = reqwest::Client::new();
         let refresh_token = env::var("SPOTIFY_REFRESH_TOKEN")?;
         let client_id = env::var("SPOTIFY_CLIENT_ID")?;
@@ -27,6 +29,7 @@ impl AppState {
             leptos_options,
             pool,
             spotify_client: client,
+            db,
         })
     }
 }

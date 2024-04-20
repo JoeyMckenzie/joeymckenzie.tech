@@ -2,8 +2,9 @@ use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
 
-use crate::components::{
-    blog_previews::BlogPreviews, intro::Intro, social_buttons::SocialButtons, PostMetadata,
+use crate::{
+    components::{blog_previews::BlogPreviews, intro::Intro, social_buttons::SocialButtons},
+    models::PostMetadata,
 };
 
 #[server(GetLatestBlogPosts, "/blogs/latest", "GetJson")]
@@ -13,22 +14,7 @@ pub async fn get_latest_blog_posts() -> Result<Vec<PostMetadata>, ServerFnError>
     use leptos_axum::ResponseOptions;
 
     let state = expect_context::<AppState>();
-    let posts = sqlx::query_as!(
-        PostMetadata,
-        r#"
-SELECT title,
-       description,
-       slug,
-       published_date,
-       views,
-       category
-FROM posts
-ORDER BY published_date DESC
-LIMIT 3
-        "#
-    )
-    .fetch_all(&state.pool)
-    .await?;
+    let posts = state.db.get_latest_posts().await?;
 
     let response = expect_context::<ResponseOptions>();
     response.insert_header(
@@ -49,7 +35,7 @@ pub fn HomePage() -> impl IntoView {
         <SocialButtons/>
         <div class="pt-12 sm:px-6 lg:px-8">
             <div class="mx-auto max-w-4xl">
-                <h2 class="text-right text-3xl font-bold tracking-tight sm:text-center sm:text-4xl">
+                <h2 class="text-3xl font-bold tracking-tight text-center sm:text-4xl">
                     "Latest thoughts."
                 </h2>
                 <Suspense fallback=|| {
