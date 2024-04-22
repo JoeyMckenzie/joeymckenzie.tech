@@ -1,0 +1,3 @@
+- ~~add commit hash to footer~~
+- ~~format views on blog preview card~~
+- add theme toggle animation

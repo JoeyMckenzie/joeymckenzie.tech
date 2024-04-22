@@ -26,14 +26,17 @@ pub fn NowPage() -> impl IntoView {
                             <a href="https://aws.amazon.com/">"AWS"</a> ", "
                             <a href="https://www.docker.com/">"Docker"</a> ", "
                             <a href="https://www.terraform.io/">"Terraform"</a>
-                            ", and a bunch of other key resume buzzwords. I like breaking things and
-                            convincing people that you're legally allowed to deploy .NET services to places other than Azure."
+                            ", and a bunch of other resume buzzwords. I like breaking things and
+                            convincing people that you're legally allowed to deploy .NET to places other than Azure."
                         </li>
                         <li>
                             "I have a secret love for PHP and Laravel and have written a few things about them on my "
-                            <A href="/blog">"blog"</A> ". I'm even working on a "
+                            <A href="/blog">"blog"</A> ". I've also published a "
+                            <A href="https://packagist.org/packages/joeymckenzie/openbrewerydb-php-api">
+                                "package or two"
+                            </A> ". I'm even working on a "
                             <a href="https://hopjobs.xyz">"job board"</a>
-                            " breweries. If you're hiring .NET-to-PHP-converts... I know a guy."
+                            " for breweries. If you're hiring .NET-to-PHP-converts... I know a guy."
                         </li>
                         <li>
                             "I write a lot of " <a href="https://www.rust-lang.org/">"Rust"</a> "

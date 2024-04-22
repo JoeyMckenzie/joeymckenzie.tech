@@ -3,8 +3,24 @@ use leptos_router::A;
 
 use crate::components::{theme_toggle::ThemeToggle, DisplayableIcon};
 
+#[server(GetCommitSha)]
+pub async fn get_commit_sha() -> Result<String, ServerFnError> {
+    use axum::http::{header, HeaderValue};
+    use leptos_axum::ResponseOptions;
+
+    let commit_sha = std::env::var("COMMIT_SHA")?;
+    let response = expect_context::<ResponseOptions>();
+    response.insert_header(
+        header::CACHE_CONTROL,
+        HeaderValue::from_static("max-age=86400"),
+    );
+
+    Ok(commit_sha)
+}
+
 #[component]
 pub fn PoweredBy() -> impl IntoView {
+    let commit_sha = create_resource(|| (), move |_| get_commit_sha());
     let socials = create_rw_signal(vec![
         DisplayableIcon {
             href: "https://www.rust-lang.org/",
@@ -38,6 +54,31 @@ pub fn PoweredBy() -> impl IntoView {
             <div class="flex my-auto">
                 <ThemeToggle/>
             </div>
+            <Suspense fallback=|| {
+                view! { <p class="text-sm">"Loading..."</p> }
+            }>
+                {move || {
+                    if let Some(Ok(sha)) = commit_sha() {
+                        view! {
+                            <div class="text-xs">
+                                <a
+                                    rel="noreferrer"
+                                    class="hover:underline"
+                                    href=format!(
+                                        "https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/{sha}",
+                                    )
+                                >
+
+                                    {sha[..6].to_string()}
+                                </a>
+                            </div>
+                        }
+                    } else {
+                        view! { <div></div> }
+                    }
+                }}
+
+            </Suspense>
         </div>
     }
 }

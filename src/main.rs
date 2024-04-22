@@ -8,6 +8,8 @@ async fn main() -> anyhow::Result<()> {
     use leptos::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
 
+    dotenvy::dotenv()?;
+
     // Setting get_configuration(None) means we'll be using cargo-leptos's env values
     // For deployment these variables are:
     // <https://github.com/leptos-rs/start-axum#executing-a-server-on-a-remote-machine-without-the-toolchain>
