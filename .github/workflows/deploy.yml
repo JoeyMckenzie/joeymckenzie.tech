@@ -22,7 +22,7 @@ jobs:
           --build-arg SPOTIFY_CLIENT_ID=${{ secrets.SPOTIFY_CLIENT_ID }} \
           --build-arg SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFY_CLIENT_SECRET }} \
           --build-arg APP_URL=${{ env.APP_URL }} \
-          --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }}
+          --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
           --build-arg COMMIT_SHA=${{ github.sha }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_TOKEN }}
