@@ -118,7 +118,7 @@ async fn upsert_blog_post(
     let existing_post = sqlx::query!(
         r#"
 SELECT id
-FROM posts
+FROM posts_tmp
 WHERE slug = $1
     "#,
         slug.to_str().unwrap()
@@ -131,7 +131,7 @@ WHERE slug = $1
             info!("found existing post, updating content");
             sqlx::query!(
                 r#"
-UPDATE posts
+UPDATE posts_tmp
 SET updated_at = current_timestamp,
     title = $1,
     description = $2,
@@ -160,7 +160,7 @@ WHERE id = $8
             info!("existing post not found, creating new entry");
             let row = sqlx::query!(
         r#"
-INSERT INTO posts (created_at, updated_at, title, description, slug, published_date, hero_image, category, raw_content, parsed_content)
+INSERT INTO posts_tmp (created_at, updated_at, title, description, slug, published_date, hero_image, category, raw_content, parsed_content)
 VALUES (current_timestamp, current_timestamp, $1, $2, $3, $4, $5, $6, $7, $8)
 RETURNING id
         "#,
@@ -183,7 +183,7 @@ RETURNING id
             let existing_keyword = sqlx::query!(
                 r#"
 SELECT id
-FROM keywords
+FROM keywords_tmp
 WHERE word = $1
                 "#,
                 keyword
@@ -201,7 +201,7 @@ WHERE word = $1
 
                     let keyword_row = sqlx::query!(
                         r#"
-INSERT INTO keywords (word)
+INSERT INTO keywords_tmp (word)
 VALUES ($1)
 ON CONFLICT (word) DO NOTHING
 RETURNING id
@@ -217,12 +217,12 @@ RETURNING id
 
             sqlx::query!(
                 r#"
-INSERT INTO keyword_post (post_id, keyword_id)
+INSERT INTO keyword_post_tmp (post_id, keyword_id)
 VALUES ($1, $2)
 ON CONFLICT (post_id, keyword_id) DO NOTHING
                 "#,
-                post_id,
-                keyword_id
+                post_id as i64,
+                keyword_id as i64
             )
             .execute(&mut **tx)
             .await?;
