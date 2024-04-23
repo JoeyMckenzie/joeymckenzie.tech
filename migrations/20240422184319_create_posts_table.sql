@@ -1,4 +1,4 @@
-CREATE TABLE posts_tmp (
+CREATE TABLE posts (
     id SERIAL PRIMARY KEY,
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -24,8 +24,8 @@ END;
 $$
 LANGUAGE 'plpgsql';
 
-CREATE TRIGGER update_posts_tmp_modtime
-    BEFORE UPDATE ON posts_tmp
+CREATE TRIGGER update_posts_modtime
+    BEFORE UPDATE ON posts
     FOR EACH ROW
     EXECUTE FUNCTION update_modified_column ();
 
