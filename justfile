@@ -12,7 +12,7 @@ watch:
     cargo leptos watch
 
 content:
-    cargo build --bin content --features content
+    cargo run --bin content --features content
 
 prepare:
     cargo sqlx prepare -- --all-targets --all-features

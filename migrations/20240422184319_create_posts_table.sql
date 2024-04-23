@@ -1,16 +1,16 @@
 CREATE TABLE posts_tmp (
-    id serial PRIMARY KEY,
-    created_at timestamp WITHOUT time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp WITHOUT time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    title varchar(255) NOT NULL,
-    description varchar(255) NOT NULL,
-    slug varchar(255) NOT NULL UNIQUE,
-    published_date date NOT NULL,
-    hero_image varchar(255) NOT NULL,
-    category varchar(255) NOT NULL,
-    views integer NOT NULL DEFAULT 0,
-    raw_content text NOT NULL,
-    parsed_content text NOT NULL
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    title VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    published_date DATE NOT NULL,
+    hero_image VARCHAR(255) NOT NULL,
+    category VARCHAR(255) NOT NULL,
+    views INTEGER NOT NULL DEFAULT 0,
+    raw_content TEXT NOT NULL,
+    parsed_content TEXT NOT NULL
 );
 
 -- Add a trigger to automatically update 'updated_at' on record update

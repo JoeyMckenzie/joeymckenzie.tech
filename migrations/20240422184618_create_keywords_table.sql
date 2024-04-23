@@ -1,6 +1,5 @@
 CREATE TABLE keywords_tmp (
-    id serial PRIMARY KEY,
-    created_at timestamp WITHOUT time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    word varchar(255) NOT NULL UNIQUE
+    id SERIAL PRIMARY KEY,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    word VARCHAR(255) NOT NULL UNIQUE
 );
-

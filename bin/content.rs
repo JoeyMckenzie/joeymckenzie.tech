@@ -114,14 +114,18 @@ async fn upsert_blog_post(
     shiki_output: String,
     tx: &mut Transaction<'_, Postgres>,
 ) -> anyhow::Result<()> {
+    let slug = slug.to_str().unwrap();
+
+    info!("checking for existing post {slug}");
+
     let format = format_description!("[month repr:short] [day] [year]");
     let existing_post = sqlx::query!(
         r#"
 SELECT id
-FROM posts_tmp
+FROM posts
 WHERE slug = $1
     "#,
-        slug.to_str().unwrap()
+        slug
     )
     .fetch_optional(&mut **tx)
     .await?;
@@ -129,10 +133,11 @@ WHERE slug = $1
     let post_id = match existing_post {
         Some(post) => {
             info!("found existing post, updating content");
+
             sqlx::query!(
                 r#"
-UPDATE posts_tmp
-SET updated_at = current_timestamp,
+UPDATE posts
+SET updated_at = CURRENT_TIMESTAMP,
     title = $1,
     description = $2,
     published_date = $3,
@@ -154,19 +159,22 @@ WHERE id = $8
             .execute(&mut **tx)
             .await?;
 
+            info!("content updated for post {}", post.id);
+
             post.id
         }
         None => {
             info!("existing post not found, creating new entry");
+
             let row = sqlx::query!(
         r#"
-INSERT INTO posts_tmp (created_at, updated_at, title, description, slug, published_date, hero_image, category, raw_content, parsed_content)
+INSERT INTO posts (created_at, updated_at, title, description, slug, published_date, hero_image, category, raw_content, parsed_content)
 VALUES (current_timestamp, current_timestamp, $1, $2, $3, $4, $5, $6, $7, $8)
 RETURNING id
         "#,
                 parsed_content.data.title,
                 parsed_content.data.description,
-                slug.to_str().unwrap(),
+                slug,
                 Date::parse(&parsed_content.data.pub_date, &format)?,
                 parsed_content.data.hero_image,
                 parsed_content.data.category,
@@ -174,16 +182,24 @@ RETURNING id
                 shiki_output,
             ).fetch_one(&mut **tx).await?;
 
+            info!("post {slug} created with id {}", row.id);
+
             row.id
         }
     };
 
     if !parsed_content.data.keywords.is_empty() {
+        let keywords = parsed_content.data.keywords.join(",");
+
+        info!("keywords detected for {slug}: [{keywords}]");
+
         for keyword in parsed_content.data.keywords {
+            info!("checking for existing keyword {keyword}");
+
             let existing_keyword = sqlx::query!(
                 r#"
 SELECT id
-FROM keywords_tmp
+FROM keywords
 WHERE word = $1
                 "#,
                 keyword
@@ -193,7 +209,7 @@ WHERE word = $1
 
             let keyword_id = match existing_keyword {
                 Some(row) => {
-                    info!("found existing entry for {keyword}");
+                    info!("found existing entry for {keyword} with id {}", row.id);
                     row.id
                 }
                 None => {
@@ -201,7 +217,7 @@ WHERE word = $1
 
                     let keyword_row = sqlx::query!(
                         r#"
-INSERT INTO keywords_tmp (word)
+INSERT INTO keywords (word)
 VALUES ($1)
 ON CONFLICT (word) DO NOTHING
 RETURNING id
@@ -211,13 +227,20 @@ RETURNING id
                     .fetch_one(&mut **tx)
                     .await?;
 
+                    info!("keyword created with id {}", keyword_row.id);
+
                     keyword_row.id
                 }
             };
 
+            dbg!(post_id);
+            dbg!(keyword_id);
+
+            info!("creating keyword {keyword} for {slug}");
+
             sqlx::query!(
                 r#"
-INSERT INTO keyword_post_tmp (post_id, keyword_id)
+INSERT INTO keyword_post (post_id, keyword_id)
 VALUES ($1, $2)
 ON CONFLICT (post_id, keyword_id) DO NOTHING
                 "#,
