@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nINSERT INTO keyword_post (post_id, keyword_id)\nVALUES ($1, $2)\nON CONFLICT (post_id, keyword_id) DO NOTHING\n                ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "5b627ac5e09b283f189a1803190416bf9f70457ca9cad57d00b56d5ab5a1719c"
+}

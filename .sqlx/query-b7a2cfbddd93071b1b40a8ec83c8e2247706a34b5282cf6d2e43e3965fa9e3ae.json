@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nUPDATE posts\nSET views = $1\nWHERE slug = $2\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "b7a2cfbddd93071b1b40a8ec83c8e2247706a34b5282cf6d2e43e3965fa9e3ae"
+}
