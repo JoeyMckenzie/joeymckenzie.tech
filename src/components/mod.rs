@@ -3,6 +3,7 @@ pub mod blog_previews;
 pub mod footer;
 pub mod intro;
 pub mod navbar;
+pub mod note_to_self;
 mod powered_by;
 pub mod section_intro;
 pub mod social_buttons;

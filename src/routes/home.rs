@@ -3,7 +3,10 @@ use leptos_meta::*;
 use leptos_router::*;
 
 use crate::{
-    components::{blog_previews::BlogPreviews, intro::Intro, social_buttons::SocialButtons},
+    components::{
+        blog_previews::BlogPreviews, intro::Intro, note_to_self::NoteToSelf,
+        social_buttons::SocialButtons,
+    },
     models::PostMetadata,
 };
 
@@ -64,6 +67,9 @@ pub fn HomePage() -> impl IntoView {
                         </button>
                     </A>
                 </Suspense>
+                <div class="pt-8">
+                    <NoteToSelf/>
+                </div>
             </div>
         </div>
     }
