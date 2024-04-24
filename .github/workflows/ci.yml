@@ -35,3 +35,6 @@ jobs:
 
       - name: Content sync
         run: cargo run --bin content --no-default-features --features content
+        env:
+          SHIKI_DARK_THEME: ${{ secrets.SHIKI_DARK_THEME }}
+          SHIKI_LIGHT_THEME: ${{ secrets.SHIKI_LIGHT_THEME }}
