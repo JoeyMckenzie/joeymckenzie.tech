@@ -233,9 +233,6 @@ RETURNING id
                 }
             };
 
-            dbg!(post_id);
-            dbg!(keyword_id);
-
             info!("creating keyword {keyword} for {slug}");
 
             sqlx::query!(

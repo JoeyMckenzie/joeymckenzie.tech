@@ -1,0 +1,87 @@
+[env]
+dotenv_file = ".env"
+
+[tasks.default]
+dependencies = ["dev"]
+
+[tasks.dev]
+script = "cargo leptos watch & find src/ | entr -s 'cargo make fmt && npm run tailwind:compile'"
+
+[tasks.fmt]
+command = "cargo"
+args = ["fmt"]
+dependencies = ["leptosfmt"]
+
+[tasks.leptosfmt]
+install_crate = "leptosfmt"
+command = "leptosfmt"
+args = ["src/*.rs", "src/**/*.rs"]
+
+[tasks.content]
+command = "cargo"
+args = ["run", "--bin", "content", "--features", "content"]
+
+[tasks.prepare]
+command = "cargo"
+args = ["sqlx", "prepare", "--", "--all-targets", "--all-features"]
+
+[tasks.deploy]
+command = "fly"
+args = [
+  "deploy",
+  "--build-arg",
+  "SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}",
+  "--build-arg",
+  "SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}",
+  "--build-arg",
+  "SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}",
+  "--build-arg",
+  "APP_URL=${APP_URL}",
+  "--build-arg",
+  "DATABASE_URL=${DATABASE_URL}",
+]
+
+[tasks.docker-build]
+command = "docker"
+args = [
+  "build",
+  "--build-arg",
+  "SPOTIFY_REFRESH_TOKEN=${SPOTIFY_REFRESH_TOKEN}",
+  "--build-arg",
+  "SPOTIFY_CLIENT_ID=${SPOTIFY_CLIENT_ID}",
+  "--build-arg",
+  "SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}",
+  "--build-arg",
+  "APP_URL=${APP_URL}",
+  "--build-arg",
+  "DATABASE_URL=${DATABASE_URL}",
+  "-t",
+  "blog:latest",
+  ".",
+]
+
+[tasks.docker-run]
+command = "docker"
+args = [
+  "run",
+  "-d",
+  "--name",
+  "blog",
+  "-p",
+  "8080:8080",
+  "--env-file",
+  "./.env",
+  "blog:latest",
+]
+
+[tasks.docker-stop]
+command = "docker"
+args = ["stop", "blog"]
+
+[tasks.docker-rm]
+command = "docker"
+args = ["rm", "blog"]
+
+[tasks.docker-restart]
+command = "docker"
+dependencies = ["docker-stop", "docker-rm", "docker-build", "docker-run"]
