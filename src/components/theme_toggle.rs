@@ -30,8 +30,6 @@ pub async fn toggle_dark_mode(prefers_dark: bool) -> Result<bool, ServerFnError>
 fn initial_prefers_dark() -> bool {
     use wasm_bindgen::JsCast;
 
-    logging::log!("running on client");
-
     let doc = document().unchecked_into::<web_sys::HtmlDocument>();
     let cookie = doc.cookie().unwrap_or_default();
 
