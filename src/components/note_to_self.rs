@@ -27,7 +27,7 @@ pub fn NoteToSelf() -> impl IntoView {
         <h2 class="text-3xl font-bold tracking-tight text-center sm:text-4xl">"Note to self."</h2>
         <div class="py-8 grid grid-cols-1 sm:grid-cols-3 sm:space-x-4 sm:space-y-0 space-y-2">
             <For each=notes key=|note| note.title.clone() let:note>
-                <div class="card bg-base-100 shadow-xl">
+                <div class="card bg-base-100 shadow-xl border border-1 border-base-200">
                     <div class="card-body">
                         <h2 class="card-title">
                             <span class="icon-[octicon--command-palette-16]"></span>

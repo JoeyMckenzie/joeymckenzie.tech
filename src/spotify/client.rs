@@ -43,13 +43,9 @@ impl SpotifyClient {
     /// To retrive an access token, we send a basic authentication header along with the
     /// grant type and refresh token on the request, and in turn receive an access token.
     async fn get_access_token(&self) -> anyhow::Result<String> {
-        logging::log!("building authentication request for spotify");
-
         let mut auth_params = HashMap::new();
         auth_params.insert("grant_type", "refresh_token");
         auth_params.insert("refresh_token", &self.refresh_token);
-
-        logging::log!("requesting access token from spotify");
 
         let response = self
             .client
@@ -61,16 +57,12 @@ impl SpotifyClient {
             .json::<SpotifyAuthResponse>()
             .await?;
 
-        logging::log!("access token successfully retrieved");
-
         Ok(response.access_token)
     }
 
     /// Retrieves the current track or podcast we're listening to at the moment, marshaling
     /// the raw API responses from Spotify into a simple format to consume on the frontend.
     pub async fn get_listening_to(&self) -> anyhow::Result<NowPlaying> {
-        logging::log!("requesting now playing information from spotify");
-
         let access_token = self.get_access_token().await?;
         let response = self
             .client
@@ -80,31 +72,17 @@ impl SpotifyClient {
             .await?;
         let status = response.status();
 
-        logging::log!(
-            "now playing successfully retrieved with status: {:?}",
-            status
-        );
-
         // In the case we get a 204 back from Spotify, assume we're not currently listening to anything
         if status == StatusCode::NO_CONTENT {
             logging::log!("no content currently playing");
             return Ok(NowPlaying::default());
         }
 
-        logging::log!("currently playing content identified");
-
         let now_playing_response = response.json::<SpotifyNowPlayingResponse>().await;
         match now_playing_response {
-            Ok(response) => {
-                logging::log!(
-                    "successfully retrieve spotify listening to response: {:?}",
-                    response
-                );
-
-                Ok(response.into())
-            }
+            Ok(response) => Ok(response.into()),
             Err(e) => {
-                dbg!(&e);
+                logging::error!("{e:?}");
                 Err(e.into())
             }
         }
