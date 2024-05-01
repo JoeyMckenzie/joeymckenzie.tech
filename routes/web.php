@@ -15,13 +15,3 @@ Route::get('/now', Now::class)
 
 Route::get('/blog', Blog::class)
     ->name('blog');
-
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::view('profile', 'profile')
-    ->middleware(['auth'])
-    ->name('profile');
-
-require __DIR__.'/auth.php';

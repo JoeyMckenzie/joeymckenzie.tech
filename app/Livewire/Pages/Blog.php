@@ -10,7 +10,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Blog.')]
-#[Layout('layouts.main')]
+#[Layout('layouts.app')]
 final class Blog extends Component
 {
     public function render(): View
