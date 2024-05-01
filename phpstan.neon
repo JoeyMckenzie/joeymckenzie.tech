@@ -1,0 +1,11 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
+
+parameters:
+    level: max
+    reportMaybesInPropertyPhpDocTypes: false
+    paths:
+        - app/
+        - routes/
+        - database/
