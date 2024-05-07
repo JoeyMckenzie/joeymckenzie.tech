@@ -12,11 +12,16 @@
         "laravel/breeze": "^2.0",
         "laravel/framework": "^11.5",
         "laravel/tinker": "^2.9",
+        "league/commonmark": "^2.4",
         "livewire/livewire": "^3.4",
-        "spatie/laravel-ignition": "^2.6"
+        "spatie/laravel-ignition": "^2.6",
+        "spatie/laravel-markdown": "^2.5",
+        "spatie/laravel-sitemap": "^7.2"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.23",
+        "fly-apps/dockerfile-laravel": "^1.0",
         "larastan/larastan": "^2.9",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
@@ -25,7 +30,8 @@
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
         "phpstan/phpstan": "^1.10",
-        "phpstan/phpstan-strict-rules": "^1.5"
+        "phpstan/phpstan-strict-rules": "^1.5",
+        "rector/rector": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -62,9 +68,11 @@
             "@fmt:prettier",
             "@fmt:php"
         ],
+        "rector": "vendor/bin/rector process",
         "check": [
             "@lint",
-            "@fmt:php"
+            "@fmt:php",
+            "@rector"
         ]
     },
     "extra": {

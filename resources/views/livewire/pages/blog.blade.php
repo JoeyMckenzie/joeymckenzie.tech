@@ -10,4 +10,5 @@
         <a href="mailto:joey.mckenzie.dev@gmail.com">contact me</a>
         about any of the writing I do here, or to simply say hello!
     </p>
+    <x-blog-previews :posts="$posts" />
 </div>

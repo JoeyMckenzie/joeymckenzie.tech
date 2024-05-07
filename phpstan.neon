@@ -9,3 +9,9 @@ parameters:
         - app/
         - routes/
         - database/
+    ignoreErrors:
+        - '#Dynamic call to static method Illuminate\\Console\\Scheduling\\Event::hourly\(\).#'
+        - '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\[a-zA-Z]+>::orderByDesc\(\).#'
+        - '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\[a-zA-Z]+>::select\(\).#'
+        # - '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\[a-zA-Z]+>::limit\(\).#'
+        # - '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany<App\\Models\\[a-zA-Z]+>::pluck\(\).#'

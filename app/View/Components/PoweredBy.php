@@ -7,6 +7,7 @@ namespace App\View\Components;
 use App\ValueObjects\DisplayableIcon;
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use Override;
 
 final class PoweredBy extends Component
 {
@@ -15,6 +16,7 @@ final class PoweredBy extends Component
      */
     public array $providers = [];
 
+    #[Override]
     public function render(): View
     {
         $this->providers[] = new DisplayableIcon('https://laravel.com', 'Laravel', 'icon-[logos--laravel]');

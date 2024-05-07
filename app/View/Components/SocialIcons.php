@@ -7,6 +7,7 @@ namespace App\View\Components;
 use App\ValueObjects\DisplayableIcon;
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use Override;
 
 final class SocialIcons extends Component
 {
@@ -15,6 +16,7 @@ final class SocialIcons extends Component
      */
     public array $socialIcons = [];
 
+    #[Override]
     public function render(): View
     {
         $this->socialIcons[] = new DisplayableIcon('https://linkedin.com/in/joeymckenzie', 'LinkedIn', 'icon-[mdi--linkedin]');

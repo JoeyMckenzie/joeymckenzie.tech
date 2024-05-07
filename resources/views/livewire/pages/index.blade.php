@@ -9,4 +9,5 @@
         services, learning new things, and writing code in the open source
         ecosystem.
     </p>
+    <x-blog-previews :posts="$posts" />
 </div>

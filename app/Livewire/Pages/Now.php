@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Livewire\Pages;
 
 use Illuminate\View\View;
-use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
 #[Title('Now.')]
-#[Layout('layouts.app')]
 final class Now extends Component
 {
     public function render(): View

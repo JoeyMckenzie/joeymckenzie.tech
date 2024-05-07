@@ -6,6 +6,7 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use Override;
 
 final class SpotifyNowPlaying extends Component
 {
@@ -17,6 +18,7 @@ final class SpotifyNowPlaying extends Component
     ) {
     }
 
+    #[Override]
     public function render(): View
     {
         return view('components.spotify-now-playing');
