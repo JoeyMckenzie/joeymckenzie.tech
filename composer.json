@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "calebporzio/sushi": "^2.5",
         "laravel/breeze": "^2.0",
         "laravel/framework": "^11.5",
         "laravel/tinker": "^2.9",

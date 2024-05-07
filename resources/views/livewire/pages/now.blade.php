@@ -35,8 +35,7 @@
                     </a>
                     . I'm even working on a
                     <a href="https://hopjobs.xyz">job board</a>
-                    for breweries. Heck, the very website you're reading is
-                    powered by
+                    for breweries. Even the website you're reading is powered by
                     <a href="https://livewire.laravel.com">Livewire!</a>
                     If you're hiring .NET-to-PHP-converts... I know a guy.
                 </li>

@@ -1,4 +1,4 @@
-<div class="prose mx-auto max-w-2xl py-12">
+<div class="prose mx-auto py-12">
     <h2 class="text-center text-4xl font-extrabold tracking-tight sm:text-4xl">
         Hi, I'm Joey.
     </h2>
@@ -10,5 +10,9 @@
         ecosystem.
     </p>
     <x-social-buttons />
+    <h2 class="text-center text-3xl font-bold tracking-tight sm:text-4xl">
+        Latest thoughts.
+    </h2>
     <x-blog-previews :posts="$posts" />
+    <x-notes />
 </div>
