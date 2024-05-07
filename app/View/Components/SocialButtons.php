@@ -7,6 +7,7 @@ namespace App\View\Components;
 use App\ValueObjects\DisplayableIcon;
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use Override;
 
 final class SocialButtons extends Component
 {
@@ -15,6 +16,7 @@ final class SocialButtons extends Component
      */
     public array $socialButtons = [];
 
+    #[Override]
     public function render(): View
     {
         $this->socialButtons[] = new DisplayableIcon('https://github.com/joeymckenzie', 'GitHub', 'icon-[simple-icons--github]');

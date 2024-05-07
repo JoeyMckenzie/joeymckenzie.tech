@@ -1,5 +1,5 @@
 <article
-    class="dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md prose mx-auto w-full overflow-hidden py-12"
+    class="prose mx-auto w-full overflow-hidden py-12 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md"
 >
     <Meta
         name="description"

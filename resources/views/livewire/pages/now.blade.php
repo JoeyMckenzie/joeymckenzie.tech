@@ -5,7 +5,7 @@
         >
             Now.
         </h2>
-        <div class="dark:prose-invert prose max-w-2xl flex-col leading-6">
+        <div class="prose max-w-2xl flex-col leading-6 dark:prose-invert">
             <p class="mt-6 max-w-xl">
                 A few things I'm working on
                 <a class="font-bold" href="https://nownownow.com/about">now:</a>

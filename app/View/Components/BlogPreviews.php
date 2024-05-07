@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Illuminate\View\View;
+use Override;
 
 final class BlogPreviews extends Component
 {
@@ -18,7 +19,7 @@ final class BlogPreviews extends Component
     {
     }
 
-    #[\Override]
+    #[Override]
     public function render(): View
     {
         return view('components.blog-previews');
