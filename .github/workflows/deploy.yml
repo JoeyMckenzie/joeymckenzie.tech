@@ -40,9 +40,6 @@ jobs:
       - name: Install composer dependencies
         run: composer install
 
-      - name: Run migrations
-        run: php artisan migrate --force
-
       - name: Sync content
         run: php artisan content:sync
 

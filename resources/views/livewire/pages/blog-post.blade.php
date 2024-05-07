@@ -1,5 +1,5 @@
 <article
-    class="prose mx-auto w-full overflow-hidden py-12 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md"
+    class="dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md prose mx-auto w-full overflow-hidden py-12"
 >
     <Meta
         name="description"
@@ -14,7 +14,7 @@
     >
         <time datetime="datetime_date">{{ $post->displayDate() }}</time>
         <div class="badge badge-neutral">{{ $post->category }}</div>
-        <p>{{ $post->views }} views</p>
+        <p>{{ $post->formattedViews() }} views</p>
     </div>
     <img
         alt="{{ $post->title }} blog meme"
@@ -23,7 +23,7 @@
         width="500"
     />
     {!! $post->parsed_content !!}
-    <a wire:navigate.hover3 href="/blog" class="flex justify-center">
+    <a wire:navigate.hover href="/blog" class="flex justify-center">
         <button class="btn">
             <span class="icon-[mdi--arrow-left] h-4 w-4"></span>
             Back to blog

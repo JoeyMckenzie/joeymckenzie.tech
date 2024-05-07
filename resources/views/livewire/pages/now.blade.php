@@ -5,7 +5,7 @@
         >
             Now.
         </h2>
-        <div class="prose max-w-2xl flex-col leading-6 dark:prose-invert">
+        <div class="dark:prose-invert prose max-w-2xl flex-col leading-6">
             <p class="mt-6 max-w-xl">
                 A few things I'm working on
                 <a class="font-bold" href="https://nownownow.com/about">now:</a>
@@ -35,8 +35,10 @@
                     </a>
                     . I'm even working on a
                     <a href="https://hopjobs.xyz">job board</a>
-                    for breweries. If you're hiring .NET-to-PHP-converts... I
-                    know a guy.
+                    for breweries. Heck, the very website you're reading is
+                    powered by
+                    <a href="https://livewire.laravel.com">Livewire!</a>
+                    If you're hiring .NET-to-PHP-converts... I know a guy.
                 </li>
                 <li>
                     I write a lot of
@@ -48,8 +50,8 @@
                     <a href="https://github.com/JoeyMckenzie/bubblehearth">
                         there
                     </a>
-                    . Heck, the very website you're reading is even powered by
-                    <a href="https://leptos.dev">Livewire!</a>
+                    . Heck, I even have a version of my website written with
+                    <a href="https://joeymckenzietech.fly.dev">Leptos!</a>
                 </li>
             </ul>
         </div>
