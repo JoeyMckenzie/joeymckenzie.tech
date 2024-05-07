@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Actions;
+namespace App\Http\Endpoints;
 
 use App\Contracts\ContentUtilityContract;
 use App\Http\Controllers\Controller;

@@ -3,7 +3,7 @@
         <ul>
             @foreach ($navigationItems as $item)
                 <li wire:key="{{ $item->display }}">
-                    <a href="{{ $item->href }}" wire:navigate>
+                    <a href="{{ $item->href }}" wire:navigate.hover>
                         {{ $item->display }}
                     </a>
                 </li>

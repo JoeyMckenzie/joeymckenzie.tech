@@ -71,7 +71,7 @@
         "rector": "vendor/bin/rector process",
         "check": [
             "@lint",
-            "@fmt:php",
+            "@fmt",
             "@rector"
         ]
     },

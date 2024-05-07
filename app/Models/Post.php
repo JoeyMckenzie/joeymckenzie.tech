@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Number;
 
 final class Post extends Model
 {
@@ -45,5 +46,18 @@ final class Post extends Model
     public function keywords(): BelongsToMany
     {
         return $this->belongsToMany(Keyword::class);
+    }
+
+    public function displayDate(): string
+    {
+        return $this->published_date->format('M j, Y');
+    }
+
+    public function formattedViews(): string
+    {
+        /** @var string $formatted */
+        $formatted = Number::format($this->views);
+
+        return $formatted;
     }
 }

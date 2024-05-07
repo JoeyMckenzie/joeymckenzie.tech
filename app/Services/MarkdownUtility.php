@@ -19,25 +19,8 @@ use Spatie\Sitemap\Tags\Url;
 
 final readonly class MarkdownUtility implements ContentUtilityContract
 {
-    // @phpstan-ignore-next-line
-    private array $config;
-
     public function __construct(private MarkdownRenderer $renderer)
     {
-        $this->config = [
-            'table' => [
-                'wrap' => [
-                    'enabled' => false,
-                    'tag' => 'div',
-                    'attributes' => [],
-                ],
-                'alignment_attributes' => [
-                    'left' => ['align' => 'left'],
-                    'center' => ['align' => 'center'],
-                    'right' => ['align' => 'right'],
-                ],
-            ],
-        ];
     }
 
     #[Override]
@@ -84,8 +67,8 @@ final readonly class MarkdownUtility implements ContentUtilityContract
         $frontMatter = $parsedContent->getFrontMatter();
         $markdown = $parsedContent->getContent();
         $html = $this->renderer
-            ->commonmarkOptions($this->config)
-            ->addExtension(new TableExtension())
+            // ->commonmarkOptions($this->config)
+            // ->addExtension(new TableExtension())
             ->highlightTheme('tokyo-night')
             ->toHtml($markdown);
 

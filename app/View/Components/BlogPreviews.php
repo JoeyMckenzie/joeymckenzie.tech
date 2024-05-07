@@ -18,6 +18,7 @@ final class BlogPreviews extends Component
     {
     }
 
+    #[\Override]
     public function render(): View
     {
         return view('components.blog-previews');

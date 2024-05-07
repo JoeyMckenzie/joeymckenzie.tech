@@ -21,7 +21,17 @@ final class Home extends Component
 
     public function mount(ContentRepositoryContract $contentRepository): void
     {
-        $this->posts = $contentRepository->getLatestBlogPostMetadata();
+        $this->posts = Post::select([
+            'slug',
+            'published_date',
+            'category',
+            'description',
+            'title',
+            'views',
+        ])
+            ->orderByDesc('published_date')
+            ->limit(3)
+            ->get();
     }
 
     public function render(): View

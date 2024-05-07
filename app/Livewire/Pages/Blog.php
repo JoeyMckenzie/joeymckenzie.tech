@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Livewire\Pages;
 
-use App\Contracts\ContentRepositoryContract;
 use App\Models\Post;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -17,9 +16,18 @@ final class Blog extends Component
     /** @var Collection<int, Post> */
     public Collection $posts;
 
-    public function mount(ContentRepositoryContract $contentRepository): void
+    public function mount(): void
     {
-        $this->posts = $contentRepository->getBlogPostMetadata();
+        $this->posts = Post::select([
+            'slug',
+            'published_date',
+            'category',
+            'description',
+            'title',
+            'views',
+        ])
+            ->orderByDesc('published_date')
+            ->get();
     }
 
     public function render(): View

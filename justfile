@@ -5,3 +5,6 @@ dev:
 
 secrets:
     fly secrets import < .env.production
+
+deploy:
+    fly deploy
