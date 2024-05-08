@@ -7,4 +7,10 @@
             ></span>
         </a>
     @endforeach
+
+    <div
+        class="hover:scale-102 my-auto flex h-5 w-5 transition duration-300 ease-in-out hover:-translate-y-1"
+    >
+        <livewire:components.theme-toggle />
+    </div>
 </div>

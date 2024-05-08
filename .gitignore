@@ -8,6 +8,8 @@
 .env
 .env.backup
 .env.production
+.env.livewire
+.env.leptos
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
@@ -17,3 +19,4 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+node_modules

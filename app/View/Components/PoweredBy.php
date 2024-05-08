@@ -22,6 +22,7 @@ final class PoweredBy extends Component
         $this->providers[] = new DisplayableIcon('https://laravel.com', 'Laravel', 'icon-[logos--laravel]');
         $this->providers[] = new DisplayableIcon('https://livewire.laravel.com', 'Livewire', 'icon-[devicon--livewire]');
         $this->providers[] = new DisplayableIcon('https://fly.io', 'Fly.io', 'icon-[logos--fly-icon]');
+        $this->providers[] = new DisplayableIcon('https://neon.tech', 'Neon', 'icon-[logos--neon-icon]');
 
         return view('components.powered-by');
     }
