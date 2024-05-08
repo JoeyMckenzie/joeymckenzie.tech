@@ -1,5 +1,5 @@
 <div
-    class="mx-auto grid max-w-2xl grid-cols-1 justify-center gap-x-4 gap-y-4 pt-8 sm:grid-cols-3"
+    class="mx-auto grid w-full max-w-2xl grid-cols-1 justify-center gap-x-4 gap-y-4 py-8 sm:grid-cols-3"
 >
     @foreach ($socialButtons as $socialButton)
         <a href="{{ $socialButton->href }}" class="btn">
