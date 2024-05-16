@@ -17,7 +17,8 @@
         "livewire/livewire": "^3.4",
         "spatie/laravel-ignition": "^2.6",
         "spatie/laravel-markdown": "^2.5",
-        "spatie/laravel-sitemap": "^7.2"
+        "spatie/laravel-sitemap": "^7.2",
+        "symfony/yaml": "^7.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
