@@ -17,7 +17,7 @@ final class Home extends Component
     /**
      * @var Collection<int, Post>
      */
-    public Collection $posts;
+    public ?Collection $posts = null;
 
     public function mount(ContentRepositoryContract $contentRepository): void
     {

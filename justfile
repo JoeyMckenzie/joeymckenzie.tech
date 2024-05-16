@@ -9,6 +9,9 @@ check:
 lint:
     find app/ resources/ routes/ database/ tests/ phpstan.neon | entr -s 'composer run lint'
 
+test:
+    find app/ resources/ routes/ database/ tests/ phpstan.neon | entr -s 'composer run test'
+
 secrets:
     fly secrets import < .env.production
 

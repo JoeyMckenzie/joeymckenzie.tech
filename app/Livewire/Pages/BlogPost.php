@@ -11,7 +11,7 @@ use Livewire\Component;
 
 final class BlogPost extends Component
 {
-    public Post $post;
+    public ?Post $post = null;
 
     public function mount(string $slug, Request $request): void
     {
@@ -58,6 +58,6 @@ final class BlogPost extends Component
     public function render(): View
     {
         return view('livewire.pages.blog-post')
-            ->title($this->post->title);
+            ->title($this->post?->title);
     }
 }

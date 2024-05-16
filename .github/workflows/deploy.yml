@@ -1,57 +1,44 @@
-name: Deploy to Fly.io
+name: Trigger Forge deploy
 
-on: [ push ]
-
-env:
-  DB_CONNECTION: ${{ secrets.DB_CONNECTION }}
-  DB_HOST: ${{ secrets.DB_HOST }}
-  DB_PORT: ${{ secrets.DB_PORT }}
-  DB_DATABASE: ${{ secrets.DB_DATABASE }}
-  DB_USERNAME: ${{ secrets.DB_USERNAME }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  DB_SSLMODE: ${{ secrets.DB_SSLMODE }}
-  FLY_API_TOKEN: ${{ secrets.FLY_LIVEWIRE_DEPLOY_TOKEN }}
+on: [push]
 
 jobs:
-  fly:
-    # if: github.event.workflow_run.conclusion == 'success' && ${{ !github.actor == 'dependabot[bot]' }}
+  forge:
+    if: github.event.workflow_run.conclusion == 'success' && ${{ !github.actor == 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    name: Sync content and deploy
+    name: Deploy application
     steps:
       - uses: actions/checkout@v3
-      - uses: superfly/flyctl-actions/setup-flyctl@master
 
       - name: Setup PHP
         id: setup-php
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: "8.3"
 
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: latest
+      - name: Install Forge CLI
+        run: composer global require laravel/forge-cli
 
-      - name: Install node dependencies
-        run: npm install
+      - name: Authenticate with Forge
+        run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
 
-      - name: Install composer dependencies
-        run: composer install
+      # Forge environment variables, including the current git commit hash,
+      # aren't included as runtime environment variables and only in the build script.
+      # To get the current commit propagated, pull the current production configuration,
+      # and append the current commit to the file and push it back up to Forge.
+      - name: Download current configuration
+        run: forge env:pull ${{ secrets.FORGE_SITE_NAME }} ${{ github.workspace }}/.env
 
-      - name: Sync content
-        run: php artisan content:sync
+      - name: Add current commit and push back to forge
+        run: |
+          chmod +x ./scripts/update-commit.sh
+          ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
+        working-directory: ${{ github.workspace }}
 
-      - name: Deploy to Fly.io
-        run:
-          | # We need to clear the Neon cache within the Dockerfile, so pass in the DB connection as build args
-          flyctl deploy \
-            -e COMMIT_SHA=${{ github.sha }} \
-            --build-arg DB_CONNECTION=${{ env.DB_CONNECTION }} \
-            --build-arg DB_HOST=${{ env.DB_HOST }} \
-            --build-arg DB_PORT=${{ env.DB_PORT }} \
-            --build-arg DB_DATABASE=${{ env.DB_DATABASE }} \
-            --build-arg DB_USERNAME=${{ env.DB_USERNAME }} \
-            --build-arg DB_PASSWORD=${{ env.DB_PASSWORD }} \
-            --remote-only
+      - name: Push environment to Forge
+        run: forge env:push ${{ secrets.FORGE_SITE_NAME }} ${{ github.workspace }}/.env
+
+      - name: Ping deploy URL
+        run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}

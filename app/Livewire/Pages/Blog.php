@@ -14,7 +14,7 @@ use Livewire\Component;
 final class Blog extends Component
 {
     /** @var Collection<int, Post> */
-    public Collection $posts;
+    public ?Collection $posts = null;
 
     public function mount(): void
     {

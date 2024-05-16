@@ -30,6 +30,7 @@
         "nunomaduro/collision": "^8.0",
         "pestphp/pest": "^2.0",
         "pestphp/pest-plugin-laravel": "^2.0",
+        "pestphp/pest-plugin-type-coverage": "^2.8",
         "phpstan/phpstan": "^1.10",
         "phpstan/phpstan-strict-rules": "^1.5",
         "rector/rector": "^1.0"
@@ -61,6 +62,13 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
+        ],
+        "test:integration": "./vendor/bin/pest --colors=always",
+        "test:watch": "./vendor/bin/pest --watch --parallel",
+        "test:types": "./vendor/bin/pest --type-coverage --min=100",
+        "test": [
+            "@test:types",
+            "@test:integration"
         ],
         "lint": "./vendor/bin/phpstan analyze",
         "fmt:php": "./vendor/bin/pint -v",
