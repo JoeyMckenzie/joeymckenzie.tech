@@ -13,6 +13,8 @@ final class BlogPreview extends Component
 {
     public Post $post;
 
+    public bool $viewCountEnabled;
+
     #[Computed]
     public function displayDate(): string
     {
@@ -22,12 +24,16 @@ final class BlogPreview extends Component
     #[Computed]
     public function href(): string
     {
-        return '/blog/'.$this->post->slug;
+        return '/blog/' . $this->post->slug;
     }
 
     public function mount(Post $post): void
     {
+        /** @var bool $viewCountEnabled */
+        $viewCountEnabled = config('app.view_count_enabled');
+
         $this->post = $post;
+        $this->viewCountEnabled = $viewCountEnabled;
     }
 
     public function render(): View

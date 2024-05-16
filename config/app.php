@@ -127,4 +127,6 @@ return [
 
     'commit' => env('COMMIT_SHA', ''),
 
+    'view_count_enabled' => env('VIEW_COUNT_ENABLED', false),
+
 ];

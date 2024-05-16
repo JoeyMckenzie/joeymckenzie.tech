@@ -33,7 +33,7 @@ jobs:
       - name: Add current commit and push back to forge
         run: |
           chmod +x ./scripts/update-commit.sh
-          ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
+          ./scripts/update-commit.sh COMMIT_SHA ${{ github.sha }}
         working-directory: ${{ github.workspace }}
 
       - name: Push environment to Forge

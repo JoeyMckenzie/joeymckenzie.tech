@@ -4,7 +4,9 @@
     <div class="flex items-center gap-x-2 text-xs">
         <time datetime="datetime_date">{{ $post->displayDate() }}</time>
         <div class="badge badge-neutral">{{ $post->category }}</div>
-        <p>{{ $post->formattedViews() }} views</p>
+        @if ($viewCountEnabled)
+            <p>{{ $post->formattedViews() }} views</p>
+        @endif
     </div>
     <div class="group relative">
         <h3 class="mt-3 text-lg font-semibold leading-6">
