@@ -24,7 +24,7 @@ final class BlogPreview extends Component
     #[Computed]
     public function href(): string
     {
-        return '/blog/' . $this->post->slug;
+        return '/blog/'.$this->post->slug;
     }
 
     public function mount(Post $post): void

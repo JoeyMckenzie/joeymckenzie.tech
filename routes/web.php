@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Endpoints\GenerateSitemap;
 use App\Livewire\Pages\Blog;
 use App\Livewire\Pages\BlogPost;
 use App\Livewire\Pages\Home;
