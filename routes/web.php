@@ -20,6 +20,3 @@ Route::get('/blog', Blog::class)
 
 Route::get('/blog/{slug}', BlogPost::class)
     ->name('blog.post');
-
-Route::get('/sitemap-index.xml', GenerateSitemap::class)
-    ->name('sitemap');
