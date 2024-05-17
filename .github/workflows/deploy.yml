@@ -1,9 +1,14 @@
 name: Trigger Forge deploy
 
-on: [push]
+on:
+  workflow_run:
+    workflows: [ 'CI' ]
+    types:
+      - completed
 
 jobs:
   forge:
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
 

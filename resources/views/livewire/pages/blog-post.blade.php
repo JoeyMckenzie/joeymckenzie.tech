@@ -23,7 +23,7 @@
         width="500"
     />
     {!! $post->parsed_content !!}
-    <a wire:navigate.hover href="/blog" class="flex justify-center">
+    <a wire:navigate.hover href="/blog" class="flex justify-center pt-8">
         <button class="btn">
             <span class="icon-[mdi--arrow-left] h-4 w-4"></span>
             Back to blog
