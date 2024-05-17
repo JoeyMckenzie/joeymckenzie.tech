@@ -21,3 +21,4 @@ yarn-error.log
 /.vscode
 node_modules
 public/sitemap-index.xml
+.DS_Store
