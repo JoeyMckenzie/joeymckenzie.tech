@@ -1,0 +1,6 @@
+import { e as error500_vue_vue_type_style_index_0_scoped_78a8579e_lang } from './error-500-styles-1.mjs-CX47q3iS.mjs';
+
+const error500Styles_5yCPmfBh = [error500_vue_vue_type_style_index_0_scoped_78a8579e_lang];
+
+export { error500Styles_5yCPmfBh as default };
+//# sourceMappingURL=error-500-styles.5yCPmfBh.mjs.map

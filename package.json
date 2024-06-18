@@ -1,0 +1,33 @@
+{
+  "name": "blog",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@9.4.0",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint \"**/*.{ts,vue}\"",
+    "fix": "eslint --fix \"**/*.{ts,vue}\"",
+    "check": "pnpm run lint && pnpm run build"
+  },
+  "dependencies": {
+    "@nuxt/eslint": "^0.3.13",
+    "@vueuse/core": "^10.11.0",
+    "nuxt": "^3.12.1",
+    "nuxtjs-naive-ui": "^1.0.2",
+    "vue": "^3.4.27",
+    "vue-router": "^4.3.3"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.21.1",
+    "eslint": "9.4.0",
+    "eslint-plugin-format": "^0.1.1",
+    "naive-ui": "^2.38.2",
+    "unplugin-auto-import": "^0.17.6",
+    "unplugin-vue-components": "^0.27.0",
+    "vfonts": "^0.0.3"
+  }
+}
