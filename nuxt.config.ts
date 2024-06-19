@@ -1,6 +1,5 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   nitro: {
@@ -12,28 +11,29 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
     '@nuxt/fonts',
-    '@nuxtjs/tailwindcss',
     '@nuxtjs/seo',
-    '@nuxt/icon',
-    '@nuxtjs/color-mode',
-    'nuxt-particles',
+    '@nuxt/ui',
   ],
   eslint: {
     config: {
       standalone: false,
     },
   },
-  particles: {
-    mode: 'full', // 'full' | 'slim' | 'basic' | 'custom'
-    lazy: true,
-  },
   fonts: {
     families: [
-      { name: 'Inter', provider: 'bunny' },
-      { name: 'Ubuntu', provider: 'bunny' },
-      { name: 'Figtree', provider: 'bunny' },
-      { name: 'JetBrains Mono', provider: 'bunny' },
+      { name: 'Inter', provider: 'google' },
     ],
+  },
+  tailwindcss: {
+    config: {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', ...fontFamily.sans],
+          },
+        },
+      },
+    },
   },
   site: {
     url: 'https://joeymckenzie.tech',
@@ -43,17 +43,5 @@ export default defineNuxtConfig({
   },
   colorMode: {
     classSuffix: '',
-  },
-  tailwindcss: {
-    config: {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['JetBrains Mono', ...fontFamily.sans],
-          },
-        },
-      },
-    },
   },
 });

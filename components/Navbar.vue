@@ -1,15 +1,27 @@
 <template>
   <div class="flex items-center justify-center space-x-2">
-    <NuxtLink to="/" class="hover:underline dark:text-neutral-400">
+    <ULink
+      to="/"
+      active-class="text-primary"
+      inactive-class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+    >
       Home
-    </NuxtLink>
-    <Icon size="24" name="material-symbols:chevron-right" class="text-neutral-700 dark:text-neutral-300" />
-    <NuxtLink to="/now" class="hover:underline dark:text-neutral-400">
+    </ULink>
+    <UIcon size="24" name="i-heroicons-chevron-right" />
+    <ULink
+      to="/now"
+      active-class="text-primary"
+      inactive-class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+    >
       Now
-    </NuxtLink>
-    <Icon size="24" name="material-symbols:chevron-right" class="text-neutral-700 dark:text-neutral-300" />
-    <NuxtLink to="/blog" class="hover:underline dark:text-neutral-400">
+    </ULink>
+    <UIcon size="24" name="i-heroicons-chevron-right" />
+    <ULink
+      to="/blog"
+      active-class="text-primary"
+      inactive-class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+    >
       Blog
-    </NuxtLink>
+    </ULink>
   </div>
 </template>
