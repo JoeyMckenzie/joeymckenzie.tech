@@ -1,4 +1,5 @@
 import antfu from '@antfu/eslint-config';
+import tailwind from 'eslint-plugin-tailwindcss';
 import withNuxt from './.nuxt/eslint.config.mjs';
 
 export default withNuxt(
@@ -10,4 +11,15 @@ export default withNuxt(
       semi: true,
     },
   }),
+  ...tailwind.configs['flat/recommended'],
+  {
+    settings: {
+      tailwindcss: {
+        config: 'tailwind.config.ts',
+        cssFiles: [
+          'resources/css/app.css',
+        ],
+      },
+    },
+  },
 );

@@ -1,6 +1,4 @@
-import AutoImport from 'unplugin-auto-import/vite';
-import Components from 'unplugin-vue-components/vite';
-import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -8,29 +6,54 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'vercel',
   },
-  modules: ['@nuxt/eslint', 'nuxtjs-naive-ui'],
+  app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
+  },
+  modules: [
+    '@nuxt/eslint',
+    '@nuxt/fonts',
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/seo',
+    '@nuxt/icon',
+    '@nuxtjs/color-mode',
+    'nuxt-particles',
+  ],
   eslint: {
     config: {
       standalone: false,
     },
   },
-  vite: {
-    plugins: [
-      AutoImport({
-        imports: [
-          {
-            'naive-ui': [
-              'useDialog',
-              'useMessage',
-              'useNotification',
-              'useLoadingBar',
-            ],
-          },
-        ],
-      }),
-      Components({
-        resolvers: [NaiveUiResolver()],
-      }),
+  particles: {
+    mode: 'full', // 'full' | 'slim' | 'basic' | 'custom'
+    lazy: true,
+  },
+  fonts: {
+    families: [
+      { name: 'Inter', provider: 'bunny' },
+      { name: 'Ubuntu', provider: 'bunny' },
+      { name: 'Figtree', provider: 'bunny' },
+      { name: 'JetBrains Mono', provider: 'bunny' },
     ],
+  },
+  site: {
+    url: 'https://joeymckenzie.tech',
+    name: 'My personal blog and developer diary.',
+    description: 'My personal blog and developer diary.',
+    defaultLocale: 'en',
+  },
+  colorMode: {
+    classSuffix: '',
+  },
+  tailwindcss: {
+    config: {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['JetBrains Mono', ...fontFamily.sans],
+          },
+        },
+      },
+    },
   },
 });
