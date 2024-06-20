@@ -26,6 +26,8 @@
     "@antfu/eslint-config": "^2.21.1",
     "@egoist/tailwindcss-icons": "^1.8.1",
     "@headlessui/tailwindcss": "^0.2.1",
+    "@iconify-json/hugeicons": "^1.1.0",
+    "@iconify-json/mdi": "^1.1.67",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/forms": "^0.5.7",

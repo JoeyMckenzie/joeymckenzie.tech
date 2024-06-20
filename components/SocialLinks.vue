@@ -1,22 +1,22 @@
 <script setup lang="ts">
 const links = [
   {
-    name: 'i-tabler-brand-github',
+    name: 'i-mdi-github',
     to: 'https://github.com/joeymckenzie',
   },
   {
-    name: 'i-tabler-brand-linkedin',
+    name: 'i-mdi-linkedin',
     to: 'https://linkedin.com/in/joeymckenzie',
   },
   {
-    name: 'i-tabler-brand-twitter',
+    name: 'i-hugeicons-new-twitter',
     to: 'https://x.com/_joeyMcKenzie',
   },
 ];
 </script>
 
 <template>
-  <div class="grid grid-cols-3 justify-center py-12">
+  <div class="flex flex-row justify-center gap-x-1 py-12">
     <NuxtLink v-for="{ name, to } of links" :key="name" :to external class="inline-flex justify-center">
       <UIcon class="size-6" :name />
     </NuxtLink>

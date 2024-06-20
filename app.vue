@@ -4,6 +4,7 @@
       <ThemeToggle />
       <Navbar />
       <NuxtPage />
+      <Footer />
     </NuxtLayout>
   </Body>
 </template>

@@ -1,5 +1,3 @@
-import { fontFamily } from 'tailwindcss/defaultTheme';
-
 export default defineNuxtConfig({
   devtools: { enabled: true },
   nitro: {
@@ -24,17 +22,6 @@ export default defineNuxtConfig({
       { name: 'Inter', provider: 'google' },
     ],
   },
-  tailwindcss: {
-    config: {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', ...fontFamily.sans],
-          },
-        },
-      },
-    },
-  },
   site: {
     url: 'https://joeymckenzie.tech',
     name: 'My personal blog and developer diary.',
@@ -45,6 +32,6 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
   ui: {
-    icons: ['tabler'],
+    icons: ['mdi', 'hugeicons'],
   },
 });
