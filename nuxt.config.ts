@@ -44,4 +44,7 @@ export default defineNuxtConfig({
   colorMode: {
     classSuffix: '',
   },
+  ui: {
+    icons: ['tabler'],
+  },
 });
