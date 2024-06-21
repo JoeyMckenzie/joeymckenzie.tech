@@ -16,9 +16,6 @@ export default withNuxt(
     settings: {
       tailwindcss: {
         config: 'tailwind.config.ts',
-        cssFiles: [
-          'resources/css/app.css',
-        ],
       },
     },
   },

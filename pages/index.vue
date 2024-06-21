@@ -1,11 +1,13 @@
 <template>
-  <div class="px-6 py-24 sm:py-32 lg:px-8">
-    <div class="mx-auto max-w-2xl text-center">
+  <div class="px-6 py-12 sm:py-16 lg:px-8">
+    <div class="mx-auto max-w-md">
       <h2 class="text-2xl font-bold tracking-tight">
-        Support center
+        Hi, I'm Joey.
       </h2>
-      <p class="mt-6 leading-8 text-neutral-500">
-        Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet fugiat veniam occaecat fugiat aliqua.
+      <p class="mt-6 text-sm leading-6 dark:text-neutral-400">
+        I'm a software developer based in Northern California working in fintech. I enjoy writing about software,
+        design, dad jokes, and cheap beer among a few other things. I like building fast, efficient web services,
+        learning new things, and writing code in the open source ecosystem.
       </p>
     </div>
     <SocialLinks />

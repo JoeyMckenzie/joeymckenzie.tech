@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   nitro: {
-    preset: 'vercel',
+    preset: 'cloudflare-pages',
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
