@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   nitro: {
-    preset: 'cloudflare-pages',
+    preset: 'netlify',
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
