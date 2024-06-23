@@ -1,3 +1,5 @@
+import { fontFamily } from 'tailwindcss/defaultTheme';
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   nitro: {
@@ -21,6 +23,25 @@ export default defineNuxtConfig({
     families: [
       { name: 'Inter', provider: 'google' },
     ],
+  },
+  tailwindcss: {
+    config: {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', ...fontFamily.sans],
+          },
+        },
+      },
+    },
+  },
+  runtimeConfig: {
+    spotifyRefreshToken: '',
+    spotifyClientId: '',
+    spotifyClientSecret: '',
+    tokenEndpoint: 'https://accounts.spotify.com/api/token',
+    nowPlayingEndpoint:
+          'https://api.spotify.com/v1/me/player?type=track,episode',
   },
   site: {
     url: 'https://joeymckenzie.tech',

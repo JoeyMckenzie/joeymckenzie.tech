@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import type { NowPlaying } from '~/types/spotify';
+
+const { data } = await useFetch('/api/spotify');
+</script>
+
 <template>
   <footer class="mx-auto max-w-7xl px-6 py-12 md:flex md:items-center md:justify-between lg:px-8">
     <div class="flex justify-center space-x-6 md:order-2">
