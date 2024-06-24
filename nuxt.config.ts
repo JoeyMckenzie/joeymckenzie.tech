@@ -8,12 +8,7 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
-  modules: [
-    '@nuxt/eslint',
-    '@nuxt/fonts',
-    '@nuxtjs/seo',
-    '@nuxt/ui',
-  ],
+  modules: ['@nuxt/eslint', '@nuxt/fonts', '@nuxtjs/seo', '@nuxt/ui', "@nuxt/image"],
   eslint: {
     config: {
       standalone: false,
@@ -53,6 +48,6 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
   ui: {
-    icons: ['mdi', 'hugeicons'],
+    icons: ['mdi', 'hugeicons', 'logos'],
   },
 });

@@ -1,6 +1,6 @@
 <template>
-  <div class="px-6 py-12 sm:py-16 lg:px-8">
-    <div class="mx-auto max-w-md">
+  <div class="px-4 py-12 sm:py-16">
+    <div class="mx-auto">
       <h2 class="text-2xl font-bold tracking-tight">
         Hey, I'm Joey.
       </h2>
