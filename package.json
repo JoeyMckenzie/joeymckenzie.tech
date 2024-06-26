@@ -11,7 +11,8 @@
     "postinstall": "nuxt prepare",
     "lint": "eslint \"**/*.{ts,vue}\"",
     "fix": "eslint --fix \"**/*.{ts,vue}\"",
-    "check": "pnpm run lint && pnpm run build"
+    "check": "pnpm run lint && pnpm run build",
+    "prepare": "git config core.hookspath .githooks"
   },
   "dependencies": {
     "@nuxt/eslint": "^0.3.13",
@@ -19,6 +20,7 @@
     "@nuxt/image": "^1.7.0",
     "@nuxt/ui": "^2.17.0",
     "@nuxtjs/seo": "2.0.0-rc.10",
+    "lint-staged": "^15.2.7",
     "nuxt": "^3.12.2",
     "vue": "^3.4.27",
     "vue-router": "^4.3.3"
@@ -34,5 +36,8 @@
     "eslint-plugin-format": "^0.1.1",
     "eslint-plugin-tailwindcss": "^3.17.3",
     "tailwindcss": "^3.4.4"
+  },
+  "lint-staged": {
+    "**/*.{js,ts,vue}": "pnpm run fix"
   }
 }
