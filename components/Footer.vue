@@ -6,9 +6,7 @@
       </SpotifyNowPlaying>
     </div>
     <div class="mt-8 md:order-2 md:mt-0">
-      <p class="text-center text-xs leading-5">
-        uh suh dude
-      </p>
+      <PoweredBy />
     </div>
   </footer>
 </template>

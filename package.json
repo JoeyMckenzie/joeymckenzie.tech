@@ -26,8 +26,10 @@
   "devDependencies": {
     "@antfu/eslint-config": "^2.21.1",
     "@egoist/tailwindcss-icons": "^1.8.1",
+    "@iconify-json/bxl": "^1.1.10",
     "@iconify-json/hugeicons": "^1.1.0",
     "@iconify-json/mdi": "^1.1.67",
+    "@iconify-json/skill-icons": "^1.1.8",
     "eslint": "9.4.0",
     "eslint-plugin-format": "^0.1.1",
     "eslint-plugin-tailwindcss": "^3.17.3",
