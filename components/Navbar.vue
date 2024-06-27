@@ -24,6 +24,14 @@
       >
         Blog
       </ULink>
+      <UIcon size="24" name="i-mdi-slash-forward" class="text-neutral-500" />
+      <ULink
+        to="/blog/2022/react-data-fetching-with-rxjs"
+        active-class="text-primary"
+        inactive-class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+      >
+        Post
+      </ULink>
     </div>
     <ThemeToggle />
   </div>

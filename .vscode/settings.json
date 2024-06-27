@@ -48,6 +48,7 @@
   ],
 
   // Enable Tailwind intellisense
+  "tailwindCSS.experimental.configFile": ".nuxt/tailwind.config.cjs",
   "files.associations": {
     "*.css": "tailwindcss"
   },
