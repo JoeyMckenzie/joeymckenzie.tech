@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import FormattedViews from '~/components/FormattedViews.vue';
-
-const route = useRoute();
-const { data } = await useFetch(`/api/views/${route.params.slug}`);
+// const route = useRoute();
+// const { data } = await useFetch(`/api/views/${route.params.slug}`);
 </script>
 
 <template>
@@ -15,7 +13,9 @@ const { data } = await useFetch(`/api/views/${route.params.slug}`);
         <div class="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tighter">
           <FormattedDate :date="doc.pubDate" />
           <UBadge :label="doc.category" />
+          <!--
           <FormattedViews :views="data?.views" />
+          -->
         </div>
         <NuxtImg
           :src="doc.heroImage" :alt="`${doc.title} blog meme image`"

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { MergedPostContent } from '~/types/content';
+import type { ParsedPostContent } from '~/types/content';
 
 const props = defineProps<{
-  posts: MergedPostContent[];
+  posts: ParsedPostContent[];
 }>();
 
 const sortedPosts = computed(() => [...props.posts].sort((a, b) => new Date(b.pubDate).valueOf() - new Date(a.pubDate).valueOf()));

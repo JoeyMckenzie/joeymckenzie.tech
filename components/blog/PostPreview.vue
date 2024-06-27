@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { MergedPostContent } from '~/types/content';
+import type { ParsedPostContent } from '~/types/content';
 
 defineProps<{
-  postPreview: MergedPostContent;
+  postPreview: ParsedPostContent;
 }>();
 </script>
 
@@ -15,7 +15,9 @@ defineProps<{
       <UBadge :label="postPreview.category">
         {{ postPreview.category }}
       </UBadge>
-      <FormattedViews :views="postPreview.views" />
+      <!--
+        <FormattedViews :views="postPreview.views" />
+      -->
     </div>
     <ULink :to="postPreview._path">
       <div class="group relative">
