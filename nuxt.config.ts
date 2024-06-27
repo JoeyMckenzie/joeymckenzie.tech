@@ -1,4 +1,3 @@
-import { resolve } from 'node:path';
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
 export default defineNuxtConfig({
@@ -45,6 +44,8 @@ export default defineNuxtConfig({
     spotifyRefreshToken: '',
     spotifyClientId: '',
     spotifyClientSecret: '',
+    tursoDatabaseUrl: '',
+    tursoAuthToken: '',
     tokenEndpoint: 'https://accounts.spotify.com/api/token',
     nowPlayingEndpoint:
           'https://api.spotify.com/v1/me/player?type=track,episode',
@@ -56,13 +57,6 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
   },
   content: {
-    sources: {
-      content: {
-        driver: 'fs',
-        prefix: '/blog',
-        base: resolve(__dirname, 'content'),
-      },
-    },
     ignores: ['/content/draft'],
     highlight: {
       theme: 'vitesse-dark',

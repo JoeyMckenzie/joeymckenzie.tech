@@ -1,3 +1,19 @@
+<script setup lang="ts">
+import type { MergedPostContent, ParsedPostContent } from '~/types/content';
+
+const { data: contentData } = await useAsyncData('preview-content', () =>
+  queryContent<ParsedPostContent>()
+    .only(['_path', 'title', 'description', 'category', 'pubDate'])
+    .find());
+
+const { data: postData } = await useFetch('/api/views');
+
+const mergedData = computed(() => contentData.value?.map(cd => ({
+  ...cd,
+  views: postData.value?.posts.find(p => cd._path.includes(p.slug))?.views ?? 0,
+}) satisfies MergedPostContent));
+</script>
+
 <template>
   <main>
     <PageHeader
@@ -6,6 +22,6 @@
           design, dad jokes, and cheap beer among a few other things. I like building fast, efficient web services,
           learning new things, and writing code in the open source ecosystem."
     />
-    <BlogCardPreviews />
+    <BlogPostPreviews v-if="mergedData" :posts="mergedData" />
   </main>
 </template>

@@ -12,19 +12,24 @@
     "lint": "eslint \"**/*.{ts,vue}\"",
     "fix": "eslint --fix \"**/*.{ts,vue}\"",
     "check": "pnpm run lint && pnpm run build",
+    "drizzle:generate": "drizzle-kit generate",
+    "drizzle:migrate": "drizzle-kit migrate",
     "prepare": "git config core.hookspath .githooks"
   },
   "dependencies": {
+    "@libsql/client": "^0.7.0",
     "@nuxt/content": "^2.13.0",
     "@nuxt/eslint": "^0.3.13",
-    "@nuxt/fonts": "^0.7.0",
+    "@nuxt/fonts": "^0.7.1",
     "@nuxt/image": "^1.7.0",
     "@nuxt/ui": "^2.17.0",
     "@nuxtjs/seo": "2.0.0-rc.10",
+    "dotenv": "^16.4.5",
+    "drizzle-orm": "^0.31.2",
     "lint-staged": "^15.2.7",
     "nuxt": "^3.12.2",
-    "vue": "^3.4.27",
-    "vue-router": "^4.3.3"
+    "vue": "^3.4.30",
+    "vue-router": "^4.4.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.21.1",
@@ -34,9 +39,10 @@
     "@iconify-json/mdi": "^1.1.67",
     "@iconify-json/simple-icons": "^1.1.107",
     "@iconify-json/skill-icons": "^1.1.8",
+    "drizzle-kit": "^0.22.7",
     "eslint": "9.4.0",
-    "eslint-plugin-format": "^0.1.1",
-    "eslint-plugin-tailwindcss": "^3.17.3",
+    "eslint-plugin-format": "^0.1.2",
+    "eslint-plugin-tailwindcss": "^3.17.4",
     "tailwindcss": "^3.4.4"
   },
   "lint-staged": {
