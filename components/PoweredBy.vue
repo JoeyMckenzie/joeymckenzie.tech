@@ -16,6 +16,16 @@ const providers = [
     name: 'i-logos-nuxt-icon',
     href: 'https://nuxt.com',
   },
+  {
+    display: 'TursoDB',
+    name: 'i-simple-icons-turso',
+    href: 'https://turso.tech',
+  },
+  {
+    display: 'Drizzle ORM',
+    name: 'i-simple-icons-drizzle',
+    href: 'https://orm.drizzle.team/',
+  },
 ];
 </script>
 

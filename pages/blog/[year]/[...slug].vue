@@ -1,7 +1,7 @@
 <template>
   <main class="mx-auto px-4 py-12">
     <ContentDoc v-slot="{ doc }">
-      <article class="prose dark:prose-invert">
+      <article class="prose dark:prose-invert mx-auto">
         <h1 class="text-2xl sm:text-center">
           {{ doc.title }}
         </h1>

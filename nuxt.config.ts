@@ -94,6 +94,6 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
   ui: {
-    icons: ['mdi', 'hugeicons', 'logos', 'bxl'],
+    icons: ['mdi', 'hugeicons', 'simple-icons', 'logos', 'bxl'],
   },
 });
