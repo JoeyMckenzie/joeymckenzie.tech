@@ -6,10 +6,9 @@ const hashDisplay = commitSha?.substring(0, 6);
 
 const providers = [
   {
-    display: 'Netlify',
-    name: 'i-bxl-netlify',
-    href: 'https://netlify.com',
-    classes: 'text-green-600',
+    display: 'Vercel',
+    name: 'i-ion-logo-vercel',
+    href: 'https://vercel.com',
   },
   {
     display: 'Nuxt',
@@ -34,9 +33,9 @@ const providers = [
     <p class="text-xs text-neutral-500">
       Powered by
     </p>
-    <a v-for="{ name, display, href, classes } of providers" :key="name" :href class="inline-flex justify-center transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110">
+    <a v-for="{ name, display, href } of providers" :key="name" :href class="inline-flex justify-center transition duration-300 ease-in-out hover:-translate-y-1 hover:scale-110">
       <span class="sr-only">{{ display }}</span>
-      <UIcon :class="`size-6 ${classes}`" :name />
+      <UIcon class="size-5" :name />
     </a>
     <ULink :to="hashRef" class="text-xs text-neutral-500 hover:underline">
       {{ hashDisplay }}

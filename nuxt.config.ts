@@ -40,7 +40,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      commitSha: '',
+      commitSha: import.meta.env.VERCEL_GIT_COMMIT_SHA,
     },
     spotifyRefreshToken: '',
     spotifyClientId: '',
@@ -83,6 +83,6 @@ export default defineNuxtConfig({
     classSuffix: '',
   },
   ui: {
-    icons: ['mdi', 'hugeicons', 'simple-icons', 'logos', 'bxl'],
+    icons: ['mdi', 'hugeicons', 'simple-icons', 'logos', 'ion'],
   },
 });
