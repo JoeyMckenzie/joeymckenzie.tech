@@ -1,6 +1,6 @@
 <template>
   <div class="flex items-center justify-between">
-    <div class="flex items-center justify-center">
+    <div class="flex items-center justify-center text-sm">
       <ULink
         to="/"
         active-class="text-primary"

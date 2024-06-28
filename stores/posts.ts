@@ -18,7 +18,7 @@ export const usePostStore = defineStore('posts', () => {
       useFetch('/api/views'),
       useAsyncData('content', () =>
         queryContent<PostContent>()
-          .only(['body', '_path', 'category', 'description', 'pubDate', 'title'])
+          .only(['body', '_path', 'category', 'description', 'pubDate', 'title', 'heroImage'])
           .find()),
     ]);
 
