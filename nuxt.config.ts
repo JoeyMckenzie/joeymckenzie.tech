@@ -5,13 +5,13 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'netlify',
   },
+  ssr: false,
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
   modules: [
     '@nuxt/eslint',
     '@nuxt/fonts',
-    '@nuxtjs/seo',
     '@nuxt/ui',
     '@nuxt/image',
     '@nuxt/content',
@@ -50,12 +50,6 @@ export default defineNuxtConfig({
     tokenEndpoint: 'https://accounts.spotify.com/api/token',
     nowPlayingEndpoint:
           'https://api.spotify.com/v1/me/player?type=track,episode',
-  },
-  site: {
-    url: 'https://joeymckenzie.tech',
-    name: 'My personal blog and developer diary.',
-    description: 'My personal blog and developer diary.',
-    defaultLocale: 'en',
   },
   content: {
     ignores: ['/content/draft'],

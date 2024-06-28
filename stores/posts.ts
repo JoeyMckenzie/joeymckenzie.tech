@@ -4,11 +4,13 @@ import type { MergedPostContent, PostContent, PostPreview } from '~/types/conten
 export const usePostStore = defineStore('posts', () => {
   const posts = ref<MergedPostContent[]>([]);
   const latestsPosts = computed(() => posts.value.slice(0, 3));
-  const postPreviews = computed(() => posts.value.map(p => ({
+  const postPreviews = computed((): PostPreview[] => posts.value.map(p => ({
     title: p.title,
     description: p.description,
     category: p.category,
     pubDate: p.pubDate,
+    views: p.views,
+    _path: p._path,
   } satisfies PostPreview)));
 
   async function fetchPosts() {
@@ -20,7 +22,7 @@ export const usePostStore = defineStore('posts', () => {
           .find()),
     ]);
 
-    const orderedPosts = blogPosts?.value
+    const orderedPosts: MergedPostContent[] = blogPosts?.value
       ? blogPosts.value
         .sort(
           (a, b) =>

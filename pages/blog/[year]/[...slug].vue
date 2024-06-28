@@ -1,6 +1,6 @@
 <script setup lang="ts">
-// const route = useRoute();
-// const { data } = await useFetch(`/api/views/${route.params.slug}`);
+const route = useRoute();
+const { data } = await useFetch<{ views: number }>(`/api/views/${route.params.slug}`);
 </script>
 
 <template>
@@ -13,9 +13,7 @@
         <div class="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tighter">
           <FormattedDate :date="doc.pubDate" />
           <UBadge :label="doc.category" />
-          <!--
-          <FormattedViews :views="data?.views" />
-          -->
+          <FormattedViews v-if="data" :views="data.views" />
         </div>
         <NuxtImg
           :src="doc.heroImage" :alt="`${doc.title} blog meme image`"

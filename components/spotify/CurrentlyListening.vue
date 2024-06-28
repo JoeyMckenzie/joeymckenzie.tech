@@ -11,7 +11,7 @@ defineProps<{ response: NowPlaying }>();
     rel="noreferrer"
     class="flex flex-col space-y-1"
   >
-    <h2 class="inline-flex justify-center text-xs text-neutral-400">
+    <h2 class="inline-flex justify-center text-xs dark:text-neutral-400">
       Now listening
     </h2>
     <div class="flex flex-row items-center justify-center space-x-2">
@@ -25,11 +25,11 @@ defineProps<{ response: NowPlaying }>();
       />
       <div class="flex max-w-64 flex-col">
         <h4
-          class="line-clamp-1 overflow-hidden text-ellipsis text-xs font-semibold text-neutral-300"
+          class="line-clamp-1 overflow-hidden text-ellipsis text-xs font-semibold dark:text-neutral-300"
         >
           {{ response.trackTitle }}
         </h4>
-        <p class="line-clamp-1 overflow-hidden text-ellipsis text-xs text-neutral-400">{{ response.artist }}</p>
+        <p class="line-clamp-1 overflow-hidden text-ellipsis text-xs dark:text-neutral-400">{{ response.artist }}</p>
       </div>
     </div>
   </a>

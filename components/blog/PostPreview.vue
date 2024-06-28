@@ -7,19 +7,15 @@ defineProps<{
 </script>
 
 <template>
-  <article
-    class="flex max-w-xl flex-col items-start transition duration-150 ease-in-out hover:-translate-y-1"
-  >
-    <div class="flex items-center gap-x-4 text-xs">
-      <FormattedDate :date="postPreview.pubDate" />
-      <UBadge :label="postPreview.category">
-        {{ postPreview.category }}
-      </UBadge>
-      <!--
+  <ULink :to="postPreview._path" class="transition duration-150 ease-in-out hover:-translate-y-1">
+    <article>
+      <div class="flex flex-row items-center space-x-2 text-xs">
+        <FormattedDate :date="postPreview.pubDate" />
+        <UBadge :label="postPreview.category">
+          {{ postPreview.category }}
+        </UBadge>
         <FormattedViews :views="postPreview.views" />
-      -->
-    </div>
-    <ULink :to="postPreview._path">
+      </div>
       <div class="group relative">
         <h2
           class="mt-3 font-semibold leading-6 tracking-tighter text-neutral-700 group-hover:text-neutral-400 dark:text-neutral-300"
@@ -31,6 +27,6 @@ defineProps<{
           {{ postPreview.description }}
         </p>
       </div>
-    </ULink>
-  </article>
+    </article>
+  </ULink>
 </template>

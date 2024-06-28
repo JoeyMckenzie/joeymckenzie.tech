@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   title: string;
-  blerb: string;
+  blerb?: string | null;
 }>();
 </script>
 
