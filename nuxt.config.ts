@@ -3,7 +3,7 @@ import { fontFamily } from 'tailwindcss/defaultTheme';
 export default defineNuxtConfig({
   devtools: { enabled: true },
   nitro: {
-    preset: 'netlify',
+    preset: 'vercel',
   },
   ssr: false,
   app: {
