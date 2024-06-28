@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import type { ParsedPostContent } from './types/content';
+import { usePostStore } from '~/stores/posts';
 
-const content = useState<ParsedPostContent[]>('config');
+const { fetchPosts } = usePostStore();
 
-await callOnce(async () => (content.value = await queryContent<ParsedPostContent>()
-  .only(['_id', 'body', '_path', 'title', 'description', 'category', 'pubDate'])
-  .find()));
+await fetchPosts();
 </script>
 
 <template>

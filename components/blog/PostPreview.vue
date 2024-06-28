@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { ParsedPostContent } from '~/types/content';
+import type { PostPreview } from '~/types/content';
 
 defineProps<{
-  postPreview: ParsedPostContent;
+  postPreview: PostPreview;
 }>();
 </script>
 

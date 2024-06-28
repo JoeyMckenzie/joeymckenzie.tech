@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ParsedPostContent } from '~/types/content';
+import { usePostStore } from '~/stores/posts';
 
-const content = useState<ParsedPostContent[]>('config');
+const { postPreviews } = usePostStore();
 
 // const { data: postData } = await useFetch('/api/views');
 
@@ -19,6 +19,6 @@ const content = useState<ParsedPostContent[]>('config');
           design, dad jokes, and cheap beer among a few other things. I like building fast, efficient web services,
           learning new things, and writing code in the open source ecosystem."
     />
-    <BlogPostPreviews :posts="content" />
+    <BlogPostPreviews :posts="postPreviews" />
   </main>
 </template>

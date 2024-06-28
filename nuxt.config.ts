@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     '@nuxt/image',
     '@nuxt/content',
+    '@pinia/nuxt',
   ],
   eslint: {
     config: {
