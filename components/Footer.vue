@@ -1,5 +1,5 @@
 <template>
-  <footer class="mx-auto max-w-7xl py-12 md:flex md:items-center md:justify-between">
+  <footer class="mx-auto py-12 md:flex md:items-center md:justify-between">
     <div class="flex items-center justify-center space-x-6 md:order-1">
       <SpotifyNowPlaying>
         <UIcon name="i-logos-spotify-icon" class="size-6" />

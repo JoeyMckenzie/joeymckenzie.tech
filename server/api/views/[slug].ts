@@ -24,10 +24,12 @@ export default defineEventHandler(async (event) => {
     .where(eq(posts.slug, slug))
     .limit(1);
 
+  const currentViews = currentViewCount[0].views;
+
   // Bot crawling the post most likely, no need to increment view count
   if (agent && botPatterns.some(p => new RegExp(p).test(agent))) {
     return {
-      views: currentViewCount[0].views,
+      views: currentViews,
     };
   }
 
@@ -46,6 +48,6 @@ export default defineEventHandler(async (event) => {
   }
 
   return {
-    views: currentViewCount[0].views,
+    views: currentViews,
   };
 });

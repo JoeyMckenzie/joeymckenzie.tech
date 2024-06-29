@@ -29,7 +29,7 @@ const providers = [
 </script>
 
 <template>
-  <div class="flex flex-row items-center justify-center gap-x-2 py-12">
+  <div class="flex flex-row items-center justify-center gap-x-2 py-6">
     <p class="text-xs text-neutral-500">
       Powered by
     </p>
