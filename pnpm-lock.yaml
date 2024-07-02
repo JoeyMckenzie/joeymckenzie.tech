@@ -69,6 +69,9 @@ importers:
       '@iconify-json/mdi':
         specifier: ^1.1.67
         version: 1.1.67
+      '@iconify-json/pixelarticons':
+        specifier: ^1.1.12
+        version: 1.1.12
       '@iconify-json/simple-icons':
         specifier: ^1.1.107
         version: 1.1.107
@@ -1019,6 +1022,9 @@ packages:
 
   '@iconify-json/mdi@1.1.67':
     resolution: {integrity: sha512-00nllHES8hyACwIfgySlQgAE6MKgpr2wsKfpifMiZWZ9aXC5l4Jb0lR3lJSWwXgOW6kzAOdzC3T+2VOfBBZ13A==}
+
+  '@iconify-json/pixelarticons@1.1.12':
+    resolution: {integrity: sha512-CFY3WX3D2z7C+WQ1JpaDYodscUZQvtBiani9gLyv0F88FZF17hg8odcCweOCWfJapzsxsYKLdTreClfHz3CRIg==}
 
   '@iconify-json/simple-icons@1.1.107':
     resolution: {integrity: sha512-IEIekNX+KsA/xOjTCxgdSDe6OJ1rOpio5CJ8GgCiyFZYSkPG1FPTFJIYGT95qh+HvnLAHqtKqZT53vDfyNl8fQ==}
@@ -6877,6 +6883,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-json/mdi@1.1.67':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/pixelarticons@1.1.12':
     dependencies:
       '@iconify/types': 2.0.0
 
