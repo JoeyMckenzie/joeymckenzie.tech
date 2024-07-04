@@ -7,7 +7,7 @@
     >
         @foreach ($notes as $note)
             <div
-                class="hover:scale-102 card border border-base-300 bg-base-100 shadow-xl transition duration-150 ease-in-out hover:-translate-y-1"
+                class="hover:scale-102 card border-base-300 bg-base-100 border shadow-xl transition duration-150 ease-in-out hover:-translate-y-1"
             >
                 <div class="card-body">
                     <h2 class="card-title text-lg">

@@ -1,7 +1,7 @@
 <div class="mx-auto flex flex-col items-center py-12">
     <div class="prose">
         <h2
-            class="text-4xl font-extrabold tracking-tight sm:text-4xl dark:text-neutral-300"
+            class="text-4xl font-extrabold tracking-tight dark:text-neutral-300 sm:text-4xl"
         >
             Hi, I'm Joey.
         </h2>
