@@ -17,3 +17,6 @@ secrets:
 
 deploy:
     fly deploy
+
+prepare:
+    git config core.hookspath .githooks
