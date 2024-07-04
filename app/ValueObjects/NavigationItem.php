@@ -13,8 +13,7 @@ final class NavigationItem implements Wireable
     public function __construct(
         public string $display,
         public string $href
-    ) {
-    }
+    ) {}
 
     #[Override]
     public static function fromLivewire(mixed $value): void

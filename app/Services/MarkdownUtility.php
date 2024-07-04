@@ -19,9 +19,7 @@ use Spatie\Sitemap\Tags\Url;
 
 final readonly class MarkdownUtility implements ContentUtilityContract
 {
-    public function __construct(private MarkdownRenderer $renderer)
-    {
-    }
+    public function __construct(private MarkdownRenderer $renderer) {}
 
     #[Override]
     public function getMarkdownFilePaths(): array

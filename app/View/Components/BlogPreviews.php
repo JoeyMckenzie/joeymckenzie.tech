@@ -15,9 +15,7 @@ final class BlogPreviews extends Component
     /**
      * @param  Collection<int, Post>  $posts
      */
-    public function __construct(public readonly Collection $posts)
-    {
-    }
+    public function __construct(public readonly Collection $posts) {}
 
     #[Override]
     public function render(): View

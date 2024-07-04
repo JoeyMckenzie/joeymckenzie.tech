@@ -10,6 +10,5 @@ final readonly class DisplayableIcon
         public string $href,
         public string $display,
         public ?string $icon = null
-    ) {
-    }
+    ) {}
 }

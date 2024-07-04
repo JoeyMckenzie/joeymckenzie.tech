@@ -16,8 +16,7 @@ final readonly class NowPlaying implements Wireable
         public ?string $albumImageSrc = '',
         public ?string $trackTitle = '',
         public ?string $artist = '',
-    ) {
-    }
+    ) {}
 
     #[Override]
     public static function fromLivewire(mixed $value): void
