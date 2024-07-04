@@ -15,15 +15,14 @@
         "laravel/tinker": "^2.9",
         "league/commonmark": "^2.4",
         "livewire/livewire": "^3.4",
-        "spatie/laravel-ignition": "^2.6",
         "spatie/laravel-markdown": "^2.5",
         "spatie/laravel-sitemap": "^7.2",
-        "symfony/yaml": "^7.0"
+        "symfony/yaml": "^7.0",
+        "wireui/wireui": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.23",
-        "fly-apps/dockerfile-laravel": "^1.0",
         "larastan/larastan": "^2.9",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",

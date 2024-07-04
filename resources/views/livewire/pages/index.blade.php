@@ -1,11 +1,11 @@
 <div class="mx-auto flex flex-col items-center py-12">
     <div class="prose">
         <h2
-            class="text-center text-4xl font-extrabold tracking-tight sm:text-4xl"
+            class="text-4xl font-extrabold tracking-tight sm:text-4xl dark:text-neutral-300"
         >
             Hi, I'm Joey.
         </h2>
-        <p class="mx-auto mt-6 max-w-xl text-justify">
+        <p class="mx-auto mt-6 max-w-xl text-justify dark:text-neutral-400">
             I'm a software developer based in Northern California working in
             fintech. I enjoy writing about software, design, dad jokes, and
             cheap beer among a few other things. I like building fast, efficient

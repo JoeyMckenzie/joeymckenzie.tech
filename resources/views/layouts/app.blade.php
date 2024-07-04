@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<html
-    data-theme="forest"
-    lang="{{ str_replace("_", "-", app()->getLocale()) }}"
-    class="h-full"
->
+<html lang="{{ str_replace("_", "-", app()->getLocale()) }}" class="h-full">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,12 +28,12 @@
         <link rel="manifest" href="/site.webmanifest" />
 
         <!-- Scripts -->
+        <wireui:scripts />
+        <script src="//unpkg.com/alpinejs" defer></script>
         @vite(["resources/css/app.css", "resources/js/app.js"])
     </head>
-    <body class="h-full font-sans antialiased">
-        <main
-            class="mx-auto min-h-screen max-w-screen-xl px-4 pt-8 sm:px-6 lg:px-8"
-        >
+    <body class="h-full bg-white font-sans antialiased dark:bg-neutral-950">
+        <main class="mx-auto min-h-screen max-w-4xl px-4 pt-8 sm:px-6 lg:px-8">
             <livewire:components.navbar />
             {{ $slot }}
             <x-footer />
@@ -45,9 +41,12 @@
 
         <script>
             document.addEventListener('livewire:init', () => {
-                Livewire.on('theme-toggled', ([prefersDark]) => {
-                    const theme = prefersDark ? 'forest' : 'light';
-                    document.documentElement.setAttribute('data-theme', theme);
+                Livewire.on('theme-toggled', ([$prefersDark]) => {
+                    if ($prefersDark) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
                 });
             });
         </script>

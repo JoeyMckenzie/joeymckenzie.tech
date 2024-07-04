@@ -1,53 +1,22 @@
-import defaultTheme from "tailwindcss/defaultTheme";
+import {addDynamicIconSelectors} from "@iconify/tailwind";
 import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
-import daisyui from "daisyui";
-import { addDynamicIconSelectors } from "@iconify/tailwind";
+import defaultTheme from "tailwindcss/defaultTheme";
+import wireui from "./vendor/wireui/wireui/tailwind.config.js";
 
 /** @type {import("tailwindcss").Config} */
 export default {
+    presets: [wireui],
     content: [
         "./vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php",
         "./storage/framework/views/*.php",
         "./resources/views/**/*.blade.php",
         "./app/View/Components/*.php",
+        "./vendor/wireui/wireui/src/*.php",
+        "./vendor/wireui/wireui/ts/**/*.ts",
+        "./vendor/wireui/wireui/src/WireUi/**/*.php",
+        "./vendor/wireui/wireui/src/Components/**/*.php",
     ],
-    daisyui: {
-        themes: [
-            "light",
-            "dark",
-            "cupcake",
-            "bumblebee",
-            "emerald",
-            "corporate",
-            "synthwave",
-            "retro",
-            "cyberpunk",
-            "valentine",
-            "halloween",
-            "garden",
-            "forest",
-            "aqua",
-            "lofi",
-            "pastel",
-            "fantasy",
-            "wireframe",
-            "black",
-            "luxury",
-            "dracula",
-            "cmyk",
-            "autumn",
-            "business",
-            "acid",
-            "lemonade",
-            "night",
-            "coffee",
-            "winter",
-            "dim",
-            "nord",
-            "sunset",
-        ],
-    },
     theme: {
         extend: {
             fontFamily: {
@@ -56,5 +25,5 @@ export default {
             },
         },
     },
-    plugins: [forms, typography, addDynamicIconSelectors(), daisyui],
+    plugins: [forms, typography, addDynamicIconSelectors()],
 };
