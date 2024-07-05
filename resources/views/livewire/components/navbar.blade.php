@@ -1,7 +1,7 @@
 <div class="flex items-center justify-between">
     <div class="flex items-center justify-center text-sm">
         <a
-            wire:navigate.hover
+            wire:navigate
             href="/"
             class="{{ $this->getClassnameForLink("home") }}"
         >
@@ -11,7 +11,7 @@
             class="icon-[fluent--slash-forward-12-regular] text-neutral-500"
         ></span>
         <a
-            wire:navigate.hover
+            wire:navigate
             href="/now"
             class="{{ $this->getClassnameForLink("now") }}"
         >
@@ -21,7 +21,7 @@
             class="icon-[fluent--slash-forward-12-regular] text-neutral-500"
         ></span>
         <a
-            wire:navigate.hover
+            wire:navigate
             href="/blog"
             class="{{ $this->getClassnameForLink("blog") }}"
         >

@@ -1,11 +1,7 @@
-<div class="py-12 sm:px-6 lg:px-8">
-    <div class="prose mx-auto max-w-2xl">
-        <h2
-            class="text-center text-4xl font-extrabold tracking-tight sm:text-4xl"
-        >
-            Now.
-        </h2>
-        <div class="prose max-w-2xl flex-col leading-6 dark:prose-invert">
+<div class="py-12">
+    <div class="prose mx-auto dark:prose-invert">
+        <h2 class="text-4xl font-extrabold tracking-tight sm:text-4xl">Now.</h2>
+        <div class="flex-col leading-6">
             <p class="mt-6 max-w-xl">
                 A few things I'm working on
                 <a class="font-bold" href="https://nownownow.com/about">now:</a>

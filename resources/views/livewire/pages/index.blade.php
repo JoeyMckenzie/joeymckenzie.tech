@@ -1,11 +1,9 @@
 <div class="mx-auto flex flex-col items-center py-12">
-    <div class="prose">
-        <h2
-            class="text-4xl font-extrabold tracking-tight dark:text-neutral-300 sm:text-4xl"
-        >
+    <div class="prose dark:prose-invert">
+        <h2 class="text-4xl font-extrabold tracking-tight sm:text-4xl">
             Hi, I'm Joey.
         </h2>
-        <p class="mx-auto mt-6 max-w-xl text-justify dark:text-neutral-400">
+        <p class="mx-auto mt-6 text-justify">
             I'm a software developer based in Northern California working in
             fintech. I enjoy writing about software, design, dad jokes, and
             cheap beer among a few other things. I like building fast, efficient
@@ -14,13 +12,4 @@
         </p>
     </div>
     <x-social-buttons />
-    <div class="py-12">
-        <h2
-            class="pb-12 text-center text-3xl font-bold tracking-tight sm:text-4xl"
-        >
-            Latest thoughts.
-        </h2>
-        <x-blog-previews :posts="$posts" />
-    </div>
-    <x-notes />
 </div>
