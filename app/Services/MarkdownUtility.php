@@ -8,9 +8,9 @@ use App\Contracts\ContentUtilityContract;
 use App\Models\Post;
 use App\ValueObjects\ContentMeta;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
-use League\CommonMark\Extension\Table\TableExtension;
 use Override;
 use Spatie\LaravelMarkdown\MarkdownRenderer;
 use Spatie\Sitemap\Sitemap;
@@ -20,6 +20,41 @@ use Spatie\Sitemap\Tags\Url;
 final readonly class MarkdownUtility implements ContentUtilityContract
 {
     public function __construct(private MarkdownRenderer $renderer) {}
+
+    #[Override]
+    public function generateSitemap(): Sitemap
+    {
+        /** @var string $url */
+        $url = config('app.url');
+        $slugs = Post::select(['slug', 'updated_at'])->get();
+        $siteMap = SitemapGenerator::create($url)->getSitemap();
+
+        collect($slugs)
+            ->each(function (Post $blogPost) use ($siteMap): void {
+                $slug = $blogPost->slug;
+                $siteMap
+                    ->add(Url::create("/blog/$slug")
+                        ->setPriority(0.5)
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
+                        ->setLastModificationDate($blogPost->updated_at?->toDate() ?? now()));
+            });
+
+        return $siteMap
+            ->add(Url::create('/about')
+                ->setPriority(0.5)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY))
+            ->add(Url::create('/now')
+                ->setPriority(0.5)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY));
+    }
+
+    public function getParsedContentForSlug(string $filePath): ContentMeta
+    {
+        $filePaths = self::getMarkdownFilePaths();
+        $contentPath = collect($filePaths)->firstOrFail(fn (string $path) => Str::contains($path, $filePath));
+
+        return self::getParsedContent($contentPath);
+    }
 
     #[Override]
     public function getMarkdownFilePaths(): array
@@ -73,32 +108,5 @@ final readonly class MarkdownUtility implements ContentUtilityContract
         Log::info('frontmatter and content parsed');
 
         return new ContentMeta($fileSlug, $markdown, $html, $frontMatter);
-    }
-
-    #[Override]
-    public function generateSitemap(): Sitemap
-    {
-        /** @var string $url */
-        $url = config('app.url');
-        $slugs = Post::select(['slug', 'updated_at'])->get();
-        $siteMap = SitemapGenerator::create($url)->getSitemap();
-
-        collect($slugs)
-            ->each(function (Post $blogPost) use ($siteMap): void {
-                $slug = $blogPost->slug;
-                $siteMap
-                    ->add(Url::create("/blog/$slug")
-                        ->setPriority(0.5)
-                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY)
-                        ->setLastModificationDate($blogPost->updated_at?->toDate() ?? now()));
-            });
-
-        return $siteMap
-            ->add(Url::create('/about')
-                ->setPriority(0.5)
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY))
-            ->add(Url::create('/now')
-                ->setPriority(0.5)
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_YEARLY));
     }
 }

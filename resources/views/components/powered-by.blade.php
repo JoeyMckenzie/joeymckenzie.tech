@@ -1,5 +1,5 @@
 <div class="flex items-center justify-center space-x-3">
-    <p class="my-auto text-xs dark:text-neutral-300">Powered by</p>
+    <p class="my-auto text-center text-xs dark:text-neutral-300">Powered By</p>
     @foreach ($providers as $provider)
         <a href="{{ $provider->href }}" class="my-auto flex hover:underline">
             <span class="sr-only">{{ $provider->display }}</span>

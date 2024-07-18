@@ -10,12 +10,11 @@
                 <li>
                     I'm part of team modernizing financial systems for a lending
                     company with things like
-                    <a href="https://dotnet.microsoft.com/en-us/">.NET</a>
-                    ,
+                    <a href="https://dotnet.microsoft.com/en-us/">.NET,</a>
                     <a href="https://aws.amazon.com/">AWS,</a>
                     <a href="https://www.docker.com/">Docker,</a>
-                    <a href="https://www.terraform.io/">Terraform</a>
-                    , and a bunch of other resume buzzwords. I like breaking
+                    <a href="https://www.terraform.io/">Terraform,</a>
+                    and a bunch of other resume buzzwords. I like breaking
                     things and convincing people that you're legally allowed to
                     deploy .NET to places other than Azure.
                 </li>

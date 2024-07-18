@@ -3,7 +3,7 @@
 >
     <x-link secondary href="{{ $this->href() }}" wire:navigate>
         <div class="flex w-full items-center gap-x-2 text-xs">
-            <time datetime="datetime_date">{{ $post->displayDate() }}</time>
+            <time datetime="datetime_date">{{ $this->displayDate() }}</time>
             <x-badge lime label="{{$post->category}}" />
             @if ($viewCountEnabled)
                 <p>{{ $post->formattedViews() }} views</p>

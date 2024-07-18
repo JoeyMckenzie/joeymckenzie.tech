@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Pages;
 
+use App\Contracts\ContentUtilityContract;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -13,7 +14,7 @@ final class BlogPost extends Component
 {
     public ?Post $post = null;
 
-    public function mount(string $slug, Request $request): void
+    public function mount(string $slug, Request $request, ContentUtilityContract $contentUtility): void
     {
         $post = Post::query()
             ->with('keywords')

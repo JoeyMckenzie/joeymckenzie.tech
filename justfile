@@ -3,6 +3,9 @@ default: dev
 dev:
     php artisan serve & npm run dev & just lint
 
+content:
+    php artisan content:sync
+
 check:
     find app/ resources/ routes/ database/ tests/ phpstan.neon | entr -s 'composer run check'
 

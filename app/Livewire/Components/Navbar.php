@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Components;
 
 use App\ValueObjects\NavigationItem;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -33,13 +34,9 @@ final class Navbar extends Component
         return view('livewire.components.navbar');
     }
 
-    public function getClassnameForLink(string $route, ?string $subRoute = null): string
+    public function getClassnameForLink(string $route): string
     {
-        $containsRoute = $subRoute !== null
-            ? request()->routeIs($route)
-            : request()->routeIs($route) || request()->routeIs($subRoute);
-
-        return $containsRoute
+        return Str::contains(request()->route()?->getName() ?? '', $route)
             ? self::ACTIVE_CLASS
             : self::INACTIVE_CLASS;
     }

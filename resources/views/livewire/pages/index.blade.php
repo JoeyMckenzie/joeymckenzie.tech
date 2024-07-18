@@ -3,7 +3,7 @@
         <h2 class="text-4xl font-extrabold tracking-tight sm:text-4xl">
             Hi, I'm Joey.
         </h2>
-        <p class="mx-auto mt-6 text-justify">
+        <p class="mx-auto mt-6">
             I'm a software developer based in Northern California working in
             fintech. I enjoy writing about software, design, dad jokes, and
             cheap beer among a few other things. I like building fast, efficient
