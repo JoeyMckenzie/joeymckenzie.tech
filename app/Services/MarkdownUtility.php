@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use League\CommonMark\Extension\FrontMatter\Data\SymfonyYamlFrontMatterParser;
 use League\CommonMark\Extension\FrontMatter\FrontMatterParser;
+use League\CommonMark\Extension\Table\TableExtension;
 use Override;
 use Spatie\LaravelMarkdown\MarkdownRenderer;
 use Spatie\Sitemap\Sitemap;
@@ -100,8 +101,7 @@ final readonly class MarkdownUtility implements ContentUtilityContract
         $frontMatter = $parsedContent->getFrontMatter();
         $markdown = $parsedContent->getContent();
         $html = $this->renderer
-            // ->commonmarkOptions($this->config)
-            // ->addExtension(new TableExtension())
+            ->addExtension(new TableExtension())
             ->highlightTheme('tokyo-night')
             ->toHtml($markdown);
 
