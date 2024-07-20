@@ -3,10 +3,7 @@ use leptos_meta::*;
 use leptos_router::*;
 
 use crate::{
-    components::{
-        blog_previews::BlogPreviews, intro::Intro, note_to_self::NoteToSelf,
-        social_buttons::SocialButtons,
-    },
+    components::{blog_previews::BlogPreviews, intro::Intro, social_buttons::SocialButtons},
     models::PostMetadata,
 };
 
@@ -37,13 +34,13 @@ pub fn HomePage() -> impl IntoView {
         <Intro/>
         <SocialButtons/>
         <div class="pt-12 sm:px-6 lg:px-8">
-            <div class="mx-auto max-w-4xl">
+            <div class="max-w-4xl mx-auto">
                 <h2 class="text-3xl font-bold tracking-tight text-center sm:text-4xl">
                     "Latest thoughts."
                 </h2>
                 <Suspense fallback=|| {
                     view! {
-                        <span class="py-12 flex justify-center mx-auto loading loading-ring loading-md"></span>
+                        <span class="flex justify-center py-12 mx-auto loading loading-ring loading-md"></span>
                     }
                 }>
                     {move || match posts.get() {
@@ -67,9 +64,6 @@ pub fn HomePage() -> impl IntoView {
                         </button>
                     </A>
                 </Suspense>
-                <div class="pt-8">
-                    <NoteToSelf/>
-                </div>
             </div>
         </div>
     }

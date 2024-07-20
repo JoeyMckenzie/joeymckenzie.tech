@@ -1,7 +1,7 @@
 use leptos::*;
 use leptos_router::*;
 
-use crate::components::DisplayableIcon;
+use crate::components::{theme_toggle::ThemeToggle, DisplayableIcon};
 
 #[component]
 pub fn Navbar() -> impl IntoView {
@@ -24,16 +24,19 @@ pub fn Navbar() -> impl IntoView {
     ]);
 
     view! {
-        <div class="flex flex-row gap-x-4 mx-auto justify-center pt-8">
+        <div class="flex flex-row items-center justify-between py-4 mx-auto gap-x-4">
             <div class="text-sm breadcrumbs">
                 <ul>
                     <For each=links key=|link| link.display let:link>
                         <li>
-                            <A href=link.href>{link.display}</A>
+                            <A class="nav-link" href=link.href>
+                                {link.display}
+                            </A>
                         </li>
                     </For>
                 </ul>
             </div>
+            <ThemeToggle/>
         </div>
     }
 }
