@@ -26,7 +26,7 @@
         "@tailwindcss/typography": "^0.5.13",
         "autoprefixer": "^10.4.2",
         "axios": "^1.6.4",
-        "laravel-vite-plugin": "^1.0.3",
+        "laravel-vite-plugin": "^1.0.5",
         "lint-staged": "^15.2.7",
         "postcss": "^8.4.31",
         "prettier": "^3.2.5",
