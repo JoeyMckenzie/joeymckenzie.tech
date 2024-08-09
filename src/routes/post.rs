@@ -42,11 +42,12 @@ pub fn PostPage() -> impl IntoView {
         <div class="flex flex-col justify-center pt-12">
             <Suspense fallback=move || {
                 view! {
-                    <span class="py-12 flex justify-center mx-auto loading loading-ring loading-md"></span>
+                    <span class="flex justify-center py-12 mx-auto loading loading-ring loading-md"></span>
                 }
             }>
                 {move || {
                     if let Some(Ok(Some(post_aggregate))) = post_resource.get() {
+                        use num_format::{Locale, ToFormattedString};
                         let post = post_aggregate.post;
                         let format_for_display = format_description::parse(
                                 "[month repr:short] [day padding:none], [year]",
@@ -60,18 +61,19 @@ pub fn PostPage() -> impl IntoView {
                             .format(&format_for_datetime)
                             .unwrap();
                         let keywords: String = post_aggregate.keywords.unwrap_or(vec![]).join(",");
+                        let formatted_views = post.views.to_formatted_string(&Locale::en);
                         view! {
-                            <article class="prose mx-auto w-full overflow-hidden pb-6 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
+                            <article class="w-full pb-6 mx-auto overflow-hidden prose dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
                                 <Title text=format!("{} | joeymckenzie.tech", post.title.clone()) />
                                 <Meta name="description" content=post.description />
                                 <Meta name="keywords" content=keywords />
-                                <h1 class="text-center text-2xl font-semibold">
+                                <h1 class="text-2xl font-semibold text-center">
                                     {post.title.clone()}
                                 </h1>
-                                <div class="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight">
+                                <div class="flex flex-row items-center justify-center text-sm tracking-tight gap-x-2">
                                     <time dateTime=datetime_date>{display_date}</time>
                                     <div class="badge badge-neutral">{post.category}</div>
-                                    <p>{post.views}views</p>
+                                    <p>{formatted_views}{" "}views</p>
                                 </div>
                                 <img
                                     alt=format!("{} blog meme", post.title)
