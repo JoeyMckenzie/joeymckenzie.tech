@@ -62,16 +62,16 @@ pub fn PostPage() -> impl IntoView {
                         let keywords: String = post_aggregate.keywords.unwrap_or(vec![]).join(",");
                         view! {
                             <article class="prose mx-auto w-full overflow-hidden pb-6 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
-                                <Title text=format!("{} | joeymckenzie.tech", post.title.clone())/>
-                                <Meta name="description" content=post.description/>
-                                <Meta name="keywords" content=keywords/>
+                                <Title text=format!("{} | joeymckenzie.tech", post.title.clone()) />
+                                <Meta name="description" content=post.description />
+                                <Meta name="keywords" content=keywords />
                                 <h1 class="text-center text-2xl font-semibold">
                                     {post.title.clone()}
                                 </h1>
                                 <div class="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight">
                                     <time dateTime=datetime_date>{display_date}</time>
                                     <div class="badge badge-neutral">{post.category}</div>
-                                    <p>{post.views} views</p>
+                                    <p>{post.views}views</p>
                                 </div>
                                 <img
                                     alt=format!("{} blog meme", post.title)

@@ -34,7 +34,7 @@ pub fn SocialIcons() -> impl IntoView {
     ]);
 
     view! {
-        <div class="flex justify-center items-center space-x-4">
+        <div class="flex items-center justify-center space-x-4">
             <For each=socials key=|social| social.display let:social>
                 <A href=social.href class="flex my-auto hover:underline">
                     <span class="sr-only">{social.display}</span>

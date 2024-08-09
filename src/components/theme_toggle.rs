@@ -81,9 +81,9 @@ pub fn ThemeToggle() -> impl IntoView {
     };
 
     view! {
-        <Html attr:data-theme=color_scheme/>
+        <Html attr:data-theme=color_scheme />
         <ActionForm action=toggle_dark_mode_action>
-            <input type="hidden" name="prefers_dark" value=move || (!prefers_dark()).to_string()/>
+            <input type="hidden" name="prefers_dark" value=move || (!prefers_dark()).to_string() />
             <button type="submit" class="flex items-center">
                 {move || {
                     if prefers_dark() {

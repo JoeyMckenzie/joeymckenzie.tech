@@ -30,7 +30,7 @@ pub fn BlogPage() -> impl IntoView {
     let posts = create_resource(|| (), move |_| async move { get_blog_posts().await });
 
     view! {
-        <Title text="Blog. | joeymckenzie.tech"/>
+        <Title text="Blog. | joeymckenzie.tech" />
 
         <div class="py-12 sm:px-6 lg:px-8">
             <SectionIntro title=String::from(
@@ -53,15 +53,15 @@ pub fn BlogPage() -> impl IntoView {
                     Some(posts) => {
                         match posts {
                             Ok(posts_metadata) => {
-                                view! { <BlogPreviews posts=posts_metadata/> }
+                                view! { <BlogPreviews posts=posts_metadata /> }
                             }
                             Err(_) => {
-                                view! { <BlogPreviews posts=vec![]/> }
+                                view! { <BlogPreviews posts=vec![] /> }
                             }
                         }
                     }
                     None => {
-                        view! { <BlogPreviews posts=vec![]/> }
+                        view! { <BlogPreviews posts=vec![] /> }
                     }
                 }}
 

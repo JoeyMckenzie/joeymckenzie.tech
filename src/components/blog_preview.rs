@@ -15,20 +15,20 @@ pub fn BlogPreview(post: PostMetadata) -> impl IntoView {
     let formatted_views = post.views.to_formatted_string(&Locale::en);
 
     view! {
-        <article class="flex max-w-xl flex-col items-start hover:scale-102 transition duration-150 ease-in-out hover:-translate-y-1">
-            <div class="flex items-center gap-x-4 text-xs">
+        <article class="flex flex-col items-start max-w-xl transition duration-150 ease-in-out hover:scale-102 hover:-translate-y-1">
+            <div class="flex items-center text-xs gap-x-4">
                 <time datetime=datetime_date>{display_date}</time>
                 <div class="badge badge-neutral">{post.category}</div>
                 <p>{format!("{} views", formatted_views)}</p>
             </div>
-            <div class="group relative">
+            <div class="relative group">
                 <h3 class="mt-3 text-lg font-semibold leading-6">
                     <A href=format!("/blog/{}", post.slug)>
                         <span class="absolute inset-0"></span>
                         {post.title}
                     </A>
                 </h3>
-                <p class="mt-5 line-clamp-3 text-sm leading-6">{post.description}</p>
+                <p class="mt-5 text-sm leading-6 line-clamp-3">{post.description}</p>
             </div>
         </article>
     }

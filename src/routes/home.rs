@@ -30,9 +30,9 @@ pub fn HomePage() -> impl IntoView {
     let posts = create_resource(|| (), move |_| async move { get_latest_blog_posts().await });
 
     view! {
-        <Title text="Hi, I'm Joey. | joeymckenzie.tech"/>
-        <Intro/>
-        <SocialButtons/>
+        <Title text="Hi, I'm Joey. | joeymckenzie.tech" />
+        <Intro />
+        <SocialButtons />
         <div class="pt-12 sm:px-6 lg:px-8">
             <div class="max-w-4xl mx-auto">
                 <h2 class="text-3xl font-bold tracking-tight text-center sm:text-4xl">
@@ -47,18 +47,17 @@ pub fn HomePage() -> impl IntoView {
                         Some(posts) => {
                             match posts {
                                 Ok(posts_metadata) => {
-                                    view! { <BlogPreviews posts=posts_metadata/> }
+                                    view! { <BlogPreviews posts=posts_metadata /> }
                                 }
                                 Err(_) => {
-                                    view! { <BlogPreviews posts=vec![]/> }
+                                    view! { <BlogPreviews posts=vec![] /> }
                                 }
                             }
                         }
                         None => {
-                            view! { <BlogPreviews posts=vec![]/> }
+                            view! { <BlogPreviews posts=vec![] /> }
                         }
-                    }}
-                    <A href="/blog" class="flex justify-center">
+                    }} <A href="/blog" class="flex justify-center">
                         <button class="btn">
                             "Blogs" <span class="h-4 w-4 icon-[mdi--arrow-right]"></span>
                         </button>

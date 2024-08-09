@@ -24,7 +24,7 @@ pub fn SocialButtons() -> impl IntoView {
     ]);
 
     view! {
-        <div class="flex justify-center mx-auto grid max-w-2xl grid-cols-1 gap-x-4 gap-y-4 pb-8 sm:grid-cols-3">
+        <div class="grid justify-center max-w-2xl grid-cols-1 pb-8 mx-auto gap-x-4 gap-y-4 sm:grid-cols-3">
             <For each=socials key=|social| social.display let:social>
                 <A href=social.href class="btn">
                     <span class=format!("w-5 h-5 {}", social.icon.unwrap())></span>

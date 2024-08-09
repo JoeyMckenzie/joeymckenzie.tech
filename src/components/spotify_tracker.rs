@@ -26,25 +26,25 @@ pub fn SpotifyTracker() -> impl IntoView {
 
     view! {
         <Suspense fallback=move || {
-            view! { <SpotifyNotPlaying loading=true/> }
+            view! { <SpotifyNotPlaying loading=true /> }
         }>
             {move || match response.get() {
                 Some(now_playing_result) => {
                     match now_playing_result {
                         Ok(now_playing) => {
                             if now_playing.now_playing {
-                                view! { <SpotifyNowPlaying now_playing=now_playing/> }
+                                view! { <SpotifyNowPlaying now_playing=now_playing /> }
                             } else {
-                                view! { <SpotifyNotPlaying/> }
+                                view! { <SpotifyNotPlaying /> }
                             }
                         }
                         Err(_) => {
-                            view! { <SpotifyNotPlaying/> }
+                            view! { <SpotifyNotPlaying /> }
                         }
                     }
                 }
                 None => {
-                    view! { <SpotifyNotPlaying/> }
+                    view! { <SpotifyNotPlaying /> }
                 }
             }}
 

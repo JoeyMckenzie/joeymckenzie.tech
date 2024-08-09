@@ -1,6 +1,3 @@
-[env]
-dotenv_file = ".env"
-
 [tasks.default]
 dependencies = ["dev"]
 
@@ -17,6 +14,10 @@ install_crate = "leptosfmt"
 command = "leptosfmt"
 args = ["src/*.rs", "src/**/*.rs"]
 
+[tasks.build]
+command = "cargo"
+args = ["leptos", "build", "--release", "-vv"]
+
 [tasks.content]
 command = "cargo"
 args = ["run", "--bin", "content", "--features", "content"]
@@ -27,6 +28,7 @@ args = ["sqlx", "prepare", "--", "--all-targets", "--all-features"]
 
 [tasks.deploy]
 command = "fly"
+env_files = ["./.env.production"]
 args = [
   "deploy",
   "--build-arg",
@@ -43,6 +45,7 @@ args = [
 
 [tasks.docker-build]
 command = "docker"
+env_files = ["./.env"]
 args = [
   "build",
   "--build-arg",
@@ -85,3 +88,11 @@ args = ["rm", "blog"]
 [tasks.docker-restart]
 command = "docker"
 dependencies = ["docker-stop", "docker-rm", "docker-build", "docker-run"]
+
+[tasks.prepare-hooks]
+command = "git"
+args = ["config", "core.hookspath", ".githooks"]
+
+[tasks.secrets]
+command = "fly"
+args = ["secrets", "import", "<", ".env.production"]

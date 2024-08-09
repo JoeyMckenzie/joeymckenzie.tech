@@ -1,7 +1,7 @@
 use leptos::*;
 use leptos_router::A;
 
-use crate::components::{theme_toggle::ThemeToggle, DisplayableIcon};
+use crate::components::DisplayableIcon;
 
 #[server(GetCommitSha)]
 pub async fn get_commit_sha() -> Result<String, ServerFnError> {
