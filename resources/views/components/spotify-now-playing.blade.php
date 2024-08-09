@@ -4,7 +4,7 @@
     rel="noreferrer"
     target="_blank"
 >
-    <h2 class="font-ubuntu inline-flex justify-center text-xs">
+    <h2 class="inline-flex justify-center text-xs dark:text-white">
         Now listening
     </h2>
     <div class="flex flex-row items-center justify-center space-x-2">
@@ -18,11 +18,13 @@
         />
         <div class="flex max-w-[16rem] flex-col">
             <h4
-                class="line-clamp-1 overflow-hidden text-ellipsis text-xs font-semibold"
+                class="line-clamp-1 overflow-hidden text-ellipsis text-xs font-semibold dark:text-white"
             >
                 {{ $trackTitle }}
             </h4>
-            <p class="line-clamp-1 overflow-hidden text-ellipsis text-xs">
+            <p
+                class="line-clamp-1 overflow-hidden text-ellipsis text-xs dark:text-neutral-200"
+            >
                 {{ $artist }}
             </p>
         </div>
