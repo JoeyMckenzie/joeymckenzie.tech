@@ -40,6 +40,8 @@ args = [
   "--build-arg",
   "APP_URL=${APP_URL}",
   "--build-arg",
+  "COMMIT_SHA=${COMMIT_SHA}",
+  "--build-arg",
   "DATABASE_URL=${DATABASE_URL}",
 ]
 

@@ -24,7 +24,7 @@ pub fn Navbar() -> impl IntoView {
     ]);
 
     view! {
-        <div class="flex flex-row items-center justify-between p-4 mx-auto">
+        <div class="flex flex-row items-center justify-between py-4 mx-auto">
             <div class="text-sm breadcrumbs">
                 <ul>
                     <For each=links key=|link| link.display let:link>

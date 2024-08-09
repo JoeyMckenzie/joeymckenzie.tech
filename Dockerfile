@@ -62,7 +62,6 @@ RUN echo "\
     SPOTIFY_CLIENT_SECRET=${SPOTIFY_CLIENT_SECRET}\n\
     APP_URL=${APP_URL}\n\
     COMMIT_SHA=${COMMIT_SHA}\n\
-    SQLX_OFFLINE=${SQLX_OFFLINE}\n\
     DATABASE_URL=${DATABASE_URL}" > ./.env
 
 # Build the app

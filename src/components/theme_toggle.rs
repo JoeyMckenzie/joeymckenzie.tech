@@ -88,11 +88,11 @@ pub fn ThemeToggle() -> impl IntoView {
                 {move || {
                     if prefers_dark() {
                         view! {
-                            <span class="w-5 h-5 swap-off fill-current icon-[pixelarticons--sun]"></span>
+                            <span class="w-5 h-5 swap-off fill-current icon-[ph--sun-fill]"></span>
                         }
                     } else {
                         view! {
-                            <span class="w-5 h-5 swap-off fill-current icon-[pixelarticons--moon]"></span>
+                            <span class="w-5 h-5 swap-off fill-current icon-[ph--moon-fill]"></span>
                         }
                     }
                 }}

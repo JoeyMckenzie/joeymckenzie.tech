@@ -52,7 +52,7 @@ pub fn PoweredBy() -> impl IntoView {
                 </A>
             </For>
             <Suspense fallback=|| {
-                view! { <p class="text-sm">"Loading..."</p> }
+                view! { <p class="text-xs">"Loading..."</p> }
             }>
                 {move || {
                     if let Some(Ok(sha)) = commit_sha() {
