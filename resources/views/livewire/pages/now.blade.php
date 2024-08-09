@@ -10,7 +10,7 @@
                 <li>
                     I've recently joined
                     <a href="https://www.dayforce.com/">Dayforce</a>
-                    as a Senior Software Engineer working on their security
+                    as a Senior Software Engineer working on the security
                     platform. Though my roots are in
                     <a href="https://dotnet.microsoft.com/en-us/">.NET</a>
                     and
