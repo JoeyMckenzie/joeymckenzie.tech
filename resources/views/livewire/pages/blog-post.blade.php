@@ -13,7 +13,7 @@
         class="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tight"
     >
         <time datetime="datetime_date">{{ $post->displayDate() }}</time>
-        <div class="badge badge-neutral">{{ $post->category }}</div>
+        <x-badge lime label="{{$post->category}}" />
         <p>{{ $post->formattedViews() }} views</p>
     </div>
     <img

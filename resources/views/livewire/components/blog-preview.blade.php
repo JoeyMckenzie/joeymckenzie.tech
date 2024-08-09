@@ -13,7 +13,7 @@
             <h3 class="mt-3 text-lg font-semibold leading-6">
                 {{ $post->title }}
             </h3>
-            <p class="mt-5 line-clamp-3 text-sm leading-6">
+            <p class="mt-5 line-clamp-3 text-sm font-light leading-6">
                 {{ $post->description }}
             </p>
         </div>
