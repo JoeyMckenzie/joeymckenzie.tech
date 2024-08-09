@@ -8,11 +8,18 @@
             </p>
             <ul>
                 <li>
-                    I'm part of team modernizing financial systems for a lending
-                    company with things like
-                    <a href="https://dotnet.microsoft.com/en-us/">.NET,</a>
+                    I've recently joined
+                    <a href="https://www.dayforce.com/">Dayforce</a>
+                    as a Senior Software Engineer working on their security
+                    platform. Though my roots are in
+                    <a href="https://dotnet.microsoft.com/en-us/">.NET</a>
+                    and
                     <a href="https://aws.amazon.com/">AWS,</a>
+                    I've spanned the technology horizon working professionally
+                    with
+                    <a href="https://azure.com/">Azure,</a>
                     <a href="https://www.docker.com/">Docker,</a>
+                    <a href="https://www.kubernetes.io/">Kubernetes,</a>
                     <a href="https://www.terraform.io/">Terraform,</a>
                     and a bunch of other resume buzzwords. I like breaking
                     things and convincing people that you're legally allowed to
@@ -21,14 +28,14 @@
                 <li>
                     I have a secret love for PHP and Laravel and have written a
                     few things about them on my
-                    <a href="/blog">blog</a>
-                    . I've also published a
+                    <a href="/blog">blog.</a>
+                    I've also published a
                     <a
                         href="https://packagist.org/packages/joeymckenzie/openbrewerydb-php-api"
                     >
-                        package or two
+                        package or two.
                     </a>
-                    . I'm even working on a
+                    I'm even working on a
                     <a href="https://hopjobs.xyz">job board</a>
                     for breweries. Even the website you're reading is powered by
                     <a href="https://livewire.laravel.com">Livewire!</a>
