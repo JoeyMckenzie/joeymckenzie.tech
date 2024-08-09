@@ -8,7 +8,8 @@
         "fmt:check": "npm run fmt -- --check"
     },
     "lint-staged": {
-        "**/*.php": "composer run fmt"
+        "**/*.php": "composer run fmt:php",
+        "**/*.blade.php": "composer run fmt:prettier"
     },
     "devDependencies": {
         "@iconify-json/devicon": "^1.1.41",

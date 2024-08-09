@@ -15,7 +15,7 @@ final class Navbar extends Component
 {
     private const string ACTIVE_CLASS = 'text-lime-600 font-semibold dark:text-lime-400';
 
-    private const string INACTIVE_CLASS = 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200';
+    private const string INACTIVE_CLASS = 'text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200';
 
     /**
      * @var NavigationItem[]
