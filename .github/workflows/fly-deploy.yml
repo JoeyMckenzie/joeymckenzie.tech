@@ -1,14 +1,11 @@
 name: Deploy to Fly
 
 on:
-  workflow_run:
-    workflows: ['Rust CI']
-    types:
-      - completed
+  push:
+    branches: ['archive/leptos']
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
