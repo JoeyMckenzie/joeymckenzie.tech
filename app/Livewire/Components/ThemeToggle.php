@@ -22,7 +22,7 @@ final class ThemeToggle extends Component
 
     public function toggleTheme(): void
     {
-        $this->prefersDark = $this->prefersDark !== null && ! $this->prefersDark;
+        $this->prefersDark = ! $this->prefersDark;
         $this->dispatch('theme-toggled', $this->prefersDark);
     }
 
