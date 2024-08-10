@@ -1,5 +1,5 @@
 <div class="flex items-center justify-between">
-    <div class="flex items-center justify-center text-sm">
+    <div class="flex items-center justify-center leading-6">
         <a
             wire:navigate
             href="/"

@@ -29,11 +29,12 @@
 
         <!-- Scripts -->
         <wireui:scripts />
-        <script src="//unpkg.com/alpinejs" defer></script>
         @vite(["resources/css/app.css", "resources/js/app.js"])
     </head>
     <body class="h-full bg-white font-sans antialiased dark:bg-neutral-950">
-        <main class="mx-auto min-h-screen max-w-5xl px-4 pt-8 sm:px-6 lg:px-8">
+        <main
+            class="mx-auto min-h-screen w-full max-w-4xl px-4 pt-8 sm:px-6 lg:px-8"
+        >
             <livewire:components.navbar />
             {{ $slot }}
             <x-footer />
