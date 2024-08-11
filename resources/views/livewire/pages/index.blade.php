@@ -11,7 +11,11 @@
     </p>
     <x-social-buttons />
     <x-blog-previews :posts="$posts" />
-    <a class="flex justify-center py-12" wire:navigate href="/blog">
+    <a
+        class="flex justify-center py-12 no-underline"
+        wire:navigate
+        href="/blog"
+    >
         <x-button lime>
             Blog
             <span class="icon-[gridicons--external] h-5 w-5"></span>
