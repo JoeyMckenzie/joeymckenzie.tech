@@ -10,6 +10,9 @@
         ecosystem.
     </p>
     <x-social-buttons />
+    <h2 class="text-right text-4xl font-extrabold tracking-tight sm:text-4xl">
+        Latest Thoughts.
+    </h2>
     <x-blog-previews :posts="$posts" />
     <a
         class="flex justify-center py-12 no-underline"
