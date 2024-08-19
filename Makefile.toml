@@ -17,6 +17,11 @@ args = ["src/*.rs", "src/**/*.rs"]
 [tasks.build]
 command = "cargo"
 args = ["leptos", "build", "--release", "-vv"]
+dependencies = ["assets"]
+
+[tasks.assets]
+command = "npx"
+args = ["tailwindcss", "-i", "./styles/tailwind.css", "-o", "./styles/main.css"]
 
 [tasks.content]
 command = "cargo"

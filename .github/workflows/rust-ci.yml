@@ -33,7 +33,7 @@ jobs:
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
 
-      - name: Content sync
+      - name: Run content sync
         run: cargo run --bin content --no-default-features --features content
         env:
           SHIKI_DARK_THEME: ${{ secrets.SHIKI_DARK_THEME }}

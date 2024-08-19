@@ -2,7 +2,7 @@ ARG NODE_VERSION=21.6.2
 
 
 # Build frontent assests
-FROM node:${NODE_VERSION} as node_modules_go_brrr
+FROM node:${NODE_VERSION} AS node_modules_go_brrr
 
 RUN mkdir /app
 RUN mkdir -p /app
@@ -21,7 +21,7 @@ RUN npm ci --no-audit; \
 
 
 # Get started with a build env with Rust nightly
-FROM rustlang/rust:nightly-bullseye as builder
+FROM rustlang/rust:nightly-bullseye AS builder
 
 # If you’re using stable, use this instead
 # FROM rust:1.74-bullseye as builder
@@ -69,7 +69,7 @@ RUN cargo leptos build --release -vv
 
 
 # Deployment container
-FROM rustlang/rust:nightly-bullseye as runner
+FROM rustlang/rust:nightly-bullseye AS runner
 
 # Copy the server binary to the /app directory
 COPY --from=builder /app/target/release/blog /app/
