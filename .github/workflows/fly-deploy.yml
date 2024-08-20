@@ -11,6 +11,10 @@ jobs:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
 
+      - name: Update build commit
+        run: |
+          flyctl secrets set --stage COMMIT_SHA=${{ github.sha }}
+
       - name: Deploy to fly
         run: |
           flyctl deploy --remote-only \
@@ -18,8 +22,7 @@ jobs:
           --build-arg SPOTIFY_CLIENT_ID=${{ secrets.SPOTIFY_CLIENT_ID }} \
           --build-arg SPOTIFY_CLIENT_SECRET=${{ secrets.SPOTIFY_CLIENT_SECRET }} \
           --build-arg APP_URL=${{ env.APP_URL }} \
-          --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} \
-          --build-arg COMMIT_SHA=${{ github.sha }}
+          --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_DEPLOY_TOKEN }}
           APP_URL: https://joeymckenzie.tech

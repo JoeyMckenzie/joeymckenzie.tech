@@ -52,7 +52,6 @@ ARG SPOTIFY_CLIENT_ID=""
 ARG SPOTIFY_CLIENT_SECRET=""
 ARG DATABASE_URL=""
 ARG APP_URL=""
-ARG SQLX_OFFLINE=""
 ARG COMMIT_SHA=""
 
 # Create a .env file for loading variables
