@@ -1,13 +1,11 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "always",
-    "source.organizeImports": "always"
-  },
-  "rust-analyzer.linkedProjects": [
-    "./Cargo.toml",
-  ],
-  "rust-analyzer.cargo.features": "all",
-  "tailwindCSS.includeLanguages": {
-    "rust": "html"
-  }
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "always",
+		"source.organizeImports": "always"
+	},
+	"rust-analyzer.linkedProjects": ["./Cargo.toml"],
+	"rust-analyzer.cargo.features": "all",
+	"tailwindCSS.includeLanguages": {
+		"rust": "html"
+	}
 }

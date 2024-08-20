@@ -1,4 +1,5 @@
-set shell := ["pwsh.exe", "-c"]
+set windows-shell := ["pwsh.exe", "-c"]
+set shell := ["zsh", "-c"]
 set dotenv-load
 
 # Default recipe
@@ -14,6 +15,14 @@ fmt: leptosfmt
 
 leptosfmt:
     leptosfmt src/*.rs src/**/*.rs
+
+lint: lint-app lint-content 
+
+lint-app:
+    cargo clippy --package=blog --lib --no-default-features --features=ssr,hydrate
+    
+lint-content:
+    cargo clippy --bin content --no-default-features --features=content
 
 # Build
 build: assets

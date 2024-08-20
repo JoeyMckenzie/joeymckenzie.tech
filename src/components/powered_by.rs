@@ -62,7 +62,7 @@ pub fn PoweredBy() -> impl IntoView {
                                     rel="noreferrer"
                                     class="hover:underline"
                                     href=format!(
-                                        "https://github.com/JoeyMckenzie/joeymckenzie.tech/tree/{sha}",
+                                        "https://github.com/JoeyMckenzie/joeymckenzie.tech/commit/{sha}",
                                     )
                                 >
 
