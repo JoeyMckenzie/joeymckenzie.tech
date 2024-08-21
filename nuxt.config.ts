@@ -1,6 +1,10 @@
 import { fontFamily } from 'tailwindcss/defaultTheme';
 
 export default defineNuxtConfig({
+  compatibilityDate: '2024-08-21',
+  future: {
+    compatibilityVersion: 4,
+  },
   devtools: { enabled: true },
   nitro: {
     preset: 'vercel',
@@ -23,7 +27,7 @@ export default defineNuxtConfig({
   },
   fonts: {
     families: [
-      { name: 'Geist Sans', provider: 'fontsource' },
+      { name: 'Figtree', provider: 'google' },
     ],
   },
   tailwindcss: {
@@ -31,7 +35,7 @@ export default defineNuxtConfig({
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Geist Sans', ...fontFamily.sans],
+            sans: ['Figtree', ...fontFamily.sans],
           },
         },
       },

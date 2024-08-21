@@ -6,7 +6,7 @@ import type {
   AccessTokenResponse,
   NowPlaying,
   SpotifyNowPlayingResponse,
-} from '~/types/spotify';
+} from '~~/types/spotify';
 
 export default defineEventHandler(async (): Promise<NowPlaying> => {
   const { spotifyClientSecret, spotifyClientId, spotifyRefreshToken, tokenEndpoint, nowPlayingEndpoint } = useRuntimeConfig();

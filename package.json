@@ -14,7 +14,8 @@
     "check": "pnpm run lint && pnpm run build",
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
-    "prepare": "git config core.hookspath .githooks"
+    "prepare": "git config core.hookspath .githooks",
+    "content": "node ./bin/content.js"
   },
   "dependencies": {
     "@libsql/client": "^0.7.0",
@@ -25,10 +26,8 @@
     "@nuxt/ui": "^2.17.0",
     "@pinia/nuxt": "^0.5.1",
     "blog": "link:",
-    "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.2",
     "lint-staged": "^15.2.7",
-    "nuxt": "^3.12.2",
     "vue": "^3.4.31",
     "vue-router": "^4.4.0"
   },
@@ -42,11 +41,19 @@
     "@iconify-json/pixelarticons": "^1.1.12",
     "@iconify-json/simple-icons": "^1.1.107",
     "@iconify-json/skill-icons": "^1.1.8",
+    "@shikijs/markdown-it": "^1.14.1",
+    "@types/markdown-it": "^14.1.2",
+    "dotenv": "^16.4.5",
     "drizzle-kit": "^0.22.7",
     "eslint": "9.4.0",
     "eslint-plugin-format": "^0.1.2",
     "eslint-plugin-tailwindcss": "^3.17.4",
-    "tailwindcss": "^3.4.4"
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.1.0",
+    "nuxt": "^3.12.4",
+    "shiki": "^1.14.1",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.4"
   },
   "lint-staged": {
     "**/*.{js,ts,vue}": "pnpm run fix"

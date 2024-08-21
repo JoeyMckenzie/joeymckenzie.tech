@@ -1,11 +1,3 @@
-<script setup lang="ts">
-import { usePostStore } from '~/stores/posts';
-
-const { fetchPosts } = usePostStore();
-
-await fetchPosts();
-</script>
-
 <template>
   <Head>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">

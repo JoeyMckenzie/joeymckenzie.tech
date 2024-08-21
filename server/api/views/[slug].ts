@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm';
-import { posts } from '~/server/utils/schema';
+import { posts } from '~~/server/utils/schema';
 
 const botPatterns = [
   '/googlebot/i', // Google's web crawler
