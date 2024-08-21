@@ -5,7 +5,6 @@ export default defineNuxtConfig({
   nitro: {
     preset: 'vercel',
   },
-  ssr: false,
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
@@ -24,7 +23,7 @@ export default defineNuxtConfig({
   },
   fonts: {
     families: [
-      { name: 'Inter', provider: 'google' },
+      { name: 'Geist Sans', provider: 'fontsource' },
     ],
   },
   tailwindcss: {
@@ -32,7 +31,7 @@ export default defineNuxtConfig({
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', ...fontFamily.sans],
+            sans: ['Geist Sans', ...fontFamily.sans],
           },
         },
       },

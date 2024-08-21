@@ -7,16 +7,8 @@ export default withNuxt(
     vue: true,
     typescript: true,
     stylistic: {
-      quotes: 'single',
       semi: true,
     },
   }),
   ...tailwind.configs['flat/recommended'],
-  {
-    settings: {
-      tailwindcss: {
-        config: 'tailwind.config.ts',
-      },
-    },
-  },
 );
