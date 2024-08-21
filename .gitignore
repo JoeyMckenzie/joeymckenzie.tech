@@ -27,3 +27,6 @@ logs
 
 # Database stuff
 server/drizzle
+
+# Compiled files
+bin/*.js

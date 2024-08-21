@@ -14,3 +14,12 @@ export interface ParsedPostContent extends ParsedContent {
 export interface MergedPostContent extends PostContent {
   views: number;
 }
+
+export interface FrontMatter {
+  title: string;
+  description: string;
+  pubDate: string;
+  heroImage: string;
+  category: string;
+  keywords: string[];
+}

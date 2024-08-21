@@ -2,7 +2,6 @@
   "name": "blog",
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@9.4.0",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -15,7 +14,7 @@
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
     "prepare": "git config core.hookspath .githooks",
-    "content": "node ./bin/content.js"
+    "content": "tsx ./bin/content.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.7.0",
@@ -25,7 +24,6 @@
     "@nuxt/image": "^1.7.0",
     "@nuxt/ui": "^2.17.0",
     "@pinia/nuxt": "^0.5.1",
-    "blog": "link:",
     "drizzle-orm": "^0.31.2",
     "lint-staged": "^15.2.7",
     "vue": "^3.4.31",
@@ -53,6 +51,7 @@
     "nuxt": "^3.12.4",
     "shiki": "^1.14.1",
     "tailwindcss": "^3.4.4",
+    "tsx": "^4.17.0",
     "typescript": "^5.5.4"
   },
   "lint-staged": {

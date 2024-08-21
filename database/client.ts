@@ -7,3 +7,5 @@ export function createDrizzleClient(authToken: string, url: string) {
 
   return db;
 }
+
+export type DrizzleClient = ReturnType<typeof createDrizzleClient>;

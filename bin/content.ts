@@ -5,27 +5,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import markdownit from 'markdown-it';
 import matter from 'gray-matter';
+import type { FrontMatter } from '~~/types/content';
+import { type DrizzleClient, createDrizzleClient } from '~~/database/client';
 
-/**
- * @typedef {object} FrontMatter
- * @property {string} title how the person is called
- * @property {string} description how the person is called
- * @property {string} pubDate how the person is called
- * @property {string} heroImage how the person is called
- * @property {string} category how the person is called
- * @property {string[]} keywords how the person is called
- * @param {string} parsedHtml
- * @param {FrontMatter} frontMatter
- */
-async function updateBlogPost(parsedHtml, frontMatter) {
-
-}
-
-/**
- * @param {string} fileContents
- * @param {markdownit} md
- */
-async function processContentFile(fileContents, md) {
+async function processContentFile(fileContents: string, md: markdownit, db: DrizzleClient) {
   md.use(
     await shiki({
       themes: {
@@ -38,23 +21,16 @@ async function processContentFile(fileContents, md) {
   const file = matter(fileContents);
   const parsedHtml = md.render(file.content);
   const frontMatter = file.data;
+
+  // TODO: Update the rows in the db
 }
 
-/**
- * @param {string} filename
- * @returns boolean
- */
-function isMarkdownFile(filename) {
+function isMarkdownFile(filename: string) {
   const markdownExtensions = ['.md', '.markdown', '.mdown', '.mkdn'];
   return markdownExtensions.includes(path.extname(filename).toLowerCase());
 }
 
-/**
- *
- * @param {string} directoryName
- * @returns boolean
- */
-function shouldExcludeDirectory(directoryName) {
+function shouldExcludeDirectory(directoryName: string) {
   const isProduction = process.env.NODE_ENV === 'production';
   return isProduction && directoryName.toLowerCase() === 'draft';
 }
@@ -83,13 +59,23 @@ function getContentFiles(directoryPath: string, filePaths = [] as string[]) {
 
 async function processContentFiles(filePaths: string[]) {
   const md = markdownit();
+  const url = process.env.NUXT_TURSO_DATABASE_URL ?? process.exit(1);
+  const authToken = process.env.NUXT_TURSO_AUTH_TOKEN ?? process.exit(1);
+  const db = createDrizzleClient(authToken, url);
   for (const filePath of filePaths) {
     const contents = fs.readFileSync(filePath, 'utf8');
-    await processContentFile(contents, md);
+    await processContentFile(contents, md, db);
   }
 }
 
-const cwd = process.cwd();
-const contentPath = `${cwd}${path.sep}content`;
-const files = getContentFiles(contentPath);
-await processContentFiles(files);
+async function updateContent() {
+  const cwd = process.cwd();
+  const contentPath = `${cwd}${path.sep}content`;
+  const files = getContentFiles(contentPath);
+
+  if (files) {
+    await processContentFiles(files);
+  }
+}
+
+await updateContent();
