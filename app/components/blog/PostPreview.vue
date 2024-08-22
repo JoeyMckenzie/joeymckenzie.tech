@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PostPreview } from '~/types/content';
+import type { PostPreview } from '~~/types/content';
 
 defineProps<{
   postPreview: PostPreview;
@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <ULink :to="postPreview._path" class="transition duration-150 ease-in-out hover:-translate-y-1">
+  <ULink :to="`/blog/${postPreview.slug}`" class="transition duration-150 ease-in-out hover:-translate-y-1">
     <article>
       <div class="flex flex-row items-center space-x-2 text-xs">
         <FormattedDate :date="postPreview.pubDate" />

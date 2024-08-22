@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { usePostStore } from '~/stores/posts';
+import type { PostPreview } from '~~/types/content';
 
-const { postPreviews } = usePostStore();
+const { data } = await useFetch<{ posts: PostPreview[] }>(`/api/blog`);
 </script>
 
 <template>
@@ -12,6 +12,6 @@ const { postPreviews } = usePostStore();
       journal of technologies I've worked with at some point during my career, and I'm always happy to field questions
       and conversations from interested readers."
     />
-    <BlogPostPreviews :posts="postPreviews" />
+    <BlogPostPreviews v-if="data?.posts" :posts="data.posts" />
   </main>
 </template>

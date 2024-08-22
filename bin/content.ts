@@ -2,17 +2,15 @@ import 'dotenv/config';
 import process from 'node:process';
 import fs from 'node:fs';
 import path from 'node:path';
-import shiki from '@shikijs/markdown-it';
 import markdownit from 'markdown-it';
 import matter from 'gray-matter';
 import { getSingletonHighlighter } from 'shiki';
 import { eq } from 'drizzle-orm';
-import type { FrontMatter } from '~~/types/content';
 import { type DrizzleClient, createDrizzleClient } from '~~/database/client';
 import { posts } from '~~/database/schema';
 
 const highlighter = await getSingletonHighlighter({
-  themes: ['vitesse-light', 'vitesse-dark'],
+  themes: ['vitesse-dark'],
   langs: [
     'php',
     'csharp',
@@ -41,10 +39,7 @@ const md = markdownit({
   highlight: (code, lang) => {
     return highlighter.codeToHtml(code, {
       lang,
-      themes: {
-        light: 'vitesse-light',
-        dark: 'vitesse-dark',
-      },
+      theme: 'vitesse-dark',
     });
   },
 });
@@ -84,10 +79,6 @@ async function processContentFile(slug: string, fileContents: string, db: Drizzl
         publishedDate: frontMatter.pubDate,
       });
   }
-
-  // Create content, if not exists
-
-  // TODO: Update the rows in the db
 }
 
 function shouldExcludeDirectory(directoryName: string) {
@@ -125,7 +116,9 @@ async function processContentFiles(filePaths: string[]) {
   for (const filePath of filePaths) {
     const contents = fs.readFileSync(filePath, 'utf8');
     const slug = path.basename(filePath).split('.')[0];
-    await processContentFile(slug, contents, db);
+    if (slug) {
+      await processContentFile(slug, contents, db);
+    }
   }
 }
 

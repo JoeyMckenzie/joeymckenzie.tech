@@ -8,7 +8,7 @@
       >
         Home
       </ULink>
-      <UIcon size="24" name="i-mdi-slash-forward" class="text-neutral-500" />
+      <UIcon size="16" name="i-mdi-slash-forward" class="text-neutral-500" />
       <ULink
         to="/now"
         active-class="text-primary"
@@ -16,7 +16,7 @@
       >
         Now
       </ULink>
-      <UIcon size="24" name="i-mdi-slash-forward" class="text-neutral-500" />
+      <UIcon size="16" name="i-mdi-slash-forward" class="text-neutral-500" />
       <!-- Kind of a hacky workaround to get child routes while maintaining the same active/inactive classes like other routes -->
       <ULink
         to="/blog"

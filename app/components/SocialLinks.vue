@@ -19,7 +19,7 @@ const links = [
 </script>
 
 <template>
-  <div class="flex flex-row justify-center gap-x-6 py-12">
+  <div class="flex flex-row justify-center gap-x-6">
     <a v-for="{ name, display, href } of links" :key="name" :href class="inline-flex justify-center transition duration-150 ease-in-out hover:-translate-y-1">
       <span class="sr-only">{{ display }}</span>
       <UIcon class="size-6" :name />

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { PostPreview } from '~/types/content';
+import type { PostPreview } from '~~/types/content';
 
 const props = defineProps<{
   posts: PostPreview[];

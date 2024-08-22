@@ -1,19 +1,15 @@
-import type { ParsedContent } from '@nuxt/content';
-
-export type PostContent = Pick<ParsedContent, 'body' | '_path' | 'title' | 'description' | 'pubDate' | 'category' | 'heroImage'>;
-
-export type PostPreview = Omit<PostContent, 'body' | 'heroImage'> & { views: number };
-
-export interface ParsedPostContent extends ParsedContent {
-  _path: string;
+export interface Post {
+  slug: string;
+  pubDate: string;
+  category: string;
+  views: number;
   title: string;
   description: string;
-  pubDate: string;
+  heroImage: string;
+  content: string;
 }
 
-export interface MergedPostContent extends PostContent {
-  views: number;
-}
+export type PostPreview = Omit<Post, 'heroImage' | 'content'>;
 
 export interface FrontMatter {
   title: string;
