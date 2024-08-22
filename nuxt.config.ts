@@ -43,7 +43,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      commitSha: import.meta.env.VERCEL_GIT_COMMIT_SHA,
+      commitSha: import.meta.env.COMMIT_SHA,
     },
     spotifyRefreshToken: '',
     spotifyClientId: '',

@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import type { PostPreview } from '~~/types/content';
 
-const { data } = await useFetch<{ posts: PostPreview[] }>(`/api/blog/latest`);
+const { data } = await useFetch<{ posts: PostPreview[] }>('/api/blog/latest', {
+  cache: 'force-cache',
+  headers: {
+    'Cache-Control': 'max-age=3600',
+  },
+});
 </script>
 
 <template>

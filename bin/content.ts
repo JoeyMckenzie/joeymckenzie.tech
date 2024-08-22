@@ -7,7 +7,8 @@ import matter from 'gray-matter';
 import { getSingletonHighlighter } from 'shiki';
 import { eq } from 'drizzle-orm';
 import { type DrizzleClient, createDrizzleClient } from '~~/database/client';
-import { posts } from '~~/database/schema';
+import { keywordPost, keywords, posts } from '~~/database/schema';
+import { frontMatterSchema } from '~~/types/content';
 
 const highlighter = await getSingletonHighlighter({
   themes: ['vitesse-dark'],
@@ -47,7 +48,14 @@ const md = markdownit({
 async function processContentFile(slug: string, fileContents: string, db: DrizzleClient) {
   const file = matter(fileContents);
   const parsedHtml = md.render(file.content);
-  const frontMatter = file.data;
+  const frontMatterResult = frontMatterSchema.safeParse(file.data);
+
+  if (!frontMatterResult.success) {
+    console.error('frontmatter schema invalid for slug', slug, 'errors', frontMatterResult.error);
+    process.exit(1);
+  }
+
+  const frontMatter = frontMatterResult.data;
 
   // Get existing post
   const existingPost = await db
@@ -80,7 +88,22 @@ async function processContentFile(slug: string, fileContents: string, db: Drizzl
       });
   }
 
-  // TODO: Update keywords
+  for (const keyword of frontMatter.keywords) {
+    const createdKeyword = await db.insert(keywords)
+      .values({ word: keyword })
+      .returning({ id: keywords.id })
+      .onConflictDoNothing();
+    const word = createdKeyword?.[0];
+
+    if (post && word) {
+      await db.insert(keywordPost)
+        .values({
+          keywordId: word.id,
+          postId: post.id,
+        })
+        .onConflictDoNothing();
+    }
+  }
 }
 
 function getContentFiles(directoryPath: string, filePaths = [] as string[]) {

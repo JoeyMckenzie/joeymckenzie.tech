@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 export interface Post {
   slug: string;
   pubDate: string;
@@ -11,11 +13,13 @@ export interface Post {
 
 export type PostPreview = Omit<Post, 'heroImage' | 'content'>;
 
-export interface FrontMatter {
-  title: string;
-  description: string;
-  pubDate: string;
-  heroImage: string;
-  category: string;
-  keywords: string[];
-}
+export const frontMatterSchema = z.object({
+  title: z.string(),
+  description: z.string(),
+  pubDate: z.string().regex(/^[A-Z][a-z]{2}\s\d{2}\s\d{4}$/, 'Invalid date format. Expected MMM DD YYYY'),
+  heroImage: z.string(),
+  category: z.string(),
+  keywords: z.array(z.string()).nonempty(),
+});
+
+export type FrontMatter = z.infer<typeof frontMatterSchema>;
