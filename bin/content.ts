@@ -6,8 +6,10 @@ import shiki from '@shikijs/markdown-it';
 import markdownit from 'markdown-it';
 import matter from 'gray-matter';
 import { getSingletonHighlighter } from 'shiki';
+import { eq } from 'drizzle-orm';
 import type { FrontMatter } from '~~/types/content';
 import { type DrizzleClient, createDrizzleClient } from '~~/database/client';
+import { posts } from '~~/database/schema';
 
 const highlighter = await getSingletonHighlighter({
   themes: ['vitesse-light', 'vitesse-dark'],
@@ -47,10 +49,43 @@ const md = markdownit({
   },
 });
 
-async function processContentFile(fileContents: string, db: DrizzleClient) {
+async function processContentFile(slug: string, fileContents: string, db: DrizzleClient) {
   const file = matter(fileContents);
   const parsedHtml = md.render(file.content);
   const frontMatter = file.data;
+
+  // Get existing post
+  const existingPost = await db
+    .select({
+      id: posts.id,
+    })
+    .from(posts)
+    .where(eq(posts.slug, slug))
+    .limit(1);
+  const post = existingPost?.[0];
+
+  // Update content, if exists
+  if (post) {
+    await db
+      .update(posts)
+      .set({ rawContent: file.content, parsedContent: parsedHtml })
+      .where(eq(posts.id, post.id));
+  }
+  else {
+    await db.insert(posts)
+      .values({
+        slug,
+        category: frontMatter.category,
+        description: frontMatter.description,
+        heroImage: frontMatter.heroImage,
+        parsedContent: parsedHtml,
+        rawContent: file.content,
+        title: frontMatter.title,
+        publishedDate: frontMatter.pubDate,
+      });
+  }
+
+  // Create content, if not exists
 
   // TODO: Update the rows in the db
 }
@@ -89,7 +124,8 @@ async function processContentFiles(filePaths: string[]) {
   const db = createDrizzleClient(authToken, url);
   for (const filePath of filePaths) {
     const contents = fs.readFileSync(filePath, 'utf8');
-    await processContentFile(contents, db);
+    const slug = path.basename(filePath).split('.')[0];
+    await processContentFile(slug, contents, db);
   }
 }
 
