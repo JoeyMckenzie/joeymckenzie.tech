@@ -79,6 +79,8 @@ async function processContentFile(slug: string, fileContents: string, db: Drizzl
         publishedDate: frontMatter.pubDate,
       });
   }
+
+  // TODO: Update keywords
 }
 
 function getContentFiles(directoryPath: string, filePaths = [] as string[]) {
