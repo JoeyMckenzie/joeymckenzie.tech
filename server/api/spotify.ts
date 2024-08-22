@@ -58,19 +58,18 @@ export default defineEventHandler(async (): Promise<NowPlaying> => {
       nowPlaying: true,
     };
   }
-  else {
-    const show = item.show;
-    const showImage = show.images[0];
-    const showTitle = show.name;
 
-    return {
-      albumImageSrc: showImage.url,
-      artist: showTitle,
-      href,
-      trackTitle,
-      nowPlaying: true,
-    };
-  }
+  const show = item.show;
+  const showImage = show.images[0];
+  const showTitle = show.name;
+
+  return {
+    albumImageSrc: showImage.url,
+    artist: showTitle,
+    href,
+    trackTitle,
+    nowPlaying: true,
+  };
 });
 
 function getRequestHeaders(clientId: string, clientSecret: string) {
