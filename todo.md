@@ -1,0 +1,2 @@
+- [ ] Add keyword updates on content sync
+- [ ] Update commit sha for Netlify
