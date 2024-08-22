@@ -3,12 +3,21 @@ import type { Post } from '~~/types/content';
 
 const route = useRoute();
 const slug = computed(() => route.params.slug as string);
-const { data } = await useFetch<{ post: Post }>(`/api/blog/${slug.value}`);
+const { data } = await useFetch<{ post: Post; keywords: string[] }>(`/api/blog/${slug.value}`);
 const post = computed(() => data.value?.post);
+const keywords = computed(() => data.value?.keywords?.join(', ') ?? '');
 
 if (!post.value) {
   await navigateTo('/blog');
 }
+
+useHead({
+  title: post.value?.title,
+  meta: [
+    { name: 'description', content: post.value?.description },
+    { name: 'keywords', content: keywords },
+  ],
+});
 </script>
 
 <template>

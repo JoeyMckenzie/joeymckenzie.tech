@@ -1,5 +1,5 @@
 import { eq } from 'drizzle-orm';
-import { posts } from '~~/database/schema';
+import { keywordPost, keywords, posts } from '~~/database/schema';
 
 const botPatterns = [
   '/googlebot/i', // Google's web crawler
@@ -17,6 +17,7 @@ export default defineEventHandler(async (event) => {
   const db = useDb();
 
   const existingPost = await db.select({
+    id: posts.id,
     title: posts.title,
     pubDate: posts.publishedDate,
     category: posts.category,
@@ -38,10 +39,23 @@ export default defineEventHandler(async (event) => {
       };
     }
 
+    const keywordsForMeta = await db.select({
+      word: keywords.word,
+    })
+      .from(keywords)
+      .innerJoin(keywordPost, eq(keywordPost.keywordId, keywords.id))
+      .innerJoin(posts, eq(posts.id, keywordPost.postId))
+      .where(eq(posts.slug, slug));
+
     await db
       .update(posts)
       .set({ views: post.views + 1 })
       .where(eq(posts.slug, slug));
+
+    return {
+      post,
+      keywords: keywordsForMeta?.map(kw => kw.word) ?? [],
+    };
   }
 
   return {
