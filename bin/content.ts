@@ -81,11 +81,6 @@ async function processContentFile(slug: string, fileContents: string, db: Drizzl
   }
 }
 
-function shouldExcludeDirectory(directoryName: string) {
-  const isProduction = process.env.NODE_ENV === 'production';
-  return isProduction && directoryName.toLowerCase() === 'draft';
-}
-
 function getContentFiles(directoryPath: string, filePaths = [] as string[]) {
   const files = fs.readdirSync(directoryPath);
 
@@ -95,11 +90,10 @@ function getContentFiles(directoryPath: string, filePaths = [] as string[]) {
     const isMarkDownfile = path.extname(file).toLowerCase() === '.md';
 
     if (stats.isDirectory()) {
-      if (shouldExcludeDirectory(file)) {
-        return;
+      const shouldExcludeDirectory = file.toLowerCase() === 'draft';
+      if (!shouldExcludeDirectory) {
+        getContentFiles(filePath, filePaths);
       }
-
-      getContentFiles(filePath, filePaths);
     }
     else if (isMarkDownfile) {
       filePaths.push(filePath);

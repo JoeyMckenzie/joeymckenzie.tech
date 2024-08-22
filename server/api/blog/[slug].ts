@@ -1,8 +1,19 @@
 import { eq } from 'drizzle-orm';
 import { posts } from '~~/database/schema';
 
+const botPatterns = [
+  '/googlebot/i', // Google's web crawler
+  '/bingbot/i', // Microsoft's Bing bot
+  '/slurp/i', // Yahoo's search engine bot
+  '/duckduckbot/i', // DuckDuckGo's bot
+  '/baiduspider/i', // Baidu's bot
+  '/yandexbot/i', // Yandex's bot
+];
+
 export default defineEventHandler(async (event) => {
   const slug = getRouterParam(event, 'slug') ?? '';
+  const headers = getHeaders(event);
+  const agent = headers['User-Agent'] ?? '';
   const db = useDb();
 
   const existingPost = await db.select({
@@ -18,9 +29,19 @@ export default defineEventHandler(async (event) => {
     .limit(1);
 
   const post = existingPost?.[0];
-  if (!post) {
-    sendRedirect(event, '/blog', 301);
-    return;
+
+  if (post) {
+    // Bot crawling the post most likely, no need to increment view count
+    if (agent && botPatterns.some(p => new RegExp(p).test(agent))) {
+      return {
+        post,
+      };
+    }
+
+    await db
+      .update(posts)
+      .set({ views: post.views + 1 })
+      .where(eq(posts.slug, slug));
   }
 
   return {
