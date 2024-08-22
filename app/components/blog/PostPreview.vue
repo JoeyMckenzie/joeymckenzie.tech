@@ -18,12 +18,12 @@ defineProps<{
       </div>
       <div class="group relative">
         <h2
-          class="mt-3 font-semibold leading-6 tracking-tighter text-neutral-700 group-hover:text-neutral-400 dark:text-neutral-300"
+          class="mt-3 font-semibold leading-6 tracking-tighter text-neutral-700 group-hover:text-neutral-600 dark:text-neutral-200 dark:group-hover:text-neutral-300"
         >
           <span class="absolute inset-0" />
           {{ postPreview.title }}
         </h2>
-        <p class="mt-5 line-clamp-3 text-sm leading-6 text-neutral-400">
+        <p class="mt-5 line-clamp-3 text-sm leading-6 text-neutral-700 dark:text-neutral-400">
           {{ postPreview.description }}
         </p>
       </div>

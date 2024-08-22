@@ -6,9 +6,9 @@ const hashDisplay = commitSha?.substring(0, 6);
 
 const providers = [
   {
-    display: 'Vercel',
-    name: 'i-ion-logo-vercel',
-    href: 'https://vercel.com',
+    display: 'Netlify',
+    name: 'i-simple-icons-netlify',
+    href: 'https://netlify.com',
   },
   {
     display: 'Nuxt',
