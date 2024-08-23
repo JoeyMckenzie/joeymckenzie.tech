@@ -16,13 +16,14 @@ defineProps<{ response: NowPlaying }>();
     </h2>
     <div class="flex flex-row items-center justify-center space-x-2">
       <slot />
-      <NuxtImg
+      <img
         :src="response.albumImageSrc"
         width="30"
         height="30"
         alt="Spotify listenting to"
         class="rounded-sm"
-      />
+        loading="lazy"
+      >
       <div class="flex max-w-64 flex-col">
         <h4
           class="line-clamp-1 overflow-hidden text-ellipsis text-xs font-semibold dark:text-neutral-300"
