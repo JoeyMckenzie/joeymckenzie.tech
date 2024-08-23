@@ -47,4 +47,8 @@ jobs:
       run: pnpm run lint
 
     - name: Sync content
-      run: pnpm run content
+      run: |
+        echo "NUXT_TURSO_DATABASE_URL=${{ secrets.NUXT_TURSO_DATABASE_URL }}" > .env
+        echo "NUXT_TURSO_AUTH_TOKEN=${{ secrets.NUXT_TURSO_AUTH_TOKEN }}" >> .env
+        pnpm run content
+
