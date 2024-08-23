@@ -52,3 +52,9 @@ jobs:
         echo "NUXT_TURSO_AUTH_TOKEN=${{ secrets.NUXT_TURSO_AUTH_TOKEN }}" >> .env
         pnpm run content
 
+    - name: Deploy to Netlify
+      env:
+        NETLIFY_DEPLOY_TOKEN: ${{ secrets.NETLIFY_DEPLOY_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      run: netlify deploy --site $NETLIFY_SITE_ID --auth $NETLIFY_DEPLOY_TOKEN --prod --dir=./dist
+

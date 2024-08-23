@@ -15,7 +15,8 @@
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
     "prepare": "git config core.hookspath .githooks",
-    "content": "tsx ./bin/content.ts"
+    "content": "tsx ./bin/content.ts",
+    "netlify": "netlify --"
   },
   "dependencies": {
     "@libsql/client": "^0.7.0",
@@ -48,6 +49,7 @@
     "eslint-plugin-tailwindcss": "^3.17.4",
     "gray-matter": "^4.0.3",
     "markdown-it": "^14.1.0",
+    "netlify-cli": "^17.34.2",
     "nuxt": "^3.12.4",
     "shiki": "^1.14.1",
     "tailwindcss": "^3.4.4",

@@ -28,7 +28,9 @@ if (!post.value) {
         <FormattedViews v-if="post?.views" :views="post.views" />
       </div>
       <NuxtImg
-        :src="post!.heroImage" :alt="`${post!.title} blog meme image`"
+        :src="post!.heroImage"
+        :alt="`${post!.title} blog meme image`"
+        sizes="100vw sm:50vw md:400px"
         class="mx-auto rounded-md"
       />
       <div class="text-sm leading-6 dark:text-neutral-400" v-html="post?.content" />
