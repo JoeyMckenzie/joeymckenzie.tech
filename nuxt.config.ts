@@ -84,6 +84,9 @@ export default defineNuxtConfig({
   colorMode: {
     classSuffix: '',
   },
+  image: {
+    provider: 'netlify',
+  },
   site: {
     url: 'https://joeymckenzie.tech',
     name: 'joeymckenzie.tech',

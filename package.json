@@ -15,8 +15,7 @@
     "drizzle:generate": "drizzle-kit generate",
     "drizzle:migrate": "drizzle-kit migrate",
     "prepare": "git config core.hookspath .githooks",
-    "content": "tsx ./bin/content.ts",
-    "netlify": "netlify --"
+    "content": "tsx ./bin/content.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.7.0",

@@ -20,16 +20,17 @@ if (!post.value) {
     </Head>
     <article class="prose dark:prose-invert mx-auto">
       <h1 class="text-2xl sm:text-center">
-        {{ post!.title }}
+        {{ post.title }}
       </h1>
       <div class="flex flex-row items-center justify-center gap-x-2 text-sm tracking-tighter">
-        <FormattedDate :date="post!.pubDate" />
-        <UBadge :label="post!.category" />
+        <FormattedDate :date="post.pubDate" />
+        <UBadge :label="post.category" />
         <FormattedViews v-if="post?.views" :views="post.views" />
       </div>
       <NuxtImg
-        :src="post!.heroImage"
-        :alt="`${post!.title} blog meme image`"
+        :src="post.heroImage"
+        placeholder
+        :alt="`${post.title} blog meme image`"
         sizes="100vw sm:50vw md:400px"
         class="mx-auto rounded-md"
       />
