@@ -1,3 +1,9 @@
+<script setup lang="ts">
+definePageMeta({
+  title: 'Now',
+});
+</script>
+
 <template>
   <main class="py-12">
     <h2 class="text-2xl font-bold tracking-tight">

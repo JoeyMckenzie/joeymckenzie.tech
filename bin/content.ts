@@ -132,6 +132,7 @@ async function processContentFiles(filePaths: string[]) {
   const url = process.env.NUXT_TURSO_DATABASE_URL ?? process.exit(1);
   const authToken = process.env.NUXT_TURSO_AUTH_TOKEN ?? process.exit(1);
   const db = createDrizzleClient(authToken, url);
+
   for (const filePath of filePaths) {
     const contents = fs.readFileSync(filePath, 'utf8');
     const slug = path.basename(filePath).split('.')[0];

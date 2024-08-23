@@ -10,18 +10,14 @@ const keywords = computed(() => data.value?.keywords?.join(', ') ?? '');
 if (!post.value) {
   await navigateTo('/blog');
 }
-
-useHead({
-  title: post.value?.title,
-  meta: [
-    { name: 'description', content: post.value?.description },
-    { name: 'keywords', content: keywords },
-  ],
-});
 </script>
 
 <template>
   <main v-if="post" class="mx-auto py-12">
+    <Head>
+      <Meta name="description" :content="post.description" />
+      <Meta name="keywords" :content="keywords" />
+    </Head>
     <article class="prose dark:prose-invert mx-auto">
       <h1 class="text-2xl sm:text-center">
         {{ post!.title }}

@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { PostPreview } from '~~/types/content';
 
+definePageMeta({
+  title: 'Hey, I\'m Joey',
+});
+
 const { data } = await useFetch<{ posts: PostPreview[] }>('/api/blog/latest', {
   cache: 'force-cache',
   headers: {

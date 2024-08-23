@@ -17,8 +17,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/ui',
     '@nuxt/image',
-    '@nuxt/content',
-    '@pinia/nuxt',
+    '@nuxtjs/seo',
   ],
   eslint: {
     config: {
@@ -84,6 +83,12 @@ export default defineNuxtConfig({
   },
   colorMode: {
     classSuffix: '',
+  },
+  site: {
+    url: 'https://joeymckenzie.tech',
+    name: 'joeymckenzie.tech',
+    description: 'A blog about tech, languages, frameworks, and sometimes beer.',
+    defaultLocale: 'en',
   },
   ui: {
     icons: ['mdi', 'hugeicons', 'simple-icons', 'logos', 'ion', 'pixelarticons'],
