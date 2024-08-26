@@ -13,7 +13,7 @@
     },
     "devDependencies": {
         "@iconify-json/devicon": "^1.1.41",
-        "@iconify-json/fluent": "^1.1.58",
+        "@iconify-json/fluent": "^1.1.63",
         "@iconify-json/gridicons": "^1.1.14",
         "@iconify-json/logos": "^1.1.42",
         "@iconify-json/mdi": "^1.1.66",
