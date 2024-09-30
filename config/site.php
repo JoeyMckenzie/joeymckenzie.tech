@@ -3,5 +3,5 @@
 declare(strict_types=1);
 
 return [
-    'commit' => env('COMMIT_SHA', '')
+    'commit' => env('COMMIT_SHA', ''),
 ];

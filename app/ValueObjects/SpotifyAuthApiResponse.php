@@ -8,9 +8,7 @@ use Illuminate\Http\Client\Response;
 
 final readonly class SpotifyAuthApiResponse
 {
-    private function __construct(public string $tokenType, public string $accessToken, public string $authorizationHeader)
-    {
-    }
+    private function __construct(public string $tokenType, public string $accessToken, public string $authorizationHeader) {}
 
     public static function fromResponse(Response $response): self
     {

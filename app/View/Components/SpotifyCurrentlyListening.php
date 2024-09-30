@@ -14,14 +14,13 @@ final class SpotifyCurrentlyListening extends Component
 {
     public SpotifyNowPlayingApiResponse $nowPlaying;
 
-    public function __construct(private MusicTrackerContract $musicTracker)
-    {
-    }
+    public function __construct(private readonly MusicTrackerContract $musicTracker) {}
 
     #[Override]
     public function render(): View
     {
         $this->nowPlaying = $this->musicTracker->getNowPlaying();
+
         return view('components.spotify-currently-listening');
     }
 }

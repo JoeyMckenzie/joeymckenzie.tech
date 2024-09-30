@@ -15,9 +15,11 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "owenvoke/blade-fontawesome": "^2.6",
-        "spatie/laravel-markdown": "^2.5"
+        "spatie/laravel-markdown": "^2.5",
+        "spatie/laravel-sitemap": "^7.2"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.14",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^2.9",
         "laravel/breeze": "^2.2",

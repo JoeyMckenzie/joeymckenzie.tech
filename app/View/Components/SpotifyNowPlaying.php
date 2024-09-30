@@ -15,9 +15,7 @@ final class SpotifyNowPlaying extends Component
         public readonly string $albumImageSrc,
         public readonly string $trackTitle,
         public readonly string $artist,
-    )
-    {
-    }
+    ) {}
 
     #[Override]
     public function render(): View

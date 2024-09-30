@@ -8,9 +8,7 @@ use Illuminate\Http\Client\Response;
 
 final class SpotifyNowPlayingApiResponse
 {
-    public function __construct(public bool $nowPlaying, public ?string $href = '', public ?string $albumImageSrc = '', public ?string $trackTitle = '', public ?string $artist = '')
-    {
-    }
+    public function __construct(public bool $nowPlaying, public ?string $href = '', public ?string $albumImageSrc = '', public ?string $trackTitle = '', public ?string $artist = '') {}
 
     public static function fromResponse(Response $response): self
     {
