@@ -8,7 +8,7 @@ use Illuminate\View\View;
 
 use function Laravel\Folio\render;
 
-render(function (View $view, Request $request, Post $post): \Illuminate\View\View {
+render(function (View $view, Request $request, Post $post): View {
     // We only want legit views from users, not bots so check the
     // user-agent to see if it contains a known bot crawler
     $userAgent = $request->headers->get('user-agent') ?? '';
@@ -41,9 +41,8 @@ render(function (View $view, Request $request, Post $post): \Illuminate\View\Vie
 @endsection
 
 <x-app-layout>
-
     <article
-        class="prose mx-auto w-full overflow-hidden py-12 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
+        class="px-4 prose mx-auto w-full overflow-hidden dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
         <h1 class="text-center text-2xl font-semibold">
             {{ $post->title }}
         </h1>
