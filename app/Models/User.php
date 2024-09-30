@@ -6,12 +6,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Override;
 
-final class User extends Authenticatable
+final class User extends Authenticatable implements FilamentUser
 {
     /**
      * @use HasFactory<UserFactory>
@@ -40,6 +42,13 @@ final class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    #[\Override]
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Give me ALL the power...
+        return $this->email === 'joey.mckenzie27@gmail.com';
+    }
 
     /**
      * Get the attributes that should be cast.
