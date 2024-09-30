@@ -21,7 +21,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Override;
 
-final class AdminPanelProvider extends PanelProvider
+final class AdminPanelServiceProvider extends PanelProvider
 {
     #[Override]
     public function panel(Panel $panel): Panel

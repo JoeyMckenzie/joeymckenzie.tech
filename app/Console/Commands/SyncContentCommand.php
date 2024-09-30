@@ -13,7 +13,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-final class SyncContent extends Command
+final class SyncContentCommand extends Command
 {
     /**
      * The name and signature of the console command.
