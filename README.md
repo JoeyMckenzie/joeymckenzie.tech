@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2F7bf35f99-5450-4ebf-924f-54790a60f0ac%3Fdate%3D1%26commit%3D1&style=flat" alt="Forge">
+<img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2Fc83d709b-2c49-4204-a7c0-918f74b0c72c%3Fdate%3D1%26label%3D1%26commit%3D1&style=flat" alt="Forge">
 <img src="https://github.com/JoeyMckenzie/joeymckenzie.tech/actions/workflows/ci.yml/badge.svg" alt="CI">
 <img src="https://github.com/JoeyMckenzie/joeymckenzie.tech/actions/workflows/deploy.yml/badge.svg" alt="Forge deploy">
 </p>
