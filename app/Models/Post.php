@@ -69,6 +69,7 @@ final class Post extends Model
      */
     public function formattedViews(): Attribute
     {
+        /** @var string $formattedViews */
         $formattedViews = Number::format($this->views);
 
         return new Attribute(
