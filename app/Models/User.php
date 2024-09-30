@@ -43,7 +43,7 @@ final class User extends Authenticatable implements FilamentUser
         'remember_token',
     ];
 
-    #[\Override]
+    #[Override]
     public function canAccessPanel(Panel $panel): bool
     {
         // Give me ALL the power...

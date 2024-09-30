@@ -8,10 +8,10 @@
             <div class="prose max-w-md">
                 <h1 class="text-center text-xl font-bold">Hey, I'm Joey.</h1>
                 <p>
-                    I'm a software developer based in Northern California working in fintech. I enjoy writing about
+                    I'm a software developer based in Northern California. I enjoy writing about
                     software, design, dad jokes, and cheap beer among a few other things. I like building fast,
                     efficient
-                    web services, learning new things, and writing code in the open source ecosystem.
+                    web apps, learning new things, and writing code in the open source ecosystem.
                 </p>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <a class="btn btn-primary" href="https://github.com/joeymckenzie">

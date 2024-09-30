@@ -37,6 +37,7 @@ render(function (View $view) {
                         <div class="flex items-center gap-x-2 text-xs">
                             <time datetime="datetime_date">{{ $post->display_date }}</time>
                             <div class="badge badge-primary">{{ $post->category }}</div>
+                            <p>{{ $post->formatted_views }} views</p>
                         </div>
                         <div class="group relative">
                             <h3 class="mt-3 text-lg font-semibold leading-6">

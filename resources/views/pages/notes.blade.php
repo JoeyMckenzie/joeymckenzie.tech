@@ -27,7 +27,7 @@ render(function (View $view) {
                 <div class="grid grid-cols-1 gap-6">
                     @foreach ($notes as $note)
                         <div class="alert" role="alert">
-                            <x-bi-code />
+                            <x-bi-code class="hidden sm:block" />
                             <span>{{ $note->description }}</span>
                         </div>
                     @endforeach
