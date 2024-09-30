@@ -5,9 +5,9 @@ pubDate: 'Sep 21 2022'
 heroImage: '/images/rethinking-dotnet-exceptions/exceptions_meme.jpg'
 category: '.NET'
 keywords:
-    - .net
-    - exceptions
-    - result
+  - .net
+  - exceptions
+  - result
 ---
 
 I've recently undergone a courtship with Go and Rust, diving into each ecosystem in my spare time and even contributing

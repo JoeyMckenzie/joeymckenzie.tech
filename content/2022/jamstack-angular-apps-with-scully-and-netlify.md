@@ -5,10 +5,10 @@ pubDate: 'Feb 22 2022'
 heroImage: '/images/jamstack-angular-apps-with-scully/angular-scully-netlify-meme.jpg'
 category: 'angular'
 keywords:
-    - angular
-    - jamstack
-    - scully
-    - netlify
+  - angular
+  - jamstack
+  - scully
+  - netlify
 ---
 
 There's no denying that the [JAMstack](https://jamstack.org/) has taken the traditional web development world by
@@ -101,28 +101,28 @@ our `app-routing.module.ts`:
 #### app-routing.module.ts
 
 ```ts
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { DataComponent, HomeComponent, PingComponent } from '@components';
+import { NgModule } from '@angular/core'
+import { RouterModule, Routes } from '@angular/router'
+import { DataComponent, HomeComponent, PingComponent } from '@components'
 
 const routes: Routes = [
-    {
-        path: '',
-        component: HomeComponent,
-    },
-    {
-        path: 'ping',
-        component: PingComponent,
-    },
-    {
-        path: 'data',
-        component: DataComponent,
-    },
-];
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'ping',
+    component: PingComponent,
+  },
+  {
+    path: 'data',
+    component: DataComponent,
+  },
+]
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule],
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}
 ```
@@ -156,15 +156,15 @@ their code. First, our `UnsubscribeService`:
 #### unsubscribe.service.ts
 
 ```ts
-import { Injectable, OnDestroy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core'
+import { Subject } from 'rxjs'
 
 @Injectable()
 export class UnsubscribeService extends Subject<void> implements OnDestroy {
-    ngOnDestroy(): void {
-        this.next();
-        this.complete();
-    }
+  ngOnDestroy(): void {
+    this.next()
+    this.complete()
+  }
 }
 ```
 
@@ -175,31 +175,31 @@ to within our components. Next, let's put our `PingService` code in place:
 #### ping.service.ts
 
 ```ts
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { ServerResponse } from 'types';
-import { catchError, delay, map } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { environment } from '@environment';
+import { HttpClient } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { ServerResponse } from 'types'
+import { catchError, delay, map } from 'rxjs/operators'
+import { of } from 'rxjs'
+import { environment } from '@environment'
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class PingService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    pingServer() {
-        const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`;
+  pingServer() {
+    const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`
 
-        return this.http.get<ServerResponse>(`${baseUrl}/ping`).pipe(
-            map((response) => response.message),
-            delay(1000),
-            catchError((error) => {
-                console.log(error);
-                return of('Whoops... an error occurred :(');
-            }),
-        );
-    }
+    return this.http.get<ServerResponse>(`${baseUrl}/ping`).pipe(
+      map((response) => response.message),
+      delay(1000),
+      catchError((error) => {
+        console.log(error)
+        return of('Whoops... an error occurred :(')
+      })
+    )
+  }
 }
 ```
 
@@ -208,35 +208,35 @@ Next, our `DataService`:
 #### data.service.ts
 
 ```ts
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { environment } from '@environment';
-import { EMPTY } from 'rxjs';
-import { catchError, delay, map } from 'rxjs/operators';
-import { ServerResponse } from 'types';
+import { HttpClient } from '@angular/common/http'
+import { Injectable } from '@angular/core'
+import { environment } from '@environment'
+import { EMPTY } from 'rxjs'
+import { catchError, delay, map } from 'rxjs/operators'
+import { ServerResponse } from 'types'
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class DataService {
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    sendDataToServer(name: string) {
-        const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`;
+  sendDataToServer(name: string) {
+    const baseUrl = `${environment.functionsBaseDomain}${environment.functionsBasePath}`
 
-        return this.http
-            .post<ServerResponse>(`${baseUrl}/data`, {
-                name,
-            })
-            .pipe(
-                delay(1000),
-                map((response) => response.message),
-                catchError((error) => {
-                    console.log(error);
-                    return EMPTY;
-                }),
-            );
-    }
+    return this.http
+      .post<ServerResponse>(`${baseUrl}/data`, {
+        name,
+      })
+      .pipe(
+        delay(1000),
+        map((response) => response.message),
+        catchError((error) => {
+          console.log(error)
+          return EMPTY
+        })
+      )
+  }
 }
 ```
 
@@ -245,45 +245,45 @@ and finally,
 #### document.service.ts
 
 ```ts
-import { DOCUMENT } from '@angular/common';
-import { Inject, Injectable } from '@angular/core';
-import { Meta, MetaDefinition } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common'
+import { Inject, Injectable } from '@angular/core'
+import { Meta, MetaDefinition } from '@angular/platform-browser'
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class DocumentService {
-    private readonly rootTitle = 'Scully, Angular, and Netlify';
+  private readonly rootTitle = 'Scully, Angular, and Netlify'
 
-    constructor(
-        @Inject(DOCUMENT) private readonly document: Document,
-        private meta: Meta,
-    ) {}
+  constructor(
+    @Inject(DOCUMENT) private readonly document: Document,
+    private meta: Meta
+  ) {}
 
-    resetTitle(): void {
-        this.document.title = this.rootTitle;
-        this.meta.updateTag({
-            name: 'title',
-            content: this.rootTitle,
-        });
-    }
+  resetTitle(): void {
+    this.document.title = this.rootTitle
+    this.meta.updateTag({
+      name: 'title',
+      content: this.rootTitle,
+    })
+  }
 
-    updateTitle(pageTitle: string): void {
-        this.document.title = `${this.rootTitle} - ${pageTitle}`;
-        this.meta.updateTag({
-            name: 'title',
-            content: pageTitle,
-        });
-    }
+  updateTitle(pageTitle: string): void {
+    this.document.title = `${this.rootTitle} - ${pageTitle}`
+    this.meta.updateTag({
+      name: 'title',
+      content: pageTitle,
+    })
+  }
 
-    setMetaTags(tags: MetaDefinition[]) {
-        tags.map((t) => {
-            const existingTag = this.meta.getTag(t.id ?? '');
-            if (!existingTag) {
-                this.meta.addTag(t);
-            }
-        });
-    }
+  setMetaTags(tags: MetaDefinition[]) {
+    tags.map((t) => {
+      const existingTag = this.meta.getTag(t.id ?? '')
+      if (!existingTag) {
+        this.meta.addTag(t)
+      }
+    })
+  }
 }
 ```
 
@@ -293,40 +293,39 @@ Let's add some code to our `ping` component:
 #### ping.component.ts
 
 ```ts
-import { Component, OnInit } from '@angular/core';
-import { DocumentService, PingService, UnsubscribeService } from '@services';
-import { takeUntil } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core'
+import { DocumentService, PingService, UnsubscribeService } from '@services'
+import { takeUntil } from 'rxjs/operators'
 
 @Component({
-    selector: 'app-ping',
-    templateUrl: './ping.component.html',
+  selector: 'app-ping',
+  templateUrl: './ping.component.html',
 })
 export class PingComponent implements OnInit {
-    message = 'pinging the server...';
+  message = 'pinging the server...'
 
-    constructor(
-        private documentService: DocumentService,
-        private pingService: PingService,
-        private unsubscribe$: UnsubscribeService,
-    ) {}
+  constructor(
+    private documentService: DocumentService,
+    private pingService: PingService,
+    private unsubscribe$: UnsubscribeService
+  ) {}
 
-    ngOnInit(): void {
-        this.documentService.updateTitle('ping');
-        this.documentService.setMetaTags([
-            {
-                name: 'author',
-                content: 'Joey McKenzie',
-            },
-        ]);
+  ngOnInit(): void {
+    this.documentService.updateTitle('ping')
+    this.documentService.setMetaTags([
+      {
+        name: 'author',
+        content: 'Joey McKenzie',
+      },
+    ])
 
-        this.pingService
-            .pingServer()
-            .pipe(takeUntil(this.unsubscribe$))
-            .subscribe(
-                (message) =>
-                    (this.message = `response from server: ${message}`),
-            );
-    }
+    this.pingService
+      .pingServer()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(
+        (message) => (this.message = `response from server: ${message}`)
+      )
+  }
 }
 ```
 
@@ -344,39 +343,39 @@ Next, `data.component.ts`:
 #### data.component.ts
 
 ```ts
-import { Component, OnInit } from '@angular/core';
-import { DocumentService, DataService, UnsubscribeService } from '@services';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core'
+import { DocumentService, DataService, UnsubscribeService } from '@services'
+import { finalize, takeUntil } from 'rxjs/operators'
 
 @Component({
-    selector: 'app-data',
-    templateUrl: './data.component.html',
+  selector: 'app-data',
+  templateUrl: './data.component.html',
 })
 export class DataComponent implements OnInit {
-    loading = false;
-    response?: string;
+  loading = false
+  response?: string
 
-    constructor(
-        private documentService: DocumentService,
-        private dataService: DataService,
-        private unsubscribe$: UnsubscribeService,
-    ) {}
+  constructor(
+    private documentService: DocumentService,
+    private dataService: DataService,
+    private unsubscribe$: UnsubscribeService
+  ) {}
 
-    ngOnInit(): void {
-        this.documentService.updateTitle('data');
-    }
+  ngOnInit(): void {
+    this.documentService.updateTitle('data')
+  }
 
-    loadData() {
-        this.loading = true;
+  loadData() {
+    this.loading = true
 
-        this.dataService
-            .sendDataToServer('Joey')
-            .pipe(
-                takeUntil(this.unsubscribe$),
-                finalize(() => (this.loading = false)),
-            )
-            .subscribe((response) => (this.response = response));
-    }
+    this.dataService
+      .sendDataToServer('Joey')
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        finalize(() => (this.loading = false))
+      )
+      .subscribe((response) => (this.response = response))
+  }
 }
 ```
 
@@ -420,19 +419,19 @@ pages:
 #### home.component.ts
 
 ```ts
-import { Component, OnInit } from '@angular/core';
-import { DocumentService } from '../../services/document.service';
+import { Component, OnInit } from '@angular/core'
+import { DocumentService } from '../../services/document.service'
 
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
+  selector: 'app-home',
+  templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnInit {
-    constructor(private documentService: DocumentService) {}
+  constructor(private documentService: DocumentService) {}
 
-    ngOnInit(): void {
-        this.documentService.resetTitle();
-    }
+  ngOnInit(): void {
+    this.documentService.resetTitle()
+  }
 }
 ```
 
@@ -442,22 +441,22 @@ and with markup,
 
 ```html
 <div class="flex flex-row space-x-4">
-    <a routerLink="/ping">
-        <button
-            type="button"
-            class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
-        >
-            Ping
-        </button>
-    </a>
-    <a routerLink="/data">
-        <button
-            type="button"
-            class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
-        >
-            Data
-        </button>
-    </a>
+  <a routerLink="/ping">
+    <button
+      type="button"
+      class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+    >
+      Ping
+    </button>
+  </a>
+  <a routerLink="/data">
+    <button
+      type="button"
+      class="inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700"
+    >
+      Data
+    </button>
+  </a>
 </div>
 ```
 
@@ -468,14 +467,14 @@ While we're at it, let's go ahead and update `app.component.html` with some rout
 ```html
 <router-outlet></router-outlet>
 <div class="flex flex-row justify-center pt-12">
-    <a routerLink="/">
-        <button
-            type="button"
-            class="inline-flex items-center rounded-md border border-transparent bg-red-500 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
-        >
-            Home
-        </button>
-    </a>
+  <a routerLink="/">
+    <button
+      type="button"
+      class="inline-flex items-center rounded-md border border-transparent bg-red-500 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-red-700"
+    >
+      Home
+    </button>
+  </a>
 </div>
 ```
 
@@ -523,11 +522,11 @@ any code changes we apply while writing our functions, recompile them, and serve
 
 ```json
 {
-    // ...other stuff
-    "scripts": {
-        // ...other scripts
-        "functions:serve": "netlify functions:serve"
-    }
+  // ...other stuff
+  "scripts": {
+    // ...other scripts
+    "functions:serve": "netlify functions:serve"
+  }
 }
 ```
 
@@ -545,39 +544,39 @@ will tap into the functionality provided by the `@netlify/functions` package to 
 #### netlify/functions/ping.ts
 
 ```ts
-import { Handler } from '@netlify/functions';
+import { Handler } from '@netlify/functions'
 import {
-    getErrorResponse,
-    getHeaders,
-    HttpStatus,
-    isWhitelistedDomain,
-} from '../lib';
-import { ServerResponse } from 'types';
+  getErrorResponse,
+  getHeaders,
+  HttpStatus,
+  isWhitelistedDomain,
+} from '../lib'
+import { ServerResponse } from 'types'
 
 const handler: Handler = async (event) => {
-    const origin = event.headers.origin ?? '';
+  const origin = event.headers.origin ?? ''
 
-    if (!isWhitelistedDomain(origin)) {
-        return getErrorResponse(HttpStatus.Forbidden);
-    }
+  if (!isWhitelistedDomain(origin)) {
+    return getErrorResponse(HttpStatus.Forbidden)
+  }
 
-    if (event.httpMethod.toLowerCase() !== 'get') {
-        return getErrorResponse(HttpStatus.MethodNotAllowed);
-    }
+  if (event.httpMethod.toLowerCase() !== 'get') {
+    return getErrorResponse(HttpStatus.MethodNotAllowed)
+  }
 
-    const response: ServerResponse = {
-        success: true,
-        message: 'pong',
-    };
+  const response: ServerResponse = {
+    success: true,
+    message: 'pong',
+  }
 
-    return {
-        statusCode: 200,
-        body: JSON.stringify(response),
-        headers: getHeaders(origin),
-    };
-};
+  return {
+    statusCode: 200,
+    body: JSON.stringify(response),
+    headers: getHeaders(origin),
+  }
+}
 
-export { handler };
+export { handler }
 ```
 
 I've added some common code that I'll be sharing between functions and have moved that to a `lib` folder with a
@@ -586,68 +585,68 @@ single `index.ts` file:
 #### netlify/lib/index.ts
 
 ```ts
-import { Response } from '@netlify/functions/dist/function/response';
-import { ServerResponse } from 'types';
+import { Response } from '@netlify/functions/dist/function/response'
+import { ServerResponse } from 'types'
 
 enum HttpStatus {
-    Forbidden = '403',
-    MethodNotAllowed = '405',
-    InternalServerError = '500',
+  Forbidden = '403',
+  MethodNotAllowed = '405',
+  InternalServerError = '500',
 }
 
 const WHITELIST_DOMAINS = [
-    '', // Postman doesn't send request from an origin, allow it through (DON'T DO THIS IN PRODUCTION)
-    'http://localhost:4200', // Whitelist our Angular dev serve for local development
-    'http://localhost:1668', // Whitelist our Scully server for local Scully development
-    'https://asdfasdf.netlify.app', // Whitelist our production server deployed to Netlify
-];
+  '', // Postman doesn't send request from an origin, allow it through (DON'T DO THIS IN PRODUCTION)
+  'http://localhost:4200', // Whitelist our Angular dev serve for local development
+  'http://localhost:1668', // Whitelist our Scully server for local Scully development
+  'https://asdfasdf.netlify.app', // Whitelist our production server deployed to Netlify
+]
 
 function getHeaders(origin: string): { [key: string]: string } {
-    return {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': origin,
-        'Access-Control-Allow-Headers': '*',
-    };
+  return {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Headers': '*',
+  }
 }
 
 function isNullOrUndefined(
-    objectToValidate?: unknown | null | undefined,
+  objectToValidate?: unknown | null | undefined
 ): boolean {
-    return objectToValidate === null || objectToValidate === undefined;
+  return objectToValidate === null || objectToValidate === undefined
 }
 
 function isWhitelistedDomain(origin: string): boolean {
-    const existingDomain = WHITELIST_DOMAINS.find((d) => d === origin);
-    return !isNullOrUndefined(existingDomain);
+  const existingDomain = WHITELIST_DOMAINS.find((d) => d === origin)
+  return !isNullOrUndefined(existingDomain)
 }
 
 function getErrorResponse(statusCode: HttpStatus): Response {
-    let message: string;
+  let message: string
 
-    switch (statusCode) {
-        case HttpStatus.Forbidden:
-            message = 'That method is not allowed for this endpoint.';
-            break;
-        case HttpStatus.MethodNotAllowed:
-            message = 'Domain is forbidden from accessing.';
-            break;
-        default:
-            message = 'An invalid request was made, please try again.';
-    }
+  switch (statusCode) {
+    case HttpStatus.Forbidden:
+      message = 'That method is not allowed for this endpoint.'
+      break
+    case HttpStatus.MethodNotAllowed:
+      message = 'Domain is forbidden from accessing.'
+      break
+    default:
+      message = 'An invalid request was made, please try again.'
+  }
 
-    return {
-        statusCode: +statusCode,
-        body: JSON.stringify({
-            success: false,
-            message,
-        } as ServerResponse),
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    };
+  return {
+    statusCode: +statusCode,
+    body: JSON.stringify({
+      success: false,
+      message,
+    } as ServerResponse),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
 }
 
-export { getErrorResponse, getHeaders, isWhitelistedDomain, HttpStatus };
+export { getErrorResponse, getHeaders, isWhitelistedDomain, HttpStatus }
 ```
 
 Nothing too complicated, just a few simple helpers to facilitate validating allowed origins for CORS, some common
@@ -656,9 +655,9 @@ type under the `types.ts` file at the root of our project:
 
 ```ts
 export type ServerResponse = {
-    message: string;
-    success: boolean;
-};
+  message: string
+  success: boolean
+}
 ```
 
 Since our project is effectively just a big TypeScript solution (Angular frontend, TS-based serverless functions),
@@ -702,59 +701,59 @@ data in the body and return data based on it:
 #### netlify/functions/data/index.ts
 
 ```ts
-import { Handler } from '@netlify/functions';
+import { Handler } from '@netlify/functions'
 import {
-    getErrorResponse,
-    getHeaders,
-    HttpStatus,
-    isWhitelistedDomain,
-} from '../../lib';
-import { ServerResponse } from 'types';
+  getErrorResponse,
+  getHeaders,
+  HttpStatus,
+  isWhitelistedDomain,
+} from '../../lib'
+import { ServerResponse } from 'types'
 
 const handler: Handler = async (event) => {
-    const origin = event.headers.origin ?? '';
+  const origin = event.headers.origin ?? ''
 
-    if (!isWhitelistedDomain(origin)) {
-        return getErrorResponse(HttpStatus.Forbidden);
+  if (!isWhitelistedDomain(origin)) {
+    return getErrorResponse(HttpStatus.Forbidden)
+  }
+
+  const method = event.httpMethod.toLowerCase()
+
+  if (method !== 'options' && method !== 'post') {
+    return getErrorResponse(HttpStatus.MethodNotAllowed)
+  }
+
+  /**
+   * Because we have a more complex request (JSON being sent over the wire),
+   * an options call is made by the Angular HTTP client service to check with our function
+   * that it's okay to receive requests in the current context.
+   */
+  if (method === 'options') {
+    return {
+      statusCode: 200,
+      headers: getHeaders(origin),
+    }
+  }
+
+  if (event.body) {
+    const requestBody: { name: string } = JSON.parse(event.body)
+
+    const response: ServerResponse = {
+      success: true,
+      message: `Hello ${requestBody.name}!`,
     }
 
-    const method = event.httpMethod.toLowerCase();
-
-    if (method !== 'options' && method !== 'post') {
-        return getErrorResponse(HttpStatus.MethodNotAllowed);
+    return {
+      statusCode: 200,
+      body: JSON.stringify(response),
+      headers: getHeaders(origin),
     }
+  }
 
-    /**
-     * Because we have a more complex request (JSON being sent over the wire),
-     * an options call is made by the Angular HTTP client service to check with our function
-     * that it's okay to receive requests in the current context.
-     */
-    if (method === 'options') {
-        return {
-            statusCode: 200,
-            headers: getHeaders(origin),
-        };
-    }
+  return getErrorResponse(HttpStatus.InternalServerError)
+}
 
-    if (event.body) {
-        const requestBody: { name: string } = JSON.parse(event.body);
-
-        const response: ServerResponse = {
-            success: true,
-            message: `Hello ${requestBody.name}!`,
-        };
-
-        return {
-            statusCode: 200,
-            body: JSON.stringify(response),
-            headers: getHeaders(origin),
-        };
-    }
-
-    return getErrorResponse(HttpStatus.InternalServerError);
-};
-
-export { handler };
+export { handler }
 ```
 
 Utilizing our helper methods again, since this is a POST request with more complex request headers (as we can
@@ -789,30 +788,30 @@ The schematic will add a few Scully dependencies to our project, as well as gene
 a `scully.{{projectName}}. config.ts` file with the following:
 
 ```ts
-import { ScullyConfig } from '@scullyio/scully';
+import { ScullyConfig } from '@scullyio/scully'
 
 /** this loads the default render plugin, remove when switching to something else. */
-import '@scullyio/scully-plugin-puppeteer';
+import '@scullyio/scully-plugin-puppeteer'
 
 export const config: ScullyConfig = {
-    projectRoot: './src',
-    projectName: 'scully-netlify-angular-example',
-    outDir: './dist/static',
-    routes: {},
-};
+  projectRoot: './src',
+  projectName: 'scully-netlify-angular-example',
+  outDir: './dist/static',
+  routes: {},
+}
 ```
 
 To make things easy on us, let's add a few build scripts to our `scripts` section in our `package.json`:
 
 ```json
 {
-    "scripts": {
-        // ...other scripts
-        "build:scully": "cross-env NODE_ENV=scully ng build -c scully && npx scully --scanRoutes",
-        "build:production": "cross-env NODE_ENV=production ng build -c production && npx scully --scanRoutes",
-        "scully": "npx scully --",
-        "scully:serve": "npx scully serve --"
-    }
+  "scripts": {
+    // ...other scripts
+    "build:scully": "cross-env NODE_ENV=scully ng build -c scully && npx scully --scanRoutes",
+    "build:production": "cross-env NODE_ENV=production ng build -c production && npx scully --scanRoutes",
+    "scully": "npx scully --",
+    "scully:serve": "npx scully serve --"
+  }
 }
 ```
 

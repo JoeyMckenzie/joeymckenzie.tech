@@ -21,7 +21,7 @@ render(function (View $view, Request $request, Post $post): View {
         '/yandexbot/i', // Yandex's bot
     ];
 
-    $matchedUserAgentBot = collect($botPatterns)->first(fn (string $pattern): bool => preg_match($pattern, $userAgent) === 1);
+    $matchedUserAgentBot = collect($botPatterns)->first(fn(string $pattern): bool => preg_match($pattern, $userAgent) === 1);
 
     // If a bot was detected, we won't increment the view count - I mean come on, I'm not that _that_ popular...
     if ($matchedUserAgentBot === null) {
@@ -42,7 +42,7 @@ render(function (View $view, Request $request, Post $post): View {
 
 <x-app-layout>
     <article
-        class="px-4 prose mx-auto w-full overflow-hidden dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
+        class="prose mx-auto w-full overflow-hidden px-4 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
         <h1 class="text-center text-2xl font-semibold">
             {{ $post->title }}
         </h1>
@@ -51,9 +51,9 @@ render(function (View $view, Request $request, Post $post): View {
             <div class="badge badge-neutral">{{ $post->category }}</div>
             <p>{{ $post->formatted_views }} views</p>
         </div>
-        <img alt="{{ $post->title }} blog meme" src="{{ $post->hero_image }}" height="400" width="500" />
+        <img src="{{ $post->hero_image }}" alt="{{ $post->title }} blog meme" height="400" width="500" />
         {!! $post->parsed_content !!}
-        <a href="/blog" class="flex justify-center pt-8">
+        <a class="flex justify-center pt-8" href="/blog">
             <button class="btn">
                 Back to blog
             </button>

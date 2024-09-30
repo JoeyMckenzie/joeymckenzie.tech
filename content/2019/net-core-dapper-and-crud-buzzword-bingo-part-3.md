@@ -5,10 +5,10 @@ pubDate: 'Nov 19 2019'
 heroImage: '/images/net-core-dapper-and-crud-series/part-3/shouldly-xunit-meme.jpeg'
 category: '.NET'
 keywords:
-    - .net
-    - c#
-    - dapper
-    - mediatr
+  - .net
+  - c#
+  - dapper
+  - mediatr
 ---
 
 Two layers down, two to go. While we've made some great progress in
@@ -28,18 +28,18 @@ post [here](https://github.com/JoeyMckenzie/Dappery/tree/master/tests/Dappery.Da
 the unit tests, let's discuss the tools, approach, and mindset we'll use for writing our tests in each layer of our
 application (excluding our domain layer, as there is really not much logic there by design):
 
--   Within each layer, we'll use a combination of [xUnit](https://xunit.net/)
-    and [Shouldly](https://github.com/shouldly/shouldly), my preferred unit test and assertion frameworks, respectively
--   In our `Dappery.Data` project, we'll write units tests around each operation in our `BeerRepository`
-    and `BreweryRepository` classes, utilizing the seeded database we setup for our in-memory SQLite database provider in
-    our `UnitOfWork` class
--   In our `Dappery.Core` project, which contains all of our business and cross-cutting concern logic, we'll again use
-    xUnit and Shouldly, with unit tests surrounding each query/command action that we will be sending to our MediatR
-    request factory to create the corresponding handlers, as well as verifying proper mappings and responses in each
-    scenario
--   In our `Dappery.Api` project, we'll write a suite of integration tests that will act as our end-to-end spec,
-    effectively testing all of our request transactions from API interface to database interaction, and everything
-    inbetween (creating a _use case_ for our application)
+- Within each layer, we'll use a combination of [xUnit](https://xunit.net/)
+  and [Shouldly](https://github.com/shouldly/shouldly), my preferred unit test and assertion frameworks, respectively
+- In our `Dappery.Data` project, we'll write units tests around each operation in our `BeerRepository`
+  and `BreweryRepository` classes, utilizing the seeded database we setup for our in-memory SQLite database provider in
+  our `UnitOfWork` class
+- In our `Dappery.Core` project, which contains all of our business and cross-cutting concern logic, we'll again use
+  xUnit and Shouldly, with unit tests surrounding each query/command action that we will be sending to our MediatR
+  request factory to create the corresponding handlers, as well as verifying proper mappings and responses in each
+  scenario
+- In our `Dappery.Api` project, we'll write a suite of integration tests that will act as our end-to-end spec,
+  effectively testing all of our request transactions from API interface to database interaction, and everything
+  inbetween (creating a _use case_ for our application)
 
 ### Testing our Persistence Layer
 
@@ -51,18 +51,18 @@ which method is best for our application, let me start by saying that _either_ a
 be using the in-memory database for ease of testing and project bootstrapping. There are perfectly valid reasons for
 using both approaches, for example:
 
--   Within an enterprise environment, one of your team's APIs may contain one, or more, dependencies on another team's API
-    and the persisted data it utilizes, which is good fit for testing against a live non-production (production in the
-    case of live smoke testing) database consumed by all teams
--   Utilizing a common datastore between applications can, however, create a brittle dependency on the physical _data_ you
-    are asserting against - should someone remove an expected record from the database that your dependent API returns,
-    our tests will break (if we are not mocking the API calls)
--   In-memory test databases are great for internal application request transactions and execution paths that have little
-    to no external API dependency - our data can be seeded, manipulated, and scrubbed/removed inbetween tests without fear
-    of another manager yelling at us for deleting test data
--   Although, with the introduction of multiple API dependencies, mocking entire databases and tables from dependent APIs
-    can quickly become unwieldy and introduce complexity in the form of data management that may not be particularly your
-    API's domain concern
+- Within an enterprise environment, one of your team's APIs may contain one, or more, dependencies on another team's API
+  and the persisted data it utilizes, which is good fit for testing against a live non-production (production in the
+  case of live smoke testing) database consumed by all teams
+- Utilizing a common datastore between applications can, however, create a brittle dependency on the physical _data_ you
+  are asserting against - should someone remove an expected record from the database that your dependent API returns,
+  our tests will break (if we are not mocking the API calls)
+- In-memory test databases are great for internal application request transactions and execution paths that have little
+  to no external API dependency - our data can be seeded, manipulated, and scrubbed/removed inbetween tests without fear
+  of another manager yelling at us for deleting test data
+- Although, with the introduction of multiple API dependencies, mocking entire databases and tables from dependent APIs
+  can quickly become unwieldy and introduce complexity in the form of data management that may not be particularly your
+  API's domain concern
 
 So, what's the answer to our self imposed rhetorical question about which method to use? A good ole fashioned, **it
 depends**. For our use case, we don't have any external APIs that we rely on and no data dependency that is out of our
@@ -222,23 +222,23 @@ namespace Dappery.Data.Tests
 
 Alright, let's breakdown this test:
 
--   We're using the AAA pattern - Arrange, Act, Assert - which you'll see me make extensive use of throughout our projects
-    as it encourages us to keep out unit tests _simple_ and not too complex (as they should be, massive and complicated
-    unit test cases are a code smell)
--   We're using the new `using` syntax for disposable classes that shipped with C# 8.0 to grab a reference to
-    our `UnitOfWork` and ensure its resources it creates are properly disposed of once our test is finished - this
-    behavior mimics how we'll inject a scoped instance in our API layer using built-in ASP.NET Core dependency injection
--   We commit our transactions within our unit of work, as our UoW begins a transaction when initialized - while not
-    entirely necessary for our in-memory unit test database, it's always a good practice to end our transactions even the
-    case of read-only queries as to not keep lingering connections that may come back to bite us
--   We dispose of _both_ our `UnitOfWork`, once the reference falls out of scope, and the collection test fixture; while
-    not entirely necessary, it's a good practice to get into (disposing resources at each level)
--   We make use of `async`/`await` to allow for blocking until we receive a response from our in-memory database before
-    continuing onto our assertions
--   We use the `Shouldly` object extension methods to assert the various properties, types, and collection objects we're
-    expecting in the response
--   `Shouldly` natively supports use of LINQ and expression predicates, making assertions fluid and easy to read - one of
-    the many reason I _love_ the library
+- We're using the AAA pattern - Arrange, Act, Assert - which you'll see me make extensive use of throughout our projects
+  as it encourages us to keep out unit tests _simple_ and not too complex (as they should be, massive and complicated
+  unit test cases are a code smell)
+- We're using the new `using` syntax for disposable classes that shipped with C# 8.0 to grab a reference to
+  our `UnitOfWork` and ensure its resources it creates are properly disposed of once our test is finished - this
+  behavior mimics how we'll inject a scoped instance in our API layer using built-in ASP.NET Core dependency injection
+- We commit our transactions within our unit of work, as our UoW begins a transaction when initialized - while not
+  entirely necessary for our in-memory unit test database, it's always a good practice to end our transactions even the
+  case of read-only queries as to not keep lingering connections that may come back to bite us
+- We dispose of _both_ our `UnitOfWork`, once the reference falls out of scope, and the collection test fixture; while
+  not entirely necessary, it's a good practice to get into (disposing resources at each level)
+- We make use of `async`/`await` to allow for blocking until we receive a response from our in-memory database before
+  continuing onto our assertions
+- We use the `Shouldly` object extension methods to assert the various properties, types, and collection objects we're
+  expecting in the response
+- `Shouldly` natively supports use of LINQ and expression predicates, making assertions fluid and easy to read - one of
+  the many reason I _love_ the library
 
 If we run this unit test, using either the Visual Studio/Rider test runner, or running `dotnet test`, we'll see that
 this test passes. If we step through this code via a debug session, we can see exactly what is returned within our

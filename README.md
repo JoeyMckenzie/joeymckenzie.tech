@@ -9,6 +9,6 @@
 Howdy! I'm Joey, and this is my personal website where I write about things I find interesting. A few technologies
 I use to power this bad boy:
 
--   [PHP](https://php.net)
--   [Laravel](https://laravel.com)
--   A bunch of fun packages from Spatie, Shiki, and Symfony to name a few
+- [PHP](https://php.net)
+- [Laravel](https://laravel.com)
+- A bunch of fun packages from Spatie, Shiki, and Symfony to name a few

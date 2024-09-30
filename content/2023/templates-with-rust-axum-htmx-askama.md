@@ -295,13 +295,13 @@ to be more of a fully functional HTML file we'd expect to serve to the browser, 
 ```html
 <!doctype html>
 <html lang="en">
-<head>
-    <link href="/assets/main.css" rel="stylesheet"/>
-    <link href="https://rsms.me/inter/inter.css" rel="stylesheet"/>
-</head>
-<body>
-<h1>Howdy!</h1>
-</body>
+  <head>
+    <link href="/assets/main.css" rel="stylesheet" />
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1>Howdy!</h1>
+  </body>
 </html>
 ```
 
@@ -353,19 +353,19 @@ Created Tailwind CSS config file: tailwind.config.js
 And let's adjust the `tailwind.config.js` file that was generated for us:
 
 ```js
-const {fontFamily} = require('tailwindcss/defaultTheme');
+const { fontFamily } = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ['./templates/*.html'],
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Inter var', ...fontFamily.sans],
-            },
-        },
+  content: ['./templates/*.html'],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter var', ...fontFamily.sans],
+      },
     },
-};
+  },
+}
 ```
 
 I'm also going to rename the extension to `.cjs` to make eslint happy.
@@ -425,13 +425,13 @@ text color class:
 ```html
 <!doctype html>
 <html lang="en">
-<head>
-    <link href="/assets/main.css" rel="stylesheet"/>
-    <link href="https://rsms.me/inter/inter.css" rel="stylesheet"/>
-</head>
-<body>
-<h1 class="text-green-500">Howdy!</h1>
-</body>
+  <head>
+    <link href="/assets/main.css" rel="stylesheet" />
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
+  </head>
+  <body>
+    <h1 class="text-green-500">Howdy!</h1>
+  </body>
 </html>
 ```
 
@@ -457,21 +457,21 @@ a `base.html` file:
 ```html
 <!doctype html>
 <html lang="en">
-<head>
-    <link href="/assets/main.css" rel="stylesheet"/>
-    <link href="https://rsms.me/inter/inter.css" rel="stylesheet"/>
+  <head>
+    <link href="/assets/main.css" rel="stylesheet" />
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
     <!-- Allow any inheriting page to set it's own title -->
     <title>{% block title %}{{ title }}{% endblock %}</title>
 
     <!-- Allow any inheriting page to extend head with additional assets -->
     {% block head %}{% endblock %}
-</head>
-<body>
-<div id="content">
-    <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
-    {% block content %}{% endblock %}
-</div>
-</body>
+  </head>
+  <body>
+    <div id="content">
+      <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
+      {% block content %}{% endblock %}
+    </div>
+  </body>
 </html>
 ```
 
@@ -560,20 +560,18 @@ at the tail end (no pun intended) of the file:
 ### assets/main.css
 
 ```css
-/
-/
-More classes... .font-bold {
-    font-weight: 700;
+/ / More classes... .font-bold {
+  font-weight: 700;
 }
 
 .text-green-500 {
-    --tw-text-opacity: 1;
-    color: rgb(34 197 94 / var(--tw-text-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(34 197 94 / var(--tw-text-opacity));
 }
 
 .text-indigo-500 {
-    --tw-text-opacity: 1;
-    color: rgb(99 102 241 / var(--tw-text-opacity));
+  --tw-text-opacity: 1;
+  color: rgb(99 102 241 / var(--tw-text-opacity));
 }
 ```
 
@@ -590,12 +588,12 @@ Let's spice our templates up with some routes. In our `hello.html` let's add a l
 
 {% block content %}
 <div class="inline-flex flex-row space-x-2">
-    <h1 class="text-green-500">Howdy!</h1>
-    <a
-            href="/another-page"
-            class="text-indigo-500 underline hover:text-indigo-300"
+  <h1 class="text-green-500">Howdy!</h1>
+  <a
+    href="/another-page"
+    class="text-indigo-500 underline hover:text-indigo-300"
     >Another page</a
-    >
+  >
 </div>
 {% endblock %}
 ```
@@ -631,9 +629,9 @@ to our base layout so all pages have access to it:
 ```html
 <!doctype html>
 <html lang="en">
-<head>
-    <link href="/assets/main.css" rel="stylesheet"/>
-    <link href="https://rsms.me/inter/inter.css" rel="stylesheet"/>
+  <head>
+    <link href="/assets/main.css" rel="stylesheet" />
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet" />
     <!-- Allow any inheriting page to set it's own title -->
     <title>{% block title %}{{ title }}{% endblock %}</title>
 
@@ -642,13 +640,13 @@ to our base layout so all pages have access to it:
 
     <!-- Allow any inheriting page to extend head with additional assets -->
     {% block head %}{% endblock %}
-</head>
-<body>
-<div id="content">
-    <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
-    {% block content %}{% endblock %}
-</div>
-</body>
+  </head>
+  <body>
+    <div id="content">
+      <!-- Inheriting pages will have their content rendered here, similar to app root in React, Angular, etc. -->
+      {% block content %}{% endblock %}
+    </div>
+  </body>
 </html>
 ```
 
@@ -711,20 +709,20 @@ We're serving data, now let's wire this up to a button click. On our homepage, l
 
 {% block content %}
 <div class="inline-flex flex-row space-x-2 px-8 py-4">
-    <h1 class="text-green-500">Howdy!</h1>
-    <a
-            href="/another-page"
-            class="text-indigo-500 underline hover:text-indigo-300"
+  <h1 class="text-green-500">Howdy!</h1>
+  <a
+    href="/another-page"
+    class="text-indigo-500 underline hover:text-indigo-300"
     >Another page</a
-    >
-    <button
-            type="button"
-            hx-get="/api/hello"
-            hx-swap="innerHtml"
-            class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-    >
-        Say hello
-    </button>
+  >
+  <button
+    type="button"
+    hx-get="/api/hello"
+    hx-swap="innerHtml"
+    class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+  >
+    Say hello
+  </button>
 </div>
 {% endblock %}
 ```
@@ -757,46 +755,45 @@ $ pnpm add @tailwindcss/forms
 Once that's installed, let's update our `tailwind.config.cjs` file:
 
 ```js
-const {fontFamily} = require('tailwindcss/defaultTheme');
+const { fontFamily } = require('tailwindcss/defaultTheme')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ['./templates/*.html'],
-    theme: {
-        extend: {
-            fontFamily: {
-                sans: ['Inter var', ...fontFamily.sans],
-            },
-        },
+  content: ['./templates/*.html'],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter var', ...fontFamily.sans],
+      },
     },
-    plugins: [require('@tailwindcss/forms')],
-};
+  },
+  plugins: [require('@tailwindcss/forms')],
+}
 ```
 
 Now that our utility has been added, let's create a `todo-form.html` file in our `templates/` directory with a good
 looking form input:
 
 ```html
-
 <form class="max-w-md">
-    <label for="todo" class="block text-sm font-medium leading-6 text-gray-900"
+  <label for="todo" class="block text-sm font-medium leading-6 text-gray-900"
     >Todo</label
+  >
+  <div class="mt-2 inline-flex flex-row space-x-2">
+    <input
+      type="text"
+      name="todo"
+      id="todo"
+      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+      placeholder="Replace frontend with htmx"
+    />
+    <button
+      type="button"
+      class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
-    <div class="mt-2 inline-flex flex-row space-x-2">
-        <input
-                type="text"
-                name="todo"
-                id="todo"
-                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="Replace frontend with htmx"
-        />
-        <button
-                type="button"
-                class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-            Add
-        </button>
-    </div>
+      Add
+    </button>
+  </div>
 </form>
 ```
 
@@ -812,20 +809,20 @@ provides a jinja-like `include` tag we can throw on our `hello.html` template:
 
 {% block content %}
 <div class="inline-flex flex-row space-x-2">
-    <h1 class="text-green-500">Howdy!</h1>
-    <a
-            href="/another-page"
-            class="text-indigo-500 underline hover:text-indigo-300"
+  <h1 class="text-green-500">Howdy!</h1>
+  <a
+    href="/another-page"
+    class="text-indigo-500 underline hover:text-indigo-300"
     >Another page</a
-    >
-    <button
-            type="button"
-            hx-get="/api/hello"
-            hx-swap="innerHtml"
-            class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-    >
-        Say hello
-    </button>
+  >
+  <button
+    type="button"
+    hx-get="/api/hello"
+    hx-swap="innerHtml"
+    class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+  >
+    Say hello
+  </button>
 </div>
 
 {% include "todo-form.html" %} {% endblock %}
@@ -916,33 +913,32 @@ need
 to paint the HTML returned by our `add_todo` route, so let's append it to the end of our `todo-form.html` markup:
 
 ```html
-
 <form
-        hx-post="/api/todos"
-        hx-target="#todos"
-        hx-swap="innerHTML"
-        class="max-w-md"
+  hx-post="/api/todos"
+  hx-target="#todos"
+  hx-swap="innerHTML"
+  class="max-w-md"
 >
-    <label for="todo" class="block text-sm font-medium leading-6 text-gray-900"
+  <label for="todo" class="block text-sm font-medium leading-6 text-gray-900"
     >Todo</label
+  >
+  <div class="mt-2 inline-flex flex-row space-x-2">
+    <input
+      type="text"
+      name="todo"
+      id="todo"
+      class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+      placeholder="Replace frontend with htmx"
+    />
+    <button
+      type="submit"
+      class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
     >
-    <div class="mt-2 inline-flex flex-row space-x-2">
-        <input
-                type="text"
-                name="todo"
-                id="todo"
-                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="Replace frontend with htmx"
-        />
-        <button
-                type="submit"
-                class="rounded-md bg-indigo-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-            Add
-        </button>
-    </div>
+      Add
+    </button>
+  </div>
 </form>
-<div id="todos"/>
+<div id="todos" />
 ```
 
 I've sprinkled in some htmx directives with `hx-post`, `hx-target`, and `hx-swap` as well:

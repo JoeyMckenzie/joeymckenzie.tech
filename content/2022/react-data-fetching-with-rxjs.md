@@ -71,17 +71,17 @@ they happen -
 we're simply _reacting_ to data as it's published through the stream. In code:
 
 ```js
-import {interval, take} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+import { interval, take } from 'rxjs'
+import { finalize } from 'rxjs/operators'
 
-const dataSource$ = interval(1000);
+const dataSource$ = interval(1000)
 
 dataSource$
-    .pipe(
-        take(5),
-        finalize(() => console.log('data captured!')),
-    )
-    .subscribe(console.log);
+  .pipe(
+    take(5),
+    finalize(() => console.log('data captured!'))
+  )
+  .subscribe(console.log)
 
 /**
  * Output:
@@ -132,43 +132,41 @@ With our dependencies installed, let's add a page for our first scenario: SSR wi
 #### pages/with-promises.tsx
 
 ```tsx
-import {GetServerSideProps, NextPage} from 'next';
-import {useEffect} from 'react';
-import {githubBaseUrl} from '../lib/constants';
-import {GitHubRepoMeta, WithFetcherProps} from '../lib/types';
-import {mapRepos} from '../lib/utilities';
+import { GetServerSideProps, NextPage } from 'next'
+import { useEffect } from 'react'
+import { githubBaseUrl } from '../lib/constants'
+import { GitHubRepoMeta, WithFetcherProps } from '../lib/types'
+import { mapRepos } from '../lib/utilities'
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    const mappedGitHubRepos = await fetch(githubBaseUrl, {
-        headers: {
-            Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
-        },
+  const mappedGitHubRepos = await fetch(githubBaseUrl, {
+    headers: {
+      Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+    },
+  })
+    .then((response) => response.json())
+    .then(mapRepos)
+    .catch((error) => {
+      console.error(error)
+      return [] as GitHubRepoMeta[]
     })
-        .then((response) => response.json())
-        .then(mapRepos)
-        .catch((error) => {
-            console.error(error);
-            return [] as GitHubRepoMeta[];
-        });
 
-    return {
-        props: {
-            mappedGitHubRepos,
-        },
-    };
-};
+  return {
+    props: {
+      mappedGitHubRepos,
+    },
+  }
+}
 
-const WithPromises: NextPage<WithFetcherProps> = ({mappedGitHubRepos}) => {
-    useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos]);
+const WithPromises: NextPage<WithFetcherProps> = ({ mappedGitHubRepos }) => {
+  useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos])
 
-    return (
-        <h2 className="text-2xl">
-            Number of repos: {mappedGitHubRepos.length}
-        </h2>
-    );
-};
+  return (
+    <h2 className="text-2xl">Number of repos: {mappedGitHubRepos.length}</h2>
+  )
+}
 
-export default WithPromises;
+export default WithPromises
 ```
 
 I've added a few things to help us along the way underneath the `lib` directory:
@@ -177,20 +175,20 @@ I've added a few things to help us along the way underneath the `lib` directory:
 
 ```ts
 export const githubBaseUrl =
-    'https://api.github.com/users/{{yourUsername}}/repos';
+  'https://api.github.com/users/{{yourUsername}}/repos'
 ```
 
 #### lib/utilities.ts
 
 ```ts
-import {GitHubReposApiResponse} from './types';
+import { GitHubReposApiResponse } from './types'
 
 export function mapRepos(repos: GitHubReposApiResponse[]) {
-    return repos.map((repo) => ({
-        name: repo.name,
-        forks: repo.forks_count,
-        stars: repo.stargazers_count,
-    }));
+  return repos.map((repo) => ({
+    name: repo.name,
+    forks: repo.forks_count,
+    stars: repo.stargazers_count,
+  }))
 }
 ```
 
@@ -198,132 +196,132 @@ export function mapRepos(repos: GitHubReposApiResponse[]) {
 
 ```ts
 interface Owner {
-    login: string;
-    id: number;
-    node_id: string;
-    avatar_url: string;
-    gravatar_id: string;
-    url: string;
-    html_url: string;
-    followers_url: string;
-    following_url: string;
-    gists_url: string;
-    starred_url: string;
-    subscriptions_url: string;
-    organizations_url: string;
-    repos_url: string;
-    events_url: string;
-    received_events_url: string;
-    type: string;
-    site_admin: boolean;
+  login: string
+  id: number
+  node_id: string
+  avatar_url: string
+  gravatar_id: string
+  url: string
+  html_url: string
+  followers_url: string
+  following_url: string
+  gists_url: string
+  starred_url: string
+  subscriptions_url: string
+  organizations_url: string
+  repos_url: string
+  events_url: string
+  received_events_url: string
+  type: string
+  site_admin: boolean
 }
 
 interface Permissions {
-    admin: boolean;
-    maintain: boolean;
-    push: boolean;
-    triage: boolean;
-    pull: boolean;
+  admin: boolean
+  maintain: boolean
+  push: boolean
+  triage: boolean
+  pull: boolean
 }
 
 export interface GitHubReposApiResponse {
-    id: number;
-    node_id: string;
-    name: string;
-    full_name: string;
-    private: boolean;
-    owner: Owner;
-    html_url: string;
-    description: string;
-    fork: boolean;
-    url: string;
-    forks_url: string;
-    keys_url: string;
-    collaborators_url: string;
-    teams_url: string;
-    hooks_url: string;
-    issue_events_url: string;
-    events_url: string;
-    assignees_url: string;
-    branches_url: string;
-    tags_url: string;
-    blobs_url: string;
-    git_tags_url: string;
-    git_refs_url: string;
-    trees_url: string;
-    statuses_url: string;
-    languages_url: string;
-    stargazers_url: string;
-    contributors_url: string;
-    subscribers_url: string;
-    subscription_url: string;
-    commits_url: string;
-    git_commits_url: string;
-    comments_url: string;
-    issue_comment_url: string;
-    contents_url: string;
-    compare_url: string;
-    merges_url: string;
-    archive_url: string;
-    downloads_url: string;
-    issues_url: string;
-    pulls_url: string;
-    milestones_url: string;
-    notifications_url: string;
-    labels_url: string;
-    releases_url: string;
-    deployments_url: string;
-    created_at: Date;
-    updated_at: Date;
-    pushed_at: Date;
-    git_url: string;
-    ssh_url: string;
-    clone_url: string;
-    svn_url: string;
-    homepage: string;
-    size: number;
-    stargazers_count: number;
-    watchers_count: number;
-    language: string;
-    has_issues: boolean;
-    has_projects: boolean;
-    has_downloads: boolean;
-    has_wiki: boolean;
-    has_pages: boolean;
-    forks_count: number;
-    mirror_url?: any;
-    archived: boolean;
-    disabled: boolean;
-    open_issues_count: number;
-    license?: any;
-    allow_forking: boolean;
-    is_template: boolean;
-    topics: string[];
-    visibility: string;
-    forks: number;
-    open_issues: number;
-    watchers: number;
-    default_branch: string;
-    permissions: Permissions;
-    temp_clone_token: string;
-    allow_squash_merge: boolean;
-    allow_merge_commit: boolean;
-    allow_rebase_merge: boolean;
-    allow_auto_merge: boolean;
-    delete_branch_on_merge: boolean;
-    allow_update_branch: boolean;
-    network_count: number;
-    subscribers_count: number;
+  id: number
+  node_id: string
+  name: string
+  full_name: string
+  private: boolean
+  owner: Owner
+  html_url: string
+  description: string
+  fork: boolean
+  url: string
+  forks_url: string
+  keys_url: string
+  collaborators_url: string
+  teams_url: string
+  hooks_url: string
+  issue_events_url: string
+  events_url: string
+  assignees_url: string
+  branches_url: string
+  tags_url: string
+  blobs_url: string
+  git_tags_url: string
+  git_refs_url: string
+  trees_url: string
+  statuses_url: string
+  languages_url: string
+  stargazers_url: string
+  contributors_url: string
+  subscribers_url: string
+  subscription_url: string
+  commits_url: string
+  git_commits_url: string
+  comments_url: string
+  issue_comment_url: string
+  contents_url: string
+  compare_url: string
+  merges_url: string
+  archive_url: string
+  downloads_url: string
+  issues_url: string
+  pulls_url: string
+  milestones_url: string
+  notifications_url: string
+  labels_url: string
+  releases_url: string
+  deployments_url: string
+  created_at: Date
+  updated_at: Date
+  pushed_at: Date
+  git_url: string
+  ssh_url: string
+  clone_url: string
+  svn_url: string
+  homepage: string
+  size: number
+  stargazers_count: number
+  watchers_count: number
+  language: string
+  has_issues: boolean
+  has_projects: boolean
+  has_downloads: boolean
+  has_wiki: boolean
+  has_pages: boolean
+  forks_count: number
+  mirror_url?: any
+  archived: boolean
+  disabled: boolean
+  open_issues_count: number
+  license?: any
+  allow_forking: boolean
+  is_template: boolean
+  topics: string[]
+  visibility: string
+  forks: number
+  open_issues: number
+  watchers: number
+  default_branch: string
+  permissions: Permissions
+  temp_clone_token: string
+  allow_squash_merge: boolean
+  allow_merge_commit: boolean
+  allow_rebase_merge: boolean
+  allow_auto_merge: boolean
+  delete_branch_on_merge: boolean
+  allow_update_branch: boolean
+  network_count: number
+  subscribers_count: number
 }
 
 export interface GitHubRepoMeta {
-    name: string;
-    stars: number;
-    forks: number;
+  name: string
+  stars: number
+  forks: number
 }
 
 export interface WithFetcherProps {
-    mappedGitHubRepos: GitHubRepoMeta[];
+  mappedGitHubRepos: GitHubRepoMeta[]
 }
 ```
 
@@ -347,24 +345,24 @@ template will rely on:
 
 ```ts
 export const getServerSideProps: GetServerSideProps = async () => {
-    const mappedGitHubRepos = await fetch(githubBaseUrl, {
-        headers: {
-            Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
-        },
+  const mappedGitHubRepos = await fetch(githubBaseUrl, {
+    headers: {
+      Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+    },
+  })
+    .then((response) => response.json())
+    .then(mapRepos)
+    .catch((error) => {
+      console.error(error)
+      return [] as GitHubRepoMeta[]
     })
-        .then((response) => response.json())
-        .then(mapRepos)
-        .catch((error) => {
-            console.error(error);
-            return [] as GitHubRepoMeta[];
-        });
 
-    return {
-        props: {
-            mappedGitHubRepos,
-        },
-    };
-};
+  return {
+    props: {
+      mappedGitHubRepos,
+    },
+  }
+}
 ```
 
 We're utilizing next.js's mechanism
@@ -388,55 +386,49 @@ Okay, this is fine, but what about using `try`/`catch` with a few more `async`/`
 #### pages/with-try-catch.tsx
 
 ```tsx
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
+import { useEffect } from 'react'
+import { githubBaseUrl } from '../lib/constants'
 import {
-    GetServerSideProps,
-    InferGetServerSidePropsType,
-    NextPage,
-} from 'next';
-import {useEffect} from 'react';
-import {githubBaseUrl} from '../lib/constants';
-import {
-    GitHubRepoMeta,
-    GitHubReposApiResponse,
-    WithFetcherProps,
-} from '../lib/types';
-import {mapRepos} from '../lib/utilities';
+  GitHubRepoMeta,
+  GitHubReposApiResponse,
+  WithFetcherProps,
+} from '../lib/types'
+import { mapRepos } from '../lib/utilities'
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    let mappedGitHubRepos: GitHubRepoMeta[] = [];
+  let mappedGitHubRepos: GitHubRepoMeta[] = []
 
-    try {
-        const response = await fetch(githubBaseUrl, {
-            headers: {
-                Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
-            },
-        });
+  try {
+    const response = await fetch(githubBaseUrl, {
+      headers: {
+        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+      },
+    })
 
-        const githubRepos: GitHubReposApiResponse[] = await response.json();
+    const githubRepos: GitHubReposApiResponse[] = await response.json()
 
-        mappedGitHubRepos = mapRepos(githubRepos);
-    } catch (error: any) {
-        console.error(error);
-    }
+    mappedGitHubRepos = mapRepos(githubRepos)
+  } catch (error: any) {
+    console.error(error)
+  }
 
-    return {
-        props: {
-            mappedGitHubRepos,
-        },
-    };
-};
+  return {
+    props: {
+      mappedGitHubRepos,
+    },
+  }
+}
 
-const WithTryCatch: NextPage<WithFetcherProps> = ({mappedGitHubRepos}) => {
-    useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos]);
+const WithTryCatch: NextPage<WithFetcherProps> = ({ mappedGitHubRepos }) => {
+  useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos])
 
-    return (
-        <h2 className="text-2xl">
-            Number of repos: {mappedGitHubRepos.length}
-        </h2>
-    );
-};
+  return (
+    <h2 className="text-2xl">Number of repos: {mappedGitHubRepos.length}</h2>
+  )
+}
 
-export default WithTryCatch;
+export default WithTryCatch
 ```
 
 Again, not much change from using promises, as all we've done is throw in a `try`/`catch` block and an extra `await`
@@ -455,29 +447,27 @@ same data from the same GH API endpoint:
 #### pages/with-rxjs.tsx
 
 ```tsx
-import {GetServerSideProps, NextPage} from 'next';
-import {useEffect} from 'react';
-import {githubBaseUrl} from '../lib/constants';
-import {WithFetcherProps} from '../lib/types';
-import {fetchFirstReposValue} from '../lib/utilities';
+import { GetServerSideProps, NextPage } from 'next'
+import { useEffect } from 'react'
+import { githubBaseUrl } from '../lib/constants'
+import { WithFetcherProps } from '../lib/types'
+import { fetchFirstReposValue } from '../lib/utilities'
 
 export const getServerSideProps: GetServerSideProps = async () => ({
-    props: {
-        mappedGitHubRepos: await fetchFirstReposValue(githubBaseUrl),
-    } as WithFetcherProps,
-});
+  props: {
+    mappedGitHubRepos: await fetchFirstReposValue(githubBaseUrl),
+  } as WithFetcherProps,
+})
 
-const WithRxJS: NextPage<WithFetcherProps> = ({mappedGitHubRepos}) => {
-    useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos]);
+const WithRxJS: NextPage<WithFetcherProps> = ({ mappedGitHubRepos }) => {
+  useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos])
 
-    return (
-        <h2 className="text-2xl">
-            Number of repos: {mappedGitHubRepos.length}
-        </h2>
-    );
-};
+  return (
+    <h2 className="text-2xl">Number of repos: {mappedGitHubRepos.length}</h2>
+  )
+}
 
-export default WithRxJS;
+export default WithRxJS
 ```
 
 With `fetchFirstReposValue` coming from our `utilities`:
@@ -488,25 +478,25 @@ With `fetchFirstReposValue` coming from our `utilities`:
 // ...other stuff
 
 export function fetchRepos(key: string): Observable<GitHubRepoMeta[]> {
-    return fromFetch<GitHubReposApiResponse[]>(key, {
-        headers: {
-            Authorization: `token ${
-                process.env.GITHUB_ACCESS_TOKEN ??
-                process.env.NEXT_PUBLIC_GITHUB_ACCESS_TOKEN
-            }`,
-        },
-        selector: (response) => response.json(),
-    }).pipe(
-        map(mapRepos),
-        catchError((error) => {
-            console.error(error);
-            return EMPTY;
-        }),
-    );
+  return fromFetch<GitHubReposApiResponse[]>(key, {
+    headers: {
+      Authorization: `token ${
+        process.env.GITHUB_ACCESS_TOKEN ??
+        process.env.NEXT_PUBLIC_GITHUB_ACCESS_TOKEN
+      }`,
+    },
+    selector: (response) => response.json(),
+  }).pipe(
+    map(mapRepos),
+    catchError((error) => {
+      console.error(error)
+      return EMPTY
+    })
+  )
 }
 
 export function fetchFirstReposValue(key: string) {
-    return firstValueFrom(fetchRepos(key));
+  return firstValueFrom(fetchRepos(key))
 }
 ```
 
@@ -552,21 +542,21 @@ Let's dig into our functions utilizing `fromFetch`:
 
 ```ts
 export function fetchRepos(key: string): Observable<GitHubRepoMeta[]> {
-    return fromFetch<GitHubReposApiResponse[]>(key, {
-        headers: {
-            Authorization: `token ${
-                process.env.GITHUB_ACCESS_TOKEN ??
-                process.env.NEXT_PUBLIC_GITHUB_ACCESS_TOKEN
-            }`,
-        },
-        selector: (response) => response.json(),
-    }).pipe(
-        map(mapRepos),
-        catchError((error) => {
-            console.error(error);
-            return EMPTY;
-        }),
-    );
+  return fromFetch<GitHubReposApiResponse[]>(key, {
+    headers: {
+      Authorization: `token ${
+        process.env.GITHUB_ACCESS_TOKEN ??
+        process.env.NEXT_PUBLIC_GITHUB_ACCESS_TOKEN
+      }`,
+    },
+    selector: (response) => response.json(),
+  }).pipe(
+    map(mapRepos),
+    catchError((error) => {
+      console.error(error)
+      return EMPTY
+    })
+  )
 }
 ```
 
@@ -599,27 +589,25 @@ function:
 #### pages/with-csr.tsx
 
 ```tsx
-import {NextPage} from 'next';
-import useSWR from 'swr';
-import {githubBaseUrl} from '../lib/constants';
-import {fetchFirstReposValue} from '../lib/utilities';
+import { NextPage } from 'next'
+import useSWR from 'swr'
+import { githubBaseUrl } from '../lib/constants'
+import { fetchFirstReposValue } from '../lib/utilities'
 
 const WithCSR: NextPage = () => {
-    const {data: mappedGitHubRepos} = useSWR(
-        githubBaseUrl,
-        fetchFirstReposValue,
-    );
+  const { data: mappedGitHubRepos } = useSWR(
+    githubBaseUrl,
+    fetchFirstReposValue
+  )
 
-    return mappedGitHubRepos ? (
-        <h2 className="text-2xl">
-            Number of repos: {mappedGitHubRepos.length}
-        </h2>
-    ) : (
-        <h2 className="text-2xl">Loading...</h2>
-    );
-};
+  return mappedGitHubRepos ? (
+    <h2 className="text-2xl">Number of repos: {mappedGitHubRepos.length}</h2>
+  ) : (
+    <h2 className="text-2xl">Loading...</h2>
+  )
+}
 
-export default WithCSR;
+export default WithCSR
 ```
 
 We tap into the `useSWR` hook, supplying the base URL for the endpoint as the key, and reuse our `fromFetch` as the

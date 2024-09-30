@@ -5,8 +5,8 @@ pubDate: 'Dec 13 2023'
 heroImage: '/images/migrating-to-laravel/meme.jpg'
 category: 'laravel'
 keywords:
-    - php
-    - laravel
+  - php
+  - laravel
 ---
 
 Alright, I'm making this one short (sort of). My pre-New Year's Resolution is to write on my blog here more
@@ -488,20 +488,20 @@ components, no more `.eslintrc.*` and `.prettierrc.*` files to deal with, just a
 
 ```json
 {
-    "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
-    "organizeImports": {
-        "enabled": true
-    },
-    "formatter": {
-        "indentStyle": "space",
-        "indentWidth": 4
-    },
-    "linter": {
-        "enabled": true,
-        "rules": {
-            "recommended": true
-        }
+  "$schema": "https://biomejs.dev/schemas/1.4.1/schema.json",
+  "organizeImports": {
+    "enabled": true
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 4
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true
     }
+  }
 }
 ```
 
@@ -519,19 +519,19 @@ Wrapping those up in my `package.json` `scripts` looks something like:
 
 ```json
 {
-    // Other stuff...
-    "scripts": {
-        "dev": "vite",
-        "build": "tsc && vite build && vite build --ssr",
-        "tailwind": "prettier --plugin prettier-plugin-tailwindcss --write ./resources/js",
-        "check": "pnpm dlx @biomejs/biome check --apply ./resources/js",
-        "fmt": "pnpm dlx @biomejs/biome format --write ./resources/js",
-        "fix": "pnpm dlx @biomejs/biome lint --apply ./resources/js",
-        "lint": "pnpm dlx @biomejs/biome lint ./resources/js",
-        "ci": "pnpm dlx @biomejs/biome ci ./resources/js",
-        "prepare": "git config core.hookspath .githooks",
-        "pre-commit": "pnpm run tailwind && pnpm run check && pnpm run fmt"
-    }
+  // Other stuff...
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && vite build --ssr",
+    "tailwind": "prettier --plugin prettier-plugin-tailwindcss --write ./resources/js",
+    "check": "pnpm dlx @biomejs/biome check --apply ./resources/js",
+    "fmt": "pnpm dlx @biomejs/biome format --write ./resources/js",
+    "fix": "pnpm dlx @biomejs/biome lint --apply ./resources/js",
+    "lint": "pnpm dlx @biomejs/biome lint ./resources/js",
+    "ci": "pnpm dlx @biomejs/biome ci ./resources/js",
+    "prepare": "git config core.hookspath .githooks",
+    "pre-commit": "pnpm run tailwind && pnpm run check && pnpm run fmt"
+  }
 }
 ```
 
@@ -613,28 +613,26 @@ and in my component footer:
 
 ```tsx
 export default function SpotifyTracker({
-                                           children,
-                                       }: {
-    children: React.JSX.Element;
+  children,
+}: {
+  children: React.JSX.Element
 }): React.JSX.Element {
-    // Inertia has a pretty sweet hook allowing us to tap into common page properties
-    const page = usePage();
+  // Inertia has a pretty sweet hook allowing us to tap into common page properties
+  const page = usePage()
 
-    const nowPlaying = page.props.spotify as NowPlaying | undefined;
-    const currentlyPlaying = nowPlaying?.nowPlaying ?? false;
+  const nowPlaying = page.props.spotify as NowPlaying | undefined
+  const currentlyPlaying = nowPlaying?.nowPlaying ?? false
 
-    return (
-        <>
-            {currentlyPlaying && nowPlaying !== undefined && (
-                <CurrentlyPlaying nowPlaying={nowPlaying}>
-                    {children}
-                </CurrentlyPlaying>
-            )}
-            {!currentlyPlaying && (
-                <NotCurrentlyPlaying>{children}</NotCurrentlyPlaying>
-            )}
-        </>
-    );
+  return (
+    <>
+      {currentlyPlaying && nowPlaying !== undefined && (
+        <CurrentlyPlaying nowPlaying={nowPlaying}>{children}</CurrentlyPlaying>
+      )}
+      {!currentlyPlaying && (
+        <NotCurrentlyPlaying>{children}</NotCurrentlyPlaying>
+      )}
+    </>
+  )
 }
 ```
 
@@ -642,27 +640,27 @@ with the corresponding `PageProps` in `index.d.ts` changes:
 
 ```typescript
 export type NowPlaying = {
-    nowPlaying: boolean;
-    albumImageSrc?: string;
-    artist?: string;
-    href?: string;
-    trackTitle?: string;
-};
+  nowPlaying: boolean
+  albumImageSrc?: string
+  artist?: string
+  href?: string
+  trackTitle?: string
+}
 
 export type Note = {
-    title: string;
-    description: string;
-};
+  title: string
+  description: string
+}
 
 export type PageProps<
-    T extends Record<string, unknown> = Record<string, unknown>,
+  T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
-    commit: string;
-    laravelVersion: string;
-    phpVersion: string;
-    spotify?: NowPlaying;
-    notes: Note[];
-};
+  commit: string
+  laravelVersion: string
+  phpVersion: string
+  spotify?: NowPlaying
+  notes: Note[]
+}
 ```
 
 Now any page returned from an Inertia rendered route has all the common data available as React props. Pretty sweet,
@@ -882,49 +880,49 @@ before updating the production configuration. All-in-all, this is what my deploy
 name: Deploy to Forge
 
 on:
-    workflow_run:
-        workflows: [ 'Inertia CI' ]
-        types:
-            - completed
+  workflow_run:
+    workflows: ['Inertia CI']
+    types:
+      - completed
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        timeout-minutes: 10
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
 
-        name: Deploy application
-        steps:
-            -   uses: actions/checkout@v3
+    name: Deploy application
+    steps:
+      - uses: actions/checkout@v3
 
-            -   name: Setup PHP
-                id: setup-php
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: '8.3'
+      - name: Setup PHP
+        id: setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
 
-            -   name: Install Forge CLI
-                run: composer global require laravel/forge-cli
+      - name: Install Forge CLI
+        run: composer global require laravel/forge-cli
 
-            -   name: Authenticate with Forge
-                run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
+      - name: Authenticate with Forge
+        run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
 
-            # Forge environment variables, including the current git commit hash,
-            # aren't included as runtime environment variables and only in the build script.
-            # To get the current commit propagated, pull the current production configuration,
-            # and append the current commit to the file and push it back up to Forge.
-            -   name: Download current configuration
-                run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
+      # Forge environment variables, including the current git commit hash,
+      # aren't included as runtime environment variables and only in the build script.
+      # To get the current commit propagated, pull the current production configuration,
+      # and append the current commit to the file and push it back up to Forge.
+      - name: Download current configuration
+        run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
 
-            -   name: Add current commit and push back to forge
-                run: |
-                    ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
-                working-directory: ${{ github.workspace }}
+      - name: Add current commit and push back to forge
+        run: |
+          ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
+        working-directory: ${{ github.workspace }}
 
-            -   name: Push environment to Forge
-                run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
+      - name: Push environment to Forge
+        run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
 
-            -   name: Ping deploy.sh URL
-                run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
+      - name: Ping deploy.sh URL
+        run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
 ```
 
 Setting a few environment variables, badda bing, badda boom, and everything works.

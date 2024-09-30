@@ -176,7 +176,7 @@ WHERE br.id = @BreweryId
 We might get something like:
 
 | Brewery ID | Name      | Beer ID | Beer Name | Beer Type | Employee ID | First Name | Last Name |
-|------------|-----------|---------|-----------|-----------|-------------|------------|-----------|
+| ---------- | --------- | ------- | --------- | --------- | ----------- | ---------- | --------- |
 | 1          | Brewery A | 101     | Beer A    | Ale       | 201         | John       | Doe       |
 | 1          | Brewery A | 102     | Beer B    | Lager     | 201         | John       | Doe       |
 | 2          | Brewery B | 103     | Beer X    | Stout     | 202         | Jane       | Smith     |
@@ -303,10 +303,10 @@ At a quick glance, the code above:
 - Defines some column breaks, or `splitOn` in Dapper terms, to tell Dapper what columns are associated to the models we
   want mapped
 - Defines a closure for Dapper to callback to for each record we get back in the result
-    - We'll map the aggregate model on first pass, where subsequent iterations won't be assigned since we're using
-      the `??=` null-coalescing assignment operator
-    - On each pass, we'll also add the associated beer/employee that Dapper mapped out for us in the brewery aggregates
-      list relationships (_foreshadowing intensifies_)
+  - We'll map the aggregate model on first pass, where subsequent iterations won't be assigned since we're using
+    the `??=` null-coalescing assignment operator
+  - On each pass, we'll also add the associated beer/employee that Dapper mapped out for us in the brewery aggregates
+    list relationships (_foreshadowing intensifies_)
 - Lastly, we pass the query function an anonymous object to use in order to parameterize the query so our security
   officers don't slap us with an 8 hour OWASP training on SQL injection
 

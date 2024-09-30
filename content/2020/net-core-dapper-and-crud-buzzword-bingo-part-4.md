@@ -5,19 +5,19 @@ pubDate: 'Feb 02 2020'
 heroImage: '/images/net-core-dapper-and-crud-series/part-4/use-automapper-meme.jpeg'
 category: '.NET'
 keywords:
-    - .net
-    - c#
-    - dapper
-    - mediatr
+  - .net
+  - c#
+  - dapper
+  - mediatr
 ---
 
 The wait is finally over (sort of). As we recover from the scrupulous amount of Christmas cookies we consumed during our
 annual holiday bulking season (at least what I tell myself), I figured it's time to jump into the bulk of our fictional
 brewery app, Dappery. So far, we've:
 
--   Defined our domain layer and business entities used application wide
--   Implemented our data access layer with the help of repositories wrapped in a unit of work
--   Written unit tests for our persistence layer to ensure future proofing our code
+- Defined our domain layer and business entities used application wide
+- Implemented our data access layer with the help of repositories wrapped in a unit of work
+- Written unit tests for our persistence layer to ensure future proofing our code
 
 And with most of the groundwork out of the way, we can finally jump into the core layer of Dappery. Before we dive into
 the code, let's remind ourselves of _why_ exactly we've split our core business logic layer out into a high level detail
@@ -41,19 +41,19 @@ gotchas" can happen).
 
 Alright, with the preamble out of the way, let's get a game plan going for how we'll implement this layer:
 
--   We'll use our data access layer contracts (i.e. the interfaces we've defined in this layer) to access our database
--   Using MediatR, we'll break our requests into queries and commands, effectively containing a finite set of application
-    features that will be easier to code to and debug
--   While it may seem a little boilerplate-y, we avoid things like
-    the [God Object](https://en.wikipedia.org/wiki/God_object) anti-pattern, where everything gets shoved into one helper
-    or
-    service class
--   We'll write two custom mappers that will map our beer and brewery entities into DTOs and resource to transport the
-    database entities out of the lower levels
--   Each feature request will be validated using the [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
-    library, acting as a guard between the API layer and core business layer to protect invalid state from making its way
-    to the database
--   We'll handle invalid scenarios in this layer and enforce business rules
+- We'll use our data access layer contracts (i.e. the interfaces we've defined in this layer) to access our database
+- Using MediatR, we'll break our requests into queries and commands, effectively containing a finite set of application
+  features that will be easier to code to and debug
+- While it may seem a little boilerplate-y, we avoid things like
+  the [God Object](https://en.wikipedia.org/wiki/God_object) anti-pattern, where everything gets shoved into one helper
+  or
+  service class
+- We'll write two custom mappers that will map our beer and brewery entities into DTOs and resource to transport the
+  database entities out of the lower levels
+- Each feature request will be validated using the [FluentValidation](https://github.com/JeremySkinner/FluentValidation)
+  library, acting as a guard between the API layer and core business layer to protect invalid state from making its way
+  to the database
+- We'll handle invalid scenarios in this layer and enforce business rules
 
 As we can see, that's a lot of stuff - thus the reason our core business layer is in a layer of its own, independent of
 the lower level details. Without further ado, let's cut the chit chat and get down to business (pun intended). Let's
@@ -447,17 +447,17 @@ namespace Dappery.Core.Infrastructure
 
 Let's break it down:
 
--   First, we inject from the DI container (which we'll see in the API layer with the help of ASP.NET Core) all of the
-    validations that were found in the assembly that all descended from `AbstractValidator<TCommand>` and retrieves the
-    rules we've defined per instance
--   We retrieve the validators from the request, which we'll know at runtime
--   Using LINQ, we run through each validator, validate the context (whatever the request type may be), flatten
-    the `ValidationResult` enumerable by mapping just the error property with `.SelectMany()`, and collect any that return
-    errors
--   We check to see if there were any violations of our rules, and throw the `ValidationException` that we'll catch within
-    a global exception handler within the API layer so we can return detailed validation messages to the consumers
--   Finally, we let the request thread continue on its merry way throughout the layers of our application (unscathed if
-    there were no errors)
+- First, we inject from the DI container (which we'll see in the API layer with the help of ASP.NET Core) all of the
+  validations that were found in the assembly that all descended from `AbstractValidator<TCommand>` and retrieves the
+  rules we've defined per instance
+- We retrieve the validators from the request, which we'll know at runtime
+- Using LINQ, we run through each validator, validate the context (whatever the request type may be), flatten
+  the `ValidationResult` enumerable by mapping just the error property with `.SelectMany()`, and collect any that return
+  errors
+- We check to see if there were any violations of our rules, and throw the `ValidationException` that we'll catch within
+  a global exception handler within the API layer so we can return detailed validation messages to the consumers
+- Finally, we let the request thread continue on its merry way throughout the layers of our application (unscathed if
+  there were no errors)
 
 Whew, that small bit of code is doing _a lot_ of big things for us. Using MediatR and FluentValidator in tandem is a
 match made in heaven, letting developers customize their application request flow, providing convention to help reduce
@@ -1091,16 +1091,16 @@ similar in setup, with just a few minor tweaks since we're working within the co
 relationship. While this might seem like a lot of redundant, rather boilerplate-y code, I think we should discuss the
 tradeoffs of using MediatR with the CQRS pattern:
 
--   Since we've separated commands from queries, we've implicitly created clearly defined boundaries within the core
-    application layer
--   If we want to add additional features, we can easily do so without fear of modifying existing behavior as we've
-    compartmentalized each request in total isolation from one another
--   We've greatly reduced number of states our application could possibly create, with a finite number of logical paths a
-    request thread could take
--   Notice we have no classical service-type classes as we we're deliberate about not creating an all encompassing service
-    that would mix our commands and queries together
--   While all this sounds great, one could also argue that we've complicated the code by adding such convention all over
-    the place
+- Since we've separated commands from queries, we've implicitly created clearly defined boundaries within the core
+  application layer
+- If we want to add additional features, we can easily do so without fear of modifying existing behavior as we've
+  compartmentalized each request in total isolation from one another
+- We've greatly reduced number of states our application could possibly create, with a finite number of logical paths a
+  request thread could take
+- Notice we have no classical service-type classes as we we're deliberate about not creating an all encompassing service
+  that would mix our commands and queries together
+- While all this sounds great, one could also argue that we've complicated the code by adding such convention all over
+  the place
 
 At the end of the day, no matter how we implement the core application layer, it will still have just one
 responsibility - encompass all the business logic. We've seen that using MediatR, FluentValidation, and a few simple

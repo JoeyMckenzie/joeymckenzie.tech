@@ -5,8 +5,8 @@
 <x-app-layout>
     <div class="hero">
         <div class="hero-content">
-            <div class="max-w-md prose">
-                <h1 class="text-xl font-bold text-center">Now.</h1>
+            <div class="prose max-w-md">
+                <h1 class="text-center text-xl font-bold">Now.</h1>
                 <p>
                     I'm part of team modernizing financial systems for a lending company with things like .NET, AWS,
                     Docker, Terraform, and a bunch of other resume buzzwords. I like breaking things and convincing

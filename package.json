@@ -4,11 +4,12 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "fmt": "prettier --write --plugin=prettier-plugin-tailwindcss --plugin=@shufo/prettier-plugin-blade \"**/*.{js,blade.php,css,md}\""
+        "fmt": "prettier --write --plugin=prettier-plugin-tailwindcss --plugin=@shufo/prettier-plugin-blade \"{resources,content}/**/*.{js,blade.php,css,md}\""
     },
     "lint-staged": {
         "**/*.php": [
             "composer run fmt",
+            "npm run fmt",
             "composer run rector"
         ]
     },

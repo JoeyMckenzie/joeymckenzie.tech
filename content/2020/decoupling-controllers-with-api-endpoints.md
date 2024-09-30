@@ -5,9 +5,9 @@ pubDate: 'Sep 23 2020'
 heroImage: '/images/decoupling-controllers-with-api-endpoints/friends-business-logic.jpg'
 category: '.NET'
 keywords:
-    - c#
-    - .net
-    - api
+  - c#
+  - .net
+  - api
 ---
 
 Admittedly, or not, we've all worked on projects during our careers that took the above meme's approach of "just put it
@@ -269,17 +269,17 @@ As the method definition for `Handle()` is the same as the `Get()` action method
 directly copied over from the default `WeatherController` that the ASP.NET Core scaffold tools includes in its template,
 let's focus on the unfamiliar parts of this file that ApiEndpoints brings to the table:
 
--   We're still utilizing the `[Route]` and `[HttpGet]` attributes available to our controllers thanks to
-    the `Microsoft.AspNetCore.Mvc` namespace
--   We're inheriting from the `BaseEndpoint<TResponse>` class that ApiEndpoints provides for us, signaling on application
-    startup that this is, in fact, a controller in disguise and will be treated just like a regular old ASP.NET Core
-    controller
--   `BaseEndpoint<TResponse>` is an abstract class with a single method exposed for us to override in `Handle()` that
-    an `ActionResult<TResponse>` type, akin to action methods from within a controller
--   If we follow the inheritance chain of `BaseEndpoint`, or any of its derivatives with higher order arity (thanks for
-    the vocab upgrade in my personal arsenal, Jon Skeet) in `BaseEndpoint<TResponse>`
-    or `BaseEndpoint<TRequest, TResponse>`, we see the base type ultimately pointing to ASP.NET Core's `ControllerBase`
-    type, solving the mystery as to why we have access to all the ASP.NET Core attributes and types in endpoints
+- We're still utilizing the `[Route]` and `[HttpGet]` attributes available to our controllers thanks to
+  the `Microsoft.AspNetCore.Mvc` namespace
+- We're inheriting from the `BaseEndpoint<TResponse>` class that ApiEndpoints provides for us, signaling on application
+  startup that this is, in fact, a controller in disguise and will be treated just like a regular old ASP.NET Core
+  controller
+- `BaseEndpoint<TResponse>` is an abstract class with a single method exposed for us to override in `Handle()` that
+  an `ActionResult<TResponse>` type, akin to action methods from within a controller
+- If we follow the inheritance chain of `BaseEndpoint`, or any of its derivatives with higher order arity (thanks for
+  the vocab upgrade in my personal arsenal, Jon Skeet) in `BaseEndpoint<TResponse>`
+  or `BaseEndpoint<TRequest, TResponse>`, we see the base type ultimately pointing to ASP.NET Core's `ControllerBase`
+  type, solving the mystery as to why we have access to all the ASP.NET Core attributes and types in endpoints
 
 We have a single named route thanks to the `[Route(Routes.WeatherUri])]` attribute, where I've defined `Routes.cs` at
 the root of our `Features` folder below:
