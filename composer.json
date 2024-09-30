@@ -87,7 +87,12 @@
         "prepare": "git config core.hookspath .githooks",
         "lint": "./vendor/bin/phpstan analyze",
         "fmt": "./vendor/bin/pint -v",
-        "rector": "vendor/bin/rector process"
+        "rector": "vendor/bin/rector process",
+        "ci": [
+            "@lint",
+            "@fmt",
+            "@rector"
+        ]
     },
     "extra": {
         "laravel": {

@@ -28,4 +28,4 @@ jobs:
         run: composer install
 
       - name: Lint and test
-        run: composer run check
+        run: composer run ci
