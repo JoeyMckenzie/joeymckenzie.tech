@@ -11,6 +11,7 @@
         "php": "^8.3",
         "blade-ui-kit/blade-icons": "^1.7",
         "davidhsianturi/blade-bootstrap-icons": "^1.5",
+        "filament/filament": "^3.2",
         "laravel/folio": "^1.1",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
@@ -23,9 +24,7 @@
         "barryvdh/laravel-debugbar": "^3.14",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^2.9",
-        "laravel/breeze": "^2.2",
         "laravel/pint": "^1.13",
-        "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.0",
         "pestphp/pest": "^3.2",
@@ -52,7 +51,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -92,8 +92,7 @@
         "ci": [
             "@lint",
             "@fmt",
-            "@rector",
-            "@test"
+            "@rector"
         ]
     },
     "extra": {

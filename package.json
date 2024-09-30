@@ -7,9 +7,9 @@
         "fmt": "prettier --write --plugin=prettier-plugin-tailwindcss --plugin=@shufo/prettier-plugin-blade \"{resources,content}/**/*.{js,blade.php,css,md}\""
     },
     "lint-staged": {
+        "**/*.blade.php": "npm run fmt",
         "**/*.php": [
             "composer run fmt",
-            "npm run fmt",
             "composer run rector"
         ]
     },
