@@ -10,5 +10,7 @@ final class Feedback extends Model
 {
     protected $fillable = [
         'text',
+        'ip_address',
+        'user_agent',
     ];
 }

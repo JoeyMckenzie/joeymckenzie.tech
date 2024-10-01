@@ -9,6 +9,7 @@ use App\ValueObjects\OfficeQuote;
 use App\ValueObjects\OfficeQuoteCollection;
 use Cache;
 use DateInterval;
+use Override;
 
 /**
  * @implements RandomizableCache<OfficeQuote>
@@ -17,7 +18,7 @@ final class OfficeQuotesCache implements RandomizableCache
 {
     private const string CACHE_KEY = 'daily-office-quote';
 
-    #[\Override]
+    #[Override]
     public function getRandomValue(): ?OfficeQuote
     {
         if (Cache::has(self::CACHE_KEY)) {

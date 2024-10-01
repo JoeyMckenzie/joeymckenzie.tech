@@ -8,6 +8,7 @@ use App\Filament\Resources\FeedbackResource\Pages;
 use App\Filament\Resources\FeedbackResource\Widgets\FeedbackStatsOverview;
 use App\Models\Feedback;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,6 +30,10 @@ final class FeedbackResource extends Resource
                 Textarea::make('text')
                     ->maxLength(65535)
                     ->columnSpan('full'),
+                TextInput::make('ip_address')
+                    ->maxLength(512),
+                TextInput::make('user_agent')
+                    ->maxLength(512),
             ]);
     }
 
@@ -38,6 +43,8 @@ final class FeedbackResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('text'),
+                TextColumn::make('ip_address'),
+                TextColumn::make('user_agent'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

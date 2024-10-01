@@ -6,6 +6,7 @@ namespace App\ValueObjects;
 
 use ArrayIterator;
 use IteratorAggregate;
+use Override;
 use Traversable;
 
 /**
@@ -26,7 +27,7 @@ final class OfficeQuoteCollection implements IteratorAggregate
         }
     }
 
-    #[\Override]
+    #[Override]
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->quotes);

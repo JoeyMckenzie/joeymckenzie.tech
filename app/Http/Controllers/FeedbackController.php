@@ -22,6 +22,8 @@ final class FeedbackController extends Controller
 
         Feedback::create([
             'text' => $feedback,
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
         ]);
 
         return Redirect::route('blogs.index')->with('status', 'Thanks for the feedback!');
