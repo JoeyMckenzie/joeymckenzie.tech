@@ -7,12 +7,13 @@ namespace App\Filament\Resources\FeedbackResource\Pages;
 use App\Filament\Resources\FeedbackResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Override;
 
 final class EditFeedback extends EditRecord
 {
     protected static string $resource = FeedbackResource::class;
 
-    #[\Override]
+    #[Override]
     protected function getHeaderActions(): array
     {
         return [

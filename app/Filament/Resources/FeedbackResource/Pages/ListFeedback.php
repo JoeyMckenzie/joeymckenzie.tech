@@ -7,12 +7,13 @@ namespace App\Filament\Resources\FeedbackResource\Pages;
 use App\Filament\Resources\FeedbackResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Override;
 
 final class ListFeedback extends ListRecords
 {
     protected static string $resource = FeedbackResource::class;
 
-    #[\Override]
+    #[Override]
     protected function getHeaderActions(): array
     {
         return [

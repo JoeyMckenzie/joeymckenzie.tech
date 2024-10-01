@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Override;
 
 final class FeedbackResource extends Resource
 {
@@ -19,7 +20,7 @@ final class FeedbackResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    #[\Override]
+    #[Override]
     public static function form(Form $form): Form
     {
         return $form
@@ -30,7 +31,7 @@ final class FeedbackResource extends Resource
             ]);
     }
 
-    #[\Override]
+    #[Override]
     public static function table(Table $table): Table
     {
         return $table
@@ -51,7 +52,7 @@ final class FeedbackResource extends Resource
             ]);
     }
 
-    #[\Override]
+    #[Override]
     public static function getRelations(): array
     {
         return [
@@ -59,7 +60,7 @@ final class FeedbackResource extends Resource
         ];
     }
 
-    #[\Override]
+    #[Override]
     public static function getPages(): array
     {
         return [
