@@ -51,7 +51,7 @@
     <div class="min-h-screen">
         <x-navbar />
 
-        <main>
+        <main class="mx-auto max-w-4xl">
             {{ $slot }}
         </main>
 

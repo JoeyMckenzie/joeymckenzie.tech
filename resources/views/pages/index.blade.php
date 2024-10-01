@@ -1,3 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+use App\Contracts\RandomizableCache;
+use Illuminate\View\View;
+
+use function Laravel\Folio\name;
+use function Laravel\Folio\render;
+
+name('home');
+
+render(fn(View $view, RandomizableCache $cache) => $view->with('randomQuote', $cache->getRandomValue())); ?>
+
 @section('title')
     Hey, I'm Joey.
 @endsection
@@ -28,6 +42,12 @@
                     </a>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="py-6 text-center">
+        <h1 class="text-xl font-bold">Office Quote of the Day</h1>
+        <div class="pt-4">
+            <span class="italic">&quot;{{ $randomQuote->quote }}&quot;</span><span> - {{ $randomQuote->author }}</span>
         </div>
     </div>
 </x-app-layout>
