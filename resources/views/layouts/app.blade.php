@@ -49,13 +49,13 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen">
-        @include('layouts.navigation')
+        <x-navbar />
 
         <main>
             {{ $slot }}
         </main>
 
-        @include('layouts.footer')
+        <x-footer />
     </div>
 </body>
 

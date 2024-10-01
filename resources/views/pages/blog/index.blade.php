@@ -5,7 +5,10 @@ declare(strict_types=1);
 use App\Models\Post;
 use Illuminate\View\View;
 
+use function Laravel\Folio\name;
 use function Laravel\Folio\render;
+
+name('blogs.index');
 
 render(function (View $view) {
     $posts = Post::select(['slug', 'title', 'category', 'description', 'published_date', 'views'])
@@ -29,6 +32,7 @@ render(function (View $view) {
                     writing a journal of technologies I've worked with at some point during my career, and I'm always
                     happy to field questions and conversations from interested readers.
                 </p>
+                <x-suggestion-form />
             </div>
             <div class="mx-auto grid max-w-4xl grid-cols-1 gap-x-2 gap-y-12 py-12 sm:grid-cols-3">
                 @foreach ($posts as $post)
@@ -36,7 +40,7 @@ render(function (View $view) {
                         class="hover:scale-102 flex max-w-xl flex-col items-start transition duration-150 ease-in-out hover:-translate-y-1">
                         <div class="flex items-center gap-x-2 text-xs">
                             <time datetime="datetime_date">{{ $post->display_date }}</time>
-                            <div class="badge badge-primary">{{ $post->category }}</div>
+                            <div class="badge badge-neutral">{{ $post->category }}</div>
                             <p>{{ $post->formatted_views }} views</p>
                         </div>
                         <div class="group relative">
