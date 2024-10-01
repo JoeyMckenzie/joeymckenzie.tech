@@ -20,4 +20,12 @@ final class ListFeedback extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    #[\Override]
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            FeedbackResource\Widgets\FeedbackStatsOverview::class,
+        ];
+    }
 }

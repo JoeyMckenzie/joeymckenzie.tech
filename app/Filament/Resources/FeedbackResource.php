@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FeedbackResource\Pages;
+use App\Filament\Resources\FeedbackResource\Widgets\FeedbackStatsOverview;
 use App\Models\Feedback;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Form;
@@ -46,6 +47,14 @@ final class FeedbackResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    #[\Override]
+    public static function getWidgets(): array
+    {
+        return [
+            FeedbackStatsOverview::class,
+        ];
     }
 
     #[Override]
