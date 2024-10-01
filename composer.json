@@ -12,6 +12,7 @@
         "blade-ui-kit/blade-icons": "^1.7",
         "davidhsianturi/blade-bootstrap-icons": "^1.5",
         "filament/filament": "^3.2",
+        "filament/widgets": "^3.2",
         "laravel/folio": "^1.1",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",

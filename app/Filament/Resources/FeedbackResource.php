@@ -18,7 +18,7 @@ final class FeedbackResource extends Resource
 {
     protected static ?string $model = Feedback::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'fas-comment';
 
     #[Override]
     public static function form(Form $form): Form
@@ -38,12 +38,8 @@ final class FeedbackResource extends Resource
             ->columns([
                 TextColumn::make('text'),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -53,21 +49,11 @@ final class FeedbackResource extends Resource
     }
 
     #[Override]
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
-    #[Override]
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListFeedback::route('/'),
-            'create' => Pages\CreateFeedback::route('/create'),
             'view' => Pages\ViewFeedback::route('/{record}'),
-            'edit' => Pages\EditFeedback::route('/{record}/edit'),
         ];
     }
 }
