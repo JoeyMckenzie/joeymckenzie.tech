@@ -21,7 +21,7 @@ final class ListFeedback extends ListRecords
         ];
     }
 
-    #[\Override]
+    #[Override]
     protected function getHeaderWidgets(): array
     {
         return [

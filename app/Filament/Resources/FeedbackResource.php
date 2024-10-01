@@ -49,7 +49,7 @@ final class FeedbackResource extends Resource
             ]);
     }
 
-    #[\Override]
+    #[Override]
     public static function getWidgets(): array
     {
         return [

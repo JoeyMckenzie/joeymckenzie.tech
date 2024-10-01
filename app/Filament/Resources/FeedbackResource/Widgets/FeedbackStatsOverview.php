@@ -7,10 +7,11 @@ namespace App\Filament\Resources\FeedbackResource\Widgets;
 use App\Models\Feedback;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Override;
 
 final class FeedbackStatsOverview extends BaseWidget
 {
-    #[\Override]
+    #[Override]
     protected function getStats(): array
     {
         return [
