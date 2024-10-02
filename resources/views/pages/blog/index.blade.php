@@ -19,7 +19,7 @@ render(function (View $view) {
 }); ?>
 
 @section('title')
-    Blog
+    Blog.
 @endsection
 
 <x-app-layout>
