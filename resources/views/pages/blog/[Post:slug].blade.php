@@ -42,7 +42,7 @@ render(function (View $view, Request $request, Post $post): View {
 
 <x-app-layout>
     <article
-        class="prose mx-auto w-full overflow-hidden px-4 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
+        class="prose mx-auto overflow-hidden px-4 dark:prose-invert prose-pre:text-sm prose-img:mx-auto prose-img:rounded-md">
         <h1 class="text-center text-2xl font-semibold">
             {{ $post->title }}
         </h1>
