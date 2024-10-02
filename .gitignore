@@ -20,3 +20,10 @@ yarn-error.log
 /.vscode
 /.zed
 public/sitemap-index.xml
+
+# Examples build output
+
+examples/rust/**/target/
+examples/dotnet/**/obj/
+examples/dotnet/**/bin/
+examples/dotnet/**/.idea/
