@@ -5,9 +5,9 @@ pubDate: 'Mar 05 2024'
 heroImage: '/images/php-dx/meme.jpeg'
 category: 'php'
 keywords:
-  - php
-  - beer
-  - libraries
+    - php
+    - beer
+    - libraries
 ---
 
 I'm back on my bull... stuff (as the kids say) and decided that it was time to jump back into a project of some sort to
@@ -326,9 +326,9 @@ summary-level information about the available breweries within the dataset:
 ```json
 // GET https://api.openbrewerydb.org/v1/breweries/meta
 {
-  "total": "8247",
-  "page": "1",
-  "per_page": "50"
+    "total": "8247",
+    "page": "1",
+    "per_page": "50"
 }
 ```
 
@@ -425,12 +425,12 @@ for the library is pretty simple:
 
 ```yaml
 includes:
-  - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
-  level: max
-  paths:
-    - src
+    level: max
+    paths:
+        - src
 ```
 
 And to keep myself honest, I like to wrap my linting commands within a daemon of sorts to rerun anytime I make source
@@ -457,11 +457,11 @@ for any of those files to change and will run my lint script from my `composer.j
 
 ```json
 {
-  // ...other stuff
-  "scripts": {
-    // ...other scripts
-    "lint": "./vendor/bin/phpstan analyze"
-  }
+    // ...other stuff
+    "scripts": {
+        // ...other scripts
+        "lint": "./vendor/bin/phpstan analyze"
+    }
 }
 ```
 
@@ -504,11 +504,11 @@ Where the composer script will look like:
 
 ```json
 {
-  // ...other stuff
-  "scripts": {
-    // ...other scripts
-    "fmt": "./vendor/bin/pint -v"
-  }
+    // ...other stuff
+    "scripts": {
+        // ...other scripts
+        "fmt": "./vendor/bin/pint -v"
+    }
 }
 ```
 
@@ -525,8 +525,8 @@ with [Pest](https://pestphp.com/). Being able to run tests anytime I make change
 refactor my code without having to worry
 too much about introducing breaking changes. I see a lot of developers in the wild that either:
 
-- Don't test their code at all, with the usual excuse of "it takes too long" or "it doesn't provide immediate value"
-- Run their tests too late
+-   Don't test their code at all, with the usual excuse of "it takes too long" or "it doesn't provide immediate value"
+-   Run their tests too late
 
 Focusing on the second bullet, I've fallen victim more times than I care to admit of going down the refactoring rabbit
 hole spending hours cleaning things up, only to find I've busted all of my tests leading to _another_ chunk of time
@@ -584,10 +584,10 @@ test('All Enums are backed')
 
 At the top level, all of the following are enforced now:
 
-- All source and test files are strictly typed with `declare(strict_types=1)`
-- Value objects are immutable by default (though value equality is not enforced)
-- API response objects are immutable by default
-- Enums are string-backed
+-   All source and test files are strictly typed with `declare(strict_types=1)`
+-   Value objects are immutable by default (though value equality is not enforced)
+-   API response objects are immutable by default
+-   Enums are string-backed
 
 While not an exhaustive list of what architecture testing provides, just a few simple rules for myself are all I needed.
 There are assertions for enforcing certain namespaces only depend on explicitly targeted namespaces, certain classes

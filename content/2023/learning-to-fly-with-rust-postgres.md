@@ -5,9 +5,9 @@ pubDate: 'Apr 05 2023'
 heroImage: '/images/learning-to-fly-rust-postgres/fly_meme.jpg'
 category: 'rust'
 keywords:
-  - rust
-  - postgres
-  - fly.io
+    - rust
+    - postgres
+    - fly.io
 ---
 
 After a long weekend of random life events, I decided I needed to scratch an itch to learn something new. I've been
@@ -520,8 +520,8 @@ Applied 20230403232851/migrate add beer logs table (71.391042ms)
 
 Sweet! If we inspect the database using your tool of choice, we should see two tables:
 
-- `_sqlx_migrations` - the migration management table
-- `beer_logs` - the journal table we created
+-   `_sqlx_migrations` - the migration management table
+-   `beer_logs` - the journal table we created
 
 We're going to need the same schema applied to our production database, so let's add a bit of code to apply migrations
 programmatically when our application starts up. Back in `main.rs`:
@@ -940,8 +940,8 @@ We should now see a `sqlx-data.json` file at the root of our project with some d
 and a few other things. Again, since we're copying everything over during the container build process, we'll get this
 file included by default. To get our docker builds successfully running, we'll need to do one of two things:
 
-- Add the `SQLX_OFFLINE` environment variable to our `.env` file
-- OR, tell docker to ignore `.env` files while copying over from source
+-   Add the `SQLX_OFFLINE` environment variable to our `.env` file
+-   OR, tell docker to ignore `.env` files while copying over from source
 
 We'll go with option one, as there might be environment variables we'll want to load in eventually other than the
 database URL, so we'll tell sqlx to use the cached metadata when building. Our `.env` file should look something like

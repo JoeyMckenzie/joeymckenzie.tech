@@ -4,9 +4,11 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "fmt": "prettier --write --plugin=prettier-plugin-tailwindcss --plugin=@shufo/prettier-plugin-blade \"{resources,content}/**/*.{js,blade.php,css,md}\""
+        "fmt": "prettier --write --plugin=prettier-plugin-tailwindcss --plugin=@shufo/prettier-plugin-blade \"{resources,content}/**/*.{js,blade.php,css,md}\"",
+        "fmt:config": "prettier --write \"./*.{js,json}\""
     },
     "lint-staged": {
+        "*/.{js,json}": "npm run fmt:config",
         "**/*.blade.php": "npm run fmt",
         "**/*.php": [
             "composer run fmt",

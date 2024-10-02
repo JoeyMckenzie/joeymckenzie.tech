@@ -5,8 +5,8 @@ pubDate: 'May 23 2023'
 heroImage: '/images/ziggin-around/meme.jpg'
 category: 'zig'
 keywords:
-  - zig
-  - linked lists
+    - zig
+    - linked lists
 ---
 
 So I've been looking for a reason to write code to keep me sane while in the
@@ -96,11 +96,11 @@ pub fn build(b: *std.build.Builder) void {
 
 Okay, parsing this file a bit, it looks like there are a few things going on:
 
-- Zig doesn't have an official package manager yet (at least from what I can see) on the stable branch, though it's
-  coming soon<sup>tm</sup>
-- Zig's build feels a lot like Rust's version of a `build.rs` file you'll see from time to time, so that's neat
-- Since we're in the context of a library, our default build target will just run tests
-  as we're not building an executable
+-   Zig doesn't have an official package manager yet (at least from what I can see) on the stable branch, though it's
+    coming soon<sup>tm</sup>
+-   Zig's build feels a lot like Rust's version of a `build.rs` file you'll see from time to time, so that's neat
+-   Since we're in the context of a library, our default build target will just run tests
+    as we're not building an executable
 
 Alright, I _think_ I've got the basics down here. Cross-referencing the docs about
 its [build system](https://Ziglearn.org/chapter-3/)
@@ -123,12 +123,12 @@ test "basic add functionality" {
 
 Let's take a swing at parsing this thing while cross-checking with the docs:
 
-- Imports defined at the top with `@import` - pretty cool, feels a lot like other languages
-- We export a single `add` function that returns an `i32` - feels pretty similar to Go and Rust integer types
-- There's a testing block with a short description - pretty neat, feels a bit jest-like
-- We `try` to make an assertion - `try` in Zig is pretty neat
-  - `try` feels a lot like Rust's try operator in `?` or Go's abundant `if err != nil { ... }` you'll see everywhere
-  - In essence: attempt an operation and if it fails, simply return the error back to the caller
+-   Imports defined at the top with `@import` - pretty cool, feels a lot like other languages
+-   We export a single `add` function that returns an `i32` - feels pretty similar to Go and Rust integer types
+-   There's a testing block with a short description - pretty neat, feels a bit jest-like
+-   We `try` to make an assertion - `try` in Zig is pretty neat
+    -   `try` feels a lot like Rust's try operator in `?` or Go's abundant `if err != nil { ... }` you'll see everywhere
+    -   In essence: attempt an operation and if it fails, simply return the error back to the caller
 
 Okay, think I've got a hang of this so far. I'm loosely in line with my pontification and the docs, so let's give this
 thing a go:
@@ -152,12 +152,12 @@ when discussing linked lists.
 Without going too far down the CS rabbit hole, our version of a linked list
 will be fairly straightforward. Our linked list will have:
 
-- A head node
-- A way to keep track of the length
-- A few operations associated to it:
-  - An `insert` method that will attach new nodes to the head
-  - A `pop` method that will detach the most recently inserted node and read out their values
-  - A `traverse` method will walk the linked list and print out values as it goes
+-   A head node
+-   A way to keep track of the length
+-   A few operations associated to it:
+    -   An `insert` method that will attach new nodes to the head
+    -   A `pop` method that will detach the most recently inserted node and read out their values
+    -   A `traverse` method will walk the linked list and print out values as it goes
 
 There's a lot more to a linked list than the operations we defined above - for example,
 one could insert at _any_ point in the linked list rather than the head, or peek values

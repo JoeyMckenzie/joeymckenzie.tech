@@ -5,9 +5,9 @@ pubDate: 'Apr 27 2021'
 heroImage: '/images/tailwind-ngrx-modal/off_the_shelf_modal.jpg'
 category: 'angular'
 keywords:
-  - angular
-  - ngrx
-  - typescript
+    - angular
+    - ngrx
+    - typescript
 ---
 
 Coming off a blogging hiatus, I'm finally making my triumphant return. If you've been following my writing up until now,
@@ -48,13 +48,13 @@ our site.
 Getting started, let's run through the list of what we'll be building and the tools we'll utilize as we embark on our
 modal-based journey:
 
-- We'll utilize Tailwind as our style provider to give our modal a modern look and feel
-- Instead of using an injectable service to dynamically render DOM that contains our modal markup and content using
-  something like Angular's [Renderer2](https://angular.io/api/core/Renderer2), we'll lean on a flux-based state approach
-  using [NgRx](https://ngrx.io) to help us manage the displaying of our modal with custom content (more on this in a
-  minute)
-- Using a state-based approach, we'll expose actions that will allow any of our components to call into the modal and
-  display it based on any set of criteria
+-   We'll utilize Tailwind as our style provider to give our modal a modern look and feel
+-   Instead of using an injectable service to dynamically render DOM that contains our modal markup and content using
+    something like Angular's [Renderer2](https://angular.io/api/core/Renderer2), we'll lean on a flux-based state approach
+    using [NgRx](https://ngrx.io) to help us manage the displaying of our modal with custom content (more on this in a
+    minute)
+-   Using a state-based approach, we'll expose actions that will allow any of our components to call into the modal and
+    display it based on any set of criteria
 
 With our approach lined out, let's defer to the second bullet point of the aforementioned list.
 
@@ -139,15 +139,15 @@ and open up `modal.component.html` and let's replace the markup with Tailwind's 
 ```html
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div
-  class="fixed inset-0 z-10 overflow-y-auto"
-  aria-labelledby="modal-title"
-  role="dialog"
-  aria-modal="true"
+    class="fixed inset-0 z-10 overflow-y-auto"
+    aria-labelledby="modal-title"
+    role="dialog"
+    aria-modal="true"
 >
-  <div
-    class="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0"
-  >
-    <!--
+    <div
+        class="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0"
+    >
+        <!--
       Background overlay, show/hide based on modal state.
 
       Entering: "ease-out duration-300"
@@ -157,19 +157,19 @@ and open up `modal.component.html` and let's replace the markup with Tailwind's 
         From: "opacity-100"
         To: "opacity-0"
     -->
-    <div
-      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-      aria-hidden="true"
-    ></div>
+        <div
+            class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            aria-hidden="true"
+        ></div>
 
-    <!-- This element is to trick the browser into centering the modal contents. -->
-    <span
-      class="hidden sm:inline-block sm:h-screen sm:align-middle"
-      aria-hidden="true"
-      >&#8203;</span
-    >
+        <!-- This element is to trick the browser into centering the modal contents. -->
+        <span
+            class="hidden sm:inline-block sm:h-screen sm:align-middle"
+            aria-hidden="true"
+            >&#8203;</span
+        >
 
-    <!--
+        <!--
       Modal panel, show/hide based on modal state.
 
       Entering: "ease-out duration-300"
@@ -179,63 +179,66 @@ and open up `modal.component.html` and let's replace the markup with Tailwind's 
         From: "opacity-100 translate-y-0 sm:scale-100"
         To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     -->
-    <div
-      class="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
-    >
-      <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-        <div class="sm:flex sm:items-start">
-          <div
-            class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
-          >
-            <!-- Heroicon name: outline/exclamation -->
-            <svg
-              class="h-6 w-6 text-red-600"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-          </div>
-          <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-            <h3
-              class="text-lg font-medium leading-6 text-gray-900"
-              id="modal-title"
-            >
-              Deactivate account
-            </h3>
-            <div class="mt-2">
-              <p class="text-sm text-gray-500">
-                Are you sure you want to deactivate your account? All of your
-                data will be permanently removed. This action cannot be undone.
-              </p>
+        <div
+            class="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
+        >
+            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div
+                        class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+                    >
+                        <!-- Heroicon name: outline/exclamation -->
+                        <svg
+                            class="h-6 w-6 text-red-600"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                            />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                        <h3
+                            class="text-lg font-medium leading-6 text-gray-900"
+                            id="modal-title"
+                        >
+                            Deactivate account
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500">
+                                Are you sure you want to deactivate your
+                                account? All of your data will be permanently
+                                removed. This action cannot be undone.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div
+                class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+            >
+                <button
+                    type="button"
+                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                >
+                    Deactivate
+                </button>
+                <button
+                    type="button"
+                    class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
+                >
+                    Cancel
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-        <button
-          type="button"
-          class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-        >
-          Deactivate
-        </button>
-        <button
-          type="button"
-          class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
-        >
-          Cancel
-        </button>
-      </div>
     </div>
-  </div>
 </div>
 ```
 
@@ -277,27 +280,27 @@ import * as fromActions from './layout.actions'
 export const layoutFeatureKey = 'layout'
 
 export interface LayoutState {
-  modalIsOpen: boolean
+    modalIsOpen: boolean
 }
 
 const initialState: LayoutState = {
-  modalIsOpen: false,
+    modalIsOpen: false,
 }
 
 const appReducer = createReducer(
-  initialState,
-  on(fromActions.openModal, (state) => ({
-    ...state,
-    modalIsOpen: true,
-  })),
-  on(fromActions.closeModal, (state) => ({
-    ...state,
-    modalIsOpen: false,
-  }))
+    initialState,
+    on(fromActions.openModal, (state) => ({
+        ...state,
+        modalIsOpen: true,
+    })),
+    on(fromActions.closeModal, (state) => ({
+        ...state,
+        modalIsOpen: false,
+    }))
 )
 
 export const reducer = (state: LayoutState | undefined, action: Action) =>
-  appReducer(state, action)
+    appReducer(state, action)
 ```
 
 Again, this post _is not_ meant to the de facto grimoire of implementing NgRx properly in your application. Given our
@@ -306,10 +309,10 @@ include any number of layout specific concerns.
 
 Breaking down the code above, we:
 
-- Define our layout feature slice with `LayoutState` that will serve as the source of truth for our current modal
-  displaying
-- Create a reducer to facilitate _what_ our state should look like when the modal actions are dispatched
-- Create an identifying `const` key to declare our layout feature slice with `layoutFeatureKey`
+-   Define our layout feature slice with `LayoutState` that will serve as the source of truth for our current modal
+    displaying
+-   Create a reducer to facilitate _what_ our state should look like when the modal actions are dispatched
+-   Create an identifying `const` key to declare our layout feature slice with `layoutFeatureKey`
 
 While we could easily set singular state on each reducer type to simply set the modal state according, as our
 application grows, so will our need to only change single, or a handful at most, pieces of state at time. For these
@@ -329,8 +332,8 @@ import { LayoutState, layoutFeatureKey } from './layout.reducer'
 const layoutFeatureSlice = createFeatureSelector<LayoutState>(layoutFeatureKey)
 
 export const selectModalStatus = createSelector(
-  layoutFeatureSlice,
-  (state: LayoutState) => state.modalIsOpen
+    layoutFeatureSlice,
+    (state: LayoutState) => state.modalIsOpen
 )
 ```
 
@@ -361,18 +364,18 @@ import * as fromSelectors from './layout.selectors'
 
 @Injectable()
 export class LayoutFacade {
-  modalState$ = this.store.pipe(select(fromSelectors.selectModalStatus))
+    modalState$ = this.store.pipe(select(fromSelectors.selectModalStatus))
 
-  constructor(private store: Store<LayoutState>) {}
+    constructor(private store: Store<LayoutState>) {}
 
-  openModal() {
-    this.store.dispatch(fromActions.openModal())
-  }
+    openModal() {
+        this.store.dispatch(fromActions.openModal())
+    }
 
-  closeModal() {
-    this.store.dispatch(fromActions.closeModal())
-    setTimeout(() => this.openModal(), 1000)
-  }
+    closeModal() {
+        this.store.dispatch(fromActions.closeModal())
+        setTimeout(() => this.openModal(), 1000)
+    }
 }
 ```
 
@@ -404,17 +407,17 @@ import { AppComponent } from './app.component'
 import { ModalComponent } from './modal/modal.component'
 
 @NgModule({
-  declarations: [AppComponent, ModalComponent],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    StoreModule.forRoot({ [layoutFeatureKey]: reducer }),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25,
-    }),
-  ],
-  providers: [LayoutFacade],
-  bootstrap: [AppComponent],
+    declarations: [AppComponent, ModalComponent],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        StoreModule.forRoot({ [layoutFeatureKey]: reducer }),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25,
+        }),
+    ],
+    providers: [LayoutFacade],
+    bootstrap: [AppComponent],
 })
 export class AppModule {}
 ```
@@ -426,26 +429,26 @@ transitions to our modal for flare.
 Speaking of transitions, let's go ahead and add a few animations in our `modal.component.ts` to add the pleasing
 appearing/fading of the modal onto page. In our `modal.component.ts`, we'll add three simple animation attribute:
 
-- `@modalContainer`
-- `@modalOverlay`
-- `@modalContent`
+-   `@modalContainer`
+-   `@modalOverlay`
+-   `@modalContent`
 
 Let's add each of the tags to our markup so that it resembles the following:
 
 ```html
 <!-- This example requires Tailwind CSS v2.0+ -->
 <div
-  @modalContainer
-  *ngIf="(modalState$ | async) === true"
-  class="fixed inset-0 z-10 overflow-y-auto"
-  aria-labelledby="modal-title"
-  role="dialog"
-  aria-modal="true"
+    @modalContainer
+    *ngIf="(modalState$ | async) === true"
+    class="fixed inset-0 z-10 overflow-y-auto"
+    aria-labelledby="modal-title"
+    role="dialog"
+    aria-modal="true"
 >
-  <div
-    class="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0"
-  >
-    <!--
+    <div
+        class="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0"
+    >
+        <!--
       Background overlay, show/hide based on modal state.
 
       Entering: "ease-out duration-300"
@@ -455,21 +458,21 @@ Let's add each of the tags to our markup so that it resembles the following:
         From: "opacity-100"
         To: "opacity-0"
     -->
-    <div
-      @modalOverlay
-      (click)="onClose()"
-      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-      aria-hidden="true"
-    ></div>
+        <div
+            @modalOverlay
+            (click)="onClose()"
+            class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            aria-hidden="true"
+        ></div>
 
-    <!-- This element is to trick the browser into centering the modal contents. -->
-    <span
-      class="hidden sm:inline-block sm:h-screen sm:align-middle"
-      aria-hidden="true"
-      >&#8203;</span
-    >
+        <!-- This element is to trick the browser into centering the modal contents. -->
+        <span
+            class="hidden sm:inline-block sm:h-screen sm:align-middle"
+            aria-hidden="true"
+            >&#8203;</span
+        >
 
-    <!--
+        <!--
       Modal panel, show/hide based on modal state.
 
       Entering: "ease-out duration-300"
@@ -479,66 +482,69 @@ Let's add each of the tags to our markup so that it resembles the following:
         From: "opacity-100 translate-y-0 sm:scale-100"
         To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     -->
-    <div
-      @modalContent
-      class="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
-    >
-      <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-        <div class="sm:flex sm:items-start">
-          <div
-            class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
-          >
-            <!-- Heroicon name: outline/exclamation -->
-            <svg
-              class="h-6 w-6 text-red-600"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              aria-hidden="true"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-              />
-            </svg>
-          </div>
-          <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-            <h3
-              class="text-lg font-medium leading-6 text-gray-900"
-              id="modal-title"
-            >
-              Deactivate account
-            </h3>
-            <div class="mt-2">
-              <p class="text-sm text-gray-500">
-                Are you sure you want to deactivate your account? All of your
-                data will be permanently removed. This action cannot be undone.
-              </p>
+        <div
+            @modalContent
+            class="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
+        >
+            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div
+                        class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
+                    >
+                        <!-- Heroicon name: outline/exclamation -->
+                        <svg
+                            class="h-6 w-6 text-red-600"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                            />
+                        </svg>
+                    </div>
+                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                        <h3
+                            class="text-lg font-medium leading-6 text-gray-900"
+                            id="modal-title"
+                        >
+                            Deactivate account
+                        </h3>
+                        <div class="mt-2">
+                            <p class="text-sm text-gray-500">
+                                Are you sure you want to deactivate your
+                                account? All of your data will be permanently
+                                removed. This action cannot be undone.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
+            <div
+                class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+            >
+                <button
+                    (click)="onClose()"
+                    type="button"
+                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                >
+                    Deactivate
+                </button>
+                <button
+                    (click)="onClose()"
+                    type="button"
+                    class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
+                >
+                    Cancel
+                </button>
+            </div>
         </div>
-      </div>
-      <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-        <button
-          (click)="onClose()"
-          type="button"
-          class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
-        >
-          Deactivate
-        </button>
-        <button
-          (click)="onClose()"
-          type="button"
-          class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
-        >
-          Cancel
-        </button>
-      </div>
     </div>
-  </div>
 </div>
 ```
 
@@ -554,14 +560,14 @@ With our component markup in place, let's add the inner workings of our `modal.c
 
 ```typescript
 import {
-  trigger,
-  transition,
-  query,
-  animateChild,
-  state,
-  style,
-  animate,
-  group,
+    trigger,
+    transition,
+    query,
+    animateChild,
+    state,
+    style,
+    animate,
+    group,
 } from '@angular/animations'
 import { Component, OnInit } from '@angular/core'
 import { fromEvent, Subject } from 'rxjs'
@@ -569,135 +575,137 @@ import { filter, take, takeUntil, withLatestFrom } from 'rxjs/operators'
 import { LayoutFacade } from '../+state'
 
 @Component({
-  selector: 'femfit-modal',
-  templateUrl: './modal.component.html',
-  animations: [
-    trigger('modalContainer', [
-      transition(':enter', [
-        group([
-          query('@modalOverlay', animateChild()),
-          query('@modalContent', animateChild()),
+    selector: 'femfit-modal',
+    templateUrl: './modal.component.html',
+    animations: [
+        trigger('modalContainer', [
+            transition(':enter', [
+                group([
+                    query('@modalOverlay', animateChild()),
+                    query('@modalContent', animateChild()),
+                ]),
+            ]),
+            transition(
+                ':leave',
+                group([
+                    query('@modalOverlay', animateChild()),
+                    query('@modalContent', animateChild()),
+                ])
+            ),
         ]),
-      ]),
-      transition(
-        ':leave',
-        group([
-          query('@modalOverlay', animateChild()),
-          query('@modalContent', animateChild()),
-        ])
-      ),
-    ]),
-    // Background overlay, show/hide based on modal state.
+        // Background overlay, show/hide based on modal state.
 
-    // Entering: "ease-out duration-300"
-    //   From: "opacity-0"
-    //   To: "opacity-100"
-    // Leaving: "ease-in duration-200"
-    //   From: "opacity-100"
-    //   To: "opacity-0"
-    trigger('modalOverlay', [
-      state(
-        'void',
-        style({
-          opacity: 0,
-        })
-      ),
-      state(
-        '*',
-        style({
-          opacity: 1,
-        })
-      ),
-      transition(':enter', [animate('300ms ease-out')]),
-      transition(':leave', [animate('100ms ease-in')]),
-    ]),
-    // Modal panel, show/hide based on modal state.
+        // Entering: "ease-out duration-300"
+        //   From: "opacity-0"
+        //   To: "opacity-100"
+        // Leaving: "ease-in duration-200"
+        //   From: "opacity-100"
+        //   To: "opacity-0"
+        trigger('modalOverlay', [
+            state(
+                'void',
+                style({
+                    opacity: 0,
+                })
+            ),
+            state(
+                '*',
+                style({
+                    opacity: 1,
+                })
+            ),
+            transition(':enter', [animate('300ms ease-out')]),
+            transition(':leave', [animate('100ms ease-in')]),
+        ]),
+        // Modal panel, show/hide based on modal state.
 
-    // Entering: "ease-out duration-300"
-    //   From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    //   To: "opacity-100 translate-y-0 sm:scale-100"
-    // Leaving: "ease-in duration-200"
-    //   From: "opacity-100 translate-y-0 sm:scale-100"
-    //   To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-    trigger('modalContent', [
-      state(
-        'void',
-        style({
-          opacity: 0,
-          transform: 'scale(0.95)',
-        })
-      ),
-      state(
-        '*',
-        style({
-          opacity: 1,
-          transform: 'scale(1)',
-        })
-      ),
-      transition(':enter', [animate('300ms ease-out')]),
-      transition(':leave', [animate('200ms ease-in')]),
-    ]),
-  ],
+        // Entering: "ease-out duration-300"
+        //   From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        //   To: "opacity-100 translate-y-0 sm:scale-100"
+        // Leaving: "ease-in duration-200"
+        //   From: "opacity-100 translate-y-0 sm:scale-100"
+        //   To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        trigger('modalContent', [
+            state(
+                'void',
+                style({
+                    opacity: 0,
+                    transform: 'scale(0.95)',
+                })
+            ),
+            state(
+                '*',
+                style({
+                    opacity: 1,
+                    transform: 'scale(1)',
+                })
+            ),
+            transition(':enter', [animate('300ms ease-out')]),
+            transition(':leave', [animate('200ms ease-in')]),
+        ]),
+    ],
 })
 export class ModalComponent implements OnInit {
-  modalState$ = this.layoutFacade.modalState$
+    modalState$ = this.layoutFacade.modalState$
 
-  constructor(private layoutFacade: LayoutFacade) {}
+    constructor(private layoutFacade: LayoutFacade) {}
 
-  private readonly unsubscribe$ = new Subject()
+    private readonly unsubscribe$ = new Subject()
 
-  ngOnInit(): void {
-    // When the component is mounted, fire up the modal if closed taking the first emission only
-    this.modalState$.pipe(take(1)).subscribe((isOpen) => {
-      if (!isOpen) {
-        this.layoutFacade.openModal()
-      }
-    })
+    ngOnInit(): void {
+        // When the component is mounted, fire up the modal if closed taking the first emission only
+        this.modalState$.pipe(take(1)).subscribe((isOpen) => {
+            if (!isOpen) {
+                this.layoutFacade.openModal()
+            }
+        })
 
-    // Register a stream to listen for escape keydown events to close the modal
-    fromEvent(document, 'keydown')
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        filter(
-          (event) => event instanceof KeyboardEvent && event.code === 'Escape'
-        ),
-        withLatestFrom(this.modalState$)
-      )
-      .subscribe(([_, modalIsOpen]) => {
-        if (modalIsOpen) {
-          this.layoutFacade.closeModal()
-        }
-      })
-  }
+        // Register a stream to listen for escape keydown events to close the modal
+        fromEvent(document, 'keydown')
+            .pipe(
+                takeUntil(this.unsubscribe$),
+                filter(
+                    (event) =>
+                        event instanceof KeyboardEvent &&
+                        event.code === 'Escape'
+                ),
+                withLatestFrom(this.modalState$)
+            )
+            .subscribe(([_, modalIsOpen]) => {
+                if (modalIsOpen) {
+                    this.layoutFacade.closeModal()
+                }
+            })
+    }
 
-  onClose(): void {
-    this.layoutFacade.closeModal()
-  }
+    onClose(): void {
+        this.layoutFacade.closeModal()
+    }
 }
 ```
 
 Let's breakdown what our modal component is doing behind the scenes:
 
-- First, we define three animation `trigger`s that will run when our component is rendered into and out of the DOM (I've
-  loosely translated the suggested Tailwind transition classes that should apply to the modal)
-  - Our first `trigger` is applied to the wrapping `div` element that houses the entirety of our modal component, and
-    it's job is to coordinate running the nested child transitions when it is rendered into/out of the DOM (driven by
-    the `*ngIf="(modalState$ | async) === true"` directive) with the assistance of the `group` and `query` Angular
-    animation helper methods to signify which child transitions to run
-  - Our second `trigger` is the fading in and out of the background overlay using a simple opacity transition
-  - Our third `trigger` is the displaying of the modal content using a combination of opacity and scaling transition
-    animations
-  - You'll notice each `trigger` transitions using the `:enter`/`:leave` aliases which represent the transitioning
-    of `void` state (i.e. not in the rendered DOM), to `*` state (i.e. any state existing in the markup)
-- Next, we pull through a reference from the state facade to the current modal status with `modalStatus$` observable
-  that listens for values based on our selector stream
-- We define an emission `Subject` to help facilitate the closing of our streams when our component is destroyed, i.e.
-  removed from the DOM, in order to avoid memory leaks that can be pretty common in `rxjs` without proper `Observable`
-  management
-- Finally, inside of our mounting lifecycle hook:
-  - We listen on modal state changes and fire off the action to open the modal anytime on first render using `take(1)`
-  - We hook into the hot document observable and listen for `esc` keydown strokes to provide a bit of nice UX to close
-    the modal anytime it's open and the key is pressed
+-   First, we define three animation `trigger`s that will run when our component is rendered into and out of the DOM (I've
+    loosely translated the suggested Tailwind transition classes that should apply to the modal)
+    -   Our first `trigger` is applied to the wrapping `div` element that houses the entirety of our modal component, and
+        it's job is to coordinate running the nested child transitions when it is rendered into/out of the DOM (driven by
+        the `*ngIf="(modalState$ | async) === true"` directive) with the assistance of the `group` and `query` Angular
+        animation helper methods to signify which child transitions to run
+    -   Our second `trigger` is the fading in and out of the background overlay using a simple opacity transition
+    -   Our third `trigger` is the displaying of the modal content using a combination of opacity and scaling transition
+        animations
+    -   You'll notice each `trigger` transitions using the `:enter`/`:leave` aliases which represent the transitioning
+        of `void` state (i.e. not in the rendered DOM), to `*` state (i.e. any state existing in the markup)
+-   Next, we pull through a reference from the state facade to the current modal status with `modalStatus$` observable
+    that listens for values based on our selector stream
+-   We define an emission `Subject` to help facilitate the closing of our streams when our component is destroyed, i.e.
+    removed from the DOM, in order to avoid memory leaks that can be pretty common in `rxjs` without proper `Observable`
+    management
+-   Finally, inside of our mounting lifecycle hook:
+    -   We listen on modal state changes and fire off the action to open the modal anytime on first render using `take(1)`
+    -   We hook into the hot document observable and listen for `esc` keydown strokes to provide a bit of nice UX to close
+        the modal anytime it's open and the key is pressed
 
 With all of our modal details in place, let's finally add the component to our `app.component.html` by replacing all the
 placeholder markup with the modal selector:

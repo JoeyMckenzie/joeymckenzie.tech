@@ -5,10 +5,10 @@ pubDate: 'Jul 26 2020'
 heroImage: '/images/state-management-with-blazor-using-fluxor/part-2/fluxor_meme_small.jpg'
 category: 'blazor'
 keywords:
-  - state management
-  - flux
-  - c#
-  - .net
+    - state management
+    - flux
+    - c#
+    - .net
 ---
 
 Memes aside, if you've been following along with our flux-ified Blazor project, you may have noticed the plethora of
@@ -483,14 +483,14 @@ namespace StateManagementWithFluxor.Store.Features.Todos.Effects.CreateTodo
 
 Nothing too out of the ordinary here, but let's do a quick code breakdown:
 
-- We inject a logger and our API service from the DI container, using an expression-bodied tuple constructor (C#
-  syntactic sugar)
-- Using our API service, we call the `PostAsync` method passing in the todo from the `CreateTodoAction` payload
-  and `await` for the response
-- If we get back a good looking 201, we'll go ahead and dispatch a `CreateTodoSuccessAction` with the todo response
-  returned from the API as the payload
-- Upon any unchecked exceptions, or any non-successful status code returned from the server, we'll dispatch an error
-  action with the corresponding error message from the exception
+-   We inject a logger and our API service from the DI container, using an expression-bodied tuple constructor (C#
+    syntactic sugar)
+-   Using our API service, we call the `PostAsync` method passing in the todo from the `CreateTodoAction` payload
+    and `await` for the response
+-   If we get back a good looking 201, we'll go ahead and dispatch a `CreateTodoSuccessAction` with the todo response
+    returned from the API as the payload
+-   Upon any unchecked exceptions, or any non-successful status code returned from the server, we'll dispatch an error
+    action with the corresponding error message from the exception
 
 With our create workflow in place, let's go ahead and add our `CreateTodoForm.razor` component to our `Todos.razor`
 page. In the markup section of `Todos.razor`, we'll replace the current markup with the following:
@@ -944,19 +944,19 @@ else
 
 Since we've changed quite a few things in this detail page, let's do a quick code breakdown:
 
-- First, we've added an `EditForm` to handle validating the user's input when updating values similar to how we've setup
-  our `CreateTodoForm.razor` component
-- We've added a `CreateOrUpdateTodoValidationModel` validation model that will react to user input and display any
-  validation errors with the help of the `<DataAnnotationsValidator />` and `<ValidationSummary />` built-in Blazor
-  components
-- We've modified our `OnInitialized` lifecycle method to react to state changes so we can reassign the validation model
-  fields from the current todo fields and trigger an additional `StateHasChanged()` event to tell Blazor to re-render
-  the markup to reflect these changes within the inputs of the form
-- Since we're subscribing to additional state changes outside of the scope of Fluxor, we need make sure to manually
-  dispose of our component to avoid memory leaks; again, if you're familiar with Angular, this is similar to destroying
-  your observable subscriptions when a component is disposed
-- Upon a valid submit, we'll issue the `UpdateTodo` facade method that will dispatch the `UpdateTodoAction` and kickoff
-  the update workflow
+-   First, we've added an `EditForm` to handle validating the user's input when updating values similar to how we've setup
+    our `CreateTodoForm.razor` component
+-   We've added a `CreateOrUpdateTodoValidationModel` validation model that will react to user input and display any
+    validation errors with the help of the `<DataAnnotationsValidator />` and `<ValidationSummary />` built-in Blazor
+    components
+-   We've modified our `OnInitialized` lifecycle method to react to state changes so we can reassign the validation model
+    fields from the current todo fields and trigger an additional `StateHasChanged()` event to tell Blazor to re-render
+    the markup to reflect these changes within the inputs of the form
+-   Since we're subscribing to additional state changes outside of the scope of Fluxor, we need make sure to manually
+    dispose of our component to avoid memory leaks; again, if you're familiar with Angular, this is similar to destroying
+    your observable subscriptions when a component is disposed
+-   Upon a valid submit, we'll issue the `UpdateTodo` facade method that will dispatch the `UpdateTodoAction` and kickoff
+    the update workflow
 
 Awesome, now that our todo detail page has been updated, if we select a todo from the todos table, we should now be able
 to update that particular todo's values and see those changes reflected back in the table once we hit submit (and the

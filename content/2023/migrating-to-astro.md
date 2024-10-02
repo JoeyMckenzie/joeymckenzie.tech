@@ -5,8 +5,8 @@ pubDate: 'Mar 15 2023'
 heroImage: '/images/migrating-to-astro/astro_meme.jpg'
 category: 'astro'
 keywords:
-  - astro
-  - content
+    - astro
+    - content
 ---
 
 During a recent quarter (third?) life crisis, I decided to do what every developer does when they need something to work

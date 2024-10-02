@@ -5,8 +5,8 @@ pubDate: 'Sep 23 2021'
 heroImage: '/images/tailwind-dark-mode/tailwind-dark-mode-meme.jpg'
 category: 'angular'
 keywords:
-  - angular
-  - dark mode
+    - angular
+    - dark mode
 ---
 
 Admittedly, I'm a dark mode junkie - any app or website I stumble upon, the first thing I look for is the dark mode
@@ -60,7 +60,7 @@ And if you're using SCSS:
 
 ```js
 module.exports = {
-  darkMode: 'class', // or 'media' or 'class'
+    darkMode: 'class', // or 'media' or 'class'
 }
 ```
 
@@ -104,53 +104,53 @@ const ENABLED_VALUE = 'true'
 const NOT_ENABLED_VALUE = 'false'
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class DarkModeService implements OnDestroy {
-  darkModeEnabled$ = new BehaviorSubject(false)
+    darkModeEnabled$ = new BehaviorSubject(false)
 
-  constructor() {
-    this.setCurrentState()
-    this.updateLocalStorageOnStateChange()
-  }
-
-  ngOnDestroy(): void {
-    this.darkModeEnabled$.complete()
-  }
-
-  toggleDarkMode(): void {
-    const currentValue = this.darkModeEnabled$.value
-    this.darkModeEnabled$.next(!currentValue)
-  }
-
-  private setCurrentState(): void {
-    const currentValue = localStorage.getItem(DARK_MODE_ENABLED_KEY)
-    const htmlTag = document.getElementsByTagName('html').item(0)
-    const classList = htmlTag?.classList
-
-    if (currentValue === ENABLED_VALUE) {
-      this.darkModeEnabled$.next(true)
-      classList?.add('dark')
-    } else if (currentValue === NOT_ENABLED_VALUE) {
-      this.darkModeEnabled$.next(false)
-      classList?.remove('dark')
+    constructor() {
+        this.setCurrentState()
+        this.updateLocalStorageOnStateChange()
     }
-  }
 
-  private updateLocalStorageOnStateChange(): void {
-    this.darkModeEnabled$.subscribe((enabled) => {
-      const htmlTag = document.getElementsByTagName('html').item(0)
-      const classList = htmlTag?.classList
+    ngOnDestroy(): void {
+        this.darkModeEnabled$.complete()
+    }
 
-      if (enabled) {
-        localStorage.setItem(DARK_MODE_ENABLED_KEY, 'true')
-        classList?.add('dark')
-      } else {
-        localStorage.setItem(DARK_MODE_ENABLED_KEY, 'false')
-        classList?.remove('dark')
-      }
-    })
-  }
+    toggleDarkMode(): void {
+        const currentValue = this.darkModeEnabled$.value
+        this.darkModeEnabled$.next(!currentValue)
+    }
+
+    private setCurrentState(): void {
+        const currentValue = localStorage.getItem(DARK_MODE_ENABLED_KEY)
+        const htmlTag = document.getElementsByTagName('html').item(0)
+        const classList = htmlTag?.classList
+
+        if (currentValue === ENABLED_VALUE) {
+            this.darkModeEnabled$.next(true)
+            classList?.add('dark')
+        } else if (currentValue === NOT_ENABLED_VALUE) {
+            this.darkModeEnabled$.next(false)
+            classList?.remove('dark')
+        }
+    }
+
+    private updateLocalStorageOnStateChange(): void {
+        this.darkModeEnabled$.subscribe((enabled) => {
+            const htmlTag = document.getElementsByTagName('html').item(0)
+            const classList = htmlTag?.classList
+
+            if (enabled) {
+                localStorage.setItem(DARK_MODE_ENABLED_KEY, 'true')
+                classList?.add('dark')
+            } else {
+                localStorage.setItem(DARK_MODE_ENABLED_KEY, 'false')
+                classList?.remove('dark')
+            }
+        })
+    }
 }
 ```
 
@@ -254,17 +254,17 @@ import { takeUntil } from 'rxjs/operators'
 import { DarkModeService } from '../../services/dark-mode/dark-mode.service'
 
 @Component({
-  selector: 'joey-mckenzie-io-images-samples-theme-toggle',
-  templateUrl: './theme-toggle.component.html',
+    selector: 'joey-mckenzie-io-images-samples-theme-toggle',
+    templateUrl: './theme-toggle.component.html',
 })
 export class ThemeToggleComponent {
-  darkModeEnabled$ = this.darkModeService.darkModeEnabled$
+    darkModeEnabled$ = this.darkModeService.darkModeEnabled$
 
-  constructor(private darkModeService: DarkModeService) {}
+    constructor(private darkModeService: DarkModeService) {}
 
-  toggleDarkMode(): void {
-    this.darkModeService.toggleDarkMode()
-  }
+    toggleDarkMode(): void {
+        this.darkModeService.toggleDarkMode()
+    }
 }
 ```
 
@@ -275,16 +275,16 @@ code in place, let's add some simple markup with just a single button that will 
 
 ```html
 <div class="flex min-h-screen flex-col items-center justify-center gap-y-4">
-  <button
-    (click)="toggleDarkMode()"
-    id="dark-mode-toggle"
-    class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 dark:bg-blue-800 dark:text-blue-400 dark:hover:bg-blue-900"
-  >
-    Toggle
-  </button>
-  <p class="text-black dark:text-white">
-    Dark mode enabled: {{ (darkModeEnabled$ | async) === true }}
-  </p>
+    <button
+        (click)="toggleDarkMode()"
+        id="dark-mode-toggle"
+        class="rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 dark:bg-blue-800 dark:text-blue-400 dark:hover:bg-blue-900"
+    >
+        Toggle
+    </button>
+    <p class="text-black dark:text-white">
+        Dark mode enabled: {{ (darkModeEnabled$ | async) === true }}
+    </p>
 </div>
 ```
 
@@ -302,17 +302,17 @@ One last change we'll make is in our `index.html` root markup file to apply back
 ```html
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>TailwindDarkMode</title>
-    <base href="/" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/x-icon" href="favicon.ico" />
-  </head>
+    <head>
+        <meta charset="utf-8" />
+        <title>TailwindDarkMode</title>
+        <base href="/" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    </head>
 
-  <body class="bg-white dark:bg-black">
-    <joey-mckenzie-io-blog-samples-root></joey-mckenzie-io-blog-samples-root>
-  </body>
+    <body class="bg-white dark:bg-black">
+        <joey-mckenzie-io-blog-samples-root></joey-mckenzie-io-blog-samples-root>
+    </body>
 </html>
 ```
 

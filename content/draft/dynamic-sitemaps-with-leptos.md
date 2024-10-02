@@ -5,9 +5,9 @@ pubDate: 'Apr 25 2024'
 heroImage: '/images/dapper-value-equality/meme.jpeg'
 category: 'rust'
 keywords:
-  - rust
-  - leptos
-  - seo
+    - rust
+    - leptos
+    - seo
 ---
 
 I've been having a lot of fun recently messing around with [Leptos](https://leptos.dev), a web assembly-powered full stack
