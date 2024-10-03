@@ -25,7 +25,7 @@
                 </p>
                 <p>
                     I write a lot of Rust in my spare time and have contributed some small libraries and crates here and
-                    there . Heck, I even have a version of my website written with <a class="link"
+                    there. Heck, I even have a version of my website written with <a class="link"
                         href="https://joeymckenzietech.fly.dev/">Leptos</a>!
                 </p>
             </div>

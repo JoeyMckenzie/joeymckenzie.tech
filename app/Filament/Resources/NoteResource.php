@@ -20,6 +20,8 @@ final class NoteResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-newspaper';
 
+    protected static ?string $navigationGroup = 'Settings';
+
     #[Override]
     public static function form(Form $form): Form
     {

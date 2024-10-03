@@ -22,6 +22,8 @@ final class FeedbackResource extends Resource
 
     protected static ?string $navigationIcon = 'fas-comment';
 
+    protected static ?string $navigationGroup = 'Settings';
+
     #[Override]
     public static function form(Form $form): Form
     {

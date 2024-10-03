@@ -6,6 +6,7 @@ namespace Examples\Iterators;
 
 use ArrayIterator;
 use IteratorAggregate;
+use Override;
 use Traversable;
 
 /**
@@ -16,7 +17,7 @@ final class BeerCollection implements IteratorAggregate
     /** @var Beer[] */
     private array $beers = [];
 
-    #[\Override]
+    #[Override]
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->beers);
