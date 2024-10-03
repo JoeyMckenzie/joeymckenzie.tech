@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 final class Feedback extends Model
 {
     protected $fillable = [
-        'text',
+        'message',
         'ip_address',
         'user_agent',
     ];

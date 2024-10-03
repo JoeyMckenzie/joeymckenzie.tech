@@ -21,7 +21,7 @@ final class FeedbackController extends Controller
         $feedback = $request->feedback;
 
         Feedback::create([
-            'text' => $feedback,
+            'message' => $feedback,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
         ]);
