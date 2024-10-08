@@ -23,6 +23,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
+        "barryvdh/laravel-ide-helper": "^3.1",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^2.9",
         "laravel/pint": "^1.13",
@@ -89,13 +90,23 @@
         ],
         "prepare": "git config core.hookspath .githooks",
         "lint": "./vendor/bin/phpstan analyze",
+        "lint:watch": "find app/ resources/ routes/ database/ tests/ phpstan.neon | entr -s 'composer run lint'",
         "fmt": "./vendor/bin/pint -v",
         "rector": "vendor/bin/rector process",
         "ci": [
             "@lint",
             "@fmt",
             "@rector"
-        ]
+        ],
+        "helper:generate": "php artisan ide-helper:generate",
+        "helper:models": "php artisan ide-helper:models",
+        "helper:meta": "php artisan ide-helper:meta",
+        "helper": [
+            "@helper:generate",
+            "@helper:models",
+            "@helper:meta"
+        ],
+        "tail": "php artisan pail -vv"
     },
     "extra": {
         "laravel": {

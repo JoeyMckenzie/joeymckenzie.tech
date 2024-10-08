@@ -2,5 +2,5 @@ pre-commit:
   commands:
     backend-linter:
       glob: "*.php" # glob filter
-      exclude: '(^|/)(resources\/views)\.php$' # regexp filter
+      exclude: '(^|/)(resources/views/.*\.php|tests/.*\.php)$' # regexp filter
       run: composer run lint {all_files}

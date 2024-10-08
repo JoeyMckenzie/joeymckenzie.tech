@@ -20,6 +20,8 @@ yarn-error.log
 /.vscode
 /.zed
 public/sitemap-index.xml
+.phpstorm.meta.php
+_ide_helper*
 
 # Examples build output
 

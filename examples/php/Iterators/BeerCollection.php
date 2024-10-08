@@ -10,7 +10,7 @@ use Override;
 use Traversable;
 
 /**
- * @template IteratorAggregate<int, Beer>
+ * @implements IteratorAggregate<int, Beer>
  */
 final class BeerCollection implements IteratorAggregate
 {
