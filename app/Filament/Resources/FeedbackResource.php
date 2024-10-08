@@ -29,7 +29,7 @@ final class FeedbackResource extends Resource
     {
         return $form
             ->schema([
-                Textarea::make('text')
+                Textarea::make('message')
                     ->maxLength(65535)
                     ->columnSpan('full'),
                 TextInput::make('ip_address')
