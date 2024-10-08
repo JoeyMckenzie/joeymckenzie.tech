@@ -23,13 +23,9 @@ final class BeerCollection implements IteratorAggregate
         return new ArrayIterator($this->beers);
     }
 
-    public function addBeer(Beer $beer): void
+    public function addBeer(string $name, float $abv, int $ibu): void
     {
-        $beer = (new BeerBuilder)
-            ->withName('test')
-            ->withIbu(2)
-            ->build();
-
+        $beer = new Beer($name, $abv, $ibu);
         $this->beers[] = $beer;
     }
 }
