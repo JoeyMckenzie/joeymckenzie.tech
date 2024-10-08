@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Number;
 
 /**
- * 
- *
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -28,6 +26,7 @@ use Illuminate\Support\Number;
  * @property-read string $formatted_views
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Keyword> $keywords
  * @property-read int|null $keywords_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Post newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Post newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Post query()
@@ -43,6 +42,7 @@ use Illuminate\Support\Number;
  * @method static \Illuminate\Database\Eloquent\Builder|Post whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Post whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Post whereViews($value)
+ *
  * @mixin \Eloquent
  */
 final class Post extends Model
