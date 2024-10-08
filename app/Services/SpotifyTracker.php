@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Override;
 
-final class SpotifyTracker implements MusicTrackerContract
+final readonly class SpotifyTracker implements MusicTrackerContract
 {
     private const string NOW_PLAYING_URL = 'https://api.spotify.com/v1/me/player?type=track,episode';
 
