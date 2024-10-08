@@ -21,7 +21,7 @@
         "@tailwindcss/typography": "^0.5.15",
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.2",
-        "daisyui": "^4.12.10",
+        "daisyui": "^4.12.12",
         "laravel-vite-plugin": "^1.0",
         "postcss": "^8.4.31",
         "postcss-nesting": "^13.0.0",
