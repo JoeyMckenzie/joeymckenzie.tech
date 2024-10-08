@@ -9,8 +9,8 @@
                 <h1 class="text-center text-xl font-bold">Now.</h1>
                 <p>
                     I work for a company called <a href="https://www.dayforce.com/">Dayforce</a> building security
-                    solutions for human capital management software. I write a lot of C# and .NET from 8-5 during the
-                    week, working with a distributed team around the globe to make work life better.
+                    solutions for human capital management software. I write a lot of C# and .NET during my day job,
+                    working with a distributed team around the globe to make work life better.
                 </p>
                 <p>
                     Previously for the past several years, I was part of team modernizing financial systems for a

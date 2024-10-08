@@ -49,9 +49,6 @@ final readonly class SpotifyTracker implements MusicTrackerContract
     private function getSpotifyNowPlaying(): SpotifyNowPlayingApiResponse
     {
         try {
-            // TODO: There's probably a cool collections/Adam Wathan way to do this,
-            // i.e. pattern/match assign multiple values with a cast
-
             $clientId = Config::string('spotify.client_id');
             $clientSecret = Config::string('spotify.client_secret');
             $refreshToken = Config::string('spotify.refresh_token');

@@ -1,6 +1,24 @@
 pre-commit:
   commands:
     backend-linter:
-      glob: "*.php" # glob filter
-      exclude: '(^|/)(resources/views/.*\.php|tests/.*\.php)$' # regexp filter
-      run: composer run lint {all_files}
+      glob: "*.php"
+      exclude: '(^|/)(resources/views/.*\.php|tests/.*\.php)$'
+      run: |
+        composer run lint {all_files}
+        composer run rector {all_files}
+      stage_fixed: true
+    javascript-linter:
+      glob: "*.{js,json}"
+      run: npm run fmt:config {all_files}
+      stage_fixed: true
+    blade-linter:
+      glob: "*.blade.php"
+      run: npm run fmt:config {all_files}
+      stage_fixed: true
+
+pre-push:
+  commands:
+    ci:
+      run: |
+        composer run ci
+        composer run test
