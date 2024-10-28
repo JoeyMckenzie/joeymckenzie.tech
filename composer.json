@@ -11,8 +11,7 @@
         "php": "^8.3",
         "blade-ui-kit/blade-icons": "^1.7",
         "davidhsianturi/blade-bootstrap-icons": "^1.5",
-        "filament/filament": "^3.2",
-        "filament/widgets": "^3.2",
+        "joeymckenzie/sqlighter": "^0.1.1",
         "laravel/folio": "^1.1",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
@@ -54,8 +53,7 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi",
-            "@php artisan filament:upgrade"
+            "@php artisan package:discover --ansi"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"

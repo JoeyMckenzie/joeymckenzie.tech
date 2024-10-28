@@ -32,7 +32,6 @@ render(function (View $view) {
                     writing a journal of technologies I've worked with at some point during my career, and I'm always
                     happy to field questions and conversations from interested readers.
                 </p>
-                <x-suggestion-form />
             </div>
             <div class="mx-auto grid max-w-4xl grid-cols-1 gap-x-2 gap-y-12 py-12 sm:grid-cols-3">
                 @foreach ($posts as $post)

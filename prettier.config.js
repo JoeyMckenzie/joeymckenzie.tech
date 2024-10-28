@@ -15,10 +15,10 @@ const config = {
         },
     ],
     tailwindConfig: './tailwind.config.js',
-    trailingComma: 'es5',
+    trailingComma: 'all',
     tabWidth: 4,
-    semi: false,
+    semi: true,
     singleQuote: true,
-}
+};
 
-export default config
+export default config;
