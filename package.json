@@ -24,6 +24,6 @@
     },
     "dependencies": {
         "axios": "^1.7.7",
-        "shiki": "^1.21.0"
+        "shiki": "^1.22.1"
     }
 }
