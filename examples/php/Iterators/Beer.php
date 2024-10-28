@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Examples\Iterators;
 
+use Override;
 use Stringable;
 
 final readonly class Beer implements Stringable
@@ -14,7 +15,7 @@ final readonly class Beer implements Stringable
         public ?int $ibu = null,
     ) {}
 
-    #[\Override]
+    #[Override]
     public function __toString(): string
     {
         return <<<Beer
