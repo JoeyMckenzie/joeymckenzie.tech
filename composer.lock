@@ -1198,16 +1198,16 @@
         },
         {
             "name": "joeymckenzie/sqlighter",
-            "version": "0.1.1",
+            "version": "0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JoeyMckenzie/sqlighter.git",
-                "reference": "aa5e2d55d9b7da9bf79009268560db34a723e8b2"
+                "reference": "036436681f94e3f389d92524cb2be11f805d806f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JoeyMckenzie/sqlighter/zipball/aa5e2d55d9b7da9bf79009268560db34a723e8b2",
-                "reference": "aa5e2d55d9b7da9bf79009268560db34a723e8b2",
+                "url": "https://api.github.com/repos/JoeyMckenzie/sqlighter/zipball/036436681f94e3f389d92524cb2be11f805d806f",
+                "reference": "036436681f94e3f389d92524cb2be11f805d806f",
                 "shasum": ""
             },
             "require": {
@@ -1235,10 +1235,7 @@
                 "laravel": {
                     "providers": [
                         "JoeyMcKenzie\\Sqlighter\\SqlighterServiceProvider"
-                    ],
-                    "aliases": {
-                        "Sqlighter": "JoeyMcKenzie\\Sqlighter\\Facades\\Sqlighter"
-                    }
+                    ]
                 }
             },
             "autoload": {
@@ -1266,9 +1263,9 @@
             ],
             "support": {
                 "issues": "https://github.com/JoeyMckenzie/sqlighter/issues",
-                "source": "https://github.com/JoeyMckenzie/sqlighter/tree/v0.1.1"
+                "source": "https://github.com/JoeyMckenzie/sqlighter/tree/v0.1.2"
             },
-            "time": "2024-10-28T19:29:11+00:00"
+            "time": "2024-10-28T22:14:19+00:00"
         },
         {
             "name": "laravel/folio",
@@ -1345,16 +1342,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v11.29.0",
+            "version": "v11.30.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "425054512c362835ba9c0307561973c8eeac7385"
+                "reference": "dff716442d9c229d716be82ccc9a7de52eb97193"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/425054512c362835ba9c0307561973c8eeac7385",
-                "reference": "425054512c362835ba9c0307561973c8eeac7385",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/dff716442d9c229d716be82ccc9a7de52eb97193",
+                "reference": "dff716442d9c229d716be82ccc9a7de52eb97193",
                 "shasum": ""
             },
             "require": {
@@ -1550,7 +1547,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-10-22T14:13:31+00:00"
+            "time": "2024-10-30T15:00:34+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -2284,20 +2281,20 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "3.8.0",
+            "version": "3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "bbd3eef89af8ba66a3aa7952b5439168fbcc529f"
+                "reference": "10ac0aa86b8062219ce21e8189123d611ca3ecd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/bbd3eef89af8ba66a3aa7952b5439168fbcc529f",
-                "reference": "bbd3eef89af8ba66a3aa7952b5439168fbcc529f",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/10ac0aa86b8062219ce21e8189123d611ca3ecd9",
+                "reference": "10ac0aa86b8062219ce21e8189123d611ca3ecd9",
                 "shasum": ""
             },
             "require": {
-                "carbonphp/carbon-doctrine-types": "*",
+                "carbonphp/carbon-doctrine-types": "<100.0",
                 "ext-json": "*",
                 "php": "^8.1",
                 "psr/clock": "^1.0",
@@ -2386,7 +2383,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-08-19T06:22:39+00:00"
+            "time": "2024-11-03T16:02:24+00:00"
         },
         {
             "name": "nette/schema",
