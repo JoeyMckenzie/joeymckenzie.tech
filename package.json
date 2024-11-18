@@ -15,7 +15,7 @@
         "autoprefixer": "^10.4.2",
         "daisyui": "^4.12.10",
         "laravel-vite-plugin": "^1.0",
-        "postcss": "^8.4.31",
+        "postcss": "^8.4.49",
         "postcss-nesting": "^13.0.0",
         "prettier": "^3.3.3",
         "prettier-plugin-tailwindcss": "^0.6.8",
