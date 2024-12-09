@@ -14,7 +14,7 @@
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.2",
         "daisyui": "^4.12.10",
-        "laravel-vite-plugin": "^1.0",
+        "laravel-vite-plugin": "^1.1",
         "postcss": "^8.4.31",
         "postcss-nesting": "^13.0.0",
         "prettier": "^3.3.3",
