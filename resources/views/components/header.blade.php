@@ -1,6 +1,7 @@
 @props([
     'title',
     'subtitle',
+    'extra' => null
 ])
 
 <header>
@@ -9,7 +10,10 @@
         <a href="{{ route('now') }}" class="{{ request()->routeIs('now') ? 'current' : null }}">Now</a>
         <a href="{{ route('blog.index') }}"
            class="{{ request()->routeIs('blog.index') || request()->routeIs('blog.show') ? 'current' : null }}">Blog</a>
-        <h2>{{ $title }}</h2>
+        <h3>{{ $title }}</h3>
         <p>{{ $subtitle }}</p>
+        @if($extra !== null)
+            <p>{{ $extra }}</p>
+        @endif
     </nav>
 </header>

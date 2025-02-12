@@ -20,7 +20,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-<x-header :title="$title" :subtitle="$subtitle"/>
+<x-header :title="$title" :subtitle="$subtitle" :extra="$extra ?? null"/>
 {{$slot}}
 <x-footer/>
 </body>

@@ -23,9 +23,14 @@ final class BlogController
 
     public function show(string $slug): View
     {
-        $post = Post::query()
-            ->select(['slug', 'title', 'description', 'published_date', 'parsed_content'])
-            ->firstWhere('slug', $slug);
+        $post = Post::select([
+            'slug',
+            'title',
+            'description',
+            'published_date',
+            'parsed_content',
+            'hero_image',
+        ])->firstWhere('slug', $slug);
 
         return view('blog-post', [
             'post' => $post,
