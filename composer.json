@@ -3,7 +3,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": ">=8.3",
@@ -14,6 +17,8 @@
         "spatie/laravel-sitemap": "^7.3"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.14",
+        "barryvdh/laravel-ide-helper": "^3.5",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^v3.0",
         "laravel/pail": "^1.1",
@@ -62,6 +67,12 @@
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
+        ],
+        "generate:ide-helpers": [
+            "php artisan ide-helper:generate",
+            "php artisan ide-helper:models -RW",
+            "php artisan ide-helper:meta",
+            "@fmt"
         ],
         "test:unit": "vendor/bin/pest --parallel",
         "test:uwatch": "vendor/bin/pest --parallel --watch",

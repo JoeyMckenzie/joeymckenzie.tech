@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Contracts\ContentUtilityContract;
+use App\Services\MarkdownContentUtility;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
 final class AppServiceProvider extends ServiceProvider
@@ -13,7 +16,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(ContentUtilityContract::class, MarkdownContentUtility::class);
     }
 
     /**
@@ -21,6 +24,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Model::unguard();
+        Model::shouldBeStrict();
     }
 }
