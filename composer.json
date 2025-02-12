@@ -86,7 +86,10 @@
             "@test:unit",
             "@test:types"
         ],
-        "fmt": "vendor/bin/pint",
+        "fmt": [
+            "vendor/bin/pint -v",
+            "npm run fmt"
+        ],
         "fmt:test": "vendor/bin/pint --test",
         "lint": "vendor/bin/phpstan analyze",
         "lint:watch": "find src phpstan.neon.dist | entr -s \"composer run lint\"",

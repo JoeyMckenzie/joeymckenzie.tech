@@ -6,8 +6,8 @@
                 <a href="{{ route('blog.show', ['slug' => $post->slug]) }}">{{ $post->title }}</a>
                 <p>{{ $post->description }}</p>
             </div>
-            @if (! $loop->last)
-                <hr/>
+            @if (!$loop->last)
+                <hr />
             @endif
         @endforeach
     </div>

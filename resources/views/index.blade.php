@@ -10,5 +10,5 @@
         <a href="https://linkedin.com/in/JoeyMcKenzie">LinkedIn</a>
         <a href="https://bsky.app/profile/joeymckenzie.tech">Bluesky</a>
     </div>
-    <x-office-quote :quote="$quote"/>
+    <x-office-quote :quote="$quote" />
 </x-layout>
