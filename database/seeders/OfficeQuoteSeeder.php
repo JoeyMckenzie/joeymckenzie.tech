@@ -18,7 +18,7 @@ final class OfficeQuoteSeeder extends Seeder
         /** @var array{quotes: array<int, array{author: string, quote: string}>} $quotesJson */
         $quotesJson = File::json(storage_path('files/quotes.json'));
 
-        $quotes = collect($quotesJson['quotes'])
+        collect($quotesJson['quotes'])
             ->map(fn (array $quoteData) => OfficeQuote::create([
                 'quote' => $quoteData['quote'],
                 'author' => $quoteData['author'],

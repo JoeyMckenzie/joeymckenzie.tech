@@ -8,12 +8,14 @@ use App\Contracts\ContentUtilityContract;
 use App\Services\MarkdownContentUtility;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
+use Override;
 
 final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
+    #[Override]
     public function register(): void
     {
         $this->app->bind(ContentUtilityContract::class, MarkdownContentUtility::class);

@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('office_quotes', function (Blueprint $table) {
+        Schema::create('office_quotes', function (Blueprint $table): void {
             $table->id();
             $table->string('quote');
             $table->string('author');

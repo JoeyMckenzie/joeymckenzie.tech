@@ -19,6 +19,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
         "barryvdh/laravel-ide-helper": "^3.5",
+        "captainhook/captainhook": "^5.25",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^v3.0",
         "laravel/pail": "^1.1",
@@ -34,6 +35,7 @@
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
+        "ramsey/conventional-commits": "^1.5",
         "rector/rector": "^2.0"
     },
     "autoload": {
@@ -79,11 +81,9 @@
         "test:coverage": "vendor/bin/pest --coverage --parallel",
         "test:watch": "vendor/bin/pest --watch --parallel --mutate",
         "test:types": "vendor/bin/pest --type-coverage --min=100 --parallel",
-        "test:mutate": "vendor/bin/pest --mutate --min=100 --parallel",
-        "test:mutate:cache-clear": "vendor/bin/pest --mutate --min=100 --parallel --clear-cache",
-        "test:ci": "vendor/bin/pest --mutate --min=100 --parallel --ci",
+        "test:ci": "vendor/bin/pest --min=100 --parallel --ci",
         "test": [
-            "@test:mutate",
+            "@test:unit",
             "@test:types"
         ],
         "fmt": "vendor/bin/pint",
