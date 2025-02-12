@@ -1,5 +1,5 @@
 <x-layout title="Hi, I'm Joey." subtitle="Programmer. Dad. PHP Enjoyer. Beer snob. 🍺">
-    <p>
+    <p style="text-align: justify;">
         I'm a software developer based in Northern California. I enjoy writing about software, design, dad jokes,
         and cheap beer. I like building for the web, open source, learning new things, and professional wrestling. I
         enjoy writing about my adventures in software and the things I'm currently working on, exploring new
