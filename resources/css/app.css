@@ -1,6 +1,20 @@
 @import "simpledotcss/simple.css";
 @import url("https://fonts.bunny.net/css?family=jetbrains-mono:400,400i,500,600,700,800");
 
+:root {
+    color-scheme: dark;
+    --bg: #212121;
+    --accent-bg: #2b2b2b;
+    --text: #dcdcdc;
+    --text-light: #ababab;
+    --accent: #3ec2ff;
+    --accent-hover: #3effe8;
+    --accent-text: var(--bg);
+    --code: #f06292;
+    --preformatted: #ccc;
+    --disabled: #111;
+}
+
 html, body {
     font-family: 'JetBrains Mono', sans-serif;
 }
