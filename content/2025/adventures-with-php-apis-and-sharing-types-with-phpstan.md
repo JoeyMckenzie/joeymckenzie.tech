@@ -1,7 +1,7 @@
 ---
-title: 'Sharing types with PHPStan'
+title: 'Adventures with PHP, APIs, and sharing types with PHPStan'
 description: 'I like my PHP like I like my Rust... statically analyzed.'
-pubDate: 'Feb 15 2025'
+pubDate: 'Feb 13 2025'
 heroImage: '/images/phpstan-sharing-types/meme.jpeg'
 category: 'php'
 keywords:
@@ -27,9 +27,14 @@ I tend to fall somewhere in between, usually siding more so with the former grou
 the first camp, but as I grow more into a curmudgeon, I'm okay with things being good enough as long as it can provide
 value to the company and the codebase.
 
-I've been writing more PHP lately for fun and (yet to be seen) profit, simply because I'm growing quite bored .NET
-lately. I still love C#, and TypeScript for that matter, but those dang Laracons always seem to spike my FOMO of not
-being a Laravel/PHP developer everytime they roll around. I've been working on a
+I've been writing more PHP lately for fun and (yet to be seen) profit, simply because I'm growing quite bored with .NET.
+I still love C# (and TypeScript for that matter) but those dang Laracons always seem to spike my FOMO of not
+being a professionally employed Laravel/PHP developer everytime they roll around. Akin to a rebellious teenager defying
+the status quo set by their parents, the corporate enterprise running solely on Microsoft technologies has sucked the
+love for programming out of me, instilling a certain disdain for anything that resembles corporate-y code (you know the
+kind of code I'm talking about).
+
+I've been working on a
 [Hetzner client](https://github.com/hetzner-cloud-php/client) for PHP and wanted to write a bit about how much I love
 PHPStan. Yes, I know. There's like a dozen or so Hetzner wrappers on [Packagist](https://packagist.org/?query=hetzner),
 but this one is _mine_, and because it's _mine_, it's special to me.
@@ -40,10 +45,10 @@ Okay, sorry for rambling. To the code!
 
 So I've been scratching my own itch writing this library. Partly because I ran out of steam writing my wrapper for
 [Bluesky](https://packagist.org/packages/joeymckenzie/bluesky-php), and partly due to my mass exodus from Digital Ocean
-over to Hetzner for websites and apps I run (including this blog). The power/dollar spent is better in my opinion and
+over to Hetzner for websites and apps I run (including this blog). The power/dollar spent is better (in my opinion) and
 the UI is great.
 
-Alas, fuck the UI. Were programmers. We don't need no stinkin' UI.
+Alas, forget the UI. We're programmers. We don't need no stinkin' UI.
 
 For my client, I have an initializer to help spin up an instance to be able to call into Hetzner:
 
@@ -109,14 +114,19 @@ final readonly class ServersResource implements ServersResourceContract
 
 Something I've been _really_ enjoying and fully embraced in this library are PHPStan type imports. Writing an API client
 can be somewhat cumbersome. Every API is different, every provider has a different philosophy on how to serve their
-data, etc. I'm running max level PHPStan because I love pain and the Rust compiler thoroughly beaten me into submission.
+data, etc. I'm running max level PHPStan because I love pain and the Rust compiler has thoroughly beaten me into
+submission, teaching me to enjoy correctness in code no matter how long it takes to get there.
 
 I've taken the approach to define a resource's response schema in a "resource" class of sorts, and then importing that
 schema all throughout my project. It's been great for my productivity, defining type schemas in one place and importing
 them where I need them, all while keeping PHPStan happy on level 10 and never having to worry about schema duplication.
 
-I've seen in a few projects where PHPDoc annotated types can fester throughout a module and I wanted to avoid that.
-Taking [Hetzner's server APIs](https://docs.hetzner.cloud/#servers) as an example, I'm able to define a server resource:
+The type schemas are directly defined based on the API response they're modeling, so PHPStan keeps me honest if I try
+access something within the response that hasn't been defined.
+
+I've seen in a few projects where duplicated PHPDoc annotated types can fester throughout a module and I wanted to avoid
+that. Taking [Hetzner's server APIs](https://docs.hetzner.cloud/#servers) as an example, I'm able to define a server
+resource in one place:
 
 ```php
 <?php
@@ -271,14 +281,145 @@ final readonly class Server implements ResponseContract
 
 There's a myriad of `@phpstan-import-type`s at the class-level method docs. Each schema is housed within its resource,
 and I can safely import the schemas around as they match their direct JSON API response and map them into their PHP
-object counterparts. Yes, I could use a serializer, but I don't really care for the overhead and it's somewhat cathardic
-writing the boilerplate mapping code. There's some other bits in there based on another library I've split off from the
-main client providing some nice little utilities for writing API clients in PHP, but I'll save that blog post for a
-rainy day (boom, callback). I've been heavily influenced by
+object counterparts. Yes, I could use a serializer, but I don't really care for the overhead, and it's oddly cathartic
+writing the boilerplate mapping code (PHPStorm AI code pilot does most of it, if I'm being honest). There's some other
+bits in there
+based on another library I've split off from the main client providing some nice little utilities for writing API
+clients in PHP, but I'll save that blog post for a rainy day (boom, callback). I've been heavily influenced by
 the [OpenAI PHP client](https://github.com/openai-php/client) (shout out Nuno), and abstracted out some things I liked
 about that client library into my own
 little [utility package](https://github.com/hetzner-cloud-php/http-client-utilities).
 
 I have these type imports all over the code, and it helps me mentally map out a boundary between my PHP code and what I
 get back from Hetzner. Anything that's defined as a `@phpstan-type` schema comes directly from the API, and my models
-are just that - good ol' PHP model objects.
+are just that - good ol' PHP model objects. The server resource model is one of the beefier response schemas they have.
+
+The obvious benefit is reusability, like reusing schemas across object models. Taking the create response one would
+receive back the API:
+
+```php
+/**
+ * @phpstan-import-type ActionSchema from Action
+ * @phpstan-import-type ErrorSchema from Error
+ * @phpstan-import-type ErrorResponseSchema from ErrorResponse
+ * @phpstan-import-type ServerSchema from Server
+ *
+ * @phpstan-type CreateServerResponseSchema array{
+ *     action: ?ActionSchema,
+ *     next_actions: ?ActionSchema[],
+ *     root_password: ?string,
+ *     server: ?ServerSchema
+ * }|ErrorResponseSchema
+ *
+ * @implements ResponseContract<CreateServerResponseSchema>
+ */
+final readonly class CreateServerResponse implements ResponseContract
+{
+    /**
+     * @use ArrayAccessible<CreateServerResponseSchema>
+     */
+    use ArrayAccessible;
+
+    /**
+     * @use Fakeable<CreateServerResponseSchema>
+     */
+    use Fakeable;
+
+    /**
+     * @param  Action[]  $nextActions
+     */
+    private function __construct(
+        public ?Action $action = null,
+        public ?array $nextActions = null,
+        public ?string $rootPassword = null,
+        public ?Server $server = null,
+        public ?Error $error = null,
+    ) {
+        //
+    }
+
+    /**
+     * @param  CreateServerResponseSchema  $attributes
+     */
+    public static function from(array $attributes): self
+    {
+        return new self(
+            isset($attributes['action']) ? Action::from($attributes['action']) : null,
+            isset($attributes['next_actions']) ? array_map(
+                static fn (array $action): Action => Action::from($action),
+                $attributes['next_actions']
+            ) : null,
+            $attributes['root_password'] ?? null,
+            isset($attributes['server']) ? Server::from($attributes['server']) : null,
+            isset($attributes['error']) ? Error::from($attributes['error']) : null,
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    #[Override]
+    public function toArray(): array
+    {
+        return [
+            'action' => $this->action?->toArray(),
+            'next_actions' => array_map(
+                static fn (Action $action): array => $action->toArray(),
+                $this->nextActions ?? []
+            ),
+            'root_password' => $this->rootPassword,
+            'server' => $this->server?->toArray(),
+            'error' => $this->error?->toArray(),
+        ];
+    }
+}
+```
+
+I've been enjoying writing the client library in this fashion. Although it's a bit tedious at times, I know the
+developer experience is what I want it to be, and it feels good to use:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Carbon\Carbon;
+use HetznerCloud\HetznerCloud;
+
+require_once __DIR__.'/../vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__.'/../');
+$dotenv->load();
+
+/** @var string $apiKey */
+$apiKey = $_ENV['HETZNER_CLOUD_API_KEY'];
+$client = HetznerCloud::client($apiKey);
+
+// Create a server
+$createdServer = $client->servers()->createServer([
+    'name' => 'test-server',
+    'server_type' => 'cpx11',
+    'image' => 'ubuntu-24.04',
+]);
+var_dump($createdServer);
+
+// Get a list of servers
+$servers = $client->servers()->getServers();
+var_dump($servers);
+
+// Get a single server
+$serverId = $createdServer->server->id ?? 1;
+$server = $client->servers()->getServer($serverId);
+var_dump($server);
+```
+
+It feels great working with statically mapped PHP objects based on responses directly from Hetzner's Cloud API, and not
+being forced into a generic array data bag filled with `mixed` data only accessible via array access. I'm hand waving
+over the `Response<array<array-key, mixed>>` bit in my resource API methods, though I'll arm wrestle with those another
+day. I spun my wheels for a while in a swap of generics, and decided to reduce the complexity a bit by allowing a smidge
+of dynamic-ness in the code. I've got plenty of tests covering various scenarios, so even though it's not as Rust-level
+strict as I'd like, it's a nice balance of type leniency and enforcement that I've come to enjoy.
+
+Well, guess that's it. Thanks for reading about my random ramblings about PHP.
+
+Until next time, friends!
