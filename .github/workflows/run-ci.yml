@@ -66,3 +66,6 @@ jobs:
 
       - name: Run CI checks
         run: composer run check
+        env:
+          BLUESKY_USERNAME: ${{ secrets.BLUESKY_USERNAME }}
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
