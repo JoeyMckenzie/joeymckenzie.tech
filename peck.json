@@ -3,7 +3,11 @@
     "ignore": {
         "words": [
             "php",
-            "renderer"
+            "renderer",
+            "bluesky",
+            "repost",
+            "reposts",
+            "fullsize"
         ]
     }
 }
