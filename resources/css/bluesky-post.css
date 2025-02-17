@@ -48,7 +48,7 @@
 
 .bluesky-name {
     font-weight: 600;
-    color: var(--text-primary, rgb(231, 233, 234));
+    color: var(--text-primary, rgb(231, 233, 234)) !important;
     font-size: 15px;
     text-decoration: none;
 }
@@ -59,10 +59,11 @@
 
 .bluesky-handle {
     display: none;
+    color: var(--text-primary, rgb(231, 233, 234)) !important;
 }
 
 .bluesky-timestamp {
-    color: var(--text-secondary, rgb(113, 118, 123));
+    color: var(--text-secondary, rgb(113, 118, 123)) !important;
     font-size: 15px;
     text-decoration: none;
 }

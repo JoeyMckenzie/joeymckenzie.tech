@@ -11,14 +11,5 @@
         <a href="https://bsky.app/profile/joeymckenzie.tech">Bluesky</a>
     </div>
     <x-office-quote :quote="$quote ?? null" />
-    <x-bluesky-post username="Joey McKenzie" handle="@joeymckenzie.tech"
-        content="
-Our next president will have to be technologically competent, at least, in order for us to sustain our place in the world.
-
-This will become increasingly obvious over the next 4 years as AI gets more powerful
-
-This isn't necessarily bad. Truly. Done right, we will be a better, more equal society"
-        avatar="https://cdn.bsky.app/img/avatar/plain/did:plc:3ond7kebhvszgzsqo5llyipd/bafkreibphmjzwfs6gkdg3fqslkddnikj2wvqfws2i6k6wotx7dwanyatmm@jpeg"
-        postUrl="/profile/mcuban.bsky.social/post/3liayebscik2o" timestamp="20h" :replyCount="2882" :repostCount="2100"
-        :likeCount="18186" />
+    <x-bluesky-post :post="$latestPost" />
 </x-layout>

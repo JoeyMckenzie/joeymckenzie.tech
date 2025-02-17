@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
 
-    'username' => env('BLUEKSKY_USERNAME', ''),
-    'password' => env('BLUEKSKY_PASSWORD', ''),
+    'username' => env('BLUESKY_USERNAME', ''),
+    'password' => env('BLUESKY_PASSWORD', ''),
 
 ];

@@ -4,23 +4,17 @@ declare(strict_types=1);
 
 namespace App\View\Components;
 
+use App\ValueObjects\BlueskyPostMeta;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
 final class BlueskyPost extends Component
 {
     public function __construct(
-        public string $username,
-        public string $handle,
-        public string $content,
-        public string $avatar,
-        public string $postUrl,
-        public string $timestamp,
-        public int $replyCount = 0,
-        public int $repostCount = 0,
-        public int $likeCount = 0,
-        public ?string $image = null,
-    ) {}
+        public BlueskyPostMeta $post
+    ) {
+        //
+    }
 
     public function formatCount(int $count): string
     {

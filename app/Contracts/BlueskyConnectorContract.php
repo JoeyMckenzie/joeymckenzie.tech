@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Contracts;
 
+use App\ValueObjects\BlueskyPostMeta;
+
 interface BlueskyConnectorContract
 {
-    public function getLatestPost();
-
-    public function getAuthToken(): string;
+    public function getLatestPost(): BlueskyPostMeta;
 }
