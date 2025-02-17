@@ -12,7 +12,7 @@ final class BlueskyConnector implements BlueskyConnectorContract
 {
     private const string BASE_URL = 'https://bsky.social/xrpc';
 
-    public function getLatestPost()
+    public function getLatestPost(): void
     {
         // TODO: Implement getLatestPost() method.
     }
@@ -20,7 +20,7 @@ final class BlueskyConnector implements BlueskyConnectorContract
     public function getAuthToken(): string
     {
         $url = sprintf('%s/com.atproto.server.createSession', self::BASE_URL);
-        $response = Http::withHeader('Content-Type', 'application/json')
+        Http::withHeader('Content-Type', 'application/json')
             ->post($url, [
                 'identifier' => Config::string('bluesky.username'),
                 'password' => Config::string('bluesky.password'),
