@@ -15,7 +15,7 @@
         "vite": "^6.0.11"
     },
     "dependencies": {
-        "shiki": "^2.3.2",
+        "shiki": "^2.4.1",
         "simpledotcss": "^2.3.3"
     }
 }
