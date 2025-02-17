@@ -1,0 +1,157 @@
+.bluesky-post {
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #161e27
+}
+
+.bluesky-post-container {
+    border: 1px solid var(--border-color, rgb(47, 51, 54));
+    border-radius: 0.25rem;
+    border-color: rgb(46, 64, 82);
+    padding-bottom: 8px;
+}
+
+.bluesky-post-inner {
+    display: flex;
+    padding: 12px 8px 0;
+    gap: 10px;
+}
+
+/* Avatar */
+.bluesky-avatar {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    position: relative;
+}
+
+.bluesky-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Content Area */
+.bluesky-content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Header */
+.bluesky-header {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 2px;
+}
+
+.bluesky-name {
+    font-weight: 600;
+    color: var(--text-primary, rgb(231, 233, 234));
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.bluesky-name:hover {
+    text-decoration: underline;
+}
+
+.bluesky-handle {
+    display: none;
+}
+
+.bluesky-timestamp {
+    color: var(--text-secondary, rgb(113, 118, 123));
+    font-size: 15px;
+    text-decoration: none;
+}
+
+.bluesky-dot {
+    color: var(--text-secondary, rgb(113, 118, 123));
+}
+
+/* Post Text */
+.bluesky-text {
+    color: var(--text-primary, rgb(231, 233, 234));
+    font-size: 15px;
+    line-height: 20px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin-top: 4px;
+    padding-right: 2rem;
+}
+
+/* Post Image */
+.bluesky-image {
+    margin-top: 12px;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.bluesky-image img {
+    width: 100%;
+    height: auto;
+}
+
+/* Action Buttons */
+.bluesky-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    margin-left: -6px;
+}
+
+.bluesky-action-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    background: none !important;
+    color: var(--text-secondary, rgb(113, 118, 123));
+    transition: all 0.2s;
+}
+
+.bluesky-action-button:hover {
+    background-color: rgb(30, 41, 54) !important;
+}
+
+.bluesky-action-button svg {
+    width: 18px;
+    height: 18px;
+}
+
+.bluesky-action-button span {
+    font-size: 13px;
+}
+
+
+.bluesky-more:hover {
+    background-color: rgba(231, 233, 234, 0.1);
+}
+
+@media only screen and (min-width: 640px) {
+    .bluesky-handle {
+        display: block;
+        color: var(--text-secondary, rgb(113, 118, 123));
+        font-size: 15px;
+        text-decoration: none;
+    }
+
+    .bluesky-text {
+        padding-right: 0;
+    }
+}
+
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-primary: rgb(231, 233, 234);
+        --text-secondary: rgb(113, 118, 123);
+        --border-color: rgb(47, 51, 54);
+    }
+}

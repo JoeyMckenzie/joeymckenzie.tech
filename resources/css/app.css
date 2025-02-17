@@ -1,4 +1,5 @@
 @import "simpledotcss/simple.css";
+@import "./bluesky-post.css";
 @import url("https://fonts.bunny.net/css?family=jetbrains-mono:400,400i,500,600,700,800");
 
 :root {
