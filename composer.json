@@ -51,6 +51,10 @@
         }
     },
     "scripts": {
+        "post-install-cmd": [
+            "@generate:ide-helpers",
+            "git config core.hookspath .githooks"
+        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
@@ -59,8 +63,7 @@
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "git config core.hookspath .githooks"
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi",
@@ -73,7 +76,7 @@
         ],
         "generate:ide-helpers": [
             "php artisan ide-helper:generate",
-            "php artisan ide-helper:models -RW",
+            "php artisan ide-helper:models -MRW",
             "php artisan ide-helper:meta",
             "@fmt"
         ],

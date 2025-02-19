@@ -4,25 +4,29 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property string $quote
  * @property string $author
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|OfficeQuote newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|OfficeQuote newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|OfficeQuote query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|OfficeQuote whereAuthor($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|OfficeQuote whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|OfficeQuote whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|OfficeQuote whereQuote($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|OfficeQuote whereUpdatedAt($value)
+ * @method static Builder<static>|OfficeQuote newModelQuery()
+ * @method static Builder<static>|OfficeQuote newQuery()
+ * @method static Builder<static>|OfficeQuote query()
+ * @method static Builder<static>|OfficeQuote whereAuthor($value)
+ * @method static Builder<static>|OfficeQuote whereCreatedAt($value)
+ * @method static Builder<static>|OfficeQuote whereId($value)
+ * @method static Builder<static>|OfficeQuote whereQuote($value)
+ * @method static Builder<static>|OfficeQuote whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
+ * @mixin IdeHelperOfficeQuote
  */
 final class OfficeQuote extends Model
 {

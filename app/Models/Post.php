@@ -10,15 +10,16 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string $title
  * @property string $description
  * @property string $slug
- * @property \Illuminate\Support\Carbon $published_date
+ * @property Carbon $published_date
  * @property string $hero_image
  * @property string $category
  * @property string $raw_content
@@ -43,6 +44,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static Builder<static>|Post whereUpdatedAt($value)
  *
  * @mixin Eloquent
+ * @mixin IdeHelperPost
  */
 final class Post extends Model
 {

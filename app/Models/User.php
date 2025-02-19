@@ -42,6 +42,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|User whereUpdatedAt($value)
  *
  * @mixin Eloquent
+ * @mixin IdeHelperUser
  */
 final class User extends Authenticatable
 {

@@ -1,15 +1,23 @@
 <x-layout title="Blog." subtitle="Adventures in code. Legacy nightmares. Bright shiny new frameworks.">
     <div style="padding-top: 2rem;">
-        @if (count($posts) > 1)
-            @foreach ($posts as $index => $post)
+        @if (count($postPreviews) > 1)
+            @foreach ($postPreviews as $index => $preview)
                 <small>
-                    {{ $post->display_date }}
-                    <a href="{{ route('blog.index', ['category' => $post->category]) }}">{{ $post->category }}</a>
+                    {{ $preview->post->display_date }}
+                    <a
+                        href="{{ route('blog.index', ['category' => $preview->post->category]) }}">{{ $preview->post->category }}</a>
                 </small>
+                @if ($preview->impressions)
+                    <small>
+                        {{ $preview->impressions }}
+                        views
+                    </small>
+                @endif
                 <div style="padding-top: 1rem;">
-                    <a href="{{ route('blog.show', ['slug' => $post->slug]) }}"
-                        data-pan="{{ sprintf('blog-page-link-%s', $post->slug) }}">{{ $post->title }}</a>
-                    <p>{{ $post->description }}</p>
+                    <a href="{{ route('blog.show', ['slug' => $preview->post->slug]) }}"
+                        data-pan="{{ sprintf('blog-page-link-%s', $preview->post->slug) }}">{{ $preview->post->title }}</a>
+                    <br />
+                    <small>{{ $preview->post->description }}</small>
                 </div>
                 @if (!$loop->last)
                     <hr />
