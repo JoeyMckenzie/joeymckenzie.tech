@@ -2,6 +2,20 @@
 @import "./bluesky-post.css";
 @import url("https://fonts.bunny.net/css?family=jetbrains-mono:400,400i,500,600,700,800");
 
+@font-face {
+    font-family: 'Geist';
+    src: url('@/fonts/Geist/Geist[wght].woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Geist Mono';
+    src: url('@/fonts/GeistMono/GeistMono[wght].woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-display: swap;
+}
+
 :root {
     color-scheme: dark;
     --bg: #212121;
@@ -18,4 +32,12 @@
 
 html, body {
     font-family: 'JetBrains Mono', sans-serif;
+}
+
+#blog-content {
+    font-weight: 300;
+}
+
+#blog-content > pre.shiki {
+    font-size: medium;
 }
