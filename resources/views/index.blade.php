@@ -11,5 +11,6 @@
         <a href="https://bsky.app/profile/joeymckenzie.tech">Bluesky</a>
     </div>
     <x-office-quote :quote="$quote ?? null" />
+    <h3>Latest thoughts</h3>
     <x-bluesky-post :post="$latestPost" />
 </x-layout>
