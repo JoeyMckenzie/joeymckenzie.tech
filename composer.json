@@ -13,6 +13,7 @@
         "calebporzio/sushi": "^2.5",
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
+        "panphp/pan": "^0.1.8",
         "spatie/laravel-markdown": "^2.7",
         "spatie/laravel-sitemap": "^7.3"
     },

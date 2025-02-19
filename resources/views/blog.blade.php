@@ -7,7 +7,8 @@
                     <a href="{{ route('blog.index', ['category' => $post->category]) }}">{{ $post->category }}</a>
                 </small>
                 <div style="padding-top: 1rem;">
-                    <a href="{{ route('blog.show', ['slug' => $post->slug]) }}">{{ $post->title }}</a>
+                    <a href="{{ route('blog.show', ['slug' => $post->slug]) }}"
+                        data-pan="{{ sprintf('blog-page-link-%s', $post->slug) }}">{{ $post->title }}</a>
                     <p>{{ $post->description }}</p>
                 </div>
                 @if (!$loop->last)

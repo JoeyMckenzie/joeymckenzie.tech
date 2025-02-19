@@ -41,6 +41,10 @@ final class BlogController
             'hero_image',
         ])->firstWhere('slug', $slug);
 
+        if ($post === null) {
+            abort(404);
+        }
+
         return view('blog-post', [
             'post' => $post,
         ]);
