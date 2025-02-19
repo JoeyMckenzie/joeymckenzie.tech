@@ -51,10 +51,6 @@
         }
     },
     "scripts": {
-        "post-install-cmd": [
-            "@generate:ide-helpers",
-            "git config core.hookspath .githooks"
-        ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"
