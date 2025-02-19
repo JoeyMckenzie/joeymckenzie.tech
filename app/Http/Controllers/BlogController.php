@@ -35,7 +35,7 @@ final class BlogController
             ->get();
 
         return view('blog', [
-            'postPreviews' => $posts->map(fn (Post $post): \App\ValueObjects\PostPreview => PostPreview::from($post, $analytics)),
+            'postPreviews' => $posts->map(fn (Post $post): PostPreview => PostPreview::from($post, $analytics)),
         ]);
     }
 
