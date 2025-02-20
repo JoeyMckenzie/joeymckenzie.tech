@@ -7,12 +7,6 @@
                     <a
                         href="{{ route('blog.index', ['category' => $preview->post->category]) }}">{{ $preview->post->category }}</a>
                 </small>
-                @if ($preview->impressions)
-                    <small>
-                        {{ $preview->impressions }}
-                        views
-                    </small>
-                @endif
                 <div style="padding-top: 1rem;">
                     <a href="{{ route('blog.show', ['slug' => $preview->post->slug]) }}"
                         data-pan="{{ sprintf('blog-page-link-%s', $preview->post->slug) }}">{{ $preview->post->title }}</a>
