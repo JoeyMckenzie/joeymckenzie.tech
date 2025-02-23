@@ -7,4 +7,4 @@ My personal slice of the internet, powered by:
 - [Hetzner](https://www.hetzner.com/)
 - [Simple.css](https://simplecss.org/)
 
-My opinions are my, no matter how bad they may be.
+My opinions are my own, no matter how bad they might be. I apologize a head of time.
