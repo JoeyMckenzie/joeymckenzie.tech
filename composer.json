@@ -11,7 +11,7 @@
     "require": {
         "php": ">=8.3",
         "calebporzio/sushi": "^2.5",
-        "laravel/framework": "^11.31",
+        "laravel/framework": "^12.0",
         "laravel/tinker": "^2.9",
         "panphp/pan": "^0.1.8",
         "spatie/laravel-markdown": "^2.7",
