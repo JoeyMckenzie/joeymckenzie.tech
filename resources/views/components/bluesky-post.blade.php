@@ -28,6 +28,15 @@
                     </div>
                 @endif
 
+                {{-- Link preview (if present) --}}
+                @if ($post->linkPreview !== null)
+                    <div class="bluesky-image">
+                        <a href="{{ $post->linkPreview->uri }}">
+                            <img src="{{ $post->linkPreview->thumb }}" alt="Post image">
+                        </a>
+                    </div>
+                @endif
+
                 {{-- Action Buttons --}}
                 <div class="bluesky-actions">
                     {{-- Reply Button --}}

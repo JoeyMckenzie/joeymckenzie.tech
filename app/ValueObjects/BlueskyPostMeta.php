@@ -22,6 +22,7 @@ final class BlueskyPostMeta
         public int $quotes,
         public string $uri,
         public ?string $imageUrl = null,
+        public ?BlueskyPostLinkPreview $linkPreview = null
     ) {
         //
     }
@@ -40,7 +41,8 @@ final class BlueskyPostMeta
             $data['repostCount'],
             $data['quoteCount'],
             $data['uri'],
-            isset($data['embed']) ? $data['embed']['images'][0]['fullsize'] : null,
+            isset($data['embed']['images']) ? $data['embed']['images'][0]['fullsize'] : null,
+            isset($data['embed']['external']) ? BlueskyPostLinkPreview::fromJson($data['embed']['external']) : null,
         );
     }
 

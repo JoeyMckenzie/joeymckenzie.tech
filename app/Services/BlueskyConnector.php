@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Http;
  *     likeCount: int,
  *     quoteCount: int,
  *     embed?: array{
- *         images: array<int, array{
+ *         images?: array<int, array{
  *             thumb: string,
  *             fullsize: string,
  *             alt: string,
@@ -34,8 +34,15 @@ use Illuminate\Support\Facades\Http;
  *                 width: number,
  *                 height: number
  *             }
- *         }>
+ *         }>,
+ *         external?: BlueskyLinkPreviewSchema
  *     }
+ * }
+ * @phpstan-type BlueskyLinkPreviewSchema array{
+ *     uri: string,
+ *     title: string,
+ *     description: string,
+ *     thumb: string,
  * }
  * @phpstan-type BlueskyFeedSchema array{
  *     feed: array<int, array{post: BlueskyPostSchema}>
