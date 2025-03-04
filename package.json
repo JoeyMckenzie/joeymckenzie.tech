@@ -8,14 +8,14 @@
     },
     "devDependencies": {
         "@shufo/prettier-plugin-blade": "^1.15.3",
-        "axios": "^1.7.4",
+        "axios": "^1.8.1",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^1.2.0",
-        "prettier": "^3.5.1",
-        "vite": "^6.1.0"
+        "prettier": "^3.5.3",
+        "vite": "^6.2.0"
     },
     "dependencies": {
         "shiki": "^2.4.1",
-        "simpledotcss": "^2.3.3"
+        "simpledotcss": "^2.3.4"
     }
 }
