@@ -216,7 +216,7 @@ utilities, but I'll let someone smarter than I help with that.
 
 ## The solution
 
-As a quick workaround, I rewrote the test, so I could catch those anonymous classes within my assertions and verify the
+As a quick workaround, I rewrote the test so I could catch those anonymous classes within my assertions and verify the
 PHPStan analysis was as expected. The updated test looks something like:
 
 ```php
