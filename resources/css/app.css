@@ -22,8 +22,9 @@ html, body {
 
 #blog-content {
     font-weight: 300;
+    font-size: smaller;
 }
 
 #blog-content > pre.shiki {
-    font-size: medium;
+    font-size: small;
 }
