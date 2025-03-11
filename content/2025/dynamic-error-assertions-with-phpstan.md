@@ -2,7 +2,7 @@
 title: 'Dynamic error assertions with PHPStan'
 description: 'This blog post could have been tweet, but yet here I am.'
 pubDate: 'Mar 11 2025'
-heroImage: '/images/dynamic-phpstan-error-assertions/meme.jpeg'
+heroImage: '/images/dynamic-phpstan-error-assertions/meme.jpg'
 category: 'php'
 keywords:
     - php
