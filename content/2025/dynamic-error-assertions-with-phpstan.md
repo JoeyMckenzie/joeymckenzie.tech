@@ -11,7 +11,7 @@ keywords:
 ---
 
 So I've been working on a [fun little library](https://github.com/JoeyMckenzie/nasastan) as an excuse to learn how to
-write extensions for PHP. I'll spare the gory
+write extensions for PHPStan. I'll spare the gory
 details as I'll probably write more extensively about it next week, but in essence, it's a PHPStan extension for
 enforcing [NASA's Power of Ten](https://en.wikipedia.org/wiki/The_Power_of_10:_Rules_for_Developing_Safety-Critical_Code)
 programming rules within your PHP code. Coming from nearly a decade working primarily in .NET, PHPStan is that
