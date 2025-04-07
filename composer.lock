@@ -9406,22 +9406,22 @@
         },
         {
             "name": "pestphp/pest-plugin-type-coverage",
-            "version": "v3.4.0",
+            "version": "v3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pestphp/pest-plugin-type-coverage.git",
-                "reference": "2c1381d9addaea3796ff85efd2f5aedd2532a196"
+                "reference": "c02e893d47071b600f9e4133c277fe77917492fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pestphp/pest-plugin-type-coverage/zipball/2c1381d9addaea3796ff85efd2f5aedd2532a196",
-                "reference": "2c1381d9addaea3796ff85efd2f5aedd2532a196",
+                "url": "https://api.github.com/repos/pestphp/pest-plugin-type-coverage/zipball/c02e893d47071b600f9e4133c277fe77917492fc",
+                "reference": "c02e893d47071b600f9e4133c277fe77917492fc",
                 "shasum": ""
             },
             "require": {
                 "pestphp/pest-plugin": "^3.0.0",
                 "php": "^8.2",
-                "phpstan/phpstan": "^1.12.21|^2.1.8",
+                "phpstan/phpstan": "^1.12.21|^2.1.11",
                 "tomasvotruba/type-coverage": "^1.0.0|^2.0.2"
             },
             "require-dev": {
@@ -9458,7 +9458,7 @@
                 "unit"
             ],
             "support": {
-                "source": "https://github.com/pestphp/pest-plugin-type-coverage/tree/v3.4.0"
+                "source": "https://github.com/pestphp/pest-plugin-type-coverage/tree/v3.5.0"
             },
             "funding": [
                 {
@@ -9474,7 +9474,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2025-03-14T12:55:05+00:00"
+            "time": "2025-03-29T16:51:00+00:00"
         },
         {
             "name": "phar-io/manifest",
