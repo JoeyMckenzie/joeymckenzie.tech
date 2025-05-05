@@ -16,6 +16,6 @@
     },
     "dependencies": {
         "shiki": "^2.4.1",
-        "simpledotcss": "^2.3.5"
+        "simpledotcss": "^2.3.6"
     }
 }
