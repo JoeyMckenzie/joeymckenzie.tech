@@ -1,3 +1,11 @@
-// Alpine.js handles the show/hide of the mobile nav
 import Alpine from 'alpinejs'
+import { createIcons, User, Library, House } from 'lucide';
 Alpine.start()
+
+createIcons({
+    icons: {
+        House,
+        Library,
+        User
+    }
+});

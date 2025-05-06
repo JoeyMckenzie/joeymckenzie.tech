@@ -1,4 +1,23 @@
-@import "tailwindcss/base";
-@import "style";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import url('https://rsms.me/inter/inter.css');
+
+@import 'tailwindcss';
+
+@source "../**/*.antlers.html";
+@source "../**/*.blade.php";
+@source "../**/*.js";
+@source "../../content/**/*.md";
+@source "../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php";
+@source "../../storage/framework/views/*.php";
+
+@plugin "@tailwindcss/typography";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark, sunset;
+}
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "Menlo", monospace;
+
+  --color-teal: #008483;
+  --color-teal-light: #a6d0cf;
+}
