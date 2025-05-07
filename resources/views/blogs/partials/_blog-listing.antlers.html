@@ -20,12 +20,14 @@
                             {{ subtitle }}
                         </p>
                     </div>
-                    {{ topics limit="1" }}
-                        <span class="badge badge-neutral text-xs">
-                            {{ title }}
-                        </span>
-                    {{ /topics }}
-                    <span class="text-xs">{{ date format="M j, Y" }}</span>
+                    <div class="hidden sm:block">
+                        {{ topics limit="1" }}
+                            <span class="badge badge-neutral text-xs">
+                                {{ title }}
+                            </span>
+                        {{ /topics }}
+                        <span class="text-xs">{{ date format="M j, Y" }}</span>
+                    </div>
                 </a>
             {{ /blogs }}
         {{ /collection:blogs }}

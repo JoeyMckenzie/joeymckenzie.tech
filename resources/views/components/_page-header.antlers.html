@@ -1,7 +1,9 @@
 <div class="hero mt-24">
     <div class="hero-content flex flex-col items-start">
         <div class="flex w-full flex-row items-center justify-between">
-            <h1 class="text-4xl font-semibold">{{ subtitle ?? title }}</h1>
+            <h1 class="text-2xl font-semibold sm:text-4xl">
+                {{ subtitle ?? title }}
+            </h1>
             <div class="left mt-2 grid grid-cols-4 gap-2">
                 {{ settings:social }}
                     {{ icon }}
