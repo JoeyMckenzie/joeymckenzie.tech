@@ -12,10 +12,9 @@
 
 @plugin "@tailwindcss/typography";
 @plugin "daisyui" {
-    themes:
-        light --default,
-        dark --prefersdark,
-        sunset;
+    themes: light --default,
+    dark --prefersdark,
+    sunset;
 }
 
 @theme {

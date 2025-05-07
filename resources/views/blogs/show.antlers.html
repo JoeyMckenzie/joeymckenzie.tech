@@ -19,7 +19,7 @@
             />
         {{ /image }}
         <div class="prose mt-4 max-w-full">
-            {{ content }}
+            {{ render_markdown :content="content" }}
         </div>
     </div>
 </div>

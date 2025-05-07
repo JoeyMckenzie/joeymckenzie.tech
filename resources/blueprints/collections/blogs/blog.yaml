@@ -30,6 +30,7 @@ tabs:
             field:
               type: markdown
               localizable: true
+              parser: shiki
   sidebar:
     display: Sidebar
     sections:

@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
 use Spatie\CommonMarkShikiHighlighter\HighlightCodeExtension;
 use Statamic\Facades\Markdown;
+use Statamic\Markdown\Parser;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -26,10 +27,16 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Markdown::addExtensions(function () {
-            return [
-                new HighlightCodeExtension(theme: 'one-dark-pro'),
-            ];
+        // Markdown::addExtensions(function () {
+        //     return [
+        //         new HighlightCodeExtension(theme: 'one-dark-pro'),
+        //     ];
+        // });
+
+        Markdown::extend('shiki', function (Parser $parser) {
+            return $parser // @phpstan-ignore-line
+                ->withStatamicDefaults()
+                ->addExtension(fn () => new HighlightCodeExtension(theme: 'one-dark-pro'));
         });
 
         Facades\View::composer('*', function (View $view) {
