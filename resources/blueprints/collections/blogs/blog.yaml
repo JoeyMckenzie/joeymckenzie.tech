@@ -1,17 +1,15 @@
-title: Page
 tabs:
   main:
     display: Main
     sections:
       -
+        display: Meta
         fields:
           -
             handle: title
             field:
               type: text
               required: true
-              character_limit: 0
-              display: Title
               validate:
                 - required
           -
@@ -20,16 +18,17 @@ tabs:
               type: text
               display: Subtitle
           -
+            handle: image
+            field:
+              max_files: 1
+              container: assets
+              type: assets
+              display: Image
+          -
             handle: content
             field:
-              escape_markup: true
               type: markdown
-              display: Content
-          -
-            handle: template
-            field:
-              type: template
-              display: Template
+              localizable: true
   sidebar:
     display: Sidebar
     sections:
@@ -42,11 +41,28 @@ tabs:
               localizable: true
               validate: 'max:200'
           -
+            handle: date
+            field:
+              type: date
+              required: true
+              default: now
+              validate:
+                - required
+          -
             handle: parent
             field:
               type: entries
               collections:
-                - pages
+                - blogs
               max_items: 1
               listable: false
               localizable: true
+          -
+            handle: topics
+            field:
+              type: terms
+              taxonomies:
+                - topics
+              display: Topics
+              mode: select
+title: Blog

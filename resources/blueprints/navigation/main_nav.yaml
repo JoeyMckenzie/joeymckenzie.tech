@@ -1,0 +1,14 @@
+tabs:
+  main:
+    display: Main
+    sections:
+      -
+        fields:
+          -
+            handle: icon
+            field:
+              type: icons_plus
+              display: Icon
+              icon_group_restrictions:
+                - lucide
+                - lucide-lab

@@ -1,19 +1,13 @@
 <ul
     class="menu menu-horizontal bg-base-200 rounded-box mx-auto mt-4 flex justify-center sm:mt-12"
 >
-    <li>
-        <a class="tooltip" data-tip="Home">
-            <i data-lucide="house" class="size-5"></i>
-        </a>
-    </li>
-    <li>
-        <a class="tooltip" data-tip="Now">
-            <i data-lucide="user" class="size-5"></i>
-        </a>
-    </li>
-    <li>
-        <a class="tooltip" data-tip="Blog">
-            <i data-lucide="library" class="size-5"></i>
-        </a>
-    </li>
+    {{ nav:main_nav include_home="true" }}
+        <li>
+            <a class="tooltip" data-tip="{{ title }}" href="{{ url }}">
+                {{ icon }}
+                    {{ svg :src="iconSvg" class="size-6" }}
+                {{ /icon }}
+            </a>
+        </li>
+    {{ /nav:main_nav }}
 </ul>

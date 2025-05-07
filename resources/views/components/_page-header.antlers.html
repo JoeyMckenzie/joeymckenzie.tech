@@ -1,0 +1,17 @@
+<div class="hero mt-24">
+    <div class="hero-content flex flex-col items-start">
+        <div class="prose max-w-xl text-justify">
+            <h1>{{ subtitle ?? title }}</h1>
+            {{ content | widont }}
+        </div>
+        <div class="left mt-2 grid grid-cols-4 gap-4">
+            {{ settings:social }}
+                {{ icon }}
+                    <a href="{{ url }}">
+                        {{ svg :src="iconSvg" class="size-6 transform transition-transform duration-150 hover:scale-110" }}
+                    </a>
+                {{ /icon }}
+            {{ /settings:social }}
+        </div>
+    </div>
+</div>

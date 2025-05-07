@@ -1,0 +1,31 @@
+tree:
+  -
+    id: 9d43ab30-89de-49a3-9ed4-e1fbb9096048
+    entry: home
+    data:
+      icon:
+        iconPrefix: lucide
+        iconName: home
+        iconUrl: 'https://api.iconify.design/lucide/home.svg'
+        iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></g></svg>'
+        label: 'lucide:home'
+  -
+    id: 8445c881-91cd-4c4a-823e-4774a28062bc
+    entry: 56c998aa-f104-4d3c-b26b-cee28abad775
+    data:
+      icon:
+        iconPrefix: lucide
+        iconName: file-user
+        iconUrl: 'https://api.iconify.design/lucide/file-user.svg'
+        iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 2v4a2 2 0 0 0 2 2h4m-5 10a3 3 0 1 0-6 0"/><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z"/><circle cx="12" cy="13" r="2"/></g></svg>'
+        label: 'lucide:file-user'
+  -
+    id: 57b5d884-ddfb-42eb-af0f-262972d802d6
+    entry: dedbdfd2-45dc-4eb6-abbc-4067396ff52d
+    data:
+      icon:
+        iconPrefix: lucide
+        iconName: library
+        iconUrl: 'https://api.iconify.design/lucide/library.svg'
+        iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 6l4 14M12 6v14M8 8v12M4 4v16"/></svg>'
+        label: 'lucide:library'

@@ -1,0 +1,29 @@
+<div class="mx-auto mt-6 max-w-xl px-4 sm:px-0">
+    <ul class="list bg-base-200 rounded-box shadow-md">
+        {{ collection:blogs as="blogs" }}
+            {{ blogs }}
+                <li class="list-row items-center">
+                    <div class="text-4xl font-thin tabular-nums opacity-30">
+                        {{ if index > 10 }}
+                            <!-- prettier-ignore -->
+                            {{ index + 1 }}
+                        {{ else }}
+                            0{{ index + 1 }}
+                        {{ /if }}
+                    </div>
+                    <div class="list-col-grow">
+                        <h2>{{ title }}</h2>
+                        <p class="text-xs font-semibold opacity-60">
+                            {{ subtitle }}
+                        </p>
+                    </div>
+                    <span class="badge badge-neutral text-xs">Badge</span>
+                    <span class="text-xs">{{ date format="M j, Y" }}</span>
+                    <a class="btn btn-ghost" href="blog/{{ slug }}">
+                        <i data-lucide="arrow-right" class="size-5"></i>
+                    </a>
+                </li>
+            {{ /blogs }}
+        {{ /collection:blogs }}
+    </ul>
+</div>

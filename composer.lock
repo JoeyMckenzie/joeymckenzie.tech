@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d38118bc61bff8340848b491fb7e6ba",
+    "content-hash": "137a17e60f64a58b8f797c63d1b1eb46",
     "packages": [
         {
             "name": "ajthinking/archetype",
@@ -7503,6 +7503,50 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.3.0"
             },
             "time": "2024-12-21T16:25:41+00:00"
+        },
+        {
+            "name": "twithers/icons-plus",
+            "version": "v1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TWithers/icons-plus.git",
+                "reference": "ba796ae5852e3e3b592d0256b7cb5f92da5319bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/TWithers/icons-plus/zipball/ba796ae5852e3e3b592d0256b7cb5f92da5319bc",
+                "reference": "ba796ae5852e3e3b592d0256b7cb5f92da5319bc",
+                "shasum": ""
+            },
+            "require": {
+                "statamic/cms": "^5.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Twithers\\IconsPlus\\ServiceProvider"
+                    ]
+                },
+                "statamic": {
+                    "name": "Icons Plus",
+                    "description": "Icons Plus fieldtype for Statamic. Uses the iconify.design library to provide a searchable list of icons."
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Twithers\\IconsPlus\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "support": {
+                "issues": "https://github.com/TWithers/icons-plus/issues",
+                "source": "https://github.com/TWithers/icons-plus/tree/v1.1.0"
+            },
+            "time": "2024-12-07T22:27:17+00:00"
         },
         {
             "name": "ueberdosis/tiptap-php",

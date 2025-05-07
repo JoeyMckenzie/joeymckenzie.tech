@@ -1,4 +1,4 @@
-title: Home
+title: Now
 sections:
     main:
         display: Main
@@ -9,6 +9,12 @@ sections:
                   type: text
                   localizable: false
                   display: Title
+            - handle: subtitle
+              field:
+                  character_limit: 0
+                  type: text
+                  localizable: false
+                  display: Subtitle
             - handle: content
               field:
                   restrict: false
