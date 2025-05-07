@@ -1,8 +1,11 @@
 <div class="mx-auto mt-6 max-w-xl px-4 sm:px-0">
-    <ul class="list bg-base-200 rounded-box shadow-md">
+    <div class="list bg-base-200 rounded-box shadow-md">
         {{ collection:blogs as="blogs" }}
             {{ blogs }}
-                <li class="list-row items-center">
+                <a
+                    class="list-row transform items-center transition-transform duration-150 hover:scale-101"
+                    href="blog/{{ slug }}"
+                >
                     <div class="text-4xl font-thin tabular-nums opacity-30">
                         {{ if index > 10 }}
                             <!-- prettier-ignore -->
@@ -17,13 +20,14 @@
                             {{ subtitle }}
                         </p>
                     </div>
-                    <span class="badge badge-neutral text-xs">Badge</span>
+                    {{ topics limit="1" }}
+                        <span class="badge badge-neutral text-xs">
+                            {{ title }}
+                        </span>
+                    {{ /topics }}
                     <span class="text-xs">{{ date format="M j, Y" }}</span>
-                    <a class="btn btn-ghost" href="blog/{{ slug }}">
-                        <i data-lucide="arrow-right" class="size-5"></i>
-                    </a>
-                </li>
+                </a>
             {{ /blogs }}
         {{ /collection:blogs }}
-    </ul>
+    </div>
 </div>

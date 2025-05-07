@@ -1,27 +1,25 @@
-<div class="content relative mx-auto mt-16 max-w-5xl">
-    {{ svg src="/assets/site/scratches" class="absolute text-gray-800 mt-8 top-0 left-0 w-20 hidden md:block" }}
-    <article class="mx-auto max-w-2xl lg:py-32">
-        <h1>{{ title }}</h1>
-        <div
-            class="mb-16 -ml-16 inline-block rounded-r-full bg-gray-800 py-1 pr-4 pl-16 text-sm tracking-widest text-white uppercase"
-        >
-            Published
-            {{ if topics }}
-                in
-                {{ topics }}
-                    <a
-                        href="{{ url }}"
-                        class="text-teal-light no-underline hover:text-white"
-                    >
-                        {{ title }}
-                    </a>
-                    {{ unless last }},{{ /unless }}
-                {{ /topics }}
-            {{ /if }}
-            on {{ date format="M j, Y" }}
+<div class="px-6 py-16 lg:px-8">
+    <div class="mx-auto max-w-3xl">
+        <h1 class="text-center text-4xl font-semibold">
+            {{ title }}
+        </h1>
+        <div class="flex flex-row items-center justify-center gap-x-4 py-4">
+            {{ topics limit="1" }}
+                <span class="badge badge-neutral">{{ title }}</span>
+            {{ /topics }}
+            <span class="text-xs">{{ date format="M j, Y" }}</span>
         </div>
-        <div class="content">
-            {{ content | widont }}
+        {{ image }}
+            <img
+                class="mb-4 w-full rounded-md"
+                src="{{ url }}"
+                alt="{{ alt }}"
+                width="400"
+                height="500"
+            />
+        {{ /image }}
+        <div class="prose mt-4 max-w-full">
+            {{ content }}
         </div>
-    </article>
+    </div>
 </div>

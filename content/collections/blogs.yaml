@@ -1,6 +1,6 @@
 title: Blogs
-template: default
-layout: layout
+template: blogs/show
+layout: layouts/default
 taxonomies:
   - topics
 revisions: false

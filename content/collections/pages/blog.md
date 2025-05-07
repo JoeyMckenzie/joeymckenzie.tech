@@ -4,7 +4,6 @@ blueprint: page
 title: Blog
 subtitle: Thoughts.
 template: blogs/index
-layout: layouts/default
 updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
 updated_at: 1746630963
 ---

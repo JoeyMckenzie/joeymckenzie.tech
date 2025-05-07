@@ -3,7 +3,6 @@ id: 56c998aa-f104-4d3c-b26b-cee28abad775
 blueprint: page
 title: Now
 template: pages/default
-layout: layouts/default
 updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
 updated_at: 1746630081
 subtitle: Now.
