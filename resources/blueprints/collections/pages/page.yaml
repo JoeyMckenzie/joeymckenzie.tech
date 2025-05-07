@@ -1,52 +1,44 @@
 title: Page
 tabs:
-  main:
-    display: Main
-    sections:
-      -
-        fields:
-          -
-            handle: title
-            field:
-              type: text
-              required: true
-              character_limit: 0
-              display: Title
-              validate:
-                - required
-          -
-            handle: subtitle
-            field:
-              type: text
-              display: Subtitle
-          -
-            handle: content
-            field:
-              escape_markup: true
-              type: markdown
-              display: Content
-          -
-            handle: template
-            field:
-              type: template
-              display: Template
-  sidebar:
-    display: Sidebar
-    sections:
-      -
-        fields:
-          -
-            handle: slug
-            field:
-              type: slug
-              localizable: true
-              validate: 'max:200'
-          -
-            handle: parent
-            field:
-              type: entries
-              collections:
-                - pages
-              max_items: 1
-              listable: false
-              localizable: true
+    main:
+        display: Main
+        sections:
+            - fields:
+                  - handle: title
+                    field:
+                        type: text
+                        required: true
+                        character_limit: 0
+                        display: Title
+                        validate:
+                            - required
+                  - handle: subtitle
+                    field:
+                        type: text
+                        display: Subtitle
+                  - handle: content
+                    field:
+                        escape_markup: true
+                        type: markdown
+                        display: Content
+                  - handle: template
+                    field:
+                        type: template
+                        display: Template
+    sidebar:
+        display: Sidebar
+        sections:
+            - fields:
+                  - handle: slug
+                    field:
+                        type: slug
+                        localizable: true
+                        validate: 'max:200'
+                  - handle: parent
+                    field:
+                        type: entries
+                        collections:
+                            - pages
+                        max_items: 1
+                        listable: false
+                        localizable: true

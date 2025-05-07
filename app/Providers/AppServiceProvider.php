@@ -1,11 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
+use App\Actions\GetCurrentSpotifyStatusAction;
+use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
-use Statamic\Statamic;
+use Illuminate\View\View;
+use Spatie\CommonMarkShikiHighlighter\HighlightCodeExtension;
+use Statamic\Facades\Markdown;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -20,9 +26,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Statamic::vite('app', [
-        //     'resources/js/cp.js',
-        //     'resources/css/cp.css',
-        // ]);
+        Markdown::addExtensions(function () {
+            return [
+                new HighlightCodeExtension(theme: 'one-dark-pro'),
+            ];
+        });
+
+        Facades\View::composer('*', function (View $view) {
+            $response = new GetCurrentSpotifyStatusAction()->handle();
+
+            $view->with('spotifyStatus', [
+                'nowPlaying' => $response->nowPlaying,
+                'href' => $response->href,
+                'albumImageSrc' => $response->albumImageSrc,
+                'trackTitle' => $response->trackTitle,
+                'artist' => $response->artist,
+            ]);
+        });
     }
 }

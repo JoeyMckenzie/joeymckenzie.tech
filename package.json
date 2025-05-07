@@ -20,6 +20,7 @@
     "dependencies": {
         "alpinejs": "^3.9.1",
         "lucide": "^0.507.0",
-        "prettier-plugin-tailwindcss": "^0.6.11"
+        "prettier-plugin-tailwindcss": "^0.6.11",
+        "shiki": "^3.4.0"
     }
 }

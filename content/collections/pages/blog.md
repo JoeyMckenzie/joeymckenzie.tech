@@ -5,6 +5,6 @@ title: Blog
 subtitle: Thoughts.
 template: blogs/index
 updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746630963
+updated_at: 1746636361
 ---
-I'm a software developer based in Northern California. I enjoy writing about software, design, dad jokes, and cheap beer. I like building for the web, open source, learning new things, and professional wrestling. I enjoy writing about my adventures in software and the things I'm currently working on, exploring new technologies, and convincing people that PHP is, in fact, not completely dead yet.
+Adventures in code. Legacy nightmares. Bright shiny new frameworks. I write about a lot of stuff, mostly things capturing my fascination at the moment. This is my hodgepodge of thoughts doubling as an incubator for bad takes on software and an outlet for making memes.

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -140,8 +142,8 @@ return [
     */
 
     'replacers' => [
-        \Statamic\StaticCaching\Replacers\CsrfTokenReplacer::class,
-        \Statamic\StaticCaching\Replacers\NoCacheReplacer::class,
+        Statamic\StaticCaching\Replacers\CsrfTokenReplacer::class,
+        Statamic\StaticCaching\Replacers\NoCacheReplacer::class,
     ],
 
     /*

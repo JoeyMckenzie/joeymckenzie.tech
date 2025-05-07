@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -33,7 +35,7 @@ return [
     |
     */
 
-    'send_email_job' => \Statamic\Forms\SendEmail::class,
+    'send_email_job' => Statamic\Forms\SendEmail::class,
 
     /*
     |--------------------------------------------------------------------------

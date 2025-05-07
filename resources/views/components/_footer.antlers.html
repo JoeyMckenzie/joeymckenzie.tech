@@ -1,25 +1,20 @@
-<nav
-    class="mx-auto flex max-w-5xl flex-wrap items-center justify-between py-12 lg:py-24"
->
-    <div class="text-sm">
-        &copy; {{ now format="Y" }} {{ settings:site_name }} – Powered by
-        <a
-            href="https://statamic.com?ref=cool-writings"
-            class="hover:text-teal"
-        >
-            Statamic
+<footer class="footer footer-horizontal footer-center rounded p-10 text-sm">
+    <div class="grid grid-flow-col gap-4">
+        <a>
+            {{ partial:components/spotify-status }}
+                {{ svg src="/assets/svg/spotify.svg" class="size-6" }}
+            {{ /partial:components/spotify-status }}
         </a>
     </div>
-    <div class="flex items-center">
-        {{ settings:social }}
-            <a
-                href="{{ url }}"
-                class="ml-4"
-                aria-label="{{ name }}"
-                rel="noopener"
-            >
-                {{ svg :src="icon" class="h-6 w-6 hover:text-teal" }}
+    <aside>
+        <div class="flex flex-row items-center gap-x-2 text-sm">
+            Powered by
+            <a href="https://laravel.com">
+                {{ svg src="/assets/svg/laravel.svg" class="size-6 transform transition-transform duration-150 hover:scale-110" }}
             </a>
-        {{ /settings:social }}
-    </div>
-</nav>
+            <a href="https://statamic.com">
+                {{ svg src="/assets/svg/statamic.svg" class="size-6 transform transition-transform duration-150 hover:scale-110" }}
+            </a>
+        </div>
+    </aside>
+</footer>

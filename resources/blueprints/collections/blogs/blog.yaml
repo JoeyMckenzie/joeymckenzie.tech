@@ -24,6 +24,7 @@ tabs:
               container: assets
               type: assets
               display: Image
+              folder: blog
           -
             handle: content
             field:

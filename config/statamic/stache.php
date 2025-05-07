@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Statamic\Stache\Stores;
 
 return [

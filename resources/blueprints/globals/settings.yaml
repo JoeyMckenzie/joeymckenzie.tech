@@ -1,40 +1,34 @@
 title: 'Global Settings'
 tabs:
-  main:
-    display: Main
-    sections:
-      -
-        fields:
-          -
-            handle: site_name
-            field:
-              character_limit: 0
-              type: text
-              display: 'Site Name'
-          -
-            handle: social
-            field:
-              add_row: 'Add Link'
-              type: grid
-              instructions: 'Set any social media links'
-              display: Social
-              fields:
-                -
-                  handle: name
-                  field:
-                    type: text
-                    display: Name
-                -
-                  handle: url
-                  field:
-                    character_limit: 0
-                    type: text
-                    display: URL
-                -
-                  handle: icon
-                  field:
-                    icon_group_restrictions:
-                      - lucide
-                      - lucide-lab
-                    type: icons_plus
-                    display: Icon
+    main:
+        display: Main
+        sections:
+            - fields:
+                  - handle: site_name
+                    field:
+                        character_limit: 0
+                        type: text
+                        display: 'Site Name'
+                  - handle: social
+                    field:
+                        add_row: 'Add Link'
+                        type: grid
+                        instructions: 'Set any social media links'
+                        display: Social
+                        fields:
+                            - handle: name
+                              field:
+                                  type: text
+                                  display: Name
+                            - handle: url
+                              field:
+                                  character_limit: 0
+                                  type: text
+                                  display: URL
+                            - handle: icon
+                              field:
+                                  icon_group_restrictions:
+                                      - lucide
+                                      - lucide-lab
+                                  type: icons_plus
+                                  display: Icon
