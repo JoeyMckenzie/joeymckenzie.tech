@@ -1,17 +1,19 @@
 <div class="hero mt-24">
     <div class="hero-content flex flex-col items-start">
-        <div class="prose max-w-xl text-justify">
-            <h1>{{ subtitle ?? title }}</h1>
-            {{ content | widont }}
+        <div class="flex w-full flex-row items-center justify-between">
+            <h1 class="text-4xl font-semibold">{{ subtitle ?? title }}</h1>
+            <div class="left mt-2 grid grid-cols-4 gap-2">
+                {{ settings:social }}
+                    {{ icon }}
+                        <a href="{{ url }}">
+                            {{ svg :src="iconSvg" class="size-5 transform transition-transform duration-150 hover:scale-110" }}
+                        </a>
+                    {{ /icon }}
+                {{ /settings:social }}
+            </div>
         </div>
-        <div class="left mt-2 grid grid-cols-4 gap-4">
-            {{ settings:social }}
-                {{ icon }}
-                    <a href="{{ url }}">
-                        {{ svg :src="iconSvg" class="size-6 transform transition-transform duration-150 hover:scale-110" }}
-                    </a>
-                {{ /icon }}
-            {{ /settings:social }}
+        <div class="prose max-w-xl text-justify">
+            {{ content | widont }}
         </div>
     </div>
 </div>
