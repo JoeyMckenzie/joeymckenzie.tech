@@ -1,12 +1,14 @@
-<div class="max-w-5xl mx-auto relative mt-16">
+<div class="relative mx-auto mt-16 max-w-5xl">
     {{ svg src="/assets/site/scratches" class="absolute text-gray-800 mt-8 top-0 left-0 w-20 hidden md:block" }}
-    <article class="py-32 max-w-2xl mx-auto">
+    <article class="mx-auto max-w-2xl py-32">
         <header class="content">
             <h1>{{ title }}</h1>
             {{ content }}
         </header>
         {{ taxonomy:topics sort="title" }}
-            <h2 class="text-4xl font-bold hover:text-teal"><a href="{{ url }}">{{ title | title }}</a></h2>
+            <h2 class="hover:text-teal text-4xl font-bold">
+                <a href="{{ url }}">{{ title | title }}</a>
+            </h2>
         {{ /taxonomy:topics }}
     </article>
 </div>

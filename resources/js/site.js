@@ -1,11 +1,11 @@
-import Alpine from 'alpinejs'
+import Alpine from 'alpinejs';
 import { createIcons, User, Library, House } from 'lucide';
-Alpine.start()
+Alpine.start();
 
 createIcons({
     icons: {
         House,
         Library,
-        User
-    }
+        User,
+    },
 });

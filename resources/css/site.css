@@ -1,4 +1,5 @@
 @import url('https://rsms.me/inter/inter.css');
+@import url('https://fonts.bunny.net/css?family=jetbrains-mono:400,400i,500,600,700,800');
 
 @import 'tailwindcss';
 
@@ -11,13 +12,16 @@
 
 @plugin "@tailwindcss/typography";
 @plugin "daisyui" {
-  themes: light --default, dark --prefersdark, sunset;
+    themes:
+        light --default,
+        dark --prefersdark,
+        sunset;
 }
 
 @theme {
-  --font-sans: "Inter", sans-serif;
-  --font-mono: "Menlo", monospace;
+    --font-sans: 'JetBrains Mono', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
 
-  --color-teal: #008483;
-  --color-teal-light: #a6d0cf;
+    --color-teal: #008483;
+    --color-teal-light: #a6d0cf;
 }

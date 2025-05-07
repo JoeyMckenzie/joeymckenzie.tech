@@ -9,7 +9,7 @@
 export default {
     mixins: [Fieldtype],
     data() {
-        return {}
-    }
+        return {};
+    },
 };
 </script>

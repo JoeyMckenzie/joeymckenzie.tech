@@ -1,11 +1,22 @@
-<div class="max-w-5xl mx-auto relative mt-16 content">
+<div class="content relative mx-auto mt-16 max-w-5xl">
     {{ svg src="/assets/site/scratches" class="absolute text-gray-800 mt-8 top-0 left-0 w-20 hidden md:block" }}
-    <article class="lg:py-32 max-w-2xl mx-auto">
+    <article class="mx-auto max-w-2xl lg:py-32">
         <h1>{{ title }}</h1>
-        <div class="bg-gray-800 inline-block text-sm mb-16 pr-4 pl-16 -ml-16 uppercase tracking-widest text-white py-1 rounded-r-full">
+        <div
+            class="mb-16 -ml-16 inline-block rounded-r-full bg-gray-800 py-1 pr-4 pl-16 text-sm tracking-widest text-white uppercase"
+        >
             Published
             {{ if topics }}
-                in {{ topics }}<a href="{{ url }}" class="text-teal-light no-underline hover:text-white">{{ title }}</a>{{ unless last }}, {{ /unless }}{{ /topics }}
+                in
+                {{ topics }}
+                    <a
+                        href="{{ url }}"
+                        class="text-teal-light no-underline hover:text-white"
+                    >
+                        {{ title }}
+                    </a>
+                    {{ unless last }},{{ /unless }}
+                {{ /topics }}
             {{ /if }}
             on {{ date format="M j, Y" }}
         </div>
