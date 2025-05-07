@@ -19,7 +19,9 @@
             />
         {{ /image }}
         <div class="prose mt-4 max-w-full">
-            {{ render_markdown :content="content" }}
+            {{ cache for="1 hour" }}
+                {{ content }}
+            {{ /cache }}
         </div>
     </div>
 </div>

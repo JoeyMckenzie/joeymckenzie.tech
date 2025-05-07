@@ -2,56 +2,46 @@ tabs:
   main:
     display: Main
     sections:
-      -
-        display: Meta
+      - display: Meta
         fields:
-          -
-            handle: title
+          - handle: title
             field:
               type: text
               required: true
               validate:
                 - required
-          -
-            handle: subtitle
+          - handle: subtitle
             field:
               type: text
               display: Subtitle
-          -
-            handle: image
+          - handle: image
             field:
               max_files: 1
               container: assets
               type: assets
               display: Image
               folder: blog
-          -
-            handle: content
+          - handle: content
             field:
               type: markdown
               localizable: true
-              parser: shiki
   sidebar:
     display: Sidebar
     sections:
-      -
-        fields:
-          -
-            handle: slug
+      - fields:
+          - handle: slug
             field:
               type: slug
               localizable: true
               validate: 'max:200'
-          -
-            handle: date
+          - handle: date
             field:
               type: date
               required: true
               default: now
               validate:
                 - required
-          -
-            handle: parent
+          - handle: parent
             field:
               type: entries
               collections:
@@ -59,8 +49,7 @@ tabs:
               max_items: 1
               listable: false
               localizable: true
-          -
-            handle: topics
+          - handle: topics
             field:
               type: terms
               taxonomies:
