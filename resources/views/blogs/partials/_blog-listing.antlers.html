@@ -1,35 +1,13 @@
 <div class="mx-auto mt-6 max-w-3xl px-4 sm:px-0">
     <div class="list bg-base-200 rounded-box shadow-md">
-        {{ collection:blogs as="blogs" sort="date:desc" }}
-            {{ blogs }}
-                {{ reverse_index = (total_results - index) }}
-                <a
-                    class="list-row transform items-center transition-transform duration-150 hover:scale-101"
-                    href="blog/{{ slug }}"
-                >
-                    <div class="text-4xl font-thin tabular-nums opacity-30">
-                        {{ if reverse_index >= 10 }}
-                            {{ reverse_index }}
-                        {{ else }}
-                            0{{ reverse_index }}
-                        {{ /if }}
-                    </div>
-                    <div class="list-col-grow">
-                        <h2>{{ title }}</h2>
-                        <p class="text-xs font-semibold opacity-60">
-                            {{ subtitle }}
-                        </p>
-                    </div>
-                    <div class="hidden sm:block">
-                        {{ topics limit="1" }}
-                            <span class="badge badge-neutral text-xs">
-                                {{ title }}
-                            </span>
-                        {{ /topics }}
-                        <span class="text-xs">{{ date format="M j, Y" }}</span>
-                    </div>
-                </a>
-            {{ /blogs }}
-        {{ /collection:blogs }}
+        {{ if { get:topic } }}
+            {{ collection:blogs taxonomy:topics="{get:topic}" sort="date:desc" }}
+                {{ partial:blogs/partials/blog-preview }}
+            {{ /collection:blogs }}
+        {{ else }}
+            {{ collection:blogs sort="date:desc" }}
+                {{ partial:blogs/partials/blog-preview }}
+            {{ /collection:blogs }}
+        {{ /if }}
     </div>
 </div>

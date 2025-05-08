@@ -1,0 +1,13 @@
+<div class="flex flex-row flex-wrap justify-center gap-x-1">
+    {{ taxonomy:topics }}
+        {{ if { get:topic } == slug }}
+            <a href="/blog" class="btn">
+                {{ title }}
+            </a>
+        {{ else }}
+            <a href="/blog?topic={{ slug }}" class="btn btn-ghost">
+                {{ title }}
+            </a>
+        {{ /if }}
+    {{ /taxonomy:topics }}
+</div>
