@@ -1,10 +1,11 @@
 title: Blogs
 template: blogs/show
 layout: layouts/default
+mount: dedbdfd2-45dc-4eb6-abbc-4067396ff52d
 taxonomies:
   - topics
 revisions: false
-route: 'blog/{slug}'
+route: '/blog/{slug}'
 date: true
 sort_dir: asc
 date_behavior:
@@ -15,6 +16,3 @@ preview_targets:
     label: Entry
     url: '{permalink}'
     refresh: true
-structure:
-  root: false
-  slugs: true

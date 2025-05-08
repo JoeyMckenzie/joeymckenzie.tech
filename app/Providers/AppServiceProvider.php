@@ -6,9 +6,12 @@ namespace App\Providers;
 
 use App\Actions\GetCurrentSpotifyStatusAction;
 use Illuminate\Support\Facades;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
 use Spatie\CommonMarkShikiHighlighter\HighlightCodeExtension;
+use Statamic\Events\EntrySaved;
 use Statamic\Facades\Markdown;
 
 final class AppServiceProvider extends ServiceProvider
@@ -26,12 +29,22 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        self::configureMarkdown();
+        self::configureViewComposers();
+        self::configureEvents();
+    }
+
+    private function configureMarkdown(): void
+    {
         Markdown::addExtensions(function () {
             return [
                 new HighlightCodeExtension(theme: 'one-dark-pro'),
             ];
         });
+    }
 
+    private function configureViewComposers(): void
+    {
         Facades\View::composer('*', function (View $view) {
             $response = new GetCurrentSpotifyStatusAction()->handle();
 
@@ -42,6 +55,18 @@ final class AppServiceProvider extends ServiceProvider
                 'trackTitle' => $response->trackTitle,
                 'artist' => $response->artist,
             ]);
+        });
+    }
+
+    private function configureEvents(): void
+    {
+        Event::listen(function (EntrySaved $event) {
+            /** @var array{slug: string} $entry */
+            $entry = $event->entry;
+
+            if (Cache::has($entry['slug'])) {
+                Cache::forget($entry['slug']);
+            }
         });
     }
 }
