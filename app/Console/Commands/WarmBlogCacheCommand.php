@@ -6,7 +6,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Concurrency;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Markdown;
 
@@ -24,12 +23,12 @@ final class WarmBlogCacheCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Warms the Statamic cache with shiki content for the blog.';
 
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $entries = Entry::query()
             ->where('collection', 'blogs')
@@ -38,17 +37,21 @@ final class WarmBlogCacheCommand extends Command
 
         $this->info("Warming cache for {$entries->count()} blog entries...");
 
-        Concurrency::defer([
-            // ?
-        ]);
-
         foreach ($entries as $entry) {
+            $this->info("Caching: {$entry->slug()}");
+
             $key = $entry->slug();
             $content = $entry->get('content');
 
             Cache::rememberForever($key, fn () => Markdown::parser('default')->parse($content));
 
-            $this->line("Cached: $key");
+            $this->info("Cached: {$entry->slug()}");
+        }
+
+        foreach ($entries as $entry) {
+            if (! Cache::has($entry->slug())) {
+                $this->error("Cache missing for: {$entry->slug()}");
+            }
         }
 
         $this->info('Blog cache warming complete!');
