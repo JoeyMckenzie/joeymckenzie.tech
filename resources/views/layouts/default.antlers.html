@@ -29,14 +29,22 @@
     </head>
     <body
         class="flex min-h-screen flex-col"
-        {{ if template == "blog/index" }}
+        {{ if template === "blog/index" || template === "blog/show" }}
             x-data="{
                 scroll: $persist(0).as('scroll').using(sessionStorage),
-                saveScroll() { this.scroll = window.scrollY },
-                restoreScroll() { window.scrollTo(0, this.scroll) }
+                saveScroll() {
+                    this.scroll = window.scrollY;
+                },
+                restoreScroll() {
+                    const y = this.scroll;
+                    // Defer scroll to let Safari layout settle
+                    requestAnimationFrame(() => {
+                        setTimeout(() => window.scrollTo(0, y), 50);
+                    });
+                }
             }"
-            x-init="restoreScroll();"
-            x-on:beforeunload.window="saveScroll();"
+            x-init="restoreScroll()"
+            x-on:pagehide.window="saveScroll()"
         {{ /if }}
     >
         {{ partial:components/navbar }}
