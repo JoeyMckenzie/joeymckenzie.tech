@@ -18,6 +18,7 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "@alpinejs/persist": "^3.14.9",
         "alpinejs": "^3.9.1",
         "lucide": "^0.507.0",
         "prettier-plugin-tailwindcss": "^0.6.11",

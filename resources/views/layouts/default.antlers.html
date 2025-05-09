@@ -27,7 +27,18 @@
         <link rel="manifest" href="/site.webmanifest" />
         {{ vite src="resources/js/site.js|resources/css/site.css" }}
     </head>
-    <body class="flex min-h-screen flex-col">
+    <body
+        class="flex min-h-screen flex-col"
+        {{ if template == "blog/index" }}
+            x-data="{
+                scroll: $persist(0).as('scroll').using(sessionStorage),
+                saveScroll() { this.scroll = window.scrollY },
+                restoreScroll() { window.scrollTo(0, this.scroll) }
+            }"
+            x-init="restoreScroll();"
+            x-on:beforeunload.window="saveScroll();"
+        {{ /if }}
+    >
         {{ partial:components/navbar }}
         <main class="flex-grow">
             {{ template_content }}
