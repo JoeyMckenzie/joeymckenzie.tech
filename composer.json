@@ -10,7 +10,7 @@
         "laravel"
     ],
     "require": {
-        "php": ">=8.3",
+        "php": "^8.4",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
         "spatie/commonmark-shiki-highlighter": "^2.5",

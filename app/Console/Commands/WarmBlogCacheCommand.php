@@ -16,7 +16,7 @@ final class WarmBlogCacheCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:warm-blog-cache-command';
+    protected $signature = 'app:warm-blog-cache';
 
     /**
      * The console command description.
