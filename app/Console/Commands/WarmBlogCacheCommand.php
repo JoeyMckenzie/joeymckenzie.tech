@@ -6,51 +6,54 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use Statamic\Entries\EntryCollection;
 use Statamic\Facades\Entry;
 use Statamic\Facades\Markdown;
 
 final class WarmBlogCacheCommand extends Command
 {
     /**
-     * The name and signature of the console command.
-     *
      * @var string
      */
     protected $signature = 'app:warm-blog-cache';
 
     /**
-     * The console command description.
-     *
-     * @var string
+     * @var string|null
      */
     protected $description = 'Warms the Statamic cache with shiki content for the blog.';
 
-    /**
-     * Execute the console command.
-     */
     public function handle(): void
     {
-        $entries = Entry::query()
+        /** @var EntryCollection $entries */
+        $entries = Entry::query() // @phpstan-ignore-line
             ->where('collection', 'blogs')
             ->where('published', true)
             ->get(['content']);
 
         $this->info("Warming cache for {$entries->count()} blog entries...");
 
+        /** @var \Statamic\Entries\Entry $entry */
         foreach ($entries as $entry) {
-            $this->info("Caching: {$entry->slug()}");
-
+            /** @var string $key */
             $key = $entry->slug();
+
+            $this->info("Caching: $key");
+
+            /** @var string $content */
             $content = $entry->get('content');
 
             Cache::rememberForever($key, fn () => Markdown::parser('default')->parse($content));
 
-            $this->info("Cached: {$entry->slug()}");
+            $this->info("Cached: $key");
         }
 
+        /** @var \Statamic\Entries\Entry $entry */
         foreach ($entries as $entry) {
-            if (! Cache::has($entry->slug())) {
-                $this->error("Cache missing for: {$entry->slug()}");
+            /** @var string $key */
+            $key = $entry->slug();
+
+            if (! Cache::has($key)) {
+                $this->error("Cache missing for: $key");
             }
         }
 
