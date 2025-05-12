@@ -15,7 +15,7 @@
         "prettier": "^3.5.3",
         "prettier-plugin-antlers": "^2.0.5",
         "tailwindcss": "^4.1.5",
-        "vite": "^5.0.0"
+        "vite": "^6.3.5"
     },
     "dependencies": {
         "@alpinejs/persist": "^3.14.9",
