@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Cache;
 use Spatie\ShikiPhp\Shiki;
 use Statamic\Entries\EntryCollection;
 use Statamic\Facades\Entry;
+use Statamic\Facades\Markdown;
 
 final class WarmBlogCacheCommand extends Command
 {
@@ -42,7 +43,7 @@ final class WarmBlogCacheCommand extends Command
             /** @var string $content */
             $content = $entry->get('content');
 
-            self::highlightAndCacheCode($content);
+            Cache::rememberForever($key, fn () => Markdown::parser('default')->parse($content));
 
             $this->info("Cached: $key");
         }
