@@ -1,1 +1,20 @@
-<p>404 Page not found.</p>
+<div class="hero mt-24">
+    <div class="hero-content flex flex-col items-start">
+        <div class="flex w-full flex-row items-center justify-between">
+            <h1 class="text-2xl font-semibold sm:text-4xl">404</h1>
+            <div class="left mt-2 grid grid-cols-4 gap-3">
+                {{ settings:social }}
+                    {{ icon }}
+                        <a href="{{ url }}">
+                            {{ svg :src="iconSvg" class="size-5 transform transition-transform duration-150 hover:scale-110" }}
+                        </a>
+                    {{ /icon }}
+                {{ /settings:social }}
+            </div>
+        </div>
+        <div class="prose max-w-3xl text-justify">
+            Uh oh, partner... you look like you're lost.
+        </div>
+        <a href="/" class="btn btn-flat mx-auto">Back to safety</a>
+    </div>
+</div>
