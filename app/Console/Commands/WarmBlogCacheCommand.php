@@ -61,7 +61,7 @@ final class WarmBlogCacheCommand extends Command
         $this->info('Blog cache warming complete!');
     }
 
-    public function highlightAndCacheCode(string $markdown): string
+    private function highlightAndCacheCode(string $markdown): string
     {
         $pattern = '/```(.*?)\n(.*?)```/s';
 
