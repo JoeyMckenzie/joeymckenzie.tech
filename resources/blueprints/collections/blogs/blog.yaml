@@ -1,59 +1,59 @@
 tabs:
-  main:
-    display: Main
-    sections:
-      - display: Meta
-        fields:
-          - handle: title
-            field:
-              type: text
-              required: true
-              validate:
-                - required
-          - handle: subtitle
-            field:
-              type: text
-              display: Subtitle
-          - handle: image
-            field:
-              max_files: 1
-              container: assets
-              type: assets
-              display: Image
-              folder: blog
-          - handle: content
-            field:
-              type: markdown
-              localizable: true
-  sidebar:
-    display: Sidebar
-    sections:
-      - fields:
-          - handle: slug
-            field:
-              type: slug
-              localizable: true
-              validate: 'max:200'
-          - handle: date
-            field:
-              type: date
-              required: true
-              default: now
-              validate:
-                - required
-          - handle: parent
-            field:
-              type: entries
-              collections:
-                - blogs
-              max_items: 1
-              listable: false
-              localizable: true
-          - handle: topics
-            field:
-              type: terms
-              taxonomies:
-                - topics
-              display: Topics
-              mode: select
+    main:
+        display: Main
+        sections:
+            - display: Meta
+              fields:
+                  - handle: title
+                    field:
+                        type: text
+                        required: true
+                        validate:
+                            - required
+                  - handle: subtitle
+                    field:
+                        type: text
+                        display: Subtitle
+                  - handle: image
+                    field:
+                        max_files: 1
+                        container: assets
+                        type: assets
+                        display: Image
+                        folder: blog
+                  - handle: content
+                    field:
+                        type: markdown
+                        localizable: true
+    sidebar:
+        display: Sidebar
+        sections:
+            - fields:
+                  - handle: slug
+                    field:
+                        type: slug
+                        localizable: true
+                        validate: 'max:200'
+                  - handle: date
+                    field:
+                        type: date
+                        required: true
+                        default: now
+                        validate:
+                            - required
+                  - handle: parent
+                    field:
+                        type: entries
+                        collections:
+                            - blogs
+                        max_items: 1
+                        listable: false
+                        localizable: true
+                  - handle: topics
+                    field:
+                        type: terms
+                        taxonomies:
+                            - topics
+                        display: Topics
+                        mode: select
 title: Blog

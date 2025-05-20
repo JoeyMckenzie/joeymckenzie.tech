@@ -16,7 +16,7 @@
         "spatie/commonmark-shiki-highlighter": "^2.5",
         "spatie/fork": "^1.2",
         "spatie/laravel-markdown": "^2.7",
-        "statamic/cms": "^5.0",
+        "statamic/cms": "^5.55",
         "twithers/icons-plus": "^1.1"
     },
     "require-dev": {

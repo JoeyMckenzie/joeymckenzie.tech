@@ -18,7 +18,9 @@
                 height="400"
             />
         {{ /image }}
-        <div class="prose mt-4 max-w-full">
+        <div
+            class="prose prose-pre:border prose-pre:border prose-pre:border-secondary-content/30 prose-pre:shadow-md mt-4 max-w-full"
+        >
             {{ cache :key="slug" }}
                 {{ content }}
             {{ /cache }}

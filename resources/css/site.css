@@ -2,6 +2,7 @@
 @import url('https://fonts.bunny.net/css?family=jetbrains-mono:400,400i,500,600,700,800');
 
 @import 'tailwindcss';
+@import './shiki.css';
 
 @source "../**/*.antlers.html";
 @source "../**/*.blade.php";
