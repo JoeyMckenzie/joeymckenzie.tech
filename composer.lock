@@ -4888,16 +4888,16 @@
         },
         {
             "name": "statamic/cms",
-            "version": "v5.55.0",
+            "version": "v5.56.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/statamic/cms.git",
-                "reference": "b610b04d77629b389c5d9daabfbb13190f51bda3"
+                "reference": "bfd4050233d4ef0612f2d449fce2d64250580e3e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/statamic/cms/zipball/b610b04d77629b389c5d9daabfbb13190f51bda3",
-                "reference": "b610b04d77629b389c5d9daabfbb13190f51bda3",
+                "url": "https://api.github.com/repos/statamic/cms/zipball/bfd4050233d4ef0612f2d449fce2d64250580e3e",
+                "reference": "bfd4050233d4ef0612f2d449fce2d64250580e3e",
                 "shasum": ""
             },
             "require": {
@@ -4982,7 +4982,7 @@
             ],
             "support": {
                 "issues": "https://github.com/statamic/cms/issues",
-                "source": "https://github.com/statamic/cms/tree/v5.55.0"
+                "source": "https://github.com/statamic/cms/tree/v5.56.0"
             },
             "funding": [
                 {
@@ -4990,7 +4990,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-05-14T18:44:53+00:00"
+            "time": "2025-05-20T19:06:31+00:00"
         },
         {
             "name": "statamic/stringy",
@@ -10919,12 +10919,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.4"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
 }
