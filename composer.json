@@ -1,13 +1,12 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "statamic/statamic",
+    "name": "joeymckenzie/joeymckenzie.tech",
     "type": "project",
-    "description": "Statamic",
+    "description": "My personal slice of the internet.",
     "keywords": [
-        "statamic",
-        "cms",
-        "flat file",
-        "laravel"
+        "blog",
+        "tech",
+        "statamic"
     ],
     "require": {
         "php": "^8.4",
