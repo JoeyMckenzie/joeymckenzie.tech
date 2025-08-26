@@ -3,12 +3,16 @@ id: 56c998aa-f104-4d3c-b26b-cee28abad775
 blueprint: page
 title: Now
 template: pages/default
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746683871
+updated_by: 061ca749-962a-4d1e-ad0e-6fa82f67f2fb
+updated_at: 1756152308
 subtitle: Now.
 ---
-I'm currently a Senior Software Engineer at [Dayforce](https://www.dayforce.com/) building things with .NET and working on their security platform. Security is fun, and catching internet bad guys can be quite fulfilling.
+I'm currently a Senior Developer at [Givebutter](https://www.givebutter.com/) building things with PHP and Laravel. We want to make the world a better place and empower the changemaker in all of us. If you're a non-profit, or just looking to give to a cause near and dear to yourself, check us!
 
-In my spare time, I'm a PHP enjoyer tinkering on ideas with Laravel. I'm working on a [PHP client](https://github.com/hetzner-cloud-php/client) for the Hetzner Cloud API. The goal is to make server management with Hetzner a breeze with PHP and learn a few things along the way. I also recently wrote a [PHPStan extension](https://github.com/joeymckenzie/nasastan) to bring NASA's Power of Ten rules into your PHP code. Contributors welcome!
+In my spare time, I write a lot of PHP and enjoy tinkering on ideas with Laravel. I've got quite a few fun project I've worked on that usually make there way over to the blog. A few of my recent favorites:
 
-I run a [digital agency](https://doghead.digital) with my amazing wife. Together, we build websites for small businesses with PHP, Laravel, and Statamic.
+- A [PHP client](https://github.com/hetzner-cloud-php/client) for the Hetzner Cloud API
+- A [PHPStan extension](https://github.com/joeymckenzie/nasastan) to bring NASA's Power of Ten rules into your PHP code
+- A [Laravel integration](https://github.com/joeymckenzie/givebutter-laravel) for Givebutter
+
+I also run a [digital agency](https://doghead.digital) with my amazing wife. Together, we build websites for small businesses with PHP, Laravel, and Statamic. Our CHO, Moose (a dog), provides most of the home office morale.
