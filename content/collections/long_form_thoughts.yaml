@@ -4,7 +4,7 @@ layout: layouts/default
 taxonomies:
   - topics
 revisions: false
-route: '/thought/{slug}'
+route: '/thoughts/{slug}'
 date: true
 sort_dir: asc
 date_behavior:

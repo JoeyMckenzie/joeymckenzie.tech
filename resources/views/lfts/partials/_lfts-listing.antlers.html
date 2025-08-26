@@ -1,0 +1,13 @@
+<div class="mx-auto mt-6 max-w-3xl px-4 sm:px-0">
+    <div class="list bg-base-200 rounded-box shadow-md">
+        {{ if { get:topic } }}
+            {{ collection:long_form_thoughts taxonomy:topics="{get:topic}" sort="date:desc" }}
+                {{ partial:lfts/partials/lfts-preview }}
+            {{ /collection:long_form_thoughts }}
+        {{ else }}
+            {{ collection:long_form_thoughts sort="date:desc" }}
+                {{ partial:lfts/partials/lfts-preview }}
+            {{ /collection:long_form_thoughts }}
+        {{ /if }}
+    </div>
+</div>

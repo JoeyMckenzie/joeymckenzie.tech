@@ -29,3 +29,13 @@ tree:
         iconUrl: 'https://api.iconify.design/lucide/library.svg'
         iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 6l4 14M12 6v14M8 8v12M4 4v16"/></svg>'
         label: 'lucide:library'
+  -
+    id: 93dd2eaf-59ac-48fe-a49b-7991ed923aff
+    entry: 74861e37-6ba8-4340-a037-fb08b5c100c6
+    data:
+      icon:
+        iconPrefix: lucide
+        iconName: lightbulb
+        iconUrl: 'https://api.iconify.design/lucide/lightbulb.svg'
+        iconSvg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 14c.2-1 .7-1.7 1.5-2.5c1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5c.7.7 1.3 1.5 1.5 2.5m0 4h6m-5 4h4"/></svg>'
+        label: 'lucide:lightbulb'

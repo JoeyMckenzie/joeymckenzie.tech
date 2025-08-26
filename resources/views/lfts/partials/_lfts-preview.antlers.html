@@ -1,0 +1,24 @@
+{{ reverse_index = (total_results - index) }}
+<a
+    class="list-row transform items-center transition-transform duration-150 hover:scale-101"
+    href="thoughts/{{ slug }}"
+>
+    <div class="text-4xl font-thin tabular-nums opacity-30">
+        {{ if reverse_index >= 10 }}
+            {{ reverse_index }}
+        {{ else }}
+            0{{ reverse_index }}
+        {{ /if }}
+    </div>
+    <div class="list-col-grow">
+        <h2>{{ title }}</h2>
+    </div>
+    <div class="hidden sm:block">
+        {{ topics limit="1" }}
+            <span class="badge badge-neutral text-xs">
+                {{ title }}
+            </span>
+        {{ /topics }}
+        <span class="text-xs">{{ date format="M j, Y" }}</span>
+    </div>
+</a>
