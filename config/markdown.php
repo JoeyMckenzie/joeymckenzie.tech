@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'code_highlighting' => [
         /*
@@ -44,7 +46,6 @@ return [
      * caching set this value to `false`.
      */
     'cache_store' => null,
-
 
     /*
      * When cache_store is enabled, this value will be used to determine

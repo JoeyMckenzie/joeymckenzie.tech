@@ -1,8 +1,7 @@
 {
-    "$schema": "https://getcomposer.org/schema.json",
     "name": "joeymckenzie/joeymckenzie.tech",
-    "type": "project",
     "description": "My personal slice of the internet.",
+    "type": "project",
     "keywords": [
         "blog",
         "tech",
@@ -15,24 +14,27 @@
         "spatie/commonmark-shiki-highlighter": "^2.5",
         "spatie/fork": "^1.2",
         "spatie/laravel-markdown": "^2.7",
-        "statamic/cms": "^5.55",
+        "statamic/cms": "^v5.65",
         "twithers/icons-plus": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8.1",
+        "ergebnis/composer-normalize": "^2.48",
         "fakerphp/faker": "^1.23",
-        "larastan/larastan": "^3.4",
+        "larastan/larastan": "^v3.7",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
-        "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
-        "phpunit/phpunit": "^11.5.3"
+        "phpunit/phpunit": "^11.5",
+        "rector/rector": "^2.0"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "App\\": "app/",
@@ -45,9 +47,29 @@
             "Tests\\": "tests/"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
+            "pixelfear/composer-dist-plugin": true
+        },
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
     "scripts": {
         "pre-update-cmd": [
             "Statamic\\Console\\Composer\\Scripts::preUpdateCmd"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
@@ -61,36 +83,21 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\""
         ],
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
-        ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#c4b5fd,#fb7185,#fdba74\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=queue,logs,vite"
         ],
+        "fmt": "vendor/bin/pint -vv --parallel && npm run fmt",
+        "lint": "XDEBUG_MODE=off vendor/bin/phpstan analyze",
+        "refactor": [
+            "vendor/bin/rector process",
+            "@fmt"
+        ],
+        "refactor:test": "vendor/bin/rector process --dry-run",
         "test": [
             "@php artisan config:clear --ansi",
             "@php artisan test"
-        ],
-        "fmt": "vendor/bin/pint -vv && npm run fmt",
-        "lint": "XDEBUG_MODE=off vendor/bin/phpstan analyze"
+        ]
     },
-    "extra": {
-        "laravel": {
-            "dont-discover": []
-        }
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true,
-            "phpstan/extension-installer": true,
-            "pixelfear/composer-dist-plugin": true
-        }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    "$schema": "https://getcomposer.org/schema.json"
 }

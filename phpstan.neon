@@ -1,3 +1,6 @@
+includes:
+    - vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
 parameters:
     level: max
     paths:
@@ -6,4 +9,5 @@ parameters:
         - routes
         - bootstrap/app.php
         - bootstrap/providers.php
+        - public/index.php
     reportUnmatchedIgnoredErrors: true

@@ -6,7 +6,6 @@ namespace App\Actions;
 
 use App\ValueObjects\SpotifyAuthApiResponse;
 use App\ValueObjects\SpotifyNowPlayingApiResponse;
-use DateInterval;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
@@ -31,7 +30,7 @@ final readonly class GetCurrentSpotifyStatusAction
 
         $nowPlaying = self::getSpotifyNowPlaying();
 
-        Cache::put(self::NOW_PLAYING_KEY, $nowPlaying, new DateInterval('PT5M'));
+        Cache::put(self::NOW_PLAYING_KEY, $nowPlaying, now()->addMinutes(5));
 
         return $nowPlaying;
     }
@@ -39,9 +38,9 @@ final readonly class GetCurrentSpotifyStatusAction
     private function getSpotifyNowPlaying(): SpotifyNowPlayingApiResponse
     {
         try {
-            $clientId = Config::string('spotify.client_id');
-            $clientSecret = Config::string('spotify.client_secret');
-            $refreshToken = Config::string('spotify.refresh_token');
+            $clientId = Config::string('services.spotify.client_id');
+            $clientSecret = Config::string('services.spotify.client_secret');
+            $refreshToken = Config::string('services.spotify.refresh_token');
             $accessTokenResponse = Http::withBasicAuth($clientId, $clientSecret)
                 ->asForm()
                 ->post(self::TOKEN_URL, [
