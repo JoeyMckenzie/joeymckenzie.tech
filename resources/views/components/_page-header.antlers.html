@@ -1,21 +1,70 @@
-<div class="hero mt-24">
-    <div class="hero-content flex flex-col items-start">
-        <div class="flex w-full flex-row items-center justify-between">
-            <h1 class="text-2xl font-semibold sm:text-4xl">
-                {{ subtitle ?? title }}
-            </h1>
-            <div class="left mt-2 grid grid-cols-4 gap-3">
+<!-- Terminal window main content -->
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+    <div class="rounded-lg border border-[#30363d] bg-[#161b22] p-6 shadow-2xl">
+        <!-- Terminal header bar -->
+        <div class="mb-6 flex items-center justify-between border-b border-[#30363d] pb-4">
+            <div class="flex items-center space-x-3">
+                <div class="flex space-x-2">
+                    <div class="h-3 w-3 rounded-full bg-[#ff0040]"></div>
+                    <div class="h-3 w-3 rounded-full bg-[#ffb000]"></div>
+                    <div class="h-3 w-3 rounded-full bg-[#00ff41]"></div>
+                </div>
+                <span class="font-mono text-sm text-[#7d8590]">{{ title ?? 'terminal' }}.sh</span>
+            </div>
+            
+            <!-- Social links as terminal commands -->
+            <div class="flex items-center space-x-2">
                 {{ settings:social }}
                     {{ icon }}
-                        <a href="{{ url }}">
-                            {{ svg :src="iconSvg" class="size-5 transform transition-transform duration-150 hover:scale-110" }}
+                        <a href="{{ url }}" 
+                           class="group relative p-2 text-[#7d8590] transition-colors duration-300 hover:text-[#00ff41]"
+                           title="{{ name }}">
+                            {{ svg :src="iconSvg" class="h-5 w-5" }}
+                            <!-- Tooltip with terminal command style -->
+                            <div class="absolute -top-10 left-1/2 hidden -translate-x-1/2 rounded bg-[#21262d] px-2 py-1 text-xs font-mono text-[#00ff41] group-hover:block">
+                                ./{{ name }}
+                            </div>
                         </a>
                     {{ /icon }}
                 {{ /settings:social }}
             </div>
         </div>
-        <div class="prose max-w-3xl">
-            {{ content | widont }}
+        
+        <!-- Terminal prompt and title -->
+        <div class="space-y-4">
+            <div class="flex items-center space-x-2 font-mono text-sm text-[#7d8590]">
+                <span class="text-[#00ff41]">joey@terminal</span>
+                <span>:</span>
+                <span class="text-[#00d4ff]">~</span>
+                <span>$</span>
+                <span class="text-[#e6edf3]">echo "{{ subtitle ?? title }}"</span>
+            </div>
+            
+            <!-- Main heading with matrix-style effect -->
+            <h1 class="font-mono text-3xl font-bold text-[#00ff41] sm:text-5xl cyber-glow">
+                {{ subtitle ?? title }}<span class="terminal-cursor"></span>
+            </h1>
+            
+            <!-- Content area with terminal styling -->
+            {{ if content }}
+                <div class="mt-8 space-y-4">
+                    <div class="flex items-center space-x-2 font-mono text-sm text-[#7d8590]">
+                        <span class="text-[#00ff41]">joey@terminal</span>
+                        <span>:</span>
+                        <span class="text-[#00d4ff]">~</span>
+                        <span>$</span>
+                        <span class="text-[#e6edf3]">cat README.md</span>
+                    </div>
+                    
+                    <div class="rounded border border-[#30363d] bg-[#0d1117] p-4">
+                        <div class="prose prose-invert max-w-none">
+                            <div class="font-mono text-[#e6edf3] leading-relaxed">
+                                {{ content | widont }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {{ /if }}
         </div>
     </div>
 </div>

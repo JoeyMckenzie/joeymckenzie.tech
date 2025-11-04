@@ -1,12 +1,6 @@
 {
-    "agents": [
-        "claude_code",
-        "phpstorm"
-    ],
-    "editors": [
-        "claude_code",
-        "phpstorm"
-    ],
-    "guidelines": [],
+    "agents": ["claude_code", "phpstorm"],
+    "editors": ["claude_code", "phpstorm"],
+    "guidelines": [".ai/guidelines/statamic.blade.php"],
     "herd_mcp": true
 }

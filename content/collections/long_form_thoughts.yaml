@@ -1,6 +1,5 @@
 title: 'Long Form Thoughts'
 template: lfts/show
-layout: layouts/default
 taxonomies:
   - topics
 revisions: false
@@ -11,7 +10,6 @@ date_behavior:
   past: public
   future: private
 preview_targets:
-  -
-    label: Entry
+  - label: Entry
     url: '{permalink}'
     refresh: true

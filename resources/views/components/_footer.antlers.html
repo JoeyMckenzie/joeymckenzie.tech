@@ -1,20 +1,70 @@
-<footer class="footer footer-horizontal footer-center rounded p-10 text-sm">
-    <div class="grid grid-flow-col gap-4">
-        <a>
-            {{ partial:components/spotify-status }}
-                {{ svg src="/assets/svg/spotify.svg" class="size-6" }}
-            {{ /partial:components/spotify-status }}
-        </a>
-    </div>
-    <aside>
-        <div class="flex flex-row items-center gap-x-2 text-sm">
-            Powered by
-            <a href="https://laravel.com">
-                {{ svg src="/assets/svg/laravel.svg" class="size-6 transform transition-transform duration-150 hover:scale-110" }}
-            </a>
-            <a href="https://statamic.com">
-                {{ svg src="/assets/svg/statamic.svg" class="size-6 transform transition-transform duration-150 hover:scale-110" }}
-            </a>
+<!-- Terminal footer -->
+<footer class="border-t border-[#30363d] bg-[#161b22] mt-auto">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between py-4">
+            <!-- Terminal prompt style -->
+            <div class="flex items-center space-x-2 font-mono text-sm">
+                <span class="text-[#00ff41]">joey@terminal</span>
+                <span class="text-[#7d8590]">:</span>
+                <span class="text-[#00d4ff]">~</span>
+                <span class="text-[#7d8590]">$</span>
+                <span class="text-[#7d8590]">whoami</span>
+            </div>
+            
+            <!-- Spotify status with terminal styling -->
+            <div class="flex items-center space-x-4">
+                {{ partial:components/spotify-status }}
+                    <a href="#" class="group flex items-center space-x-2 text-[#7d8590] hover:text-[#00ff41] transition-colors duration-300">
+                        {{ svg src="/assets/svg/spotify.svg" class="h-5 w-5" }}
+                        <span class="hidden sm:inline font-mono text-xs">[MUSIC]</span>
+                    </a>
+                {{ /partial:components/spotify-status }}
+            </div>
+            
+            <!-- System info / powered by -->
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-2 font-mono text-xs text-[#7d8590]">
+                    <span>SYSTEM:</span>
+                    <span class="text-[#00d4ff]">LARAVEL</span>
+                    <span>|</span>
+                    <span class="text-[#bf00ff]">STATAMIC</span>
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    <a href="https://laravel.com" 
+                       class="group relative p-1 text-[#7d8590] hover:text-[#00d4ff] transition-colors duration-300"
+                       title="Laravel Framework">
+                        {{ svg src="/assets/svg/laravel.svg" class="h-5 w-5" }}
+                        <div class="absolute -top-8 left-1/2 hidden -translate-x-1/2 rounded bg-[#21262d] px-2 py-1 text-xs font-mono text-[#00d4ff] group-hover:block">
+                            ./Laravel
+                        </div>
+                    </a>
+                    
+                    <a href="https://statamic.com" 
+                       class="group relative p-1 text-[#7d8590] hover:text-[#bf00ff] transition-colors duration-300"
+                       title="Statamic CMS">
+                        {{ svg src="/assets/svg/statamic.svg" class="h-5 w-5" }}
+                        <div class="absolute -top-8 left-1/2 hidden -translate-x-1/2 rounded bg-[#21262d] px-2 py-1 text-xs font-mono text-[#bf00ff] group-hover:block">
+                            ./Statamic
+                        </div>
+                    </a>
+                </div>
+            </div>
         </div>
-    </aside>
+        
+        <!-- Terminal status line -->
+        <div class="border-t border-[#30363d] py-2">
+            <div class="flex items-center justify-between font-mono text-xs text-[#656d76]">
+                <div class="flex items-center space-x-4">
+                    <span>UPTIME: {{ now format="H:i:s" }}</span>
+                    <span>CONNECTIONS: ACTIVE</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span>STATUS:</span>
+                    <span class="text-[#00ff41]">ONLINE</span>
+                    <div class="h-2 w-2 rounded-full bg-[#00ff41] animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </footer>

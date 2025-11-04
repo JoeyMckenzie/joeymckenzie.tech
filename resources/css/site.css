@@ -1,5 +1,5 @@
-@import url('https://rsms.me/inter/inter.css');
 @import url('https://fonts.bunny.net/css?family=jetbrains-mono:400,400i,500,600,700,800');
+@import url('https://fonts.bunny.net/css?family=fira-code:400,500,600,700');
 
 @import 'tailwindcss';
 @import './shiki.css';
@@ -18,8 +18,145 @@
 
 @theme {
     --font-sans: 'JetBrains Mono', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
 
-    --color-teal: #008483;
-    --color-teal-light: #a6d0cf;
+    /* Retro Hacker Color Palette */
+    --color-matrix-green: #00ff41;
+    --color-matrix-green-light: #66ff66;
+    --color-matrix-green-dark: #00cc33;
+    --color-cyber-blue: #00d4ff;
+    --color-cyber-blue-light: #66e5ff;
+    --color-cyber-blue-dark: #0099cc;
+    --color-neon-purple: #bf00ff;
+    --color-neon-purple-light: #d966ff;
+    --color-neon-purple-dark: #9900cc;
+    --color-amber-terminal: #ffb000;
+    --color-amber-terminal-light: #ffcc66;
+    --color-amber-terminal-dark: #cc8800;
+    --color-warning-red: #ff0040;
+    --color-warning-red-light: #ff6680;
+    --color-warning-red-dark: #cc0033;
+    
+    /* Terminal Background Colors */
+    --color-terminal-black: #0d1117;
+    --color-terminal-dark: #161b22;
+    --color-terminal-gray: #21262d;
+    --color-terminal-light-gray: #30363d;
+    
+    /* Text Colors */
+    --color-text-primary: #e6edf3;
+    --color-text-secondary: #7d8590;
+    --color-text-muted: #656d76;
+    
+    /* Border Colors */
+    --color-border-primary: #30363d;
+    --color-border-secondary: #21262d;
+    --color-border-accent: #00ff41;
+}
+
+/* Custom retro terminal animations */
+@keyframes terminal-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes matrix-rain {
+    0% { transform: translateY(-100vh) rotateX(0deg); }
+    100% { transform: translateY(100vh) rotateX(360deg); }
+}
+
+@keyframes neon-glow {
+    0%, 100% { 
+        text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor;
+    }
+    50% { 
+        text-shadow: 0 0 2px currentColor, 0 0 5px currentColor, 0 0 8px currentColor;
+    }
+}
+
+@keyframes scan-lines {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+}
+
+/* Terminal-style utilities */
+.terminal-cursor::after {
+    content: '█';
+    animation: terminal-blink 1s infinite;
+    color: var(--color-matrix-green);
+}
+
+.matrix-text {
+    color: var(--color-matrix-green);
+    font-family: var(--font-mono);
+    text-shadow: 0 0 10px var(--color-matrix-green);
+}
+
+.cyber-glow {
+    animation: neon-glow 2s ease-in-out infinite alternate;
+}
+
+.retro-border {
+    border: 2px solid var(--color-matrix-green);
+    box-shadow: 
+        0 0 10px var(--color-matrix-green),
+        inset 0 0 10px rgba(0, 255, 65, 0.1);
+}
+
+.terminal-bg {
+    background: linear-gradient(135deg, var(--color-terminal-black) 0%, var(--color-terminal-dark) 100%);
+    position: relative;
+}
+
+.terminal-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 1px,
+            rgba(0, 255, 65, 0.03) 2px,
+            rgba(0, 255, 65, 0.03) 3px
+        );
+    pointer-events: none;
+}
+
+/* Retro button styles */
+.retro-btn {
+    background: var(--color-terminal-dark);
+    border: 1px solid var(--color-matrix-green);
+    color: var(--color-matrix-green);
+    font-family: var(--font-mono);
+    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.retro-btn:hover {
+    background: var(--color-matrix-green);
+    color: var(--color-terminal-black);
+    box-shadow: 0 0 20px var(--color-matrix-green);
+}
+
+.retro-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.retro-btn:hover::before {
+    left: 100%;
 }

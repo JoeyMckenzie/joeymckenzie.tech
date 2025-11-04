@@ -1,6 +1,5 @@
 title: Blogs
 template: blogs/show
-layout: layouts/default
 mount: dedbdfd2-45dc-4eb6-abbc-4067396ff52d
 taxonomies:
   - topics
@@ -12,7 +11,6 @@ date_behavior:
   past: public
   future: private
 preview_targets:
-  -
-    label: Entry
+  - label: Entry
     url: '{permalink}'
     refresh: true
