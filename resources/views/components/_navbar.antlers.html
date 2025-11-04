@@ -10,31 +10,108 @@
                     <div class="h-3 w-3 rounded-full bg-[#ffb000]"></div>
                     <div class="h-3 w-3 rounded-full bg-[#00ff41]"></div>
                 </div>
-                <span class="ml-4 font-mono text-sm text-[#7d8590]">joey@terminal:~$</span>
+                <span class="ml-4 font-mono text-sm text-[#7d8590] hidden sm:inline">joey@terminal:~$</span>
+                <span class="ml-2 font-mono text-xs text-[#7d8590] sm:hidden">~$</span>
             </div>
 
-            <!-- Navigation menu -->
-            <nav class="flex items-center space-x-1">
+            <!-- Desktop Navigation menu -->
+            <nav class="hidden md:flex items-center space-x-1">
                 {{ nav:main_nav include_home="true" }}
-            <a href="{{ url }}"
-               class="group relative px-4 py-2 font-mono text-sm uppercase tracking-wide text-[#00ff41] transition-all duration-300 hover:bg-[#21262d] hover:text-[#00ff41]"
-               title="{{ title }}">
-                <!-- Terminal cursor effect -->
-            <span class="relative">
-                {{ icon }}
-                {{ svg :src="iconSvg" class="h-4 w-4 inline mr-2" }}
-                    {{ /icon }}
-                    {{ title }}
-                    <span
-                        class="absolute -right-2 top-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">_</span>
-                </span>
-
-                    <!-- Hover underline effect -->
-                    <div
-                        class="absolute bottom-0 left-0 h-px w-0 bg-[#00ff41] transition-all duration-300 group-hover:w-full"></div>
-                </a>
+                    <a href="{{ url }}"
+                       class="group relative px-4 py-2 font-mono text-sm uppercase tracking-wide text-[#00ff41] transition-all duration-300 hover:bg-[#21262d] hover:text-[#00ff41]"
+                       title="{{ title }}">
+                        <!-- Terminal cursor effect -->
+                        <span class="relative">
+                            {{ icon }}
+                                {{ svg :src="iconSvg" class="h-4 w-4 inline mr-2" }}
+                            {{ /icon }}
+                            {{ title }}
+                            <span class="absolute -right-2 top-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">_</span>
+                        </span>
+                        
+                        <!-- Hover underline effect -->
+                        <div class="absolute bottom-0 left-0 h-px w-0 bg-[#00ff41] transition-all duration-300 group-hover:w-full"></div>
+                    </a>
                 {{ /nav:main_nav }}
             </nav>
+            
+            <!-- Mobile menu button and status -->
+            <div class="flex items-center space-x-3">
+                <!-- Terminal status indicator -->
+                <div class="flex items-center space-x-2 font-mono text-xs text-[#7d8590]">
+                    <span class="hidden sm:inline">ONLINE</span>
+                    <div class="h-2 w-2 rounded-full bg-[#00ff41] animate-pulse"></div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div x-data="{ open: false }" class="md:hidden relative">
+                    <button 
+                        @click="open = !open"
+                        class="relative p-2 text-[#7d8590] hover:text-[#00ff41] transition-colors duration-300"
+                        aria-label="Toggle mobile menu">
+                        <!-- Hamburger icon with terminal styling -->
+                        <div class="w-5 h-5 flex flex-col justify-center space-y-1">
+                            <div class="w-full h-0.5 bg-current transition-all duration-300" :class="open ? 'rotate-45 translate-y-1.5' : ''"></div>
+                            <div class="w-full h-0.5 bg-current transition-all duration-300" :class="open ? 'opacity-0' : ''"></div>
+                            <div class="w-full h-0.5 bg-current transition-all duration-300" :class="open ? '-rotate-45 -translate-y-1.5' : ''"></div>
+                        </div>
+                    </button>
+                    
+                    <!-- Mobile dropdown menu -->
+                    <div x-show="open" 
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0 scale-95"
+                         x-transition:enter-end="opacity-100 scale-100"
+                         x-transition:leave="transition ease-in duration-150"
+                         x-transition:leave-start="opacity-100 scale-100"
+                         x-transition:leave-end="opacity-0 scale-95"
+                         @click.away="open = false"
+                         class="absolute right-0 top-full mt-2 w-64 rounded-lg border border-[#30363d] bg-[#161b22] shadow-2xl z-50">
+                        
+                        <!-- Terminal window header -->
+                        <div class="border-b border-[#30363d] p-3">
+                            <div class="flex items-center space-x-2">
+                                <div class="flex space-x-1">
+                                    <div class="h-2 w-2 rounded-full bg-[#ff0040]"></div>
+                                    <div class="h-2 w-2 rounded-full bg-[#ffb000]"></div>
+                                    <div class="h-2 w-2 rounded-full bg-[#00ff41]"></div>
+                                </div>
+                                <span class="font-mono text-xs text-[#7d8590]">mobile_nav.sh</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Navigation items -->
+                        <div class="p-2">
+                            {{ nav:main_nav include_home="true" }}
+                                <a href="{{ url }}" 
+                                   @click="open = false"
+                                   class="group flex items-center space-x-3 rounded p-3 font-mono text-sm text-[#e6edf3] transition-all duration-300 hover:bg-[#21262d] hover:text-[#00ff41]">
+                                    <!-- Terminal prompt -->
+                                    <span class="text-[#00ff41]">$</span>
+                                    
+                                    <!-- Icon and title -->
+                                    <div class="flex items-center space-x-2">
+                                        {{ icon }}
+                                            {{ svg :src="iconSvg" class="h-4 w-4" }}
+                                        {{ /icon }}
+                                        <span>{{ title }}</span>
+                                    </div>
+                                    
+                                    <!-- Terminal cursor on hover -->
+                                    <span class="ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-[#00ff41]">_</span>
+                                </a>
+                            {{ /nav:main_nav }}
+                        </div>
+                        
+                        <!-- Terminal footer -->
+                        <div class="border-t border-[#30363d] p-3">
+                            <div class="font-mono text-xs text-[#656d76]">
+                                <span class="text-[#00ff41]">joey@mobile</span> ~ exit
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

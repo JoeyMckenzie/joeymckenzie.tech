@@ -2,27 +2,27 @@
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
     <div class="rounded-lg border border-[#30363d] bg-[#161b22] p-6 shadow-2xl">
         <!-- Terminal header bar -->
-        <div class="mb-6 flex items-center justify-between border-b border-[#30363d] pb-4">
+        <div class="mb-6 flex items-center justify-between border-b border-[#30363d] pb-4 flex-wrap gap-4 sm:flex-nowrap">
             <div class="flex items-center space-x-3">
                 <div class="flex space-x-2">
                     <div class="h-3 w-3 rounded-full bg-[#ff0040]"></div>
                     <div class="h-3 w-3 rounded-full bg-[#ffb000]"></div>
                     <div class="h-3 w-3 rounded-full bg-[#00ff41]"></div>
                 </div>
-                <span class="font-mono text-sm text-[#7d8590]">{{ title ?? 'terminal' }}.sh</span>
+                <span class="font-mono text-sm text-[#7d8590] truncate">{{ title ?? 'terminal' }}.sh</span>
             </div>
 
             <!-- Social links as terminal commands -->
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-1 sm:space-x-2">
                 {{ settings:social }}
                 {{ icon }}
                 <a href="{{ url }}"
-                   class="group relative p-2 text-[#7d8590] transition-colors duration-300 hover:text-[#00ff41]"
+                   class="group relative p-1.5 sm:p-2 text-[#7d8590] transition-colors duration-300 hover:text-[#00ff41]"
                    title="{{ name }}">
-                    {{ svg :src="iconSvg" class="h-5 w-5" }}
+                    {{ svg :src="iconSvg" class="h-4 w-4 sm:h-5 sm:w-5" }}
                     <!-- Tooltip with terminal command style -->
                     <div
-                        class="absolute -top-10 left-1/2 hidden -translate-x-1/2 rounded bg-[#21262d] px-2 py-1 text-xs font-mono text-[#00ff41] group-hover:block">
+                        class="absolute -top-10 left-1/2 hidden -translate-x-1/2 rounded bg-[#21262d] px-2 py-1 text-xs font-mono text-[#00ff41] group-hover:block z-10">
                         ./{{ name }}
                     </div>
                 </a>
@@ -33,13 +33,18 @@
 
         <!-- Terminal prompt and title -->
         <div class="space-y-4">
-            <div class="flex items-center space-x-2 font-mono text-sm text-[#7d8590]">
+            <div class="flex items-center space-x-2 font-mono text-sm text-[#7d8590] flex-wrap">
                 <span class="text-[#00ff41]">joey@terminal</span>
                 <span>:</span>
                 <span class="text-[#00d4ff]">~</span>
                 <span>$</span>
                 <span class="text-[#e6edf3]">echo "{{ subtitle ?? title }}"</span>
             </div>
+            
+            <!-- Main heading with matrix-style effect -->
+            <h1 class="font-mono text-2xl sm:text-3xl lg:text-5xl font-bold text-[#00ff41] cyber-glow break-words">
+                {{ subtitle ?? title }}<span class="terminal-cursor"></span>
+            </h1>
 
             <!-- Content area with terminal styling -->
             {{ if content }}
