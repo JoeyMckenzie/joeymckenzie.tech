@@ -11,25 +11,26 @@
                 </div>
                 <span class="font-mono text-sm text-[#7d8590]">{{ title ?? 'terminal' }}.sh</span>
             </div>
-            
+
             <!-- Social links as terminal commands -->
             <div class="flex items-center space-x-2">
                 {{ settings:social }}
-                    {{ icon }}
-                        <a href="{{ url }}" 
-                           class="group relative p-2 text-[#7d8590] transition-colors duration-300 hover:text-[#00ff41]"
-                           title="{{ name }}">
-                            {{ svg :src="iconSvg" class="h-5 w-5" }}
-                            <!-- Tooltip with terminal command style -->
-                            <div class="absolute -top-10 left-1/2 hidden -translate-x-1/2 rounded bg-[#21262d] px-2 py-1 text-xs font-mono text-[#00ff41] group-hover:block">
-                                ./{{ name }}
-                            </div>
-                        </a>
-                    {{ /icon }}
+                {{ icon }}
+                <a href="{{ url }}"
+                   class="group relative p-2 text-[#7d8590] transition-colors duration-300 hover:text-[#00ff41]"
+                   title="{{ name }}">
+                    {{ svg :src="iconSvg" class="h-5 w-5" }}
+                    <!-- Tooltip with terminal command style -->
+                    <div
+                        class="absolute -top-10 left-1/2 hidden -translate-x-1/2 rounded bg-[#21262d] px-2 py-1 text-xs font-mono text-[#00ff41] group-hover:block">
+                        ./{{ name }}
+                    </div>
+                </a>
+                {{ /icon }}
                 {{ /settings:social }}
             </div>
         </div>
-        
+
         <!-- Terminal prompt and title -->
         <div class="space-y-4">
             <div class="flex items-center space-x-2 font-mono text-sm text-[#7d8590]">
@@ -39,23 +40,10 @@
                 <span>$</span>
                 <span class="text-[#e6edf3]">echo "{{ subtitle ?? title }}"</span>
             </div>
-            
-            <!-- Main heading with matrix-style effect -->
-            <h1 class="font-mono text-3xl font-bold text-[#00ff41] sm:text-5xl cyber-glow">
-                {{ subtitle ?? title }}<span class="terminal-cursor"></span>
-            </h1>
-            
+
             <!-- Content area with terminal styling -->
             {{ if content }}
                 <div class="mt-8 space-y-4">
-                    <div class="flex items-center space-x-2 font-mono text-sm text-[#7d8590]">
-                        <span class="text-[#00ff41]">joey@terminal</span>
-                        <span>:</span>
-                        <span class="text-[#00d4ff]">~</span>
-                        <span>$</span>
-                        <span class="text-[#e6edf3]">cat README.md</span>
-                    </div>
-                    
                     <div class="rounded border border-[#30363d] bg-[#0d1117] p-4">
                         <div class="prose prose-invert max-w-none">
                             <div class="font-mono text-[#e6edf3] leading-relaxed">

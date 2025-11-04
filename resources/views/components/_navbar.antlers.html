@@ -12,33 +12,29 @@
                 </div>
                 <span class="ml-4 font-mono text-sm text-[#7d8590]">joey@terminal:~$</span>
             </div>
-            
+
             <!-- Navigation menu -->
             <nav class="flex items-center space-x-1">
                 {{ nav:main_nav include_home="true" }}
-                    <a href="{{ url }}" 
-                       class="group relative px-4 py-2 font-mono text-sm uppercase tracking-wide text-[#00ff41] transition-all duration-300 hover:bg-[#21262d] hover:text-[#00ff41]"
-                       title="{{ title }}">
-                        <!-- Terminal cursor effect -->
-                        <span class="relative">
-                            {{ icon }}
-                                {{ svg :src="iconSvg" class="h-4 w-4 inline mr-2" }}
-                            {{ /icon }}
-                            {{ title }}
-                            <span class="absolute -right-2 top-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">_</span>
-                        </span>
-                        
-                        <!-- Hover underline effect -->
-                        <div class="absolute bottom-0 left-0 h-px w-0 bg-[#00ff41] transition-all duration-300 group-hover:w-full"></div>
-                    </a>
+            <a href="{{ url }}"
+               class="group relative px-4 py-2 font-mono text-sm uppercase tracking-wide text-[#00ff41] transition-all duration-300 hover:bg-[#21262d] hover:text-[#00ff41]"
+               title="{{ title }}">
+                <!-- Terminal cursor effect -->
+            <span class="relative">
+                {{ icon }}
+                {{ svg :src="iconSvg" class="h-4 w-4 inline mr-2" }}
+                    {{ /icon }}
+                    {{ title }}
+                    <span
+                        class="absolute -right-2 top-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">_</span>
+                </span>
+
+                    <!-- Hover underline effect -->
+                    <div
+                        class="absolute bottom-0 left-0 h-px w-0 bg-[#00ff41] transition-all duration-300 group-hover:w-full"></div>
+                </a>
                 {{ /nav:main_nav }}
             </nav>
-            
-            <!-- Terminal status indicator -->
-            <div class="flex items-center space-x-2 font-mono text-xs text-[#7d8590]">
-                <span class="hidden sm:inline">ONLINE</span>
-                <div class="h-2 w-2 rounded-full bg-[#00ff41] animate-pulse"></div>
-            </div>
         </div>
     </div>
 </div>
