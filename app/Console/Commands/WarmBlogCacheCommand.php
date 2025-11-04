@@ -18,7 +18,7 @@ final class WarmBlogCacheCommand extends Command
     protected $signature = 'app:warm-blog-cache';
 
     /**
-     * @var string|null
+     * @var string
      */
     protected $description = 'Warms the Statamic cache with shiki content for the blog.';
 

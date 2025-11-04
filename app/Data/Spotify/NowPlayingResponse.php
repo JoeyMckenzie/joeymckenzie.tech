@@ -2,11 +2,30 @@
 
 declare(strict_types=1);
 
-namespace App\ValueObjects;
+namespace App\Data\Spotify;
 
+use App\Data\Concerns\Defaultable;
+use App\Data\Concerns\MappableResponse;
 use Illuminate\Http\Client\Response;
 
-final class SpotifyNowPlayingApiResponse
+/**
+ * @phpstan-type NowPlayingSchema array{
+ *     currently_playing_type: string,
+ *     item: array{
+ *          name: string,
+ *          album: ?array{
+ *              images: array<int, array{url: string}>
+ *          },
+ *          artists: ?array<int, array{name: string}>,
+ *          show: ?array{
+ *              name: string,
+ *              images: array<int, array{url: string}>
+ *          },
+ *          external_urls: array{spotify: ?string}
+ *     }
+ * }
+ */
+final class NowPlayingResponse implements Defaultable, MappableResponse
 {
     private function __construct(
         public bool $nowPlaying,
@@ -20,7 +39,7 @@ final class SpotifyNowPlayingApiResponse
 
     public static function fromResponse(Response $response): self
     {
-        /** @var array{item: array{name: string, album: array{images: array<int, array{url: string}>}|null, artists: array<int, array{name: string}>|null, show: array{name: string, images: array<int, array{url: string}>}|null, external_urls: array{spotify: ?string}}, currently_playing_type: string} $nowPlaying */
+        /** @var NowPlayingSchema $nowPlaying */
         $nowPlaying = json_decode($response->body(), true, JSON_THROW_ON_ERROR);
 
         // Most of the linking and track/show information come from the `item` and `context` node and we can largely ignore the majority of the response
@@ -51,5 +70,14 @@ final class SpotifyNowPlayingApiResponse
     public static function default(): self
     {
         return new self(false);
+    }
+
+    public static function make(
+        ?string $href = '',
+        ?string $albumImageSrc = '',
+        ?string $trackTitle = '',
+        ?string $artist = ''
+    ): self {
+        return new self(true, $href, $albumImageSrc, $trackTitle, $artist);
     }
 }

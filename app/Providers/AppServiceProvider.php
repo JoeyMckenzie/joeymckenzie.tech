@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Actions\GetCurrentSpotifyStatusAction;
+use App\Services\Spotify\SpotifyConnector;
+use App\Services\Spotify\SpotifyConnectorContract;
+use App\Support\Spotify;
 use Illuminate\Support\Facades;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Event;
@@ -31,9 +33,15 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        self::configureServices();
         self::configureMarkdown();
         self::configureViewComposers();
         self::configureEvents();
+    }
+
+    private function configureServices(): void
+    {
+        $this->app->singleton(SpotifyConnectorContract::class, fn (): SpotifyConnectorContract => new SpotifyConnector());
     }
 
     private function configureMarkdown(): void
@@ -46,14 +54,14 @@ final class AppServiceProvider extends ServiceProvider
     private function configureViewComposers(): void
     {
         Facades\View::composer('*', function (View $view): void {
-            $response = new GetCurrentSpotifyStatusAction()->handle();
+            $nowPlaying = Spotify::nowPlaying();
 
             $view->with('spotifyStatus', [
-                'nowPlaying' => $response->nowPlaying,
-                'href' => $response->href,
-                'albumImageSrc' => $response->albumImageSrc,
-                'trackTitle' => $response->trackTitle,
-                'artist' => $response->artist,
+                'nowPlaying' => $nowPlaying->nowPlaying,
+                'href' => $nowPlaying->href,
+                'albumImageSrc' => $nowPlaying->albumImageSrc,
+                'trackTitle' => $nowPlaying->trackTitle,
+                'artist' => $nowPlaying->artist,
             ]);
         });
     }

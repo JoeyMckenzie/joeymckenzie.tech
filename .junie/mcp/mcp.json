@@ -1,0 +1,35 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/Users/jmckenzie/Library/Application Support/Herd/bin/php84",
+            "args": [
+                "/Users/jmckenzie/github.com/joeymckenzie/joeymckenzie.tech/artisan",
+                "boost:mcp"
+            ]
+        },
+        "herd": {
+            "command": "/Users/jmckenzie/Library/Application Support/Herd/bin/php84",
+            "args": [
+                "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
+            ],
+            "env": {
+                "SITE_PATH": "/Users/jmckenzie/github.com/joeymckenzie/joeymckenzie.tech"
+            }
+        },
+        "serena": {
+            "command": "uvx",
+            "args": [
+                "--from",
+                "git+https://github.com/oraios/serena",
+                "serena",
+                "start-mcp-server",
+                "--context",
+                "ide-assistant",
+                "--project",
+                "${PWD}",
+                "--enable-web-dashboard",
+                "false"
+            ]
+        }
+    }
+}

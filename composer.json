@@ -14,14 +14,15 @@
         "spatie/commonmark-shiki-highlighter": "^2.5",
         "spatie/fork": "^1.2",
         "spatie/laravel-markdown": "^2.7",
-        "statamic/cms": "^v5.65",
+        "statamic/cms": "^5.67",
         "twithers/icons-plus": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8.1",
         "ergebnis/composer-normalize": "^2.48",
         "fakerphp/faker": "^1.23",
-        "larastan/larastan": "^v3.7",
+        "larastan/larastan": "^3.7",
+        "laravel/boost": "^1.4",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.13",
         "mockery/mockery": "^1.6",
@@ -30,7 +31,7 @@
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-strict-rules": "^2.0",
-        "phpunit/phpunit": "^11.5",
+        "phpunit/phpunit": "^12.4.1",
         "rector/rector": "^2.0"
     },
     "minimum-stability": "dev",
