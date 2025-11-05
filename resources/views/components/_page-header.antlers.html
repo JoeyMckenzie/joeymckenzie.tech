@@ -2,7 +2,8 @@
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
     <div class="rounded-lg border border-[#30363d] bg-[#161b22] p-6 shadow-2xl">
         <!-- Terminal header bar -->
-        <div class="mb-6 flex items-center justify-between border-b border-[#30363d] pb-4 flex-wrap gap-4 sm:flex-nowrap">
+        <div
+            class="mb-6 flex items-center justify-between border-b border-[#30363d] pb-4 flex-wrap gap-4 sm:flex-nowrap">
             <div class="flex items-center space-x-3">
                 <div class="flex space-x-2">
                     <div class="h-3 w-3 rounded-full bg-[#ff0040]"></div>
@@ -41,11 +42,6 @@
                 <span class="text-[#e6edf3]">echo "{{ subtitle ?? title }}"</span>
             </div>
             
-            <!-- Main heading with matrix-style effect -->
-            <h1 class="font-mono text-2xl sm:text-3xl lg:text-5xl font-bold text-[#00ff41] cyber-glow break-words">
-                {{ subtitle ?? title }}<span class="terminal-cursor"></span>
-            </h1>
-
             <!-- Content area with terminal styling -->
             {{ if content }}
                 <div class="mt-8 space-y-4">
