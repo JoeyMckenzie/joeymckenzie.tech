@@ -1,59 +1,33 @@
-<!-- Terminal window main content -->
-<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-    <div class="rounded-lg border border-[#30363d] bg-[#161b22] p-6 shadow-2xl">
-        <!-- Terminal header bar -->
-        <div
-            class="mb-6 flex items-center justify-between border-b border-[#30363d] pb-4 flex-wrap gap-4 sm:flex-nowrap">
-            <div class="flex items-center space-x-3">
-                <div class="flex space-x-2">
-                    <div class="h-3 w-3 rounded-full bg-[#ff0040]"></div>
-                    <div class="h-3 w-3 rounded-full bg-[#ffb000]"></div>
-                    <div class="h-3 w-3 rounded-full bg-[#00ff41]"></div>
-                </div>
-                <span class="font-mono text-sm text-[#7d8590] truncate">{{ title ?? 'terminal' }}.sh</span>
-            </div>
-
-            <!-- Social links as terminal commands -->
-            <div class="flex items-center space-x-1 sm:space-x-2">
-                {{ settings:social }}
-                {{ icon }}
-                <a href="{{ url }}"
-                   class="group relative p-1.5 sm:p-2 text-[#7d8590] transition-colors duration-300 hover:text-[#00ff41]"
-                   title="{{ name }}">
-                    {{ svg :src="iconSvg" class="h-4 w-4 sm:h-5 sm:w-5" }}
-                    <!-- Tooltip with terminal command style -->
-                    <div
-                        class="absolute -top-10 left-1/2 hidden -translate-x-1/2 rounded bg-[#21262d] px-2 py-1 text-xs font-mono text-[#00ff41] group-hover:block z-10">
-                        ./{{ name }}
-                    </div>
-                </a>
-                {{ /icon }}
-                {{ /settings:social }}
-            </div>
+<!-- Ultra minimal dark page header -->
+<div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16">
+    <div class="space-y-12">
+        <!-- Title -->
+        <h1 class="font-mono text-4xl sm:text-5xl lg:text-6xl text-[#ffffff]">
+            {{ subtitle ?? title }}<span class="cursor"></span>
+        </h1>
+        
+        <!-- Social links - minimal -->
+        <div class="flex items-center space-x-4">
+            {{ settings:social }}
+            {{ icon }}
+            <a href="{{ url }}"
+               class="text-[#888888] hover:text-[#ffffff] transition-colors duration-200"
+               title="{{ name }}">
+                {{ svg :src="iconSvg" class="h-5 w-5" }}
+            </a>
+            {{ /icon }}
+            {{ /settings:social }}
         </div>
-
-        <!-- Terminal prompt and title -->
-        <div class="space-y-4">
-            <div class="flex items-center space-x-2 font-mono text-sm text-[#7d8590] flex-wrap">
-                <span class="text-[#00ff41]">joey@terminal</span>
-                <span>:</span>
-                <span class="text-[#00d4ff]">~</span>
-                <span>$</span>
-                <span class="text-[#e6edf3]">echo "{{ subtitle ?? title }}"</span>
-            </div>
-            
-            <!-- Content area with terminal styling -->
-            {{ if content }}
-                <div class="mt-8 space-y-4">
-                    <div class="rounded border border-[#30363d] bg-[#0d1117] p-4">
-                        <div class="prose prose-invert max-w-none">
-                            <div class="font-mono text-[#e6edf3] leading-relaxed">
-                                {{ content | widont }}
-                            </div>
-                        </div>
+        
+        <!-- Content -->
+        {{ if content }}
+            <div class="max-w-2xl">
+                <div class="prose prose-lg">
+                    <div class="font-mono text-[#cccccc] leading-relaxed text-base">
+                        {{ content | widont }}
                     </div>
                 </div>
-            {{ /if }}
-        </div>
+            </div>
+        {{ /if }}
     </div>
 </div>

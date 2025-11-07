@@ -1,59 +1,24 @@
 {{ reverse_index = (total_results - index) }}
-<a href="blog/{{ slug }}" 
-   class="group block w-full rounded border border-[#30363d] bg-[#161b22] p-4 transition-all duration-300 hover:border-[#00ff41] hover:bg-[#21262d] hover:shadow-lg hover:shadow-[#00ff41]/20">
-    
-    <!-- Terminal file listing style -->
-    <div class="flex items-center justify-between">
-        <!-- File info -->
-        <div class="flex items-center space-x-4">
-            <!-- Line number -->
-            <div class="font-mono text-2xl text-[#656d76]">
-                {{ if reverse_index >= 10 }}
-                    {{ reverse_index }}
-                {{ else }}
-                    0{{ reverse_index }}
-                {{ /if }}
-            </div>
-            
-            <!-- File details -->
-            <div class="flex-1">
-                <!-- Terminal prompt style -->
-                <div class="mb-1 flex items-center space-x-2 font-mono text-xs text-[#7d8590]">
-                    <span class="text-[#00ff41]">$</span>
-                    <span>cat</span>
-                    <span class="text-[#00d4ff]">{{ slug }}.md</span>
-                </div>
-                
-                <!-- Title with terminal cursor -->
-                <h2 class="font-mono text-lg font-semibold text-[#e6edf3] group-hover:text-[#00ff41] transition-colors duration-300">
-                    {{ title }}<span class="opacity-0 group-hover:opacity-100 transition-opacity duration-300">_</span>
-                </h2>
-                
-                <!-- Subtitle as comment -->
-                {{ if subtitle }}
-                    <p class="mt-1 font-mono text-sm text-[#7d8590]">
-                        # {{ subtitle }}
-                    </p>
-                {{ /if }}
-            </div>
-        </div>
+<article class="group py-8 first:pt-0">
+    <a href="blog/{{ slug }}" class="block">
+        <!-- Title -->
+        <h2 class="font-mono text-xl sm:text-2xl text-[#ffffff] group-hover:text-[#cccccc] transition-colors duration-200 mb-3">
+            {{ title }}
+        </h2>
         
-        <!-- Metadata -->
-        <div class="hidden sm:flex flex-col items-end space-y-2">
-            <!-- Topic tags -->
-            {{ topics limit="2" }}
-                <span class="rounded border border-[#bf00ff] bg-transparent px-2 py-1 font-mono text-xs text-[#bf00ff]">
-                    [{{ title }}]
-                </span>
+        <!-- Subtitle/excerpt -->
+        {{ if subtitle }}
+            <p class="font-mono text-[#cccccc] text-sm sm:text-base leading-relaxed mb-4">
+                {{ subtitle }}
+            </p>
+        {{ /if }}
+        
+        <!-- Meta info - simple line -->
+        <div class="flex items-center space-x-4 font-mono text-xs text-[#888888]">
+            <time>{{ date format="M j, Y" }}</time>
+            {{ topics limit="1" }}
+                <span>#{{ title }}</span>
             {{ /topics }}
-            
-            <!-- Date with terminal style -->
-            <div class="font-mono text-xs text-[#656d76]">
-                {{ date format="Y-m-d H:i" }}
-            </div>
         </div>
-    </div>
-    
-    <!-- Terminal underline effect -->
-    <div class="mt-3 h-px w-0 bg-[#00ff41] transition-all duration-300 group-hover:w-full"></div>
-</a>
+    </a>
+</article>

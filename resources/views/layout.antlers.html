@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html lang="{{ site:short_locale }}" data-theme="dark" class="h-full terminal-bg">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>{{ title }} — {{ settings:site_name }}</title>
-        <meta name="description" content="{{ excerpt ?? title }}" />
-        <meta name="theme-color" content="#00ff41" />
-        <link
-            rel="apple-touch-icon"
-            sizes="180x180"
-            href="/apple-touch-icon.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="32x32"
-            href="/favicon-32x32.png"
-        />
-        <link
-            rel="icon"
-            type="image/png"
-            sizes="16x16"
-            href="/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/site.webmanifest" />
-        {{ vite src="resources/js/site.js|resources/css/site.css" }}
-    </head>
-    <body
-        class="flex min-h-screen flex-col terminal-bg text-[#e6edf3] bg-[#0d1117]"
-        {{ if template === "blog/index" || template === "blog/show" }}
-            x-data="{
+<html lang="{{ site:short_locale }}" data-theme="dark" class="h-full warm-bg">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>{{ title }} — {{ settings:site_name }}</title>
+    <meta name="description" content="{{ excerpt ?? title }}"/>
+    <meta name="theme-color" content="#7c9885"/>
+    <link
+        rel="apple-touch-icon"
+        sizes="180x180"
+        href="/apple-touch-icon.png"
+    />
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="/favicon-32x32.png"
+    />
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="16x16"
+        href="/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/site.webmanifest"/>
+    {{ vite src="resources/js/site.js|resources/css/site.css" }}
+</head>
+<body
+    class="flex min-h-screen flex-col clean-bg text-[#ffffff] bg-[#0a0a0a]"
+{{ if template === "blog/index" || template === "blog/show" }}
+    x-data="{
                 scroll: $persist(0).as('scroll').using(sessionStorage),
                 saveScroll() {
                     this.scroll = window.scrollY;
@@ -43,14 +43,14 @@
                     });
                 }
             }"
-            x-init="restoreScroll()"
-            x-on:pagehide.window="saveScroll()"
-        {{ /if }}
-    >
-        {{ partial:components/navbar }}
-        <main class="flex-grow">
-            {{ template_content }}
-        </main>
-        {{ partial:components/footer }}
-    </body>
+    x-init="restoreScroll()"
+    x-on:pagehide.window="saveScroll()"
+{{ /if }}
+>
+{{ partial:components/navbar }}
+<main class="flex-grow">
+    {{ template_content }}
+</main>
+{{ partial:components/footer }}
+</body>
 </html>

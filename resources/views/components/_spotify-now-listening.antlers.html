@@ -1,6 +1,7 @@
+{{ spotifyStatus }}
 <a
-    class="flex transform flex-col space-y-1 transition-transform duration-150 hover:scale-102"
-    href="{{ spotifyStatus.href }}"
+    class="flex transform flex-col hap-1 transition-transform duration-150 hover:scale-102"
+    href="{{ href }}"
     rel="noreferrer"
     target="_blank"
 >
@@ -9,7 +10,7 @@
         {{ slot }}
         <img
             class="rounded-sm"
-            src="{{ spotifyStatus.albumImageSrc }}"
+            src="{{ albumImageSrc }}"
             alt="Spotify listening to"
             height="30"
             width="30"
@@ -18,11 +19,12 @@
             <h4
                 class="line-clamp-1 overflow-hidden text-xs font-semibold text-ellipsis"
             >
-                {{ spotifyStatus.trackTitle }}
+                {{ trackTitle }}
             </h4>
             <p class="line-clamp-1 overflow-hidden text-xs text-ellipsis">
-                {{ spotifyStatus.artist }}
+                {{ artist }}
             </p>
         </div>
     </div>
 </a>
+{{ /spotifyStatus }}

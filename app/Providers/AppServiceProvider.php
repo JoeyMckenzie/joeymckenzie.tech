@@ -41,7 +41,7 @@ final class AppServiceProvider extends ServiceProvider
 
     private function configureServices(): void
     {
-        $this->app->singleton(SpotifyConnectorContract::class, fn (): SpotifyConnectorContract => new SpotifyConnector());
+        $this->app->singleton(SpotifyConnectorContract::class, SpotifyConnector::class);
     }
 
     private function configureMarkdown(): void
