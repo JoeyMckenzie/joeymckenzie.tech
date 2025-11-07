@@ -12,49 +12,21 @@
 @source "../../storage/framework/views/*.php";
 
 @plugin "@tailwindcss/typography";
-@plugin "daisyui" {
-    themes: all;
-}
 
 @theme {
     --font-sans: 'JetBrains Mono', sans-serif;
     --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
-
-    /* Ultra Minimal Dark Color Palette */
-    --color-primary: #cccccc;
-    --color-primary-light: #ffffff;
-    --color-primary-dark: #999999;
-    --color-accent: #888888;
-    
-    /* Dark Background Colors */
-    --color-bg-primary: #0a0a0a;
-    --color-bg-secondary: #111111;
-    --color-bg-tertiary: #1a1a1a;
-    
-    /* Dark Text Colors */
-    --color-text-primary: #ffffff;
-    --color-text-secondary: #cccccc;
-    --color-text-muted: #888888;
-    
-    /* Dark Border Colors */
-    --color-border: #333333;
-    --color-border-light: #222222;
 }
 
-/* Minimal animations */
+/* Minimal cursor animation */
 @keyframes cursor-blink {
     0%, 50% { opacity: 1; }
     51%, 100% { opacity: 0; }
 }
 
-/* Simple utilities */
 .cursor::after {
     content: '|';
     animation: cursor-blink 1s infinite;
-    color: var(--color-primary);
+    color: theme('colors.gray.300');
     margin-left: 1px;
-}
-
-.clean-bg {
-    background: var(--color-bg-primary);
 }

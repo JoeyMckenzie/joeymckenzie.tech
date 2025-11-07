@@ -1,11 +1,11 @@
-<div class="flex flex-row flex-wrap justify-center gap-x-1">
+<div class="flex flex-row flex-wrap justify-center items-center gap-4 sm:gap-8 lowercase text-sm">
     {{ taxonomy:topics }}
         {{ if { get:topic } === slug }}
-            <a href="/blog" class="btn">
+            <a href="/blog" class="underline underline-offset-2">
                 {{ title }}
             </a>
         {{ else }}
-            <a href="/blog?topic={{ slug }}" class="btn btn-ghost">
+            <a href="/blog?topic={{ slug }}" class="hover:underline hover:underline-offset-2">
                 {{ title }}
             </a>
         {{ /if }}

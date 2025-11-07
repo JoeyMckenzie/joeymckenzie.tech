@@ -2,7 +2,7 @@
 <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16">
     <div class="space-y-12">
         <!-- Title -->
-        <h1 class="font-mono text-4xl sm:text-5xl lg:text-6xl text-[#ffffff]">
+        <h1 class="font-mono text-4xl sm:text-5xl lg:text-6xl text-white">
             {{ subtitle ?? title }}<span class="cursor"></span>
         </h1>
         
@@ -11,7 +11,7 @@
             {{ settings:social }}
             {{ icon }}
             <a href="{{ url }}"
-               class="text-[#888888] hover:text-[#ffffff] transition-colors duration-200"
+               class="text-neutral-500 hover:text-white transition-colors duration-200"
                title="{{ name }}">
                 {{ svg :src="iconSvg" class="h-5 w-5" }}
             </a>
@@ -22,8 +22,8 @@
         <!-- Content -->
         {{ if content }}
             <div class="max-w-2xl">
-                <div class="prose prose-lg">
-                    <div class="font-mono text-[#cccccc] leading-relaxed text-base">
+                <div class="prose prose-invert">
+                    <div class="font-mono text-neutral-300 leading-relaxed text-base">
                         {{ content | widont }}
                     </div>
                 </div>

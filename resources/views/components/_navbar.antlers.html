@@ -1,17 +1,17 @@
 <!-- Ultra minimal dark header -->
-<header class="border-b border-[#333333] bg-[#0a0a0a]">
+<header class="border-b border-neutral-700 bg-black">
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between py-6">
             <!-- Simple site name -->
-            <div class="font-mono text-sm text-[#ffffff]">
+            <a href="/" class="font-mono text-sm text-neutral-300 transition-colors duration-200 hover:text-white">
                 {{ site:name }}
-            </div>
+            </a>
 
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex items-center space-x-8">
                 {{ nav:main_nav include_home="true" }}
                     <a href="{{ url }}"
-                       class="font-mono text-sm text-[#cccccc] transition-colors duration-200 hover:text-[#ffffff]"
+                       class="font-mono text-sm text-neutral-300 transition-colors duration-200 hover:text-white"
                        title="{{ title }}">
                         {{ title }}
                     </a>
@@ -22,7 +22,7 @@
             <div x-data="{ open: false }" class="md:hidden relative">
                 <button
                     @click="open = !open"
-                    class="p-2 text-[#cccccc] hover:text-[#ffffff] transition-colors duration-200"
+                    class="p-2 text-neutral-300 hover:text-white transition-colors duration-200"
                     aria-label="Menu">
                     <!-- Simple hamburger -->
                     <div class="w-4 h-4 flex flex-col justify-center space-y-1">
@@ -44,11 +44,11 @@
                      x-transition:leave-start="opacity-100 scale-100"
                      x-transition:leave-end="opacity-0 scale-95"
                      @click.away="open = false"
-                     class="absolute right-0 top-full mt-3 w-48 bg-[#0a0a0a] border border-[#333333] shadow-lg z-[9999]">
+                     class="absolute right-0 top-full mt-3 w-48 bg-black border border-neutral-700 shadow-lg z-[9999]">
                     {{ nav:main_nav include_home="true" }}
                         <a href="{{ url }}"
                            @click="open = false"
-                           class="block px-4 py-3 font-mono text-sm text-[#cccccc] hover:bg-[#111111] hover:text-[#ffffff] transition-colors duration-200">
+                           class="block px-4 py-3 font-mono text-sm text-neutral-300 hover:bg-neutral-900 hover:text-white transition-colors duration-200">
                             {{ title }}
                         </a>
                     {{ /nav:main_nav }}

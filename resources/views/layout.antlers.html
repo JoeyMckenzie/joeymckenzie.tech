@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>{{ title }} — {{ settings:site_name }}</title>
     <meta name="description" content="{{ excerpt ?? title }}"/>
-    <meta name="theme-color" content="#7c9885"/>
+    <meta name="theme-color" content="#000000"/>
     <link
         rel="apple-touch-icon"
         sizes="180x180"
@@ -28,7 +28,7 @@
     {{ vite src="resources/js/site.js|resources/css/site.css" }}
 </head>
 <body
-    class="flex min-h-screen flex-col clean-bg text-[#ffffff] bg-[#0a0a0a]"
+    class="flex min-h-screen flex-col clean-bg text-white bg-black"
 {{ if template === "blog/index" || template === "blog/show" }}
     x-data="{
                 scroll: $persist(0).as('scroll').using(sessionStorage),
