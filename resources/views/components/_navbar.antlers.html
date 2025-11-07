@@ -3,9 +3,9 @@
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between py-6">
             <!-- Simple site name -->
-            <a href="/" class="font-mono text-white">
-                joeymckenzie.tech
-            </a>
+            <div class="font-mono text-lg text-[#ffffff]">
+                {{ site:name }}
+            </div>
 
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex items-center space-x-8">
@@ -19,7 +19,7 @@
             </nav>
 
             <!-- Mobile menu -->
-            <div x-data="{ open: false }" class="md:hidden">
+            <div x-data="{ open: false }" class="md:hidden relative">
                 <button
                     @click="open = !open"
                     class="p-2 text-[#cccccc] hover:text-[#ffffff] transition-colors duration-200"
@@ -37,13 +37,18 @@
 
                 <!-- Mobile dropdown -->
                 <div x-show="open"
-                     x-transition
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 scale-95"
+                     x-transition:enter-end="opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-150"
+                     x-transition:leave-start="opacity-100 scale-100"
+                     x-transition:leave-end="opacity-0 scale-95"
                      @click.away="open = false"
-                     class="absolute right-4 top-full mt-2 w-48 bg-[#0a0a0a] border border-[#333333] shadow-sm z-50">
+                     class="absolute right-0 top-full mt-3 w-48 bg-[#0a0a0a] border border-[#333333] shadow-lg z-[9999]">
                     {{ nav:main_nav include_home="true" }}
                         <a href="{{ url }}"
                            @click="open = false"
-                           class="block px-4 py-3 font-mono text-sm text-[#cccccc] hover:bg-[#111111] hover:text-[#ffffff]">
+                           class="block px-4 py-3 font-mono text-sm text-[#cccccc] hover:bg-[#111111] hover:text-[#ffffff] transition-colors duration-200">
                             {{ title }}
                         </a>
                     {{ /nav:main_nav }}
