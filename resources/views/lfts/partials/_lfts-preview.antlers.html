@@ -1,13 +1,10 @@
 <article class="group py-8 first:pt-0">
     <a href="thoughts/{{ slug }}" class="block">
-        <!-- Title -->
         <h2 class="font-mono text-xl sm:text-2xl text-[#ffffff] group-hover:text-[#cccccc] transition-colors duration-200 mb-3">
             {{ title }}
         </h2>
 
-        <!-- Meta info - simple line -->
         <div class="flex items-center space-x-4 font-mono text-xs text-[#888888]">
-            <time>{{ date format = "M j, Y" }}</time>
             {{ topics limit = "1" }}
             <span>#{{ title }}</span>
             {{ /topics }}
