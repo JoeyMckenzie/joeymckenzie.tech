@@ -18,7 +18,7 @@
         "twithers/icons-plus": "^1.1"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.8.1",
+        "barryvdh/laravel-debugbar": "^3.16",
         "ergebnis/composer-normalize": "^2.48",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "^3.7",

@@ -1,11 +1,11 @@
 {{ spotifyStatus }}
 <a
-    class="flex transform flex-col hap-1 transition-transform duration-150 hover:scale-102"
+    class="flex flex-col justify-center items-start gap-1"
     href="{{ href }}"
     rel="noreferrer"
     target="_blank"
 >
-    <h2 class="text-center text-sm">What I'm listening to</h2>
+    <h2 class="text-center text-neutral-300 text-xs">Currently listening</h2>
     <div class="flex flex-row items-center justify-center space-x-2">
         {{ slot }}
         <img

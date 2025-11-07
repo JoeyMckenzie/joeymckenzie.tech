@@ -3,16 +3,14 @@
     <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div class="py-8">
             <!-- Desktop: spread layout -->
-            <div class="hidden sm:flex items-center justify-between">
+            <div class="flex items-center justify-center sm:justify-between">
                 <!-- Left: Spotify -->
                 {{ partial:components/spotify-status }}
-            <a href="#" class="text-[#888888] hover:text-[#ffffff] transition-colors duration-200">
-                {{ svg src="/assets/svg/spotify.svg" class="h-5 w-5" }}
-                </a>
+                {{ svg src="/assets/svg/spotify.svg" class="size-6" }}
                 {{ /partial:components/spotify-status }}
 
                 <!-- Center: Powered by -->
-                <div class="flex items-center gap-2">
+                <div class="hidden sm:flex items-center gap-2">
                     <span class="font-mono text-xs text-[#666666]">powered by</span>
                     <a href="https://laravel.com"
                        class="text-[#888888] hover:text-[#ffffff] transition-colors duration-200"
