@@ -1,6 +1,6 @@
 {{-- .ai/guidelines/statamic.blade.php --}}
 
-=== Statamic Guidelines ===
+=== statamic guidelines ===
 
 ## General Rules
 - ALWAYS use Antlers for all views, components, and partials
