@@ -16,5 +16,29 @@
                 "SITE_PATH": "/Users/jmckenzie/github.com/joeymckenzie/livewire-blog"
             }
         }
+    },
+    "serena": {
+        "command": "uvx",
+        "args": [
+            "--from",
+            "git+https://github.com/oraios/serena",
+            "serena",
+            "start-mcp-server",
+            "--context",
+            "ide-assistant",
+            "--project",
+            "${PWD}",
+            "--enable-web-dashboard",
+            "false"
+        ]
+    },
+    "context7": {
+        "command": "npx",
+        "args": [
+            "-y",
+            "@upstash/context7-mcp",
+            "--api-key",
+            "${CONTEXT7_API_KEY}"
+        ]
     }
 }

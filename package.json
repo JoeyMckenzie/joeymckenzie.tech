@@ -12,6 +12,7 @@
         "axios": "^1.13.2",
         "concurrently": "^9.2.1",
         "laravel-vite-plugin": "^2.0.1",
+        "motion": "^12.23.24",
         "tailwindcss": "^4.1.17",
         "vite": "^7.2.4"
     },
