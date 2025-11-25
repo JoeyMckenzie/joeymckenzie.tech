@@ -1,0 +1,1 @@
+Laravel 12 streamlined layout: app/ for domain logic + Livewire components, bootstrap/ for providers, database/ migrations+seeders, resources/views + resources/js (Vite entry), routes/ for HTTP/console routes, tests/ for PHPUnit features, public/ for assets. Node/Vite config via vite.config.js and Tailwind CSS 4 setup in resources/css.

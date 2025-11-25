@@ -1,0 +1,1 @@
+Backend: PHP 8.4, Laravel 12, Livewire v3, Flux UI Free. Frontend build: Vite 7, Tailwind CSS 4, Axios, Motion JS. Tooling: PHPUnit 11, Larastan, Rector, Laravel Pint, Boost, Pail, concurrent dev server script (PHP artisan serve + queue listener + Pail + npm dev).

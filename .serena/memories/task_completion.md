@@ -1,0 +1,1 @@
+Before handing off work: run targeted PHPUnit tests related to the change (use `php artisan test --filter=` as needed) and offer to run the full suite. Format PHP with `vendor/bin/pint --dirty`. If frontend assets affected, remind user to run `npm run dev`/`npm run build` to see changes.

@@ -1,0 +1,1 @@
+Laravel 12 + Livewire personal blog for Joey McKenzie; renders blog content with Flux UI components and Tailwind styling and ships as a traditional Laravel app (PHP 8.4) with Vite-driven frontend assets.
