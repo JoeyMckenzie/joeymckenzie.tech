@@ -2,8 +2,6 @@
     "agents": [
         "claude_code",
         "codex",
-        "cursor",
-        "opencode",
         "phpstorm"
     ],
     "guidelines": []
