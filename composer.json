@@ -1,29 +1,42 @@
 {
-    "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/blank-livewire-starter-kit",
-    "type": "project",
-    "description": "The official Laravel starter kit for Livewire.",
-    "keywords": [
-        "laravel",
-        "framework"
-    ],
+    "name": "joeymckenzie/blog",
+    "description": "My personal slice of the internet.",
     "license": "MIT",
+    "type": "project",
+    "keywords": [
+        "blog"
+    ],
     "require": {
-        "php": "^8.2",
-        "laravel/framework": "^12.0",
+        "php": "^8.4",
+        "laravel/framework": "^12.39",
         "laravel/tinker": "^2.10.1",
         "livewire/flux": "^2.7"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.16",
+        "barryvdh/laravel-ide-helper": "^3.6",
+        "driftingly/rector-laravel": "^2.0",
+        "ergebnis/composer-normalize": "^2.48",
         "fakerphp/faker": "^1.23",
+        "infection/infection": "^0.31.2",
+        "larastan/larastan": "^3.7",
         "laravel/boost": "^1.8",
         "laravel/pail": "^1.2.2",
-        "laravel/pint": "^v1.25.1",
+        "laravel/pint": "^1.25.1",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
+        "peckphp/peck": "^0.1.3",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^11.5.3",
-        "rector/rector": "^2.2"
+        "rector/rector": "^2.2",
+        "tomasvotruba/type-coverage": "^2.0"
     },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "App\\": "app/",
@@ -36,14 +49,44 @@
             "Tests\\": "tests/"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true,
+            "infection/extension-installer": true,
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true
+        },
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "laravel/volt"
+            ]
+        }
+    },
     "scripts": {
-        "setup": [
-            "composer install",
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-            "@php artisan key:generate",
-            "@php artisan migrate --force",
-            "npm install",
-            "npm run build"
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
+            "@php artisan boost:update --ansi"
+        ],
+        "pre-package-uninstall": [
+            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi",
+            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "@php artisan migrate --graceful --ansi"
         ],
         "dev": [
             "Composer\\Config::disableProcessTimeout",
@@ -54,46 +97,52 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"php artisan inertia:start-ssr\" --names=server,queue,logs,ssr --kill-others"
         ],
+        "fix": [
+            "@refactor",
+            "@fmt"
+        ],
+        "fmt": "vendor/bin/pint -vv --parallel",
+        "fmt:test": "vendor/bin/pint -vv --parallel --test",
+        "generate:ide-helpers": [
+            "@php artisan ide-helper:generate",
+            "@php artisan ide-helper:models -RW",
+            "@php artisan ide-helper:meta",
+            "@fmt"
+        ],
+        "lint": "XDEBUG_MODE=off vendor/bin/phpstan analyze --memory-limit=1G",
+        "lint:ci": "vendor/bin/phpstan analyze --memory-limit=1G --error-format=github",
+        "prepare:githooks": "git config core.hookspath .githooks",
+        "refactor": "vendor/bin/rector",
+        "refactor:test": "vendor/bin/rector --dry-run",
+        "reschema": [
+            "php artisan migrate:fresh --seed",
+            "@generate:ide-helpers"
+        ],
+        "setup": [
+            "composer install",
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+            "@php artisan key:generate",
+            "@php artisan migrate --force",
+            "npm install",
+            "npm run build"
+        ],
         "test": [
             "@php artisan config:clear --ansi",
-            "@php artisan test"
+            "@php artisan test --parallel"
         ],
-        "post-autoload-dump": [
-            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+        "test:coverage": [
+            "@php artisan config:clear --ansi",
+            "@php artisan test --parallel --coverage-clover coverage.xml"
         ],
-        "post-update-cmd": [
-            "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
-            "@php artisan boost:update --ansi"
+        "test:mutate": [
+            "@php artisan config:clear --ansi",
+            "vendor/bin/infection"
         ],
-        "post-root-package-install": [
-            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        "test:mutate:ci": [
+            "@php artisan config:clear --ansi",
+            "vendor/bin/infection --logger-github=true"
         ],
-        "post-create-project-cmd": [
-            "@php artisan key:generate --ansi",
-            "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "@php artisan migrate --graceful --ansi"
-        ],
-        "pre-package-uninstall": [
-            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
-        ]
+        "typos": "vendor/bin/peck"
     },
-    "extra": {
-        "laravel": {
-            "dont-discover": [
-                "laravel/volt"
-            ]
-        }
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true
-        }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    "$schema": "https://getcomposer.org/schema.json"
 }

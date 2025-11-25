@@ -1,0 +1,18 @@
+includes:
+	- vendor/phpstan/phpstan/conf/bleedingEdge.neon
+
+parameters:
+    level: max
+    paths:
+        - app
+        - database
+        - routes
+        - tests
+        - bootstrap/app.php
+        - bootstrap/providers.php
+        - public/index.php
+    tmpDir: .phpstan
+    reportUnmatchedIgnoredErrors: true
+    checkOctaneCompatibility: true
+    checkModelProperties: true
+    treatPhpDocTypesAsCertain: false
