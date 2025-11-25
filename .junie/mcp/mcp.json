@@ -1,0 +1,20 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/Users/jmckenzie/Library/Application Support/Herd/bin/php84",
+            "args": [
+                "/Users/jmckenzie/github.com/joeymckenzie/livewire-blog/artisan",
+                "boost:mcp"
+            ]
+        },
+        "herd": {
+            "command": "/Users/jmckenzie/Library/Application Support/Herd/bin/php84",
+            "args": [
+                "/Applications/Herd.app/Contents/Resources/herd-mcp.phar"
+            ],
+            "env": {
+                "SITE_PATH": "/Users/jmckenzie/github.com/joeymckenzie/livewire-blog"
+            }
+        }
+    }
+}
