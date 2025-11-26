@@ -8,23 +8,36 @@ published_at: '2025-05-20'
 storage_key: 2025-05-20-parallel-testing-with-pest-and-sqlite
 ---
 
-As an unapologetic wrestling fan, I felt exactly like A.J. Styles burying Undertaker in Wrestlemania 36 after writing my complete test suite, verifying each test passing one at a time, only to kick off the entire suite in parallel to be met with a bit of a head scratcher:
+As an unapologetic wrestling fan, I felt exactly like A.J. Styles burying Undertaker in Wrestlemania 36 after writing my
+complete test suite, verifying each test passing one at a time, only to kick off the entire suite in parallel to be met
+with a bit of a head scratcher:
 
 ```bash
 SQLSTATE[HY000]: General error: 8 attempt to write a readonly database
 ```
 
-Every problem has a solution, with the only exception being you and your spouse debating what to have for dinner tonight. As Leonardo DiCaprio once said in the the 2010 thriller Inception:
+Every problem has a solution, with the only exception being you and your spouse debating what to have for dinner
+tonight. As Leonardo DiCaprio once said in the the 2010 thriller Inception:
 
 > We need to go deeper.
 
 ## The problem
 
-I ran into an interesting issue this past weekend working on a fun little Laravel [package](https://github.com/JoeyMckenzie/artisense) to scratch my own itch of having a local-first copy of the Laravel documentation accessible from the comfort of my own terminal. The details of this package are neither here nor there (I promise I'll follow up soon), though a testing scenario taught me a lot about designing code for parallel testing.
+I ran into an interesting issue this past weekend working on a fun little
+Laravel [package](https://github.com/JoeyMckenzie/artisense) to scratch my own itch of having a local-first copy of the
+Laravel documentation accessible from the comfort of my own terminal. The details of this package are neither here nor
+there (I promise I'll follow up soon), though a testing scenario taught me a lot about designing code for parallel
+testing.
 
-I was working on a scenario where I needed to validate a few things within a local SQLite database. Since this is a package, I can't guarantee the parent Laravel app's environment it's installed in. The package has an isolated `/storage` folder similar to debugbar, pail, and other packages that are more so development tools. I store the things I need in `/storage/artisense`, which at the moment, is a copy of the Laravel markdown documentation files and an `artisense.sqlite` database file.
+I was working on a scenario where I needed to validate a few things within a local SQLite database. Since this is a
+package, I can't guarantee the parent Laravel app's environment it's installed in. The package has an isolated
+`/storage` folder similar to debugbar, pail, and other packages that are more so development tools. I store the things I
+need in `/storage/artisense`, which at the moment, is a copy of the Laravel markdown documentation files and an
+`artisense.sqlite` database file.
 
-This package is just a collection of `artisan` commands. Within my Pest suite, I have a bunch of tests that verify the behavior of the commands, like verifying documentation was correctly downloaded, the database was created and seeded, etc. There's nothing really special about them, taking one of the tests as an example:
+This package is just a collection of `artisan` commands. Within my Pest suite, I have a bunch of tests that verify the
+behavior of the commands, like verifying documentation was correctly downloaded, the database was created and seeded,
+etc. There's nothing really special about them, taking one of the tests as an example:
 
 ```php
 it('parses markdown docs and stores them in the database', function (): void {
@@ -80,29 +93,48 @@ beforeEach(function (): void {
 });
 ```
 
-There’s definitely some cleanup to do eventually, but for an integration test, this setup is solid for now. Nothing fancy, just ensuring the package directory exists on the `storage_path()` and dropping a few things in there mimicking the output of a previous command that runs.
+There’s definitely some cleanup to do eventually, but for an integration test, this setup is solid for now. Nothing
+fancy, just ensuring the package directory exists on the `storage_path()` and dropping a few things in there mimicking
+the output of a previous command that runs.
 
-This works for my test suite, and running a quick `vendor/bin/pest` gives me the ever so satisfying green lights I'm looking for. _However_... as soon as I run tests in parallel with `vendor/bin/pest --parallel`, I'm met with the aforementioned `SQLSTATE` error.
+This works for my test suite, and running a quick `vendor/bin/pest` gives me the ever so satisfying green lights I'm
+looking for. _However_... as soon as I run tests in parallel with `vendor/bin/pest --parallel`, I'm met with the
+aforementioned `SQLSTATE` error.
 
 ## But... why?
 
-My package uses SQLite to store some sliced-and-diced Laravel documentation that I parse from the source on GitHub. SQLite is great, but it's also _just a file_. When I run my tests in parallel, there's file lock contention on the database as each process that spins up to run a test writes to the database as both part of the setup and within the command I'm testing.
+My package uses SQLite to store some sliced-and-diced Laravel documentation that I parse from the source on GitHub.
+SQLite is great, but it's also _just a file_. When I run my tests in parallel, there's file lock contention on the
+database as each process that spins up to run a test writes to the database as both part of the setup and within the
+command I'm testing.
 
-SQLite isn’t like Postgres or MySQL. It stores everything in a single file, and it can’t handle multiple processes writing to it at the same time. When Pest runs tests in parallel, each worker process tries to write to that file, hence the `readonly` database error.
+SQLite isn’t like Postgres or MySQL. It stores everything in a single file, and it can’t handle multiple processes
+writing to it at the same time. When Pest runs tests in parallel, each worker process tries to write to that file, hence
+the `readonly` database error.
 
-Now, one potential solution is to simply mock the data access. Mocking in and of itself is an art and deserving of it's own post, and I'm sure we've all been on one end of the mocking debate spectrum at some point in our careers. I tend to lean on the "mock things you don't own" side of the debate, and in this case, I "own" the database as it’s just a local file used internally by the package, not a third-party service.
+Now, one potential solution is to simply mock the data access. Mocking in and of itself is an art and deserving of it's
+own post, and I'm sure we've all been on one end of the mocking debate spectrum at some point in our careers. I tend to
+lean on the "mock things you don't own" side of the debate, and in this case, I "own" the database as it’s just a local
+file used internally by the package, not a third-party service.
 
-I want to test real scenarios, which in my case are my console commands creating a SQLite file and inserting parsed data as I expect. Mocking tends to lead to testing code _structure_ rather than code _behavior_. Are there times when you should mock? Absolutely, I don't own GitHub's API and I don't want to schedule my test runs around SLAs and outages, and mocking something of the sort is a perfect use case.
+I want to test real scenarios, which in my case are my console commands creating a SQLite file and inserting parsed data
+as I expect. Mocking tends to lead to testing code _structure_ rather than code _behavior_. Are there times when you
+should mock? Absolutely, I don't own GitHub's API and I don't want to schedule my test runs around SLAs and outages, and
+mocking something of the sort is a perfect use case.
 
 ## Parallel tests with Pest
 
-So I still need some way to run my tests in parallel to avoid the file write contention. Pest even provides a bit of [insight](https://pestphp.com/docs/optimizing-tests) when writing tests to cover these scenarios, and seeing as my SQLite file is a shared resource (a file on disk), I need to design my tests around that.
+So I still need some way to run my tests in parallel to avoid the file write contention. Pest even provides a bit
+of [insight](https://pestphp.com/docs/optimizing-tests) when writing tests to cover these scenarios, and seeing as my
+SQLite file is a shared resource (a file on disk), I need to design my tests around that.
 
-The solution? Isolate the storage path from each test so it each can properly initialize, seed, and assert against the SQLite database that my package provides. This actually ends up _super_ easy with Pest, as we just need to uniquely prefix the storage path.
+The solution? Isolate the storage path from each test so it each can properly initialize, seed, and assert against the
+SQLite database that my package provides. This actually ends up _super_ easy with Pest, as we just need to uniquely
+prefix the storage path.
 
 One way to do this is with PHP's `getmypid()` function which gives us the current process ID:
 
-```php{}{2,3,4}
+```php
 beforeEach(function (): void {
     $uniqueKey = 'artisense/test-' . uniqid();
     $this->storagePath = storage_path($uniqueKey);
@@ -139,7 +171,9 @@ With those changes in place:
 - Each test process gets its own storage folder: `storage/artisense/test-abc123`
 - Each test process gets an isolated DB: `storage/artisense/test-abc123/artisense.sqlite`
 
-To avoid sprinkling `storage_path()` calls everywhere and hardcoding paths, I wrapped all storage logic into a [`DiskManager.php`](https://github.com/JoeyMckenzie/artisense/blob/main/src/Support/DiskManager.php). This made it easy to inject a custom path in tests, and kept my command logic clean and agnostic of the environment:
+To avoid sprinkling `storage_path()` calls everywhere and hardcoding paths, I wrapped all storage logic into a [
+`DiskManager.php`](https://github.com/JoeyMckenzie/artisense/blob/main/src/Support/DiskManager.php). This made it easy
+to inject a custom path in tests, and kept my command logic clean and agnostic of the environment:
 
 ```php
 final class DiskManager
@@ -160,7 +194,10 @@ final class DiskManager
 }
 ```
 
-There's some other things in there, though it's primarily used within my commands as a common access point to the storage path I shove all of the package's files into. By making the relative storage path injectable, the console commands don't need to know, nor care about where the storage path is so prefixing the path with a process ID to support parallel testing has no negative side effects. Heck yeah!
+There's some other things in there, though it's primarily used within my commands as a common access point to the
+storage path I shove all of the package's files into. By making the relative storage path injectable, the console
+commands don't need to know, nor care about where the storage path is so prefixing the path with a process ID to support
+parallel testing has no negative side effects. Heck yeah!
 
 Now when I run my tests, we're back in the green:
 
@@ -178,7 +215,8 @@ $ vendor/bin/pest --parallel
   ✓ Artisense\Console\Commands\SeedDocsCommand → it handles empty docs directory                                                                                                                    0.02s
 ```
 
-Perfect, tests are passing with the ability to run in parallel, cutting test time dramatically compared to running them sequentially. With a few minor tweaks, it was relatively painless too.
+Perfect, tests are passing with the ability to run in parallel, cutting test time dramatically compared to running them
+sequentially. With a few minor tweaks, it was relatively painless too.
 
 ## The takeaway
 
@@ -188,6 +226,7 @@ Perfect, tests are passing with the ability to run in parallel, cutting test tim
 - 📦 Designing for testability improves the quality of your production code too
 - 💯 Bookend your blog posts with cringe LinkedIn-like emoji prefixed lists
 
-I learned quite a bit debugging this one, and not just how to avoid SQLite issues in parallel tests, but how designing for testability leads to cleaner, more flexible package code. Hope this saves someone else the head scratch.
+I learned quite a bit debugging this one, and not just how to avoid SQLite issues in parallel tests, but how designing
+for testability leads to cleaner, more flexible package code. Hope this saves someone else the head scratch.
 
 Until next time, friends!
