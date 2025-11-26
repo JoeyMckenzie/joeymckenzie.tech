@@ -6,18 +6,18 @@
         data-animation="slideUp" data-stagger="{{ $stagger }}" />
 
     <a href="https://x.com/_joeyMcKenzie" aria-label="Twitter/X Link">
-        <flux:button class="hover:-translate-y-1 transition ease-in-out cursor-pointer" icon="twitter"
-            variant="subtle" data-animation="slideUp" data-stagger="{{ $stagger }}" />
+        <flux:button class="hover:-translate-y-1 transition ease-in-out cursor-pointer" icon="twitter" variant="subtle"
+            data-animation="slideUp" data-stagger="{{ $stagger }}" />
     </a>
 
     <a href="https://github.com/joeymckenzie" aria-label="GitHub Link">
-        <flux:button class="hover:-translate-y-1 transition ease-in-out cursor-pointer" icon="github"
-            variant="subtle" data-animation="slideUp" data-stagger="{{ $stagger }}" />
+        <flux:button class="hover:-translate-y-1 transition ease-in-out cursor-pointer" icon="github" variant="subtle"
+            data-animation="slideUp" data-stagger="{{ $stagger }}" />
     </a>
 
     <a href="https://linkedin.com/in/joeymckenzie" aria-label="LinkedIn Link">
-        <flux:button class="hover:-translate-y-1 transition ease-in-out cursor-pointer" icon="linkedin"
-            variant="subtle" data-animation="slideUp" data-stagger="{{ $stagger }}" />
+        <flux:button class="hover:-translate-y-1 transition ease-in-out cursor-pointer" icon="linkedin" variant="subtle"
+            data-animation="slideUp" data-stagger="{{ $stagger }}" />
     </a>
 
     <a href="mailto:joey.mckenzie27@gmail.com" aria-label="Email Joey">

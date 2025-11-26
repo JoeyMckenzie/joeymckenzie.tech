@@ -2,7 +2,7 @@
     use Illuminate\Support\Str;
 @endphp
 
-<main class="w-full max-w-3xl px-6 py-12 lg:px-8 lg:py-16">
+<main class="w-full max-w-3xl px-6">
     <article class="flex flex-col gap-10">
         <header class="flex flex-col gap-4">
             <flux:heading size="xl" class="text-balance text-center">
