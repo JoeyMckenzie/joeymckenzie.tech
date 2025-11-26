@@ -1,3 +1,15 @@
-<div>
-    <!-- I begin to speak only when I am certain what I will say is not better left unsaid. - Cato the Younger -->
+<div class="flex flex-col gap-4 mt-4">
+    @foreach ($posts as $post)
+        <article class="group flex flex-col gap-2" data-animation="slideUp" data-stagger="0.15">
+            <a href="{{ $post->to }}" wire:navigate.hover>
+                <flux:text variant="subtle">{{ $post->formatted_published_at }}</flux:text>
+                <flux:heading size="lg" class="font-semibold group-hover:text-accent transition-colors">
+                    {{ $post->title }}
+                </flux:heading>
+                <flux:text class="mt-1">
+                    {{ $post->description }}
+                </flux:text>
+            </a>
+        </article>
+    @endforeach
 </div>
