@@ -44,14 +44,6 @@ final class Post extends Model
 {
     use Orbital;
 
-    /**
-     * @var list<string>
-     */
-    protected $appends = [
-        'formatted_published_at',
-        'to',
-    ];
-
     public static function schema(Blueprint $table): void
     {
         $table->string('title');
