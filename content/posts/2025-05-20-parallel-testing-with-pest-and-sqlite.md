@@ -43,10 +43,10 @@ etc. There's nothing really special about them, taking one of the tests as an ex
 it('parses markdown docs and stores them in the database', function (): void {
     // Arrange & Act
     $this->artisan(SeedDocsCommand::class)
-        ->expectsOutput('🔍 Parsing Laravel docs...')
+        ->expectsOutput('Parsing Laravel docs...')
         ->expectsOutput('Preparing database...')
         ->expectsOutput('Found 1 docs files...')
-        ->expectsOutput('✅ Docs parsed and stored!')
+        ->expectsOutput('Docs parsed and stored!')
         ->assertExitCode(Command::SUCCESS);
 
     // Assert, connect to the database and verify content was stored
@@ -132,7 +132,7 @@ The solution? Isolate the storage path from each test so it each can properly in
 SQLite database that my package provides. This actually ends up _super_ easy with Pest, as we just need to uniquely
 prefix the storage path.
 
-One way to do this is with PHP's `getmypid()` function which gives us the current process ID:
+Ones way to do this is with PHP's `getmypid()` function which gives us the current process ID:
 
 ```php
 beforeEach(function (): void {
