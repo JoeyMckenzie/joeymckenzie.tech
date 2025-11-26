@@ -35,7 +35,9 @@
         <flux:heading size="xl" data-animation="slideUp" data-stagger="0.1">
             Recent Posts
         </flux:heading>
+
         <x-preview-posts :posts="$posts" />
+
         <div class="mt-12" data-animation="slideUp" data-stagger="0.2">
             <a href="#" class="inline-flex items-center gap-2 font-medium hover:underline">
                 View all posts
