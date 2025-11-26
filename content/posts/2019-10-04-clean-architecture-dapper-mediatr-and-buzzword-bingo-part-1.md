@@ -4,7 +4,8 @@ slug: clean-architecture-dapper-mediatr-and-buzzword-bingo-part-1
 description: Beer and code... a match made in heaven.
 image: assets/images/dotnet-mediatr/beer-background-dappery.jpg
 tag_id: 3
-published_at: '2019-10-04'
+published_at: 2019-10-04
+storage_key: 2019-10-04-clean-architecture-dapper-mediatr-and-buzzword-bingo-part-1
 ---
 
 Welcome to buzzword bingo, a.k.a. how many resume keywords can we fit in one blog post before someone stops reading. If

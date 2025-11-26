@@ -14,7 +14,8 @@
         "league/commonmark": "^2.7",
         "livewire/flux": "^2.7",
         "phiki/phiki": "^2.0",
-        "ryangjchandler/orbit": "^1.4"
+        "ryangjchandler/orbit": "^1.4",
+        "ext-pdo": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16",

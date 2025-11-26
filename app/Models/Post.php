@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\CarbonImmutable;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -21,24 +20,23 @@ use Orbit\Concerns\Orbital;
  * @property string $content
  * @property string $image
  * @property string|null $published_at
+ * @property string $storage_key
  * @property int $tag_id
- * @property CarbonImmutable|null $created_at
- * @property CarbonImmutable|null $updated_at
- * @property-read string|null $formatted_published_at
+ * @property-read string $formatted_published_at
  * @property-read Tag $tag
+ * @property-read string $to
  *
  * @method static Builder<static>|Post newModelQuery()
  * @method static Builder<static>|Post newQuery()
  * @method static Builder<static>|Post query()
  * @method static Builder<static>|Post whereContent($value)
- * @method static Builder<static>|Post whereCreatedAt($value)
  * @method static Builder<static>|Post whereDescription($value)
  * @method static Builder<static>|Post whereImage($value)
  * @method static Builder<static>|Post wherePublishedAt($value)
  * @method static Builder<static>|Post whereSlug($value)
+ * @method static Builder<static>|Post whereStorageKey($value)
  * @method static Builder<static>|Post whereTagId($value)
  * @method static Builder<static>|Post whereTitle($value)
- * @method static Builder<static>|Post whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */
@@ -62,6 +60,7 @@ final class Post extends Model
         $table->text('content');
         $table->string('image');
         $table->date('published_at')->nullable();
+        $table->string('storage_key');
         $table->foreignIdFor(Tag::class)->constrained();
     }
 
@@ -96,6 +95,11 @@ final class Post extends Model
     }
 
     public function getKeyName(): string
+    {
+        return 'storage_key';
+    }
+
+    public function getRouteKeyName(): string
     {
         return 'slug';
     }

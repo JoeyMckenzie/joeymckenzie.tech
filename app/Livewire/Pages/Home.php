@@ -28,6 +28,7 @@ final class Home extends Component
                 'description',
                 'tag_id',
                 'published_at',
+                'storage_key',
             ]);
     }
 
