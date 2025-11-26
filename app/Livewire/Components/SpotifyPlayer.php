@@ -20,6 +20,6 @@ final class SpotifyPlayer extends Component
 
     public function render(): View
     {
-        return view('livewire.components.navbar');
+        return view('livewire.components.spotify-player');
     }
 }

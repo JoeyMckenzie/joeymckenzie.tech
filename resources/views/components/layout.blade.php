@@ -22,11 +22,9 @@
 
 <body class="min-h-screen">
     <livewire:components.navbar />
-
     <div class="flex justify-center w-full min-h-[calc(100vh-96px)]">
         {{ $slot }}
     </div>
-
     <x-footer />
     @fluxScripts
 </body>
