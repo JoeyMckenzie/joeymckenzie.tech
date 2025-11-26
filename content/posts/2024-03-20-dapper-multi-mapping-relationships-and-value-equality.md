@@ -1,14 +1,13 @@
 ---
-id: 597ed10f-910c-4232-afb2-782285abd689
-blueprint: blog
 title: 'Dapper multi-mapping relationships and value equality'
-subtitle: "So long, IEqualityComparer<T>, you'll be sorely missed."
-image: blog/dapper-value-equality.jpeg
-topics:
-  - net
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746643670
+slug: dapper-multi-mapping-relationships-and-value-equality
+description: "So long, IEqualityComparer<T>, you'll be sorely missed."
+image: assets/images/dapper-value-equality.jpeg
+tag_id: 3
+published_at: '2024-03-20'
+storage_key: 2024-03-20-dapper-multi-mapping-relationships-and-value-equality
 ---
+
 The other day I was deep in the weeds of some data access code that relies heavily on Dapper for talking to a Postgres database, where most curmudgeonly developers like myself tend to find themselves when fine tuning an application, and landed on a solution to a particular problem I was having in the best form possible: removing code entirely.
 
 ## It's free value equality
@@ -155,7 +154,7 @@ WHERE br.id = @BreweryId
 We might get something like:
 
 | Brewery ID | Name      | Beer ID | Beer Name | Beer Type | Employee ID | First Name | Last Name |
-|------------|-----------|---------|-----------|-----------|-------------|------------|-----------|
+| ---------- | --------- | ------- | --------- | --------- | ----------- | ---------- | --------- |
 | 1          | Brewery A | 101     | Beer A    | Ale       | 201         | John       | Doe       |
 | 1          | Brewery A | 102     | Beer B    | Lager     | 201         | John       | Doe       |
 | 2          | Brewery B | 103     | Beer X    | Stout     | 202         | Jane       | Smith     |

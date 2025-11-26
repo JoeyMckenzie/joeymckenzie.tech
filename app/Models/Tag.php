@@ -45,6 +45,30 @@ final class Tag extends Model
             'id' => 3,
             'name' => 'dotnet',
         ],
+        [
+            'id' => 4,
+            'name' => 'angular',
+        ],
+        [
+            'id' => 5,
+            'name' => 'astro',
+        ],
+        [
+            'id' => 6,
+            'name' => 'design',
+        ],
+        [
+            'id' => 7,
+            'name' => 'react',
+        ],
+        [
+            'id' => 8,
+            'name' => 'rust',
+        ],
+        [
+            'id' => 9,
+            'name' => 'zig',
+        ],
     ];
 
     /**

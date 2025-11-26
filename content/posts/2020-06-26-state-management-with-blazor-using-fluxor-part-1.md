@@ -1,14 +1,13 @@
 ---
-id: d05ca1d9-0296-438e-b218-cdd6fa92e978
-blueprint: blog
 title: 'State Management with Blazor using Fluxor (Part 1)'
-subtitle: 'Redux... redux ALL the things!'
-image: blog/dotnet-blazor-state-management/blazor_meme_part_1.png
-topics:
-  - net
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746818071
+slug: state-management-with-blazor-using-fluxor-part-1
+description: 'Redux... redux ALL the things!'
+image: assets/images/dotnet-blazor-state-management/blazor_meme_part_1.png
+tag_id: 3
+published_at: '2020-06-26'
+storage_key: 2020-06-26-state-management-with-blazor-using-fluxor-part-1
 ---
+
 I'm gonna give it to you straight, uncensored, and off the cuff. Building reactive, fault tolerant, pleasant-to-use frontend single page applications in the modern web-based world is not an easy task; building _stateful_ applications, on top of all that, can be the most difficult part of frontend application engineering. Nowadays in the modern enterprise, frontend applications are more complicated than ever - managing user data, interacting with a plethora of APIs, all while allowing users to navigate from page to page and back again carrying what seems like (from an end user's
 perspective) a history of all their page interactions and application data they've inherently requested just by clicking buttons.
 

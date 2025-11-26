@@ -1,14 +1,13 @@
 ---
-id: 5d097141-6854-4361-b5d3-2a5c91eb47cb
-blueprint: blog
 title: 'Content caching with Statamic'
-subtitle: "Cachin' checks, breakin' (bottle)necks."
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1747066789
-topics:
-  - laravel
-image: blog/img_9206.jpeg
+slug: content-caching-with-statamic
+description: "Cachin' checks, breakin' (bottle)necks."
+image: assets/images/img_9206.jpeg
+tag_id: 1
+published_at: '2025-05-11'
+storage_key: 2025-05-11-content-caching-with-statamic
 ---
+
 So this past week, I rewrote my website again (pause for audible gasp). I've had many different versions of my website over the years, each a reflection of my current technology obsession at the time.
 
 From Hugo, to Next.js, to Astro, back to Next.js, then Nuxt, then Svelte, then back to Nuxt... you get the picture. I think I've spent more time rebuilding my own personalized blogging engine than actually writing meaningful content. That's boring though, and neither here nor there.
@@ -25,7 +24,7 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         self::configureMarkdown();
-      
+
       	// Other stuff...
     }
 
@@ -37,7 +36,7 @@ final class AppServiceProvider extends ServiceProvider
             ];
         });
     }
-  
+
     // Other stuff...
 }
 ```
@@ -49,28 +48,24 @@ An easy way to get around this is using Statamic's [cache tag](https://statamic.
 ```html
 <div class="px-4 py-16 lg:px-8">
     <div class="mx-auto max-w-3xl">
-        <h1 class="text-center text-4xl font-semibold">
-            {{ title }}
-        </h1>
+        <h1 class="text-center text-4xl font-semibold">{{ title }}</h1>
         <div class="flex flex-row items-center justify-center gap-x-4 py-4">
             {{ topics limit="1" }}
-                <span class="badge badge-neutral">{{ title }}</span>
+            <span class="badge badge-neutral">{{ title }}</span>
             {{ /topics }}
             <span class="text-xs">{{ date format="M j, Y" }}</span>
         </div>
         {{ image }}
-            <img
-                class="mx-auto h-full rounded-md py-8"
-                src="{{ url }}"
-                alt="{{ alt }}"
-                width="400"
-                height="400"
-            />
+        <img
+            class="mx-auto h-full rounded-md py-8"
+            src="{{ url }}"
+            alt="{{ alt }}"
+            width="400"
+            height="400"
+        />
         {{ /image }}
         <div class="prose mt-4 max-w-full">
-            {{ cache :key="slug" }}
-                {{ content }}
-            {{ /cache }}
+            {{ cache :key="slug" }} {{ content }} {{ /cache }}
         </div>
     </div>
 </div>
@@ -78,7 +73,7 @@ An easy way to get around this is using Statamic's [cache tag](https://statamic.
 
 The `:key` here (no pun intended) for the cached content being the slug of the blog page. Now since I'm not providing a TTL for the cached content, the content of my blog posts will be cached forever, until the end of time, long after all matter in the known universe has decayed to iron-56.
 
-To get around this, we can programmatically bust the cache. Now, the great benefit of Statamic being a CMS is that I can update content as I please without the need to physically deploy any new code. 
+To get around this, we can programmatically bust the cache. Now, the great benefit of Statamic being a CMS is that I can update content as I please without the need to physically deploy any new code.
 
 By default, Statamic uses flat files to store content alongside some metadata about page the content is associated to. Even _better_, Statamic will also fire events anytime the content is updated. Statamic will store cached content in your cache store of choice with keys along the lines of `statamic_cache_{{key}}` that you specify, which in my case, are the slugs to the blog itself. Laravel makes this _way_ too easy to then hook into the content saved event and bust the cached value like so:
 
@@ -88,7 +83,7 @@ final class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
       	// Other stuff...
-      
+
         self::configureEvents();
     }
 
@@ -103,7 +98,7 @@ final class AppServiceProvider extends ServiceProvider
             }
         });
     }
-  
+
   	// Other stuff...
 }
 ```
@@ -350,7 +345,7 @@ Cached: dynamic-error-assertions-with-phpstan
 
 Blog cache warming complete!
 
-   INFO  Nothing to migrate.  
+   INFO  Nothing to migrate.
 
 => Deployment Complete!
 ```

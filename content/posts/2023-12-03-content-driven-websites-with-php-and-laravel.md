@@ -1,14 +1,13 @@
 ---
-id: ebca0884-36b2-41f6-8a1b-86678fa9e6ab
-blueprint: blog
 title: 'Content-driven websites with PHP and Laravel'
-subtitle: "It's PHPin' time!"
-image: blog/content-driven-websites-with-laravel.jpg
-topics:
-  - laravel
-updated_by: 1d53ab1c-db27-4618-99cb-45753112cbae
-updated_at: 1762549425
+slug: content-driven-websites-with-php-and-laravel
+description: "It's PHPin' time!"
+image: assets/images/content-driven-websites-with-laravel.jpg
+tag_id: 1
+published_at: '2023-12-03'
+storage_key: 2023-12-03-content-driven-websites-with-php-and-laravel
 ---
+
 Alright, I'm making this one short (sort of). My pre-New Year's Resolution is to write on my blog here more than bi-annually. Since becoming a dad and taking up my jorts-laden mantle and becoming alarmingly interested in grass mowing techniques and New Balance footwear this past year, finding the time to write has come too far and between (betwixt?).
 
 I was recently on the hunt for something new to learn and after laughing at memes on [r/webdev](https://reddit.com/r/webdev/) about PHP for far too long, I figured I had better at least learn a little PHP to understand the source of the meme'ery in the first place. Learning PHP ultimately brought me to [Laravel](https://laravel.com/), and oh... my... god... do I feel betrayed by my fellow developers for dunking on PHP without telling me about the abundant Lambos running rampant in the Laravel ecosystem. I've been writing a bunch of Rust to keep my brain occupied outside my normal 8-to-5 and PHP was a breath of fresh air.
@@ -540,8 +539,8 @@ and in my component footer:
 
 ```tsx
 export default function SpotifyTracker({
-                                           children,
-                                       }: {
+    children,
+}: {
     children: React.JSX.Element;
 }): React.JSX.Element {
     // Inertia has a pretty sweet hook allowing us to tap into common page properties
@@ -812,49 +811,49 @@ We can then update our deploy workflow action to call this script, pass the key 
 name: Deploy to Forge
 
 on:
-  workflow_run:
-    workflows: [ 'Inertia CI' ]
-    types:
-      - completed
+    workflow_run:
+        workflows: ['Inertia CI']
+        types:
+            - completed
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+    build:
+        runs-on: ubuntu-latest
+        timeout-minutes: 10
 
-    name: Deploy application
-    steps:
-      - uses: actions/checkout@v3
+        name: Deploy application
+        steps:
+            - uses: actions/checkout@v3
 
-      - name: Setup PHP
-        id: setup-php
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
+            - name: Setup PHP
+              id: setup-php
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: '8.3'
 
-      - name: Install Forge CLI
-        run: composer global require laravel/forge-cli
+            - name: Install Forge CLI
+              run: composer global require laravel/forge-cli
 
-      - name: Authenticate with Forge
-        run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
+            - name: Authenticate with Forge
+              run: forge login --token=${{ secrets.FORGE_API_TOKEN }}
 
-      # Forge environment variables, including the current git commit hash,
-      # aren't included as runtime environment variables and only in the build script.
-      # To get the current commit propagated, pull the current production configuration,
-      # and append the current commit to the file and push it back up to Forge.
-      - name: Download current configuration
-        run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
+            # Forge environment variables, including the current git commit hash,
+            # aren't included as runtime environment variables and only in the build script.
+            # To get the current commit propagated, pull the current production configuration,
+            # and append the current commit to the file and push it back up to Forge.
+            - name: Download current configuration
+              run: forge env:pull joeymckenzie.tech ${{ github.workspace }}/.env
 
-      - name: Add current commit and push back to forge
-        run: |
-          ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
-        working-directory: ${{ github.workspace }}
+            - name: Add current commit and push back to forge
+              run: |
+                  ./scripts/update-commit.sh FORGE_DEPLOY_COMMIT ${{ github.sha }}
+              working-directory: ${{ github.workspace }}
 
-      - name: Push environment to Forge
-        run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
+            - name: Push environment to Forge
+              run: forge env:push joeymckenzie.tech ${{ github.workspace }}/.env
 
-      - name: Ping deploy.sh URL
-        run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
+            - name: Ping deploy.sh URL
+              run: curl -l ${{ secrets.FORGE_DEPLOY_URL }}
 ```
 
 Setting a few environment variables, badda bing, badda boom, and everything works.

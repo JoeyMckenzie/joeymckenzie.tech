@@ -1,14 +1,13 @@
 ---
-id: ed9be7d8-ec33-4c83-9ead-29fce0e08d02
-blueprint: blog
 title: 'Decoupling controllers with ApiEndpoints'
-subtitle: 'No one likes monolithic controllers, and with ApiEndpoints, API design just got a whole lot easier.'
-image: blog/dotnet-decoupling-controllers/friends-business-logic.jpg
-topics:
-  - net
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746768100
+slug: decoupling-controllers-with-apiendpoints
+description: 'No one likes monolithic controllers, and with ApiEndpoints, API design just got a whole lot easier.'
+image: assets/images/dotnet-decoupling-controllers/friends-business-logic.jpg
+tag_id: 3
+published_at: '2020-09-23'
+storage_key: 2020-09-23-decoupling-controllers-with-apiendpoints
 ---
+
 Admittedly, or not, we've all worked on projects during our careers that took the above meme's approach of "just put it in the controller and we'll figure it out later". Unfortunately for some, this is a way of life due to project budget constraints, unrealistic product deadlines, and more senior developers refusing to change their ways because it "works." It's like how the old saying goes, you can't teach an old programmer to decouple independent concerns.
 
 On a recent weekend getaway to the mountains, I did what I always do on long drives when my wife inevitably falls asleep in the car: put on episode of [.NET Rocks!](https://www.dotnetrocks.com/) and let Carl, Richard, and their guests fascinate me with the latest in the .NET ecosystem. On this fateful day, the guest happened to be [Steve Smith](https://github.com/ardalis) talking about his relatively new project - [ApiEndpoints](https://github.com/ardalis/ApiEndpoints). I've listened to a lot of .NET Rocks! over the years, and needless to say, a problem that has always bothered me throughout my relatively young career as a developer seemed to finally have a simple solution.

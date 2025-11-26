@@ -1,14 +1,13 @@
 ---
-id: a0733f8d-f6b8-4262-92f7-21a55049e9e5
-blueprint: blog
 title: 'Adventures with PHP, APIs, and sharing types with PHPStan'
-subtitle: 'I like my PHP like I like my Rust... statically analyzed.'
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746672411
-topics:
-  - php
-image: blog/phpstan-sharing-types.jpeg
+slug: adventures-with-php-apis-and-sharing-types-with-phpstan
+description: 'I like my PHP like I like my Rust... statically analyzed.'
+image: assets/images/phpstan-sharing-types.jpeg
+tag_id: 2
+published_at: '2025-02-13'
+storage_key: 2025-02-13-adventures-with-php-apis-and-sharing-types-with-phpstan
 ---
+
 As I delve into the depths of PHP more these days, I find myself more fascinated with how far PHP has come based on stories of yore from developers that were around in its early days. As a career .NET'er, I've seen my fair share of legacy codebases riddled with atrocities that should be outlawed within the software development community and punishable by the highest courts of software law. Approaching a decade working in the enterprise, I'm always fascinated by the spread of opinion when it comes to safety and speed of delivery within a team and their codebase(s).
 
 On one hand, there's a camp of developers emphasizing the core tenants of design, citing every decision they make back to a passage within their religious texts by the [Gang of Four](https://en.wikipedia.org/wiki/Design_Patterns/). Safety is of the utmost importance, tests serve as quasi-documentation, and sweating the details in every line of code within a PR is the norm.
@@ -46,7 +45,7 @@ final readonly class Client implements ClientContract
     {
         return new ServersResource($this->connector);
     }
-    
+
     // ...other resources
 }
 ```
@@ -56,7 +55,7 @@ Where a resource will look something like:
 ```php
 /**
  * @phpstan-import-type GetServerResponseSchema from GetServerResponse
- * 
+ *
  * ...other type imports
  *
  */
@@ -86,7 +85,7 @@ final readonly class ServersResource implements ServersResourceContract
 
         return GetServerResponse::from($data);
     }
-    
+
     // ...other interactions based on their API
 }
 ```

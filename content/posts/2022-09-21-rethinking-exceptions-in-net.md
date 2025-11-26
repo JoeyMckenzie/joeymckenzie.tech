@@ -1,14 +1,13 @@
 ---
-id: 4c1fd2e5-7bbe-4f2c-ac0c-14cd9e6b818d
-blueprint: blog
 title: 'Rethinking exceptions in .NET'
-subtitle: 'Exceptions... exceptions everywhere!'
-image: blog/exceptions_meme.jpg
-topics:
-  - net
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746739183
+slug: rethinking-exceptions-in-net
+description: 'Exceptions... exceptions everywhere!'
+image: assets/images/exceptions_meme.jpg
+tag_id: 3
+published_at: '2022-09-21'
+storage_key: 2022-09-21-rethinking-exceptions-in-net
 ---
+
 I've recently undergone a courtship with Go and Rust, diving into each ecosystem in my spare time and even contributing to a few open source projects here and there in each language. Being a .NET developer by day, I interact primarily with code and services written by other developers that may include quite a bit of control flow via throwing exceptions when any erroneous scenario or non-desirable application state arises. While this may be the norm in .NET and quite frankly what .NET/Java developers hardened by the enterprise have been trained for years to do as a first action during a fallible process, I've been conscientiously forcing myself to properly handle said fallible situations in a manner similar to what both Go and Rust offer in regards to the error handling developer experience.
 
 For those not familiar with Go or Rust, a fallible method (simply a function that could return an error) might look something like:

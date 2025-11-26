@@ -1,14 +1,13 @@
 ---
-id: b4c26f31-1103-491d-98a3-b418de52ab57
-blueprint: blog
 title: "Ziggin' around with linked lists"
-subtitle: 'Flashback to detecting loops in a list on a whiteboard...'
-topics:
-  - zig
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746734122
-image: blog/ziggin-around.jpg
+slug: ziggin-around-with-linked-lists
+description: 'Flashback to detecting loops in a list on a whiteboard...'
+image: assets/images/ziggin-around.jpg
+tag_id: 9
+published_at: '2023-05-23'
+storage_key: 2023-05-23-ziggin-around-with-linked-lists
 ---
+
 So I've been looking for a reason to write code to keep me sane while in the thick of parental leave, and I, like I'm sure most of us have seen on tech bro Twitter, have been seeing a lot of commotion about [Zig](https://Ziglang.org). I've been writing quite a bit of Rust, and Zig's model of no hidden memory allocation or hidden control flow is fascinating to me.
 
 Much like Rust's upfront model of memory safety first, becoming conscious of borrows (with lots of help from the compiler) definitely made me more aware of _what_ exactly I was doing in code rather than passing objects (and thus, memory) around willy nilly. Those that have read a few things around here know that I'm married to .NET during my 8-to-5, where corporate .NET developer America is not concerned much about zero cost abstractions and memory safety.
@@ -70,11 +69,11 @@ pub fn build(b: *std.build.Builder) void {
 
 Okay, parsing this file a bit, it looks like there are a few things going on:
 
--   Zig doesn't have an official package manager yet (at least from what I can see) on the stable branch, though it's
-    coming soon<sup>tm</sup>
--   Zig's build feels a lot like Rust's version of a `build.rs` file you'll see from time to time, so that's neat
--   Since we're in the context of a library, our default build target will just run tests
-    as we're not building an executable
+- Zig doesn't have an official package manager yet (at least from what I can see) on the stable branch, though it's
+  coming soon<sup>tm</sup>
+- Zig's build feels a lot like Rust's version of a `build.rs` file you'll see from time to time, so that's neat
+- Since we're in the context of a library, our default build target will just run tests
+  as we're not building an executable
 
 Alright, I _think_ I've got the basics down here. Cross-referencing the docs about its [build system](https://Ziglearn.org/chapter-3/) seems to confirm what I'm looking here. Next, let's take a look at `main.zig`:
 
@@ -95,12 +94,12 @@ test "basic add functionality" {
 
 Let's take a swing at parsing this thing while cross-checking with the docs:
 
--   Imports defined at the top with `@import` - pretty cool, feels a lot like other languages
--   We export a single `add` function that returns an `i32` - feels pretty similar to Go and Rust integer types
--   There's a testing block with a short description - pretty neat, feels a bit jest-like
--   We `try` to make an assertion - `try` in Zig is pretty neat
-    -   `try` feels a lot like Rust's try operator in `?` or Go's abundant `if err != nil { ... }` you'll see everywhere
-    -   In essence: attempt an operation and if it fails, simply return the error back to the caller
+- Imports defined at the top with `@import` - pretty cool, feels a lot like other languages
+- We export a single `add` function that returns an `i32` - feels pretty similar to Go and Rust integer types
+- There's a testing block with a short description - pretty neat, feels a bit jest-like
+- We `try` to make an assertion - `try` in Zig is pretty neat
+    - `try` feels a lot like Rust's try operator in `?` or Go's abundant `if err != nil { ... }` you'll see everywhere
+    - In essence: attempt an operation and if it fails, simply return the error back to the caller
 
 Okay, think I've got a hang of this so far. I'm loosely in line with my pontification and the docs, so let's give this thing a go:
 
@@ -117,12 +116,12 @@ There are a thousand other resources for learning about what a linked list is an
 
 Without going too far down the CS rabbit hole, our version of a linked list will be fairly straightforward. Our linked list will have:
 
--   A head node
--   A way to keep track of the length
--   A few operations associated to it:
-    -   An `insert` method that will attach new nodes to the head
-    -   A `pop` method that will detach the most recently inserted node and read out their values
-    -   A `traverse` method will walk the linked list and print out values as it goes
+- A head node
+- A way to keep track of the length
+- A few operations associated to it:
+    - An `insert` method that will attach new nodes to the head
+    - A `pop` method that will detach the most recently inserted node and read out their values
+    - A `traverse` method will walk the linked list and print out values as it goes
 
 There's a lot more to a linked list than the operations we defined above - for example, one could insert at _any_ point in the linked list rather than the head, or peek values at the tail rather than explicitly removing them. I'll leave those as an exercise for the reader.
 
@@ -609,7 +608,7 @@ pub fn LinkedList(comptime T: type) type {
 // None of our test code will change...
 ```
 
-We can keep our inline unit tests the same, and they should still work. Next, let's update our `src/main.zig` file to be just a simple `main()`: 
+We can keep our inline unit tests the same, and they should still work. Next, let's update our `src/main.zig` file to be just a simple `main()`:
 
 ## src/main.zig
 

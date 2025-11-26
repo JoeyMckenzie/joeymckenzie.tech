@@ -1,14 +1,13 @@
 ---
-id: ee75b150-3d79-4aab-8938-d3d2d7fd7157
-blueprint: blog
 title: '.NET Core service lifetimes in a nutshell'
-subtitle: "Singleton? More like single... not. I'm sorry."
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746817103
-image: blog/dependencies_meme.png
-topics:
-  - net
+slug: net-core-service-lifetimes-in-a-nutshell
+description: "Singleton? More like single... not. I'm sorry."
+image: assets/images/dependencies_meme.png
+tag_id: 3
+published_at: '2023-08-23'
+storage_key: 2023-08-23-net-core-service-lifetimes-in-a-nutshell
 ---
+
 No matter the side of the dependency injection debate fence you fall, you've probably worked with some .NET code that had some form of object composition through DI at some point, or another. Heck, with libraries in [Autofac](https://autofac.org/) and .NET Core's dependency injection extension namespace, DI and service container registration is a breeze with all the heavy lifting done virtually for us.
 
 If you've been reading along for the past several posts, you're wondering why I'm _not_ writing about Blazor. Don't get me wrong, I've got quite a few ideas I'd like to get out on paper here as we venture off deeper into Blazor-land. I wanted to take a break from the Blazor-scape for a while and write a bit on a topic I've been quite curious about for some time now. Admittedly, I've fallen victim to the mindset of defaulting most of my .NET Core services lifetimes to the good ole fashioned `.AddTransient()` simply because I figured when in doubt, you can't go wrong with the transient

@@ -1,14 +1,13 @@
 ---
-id: d437be51-a3d6-4e78-a1f2-9312c6a47686
-blueprint: blog
 title: "Hitchhiker's guide to Angular development with Nx"
-subtitle: 'The answer is simple... 42 (projects in the same monorepo).'
-image: blog/angular-nx-monorepos/nx-meme.jpg
-topics:
-  - angular
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746766161
+slug: hitchhikers-guide-to-angular-development-with-nx
+description: 'The answer is simple... 42 (projects in the same monorepo).'
+image: assets/images/angular-nx-monorepos/nx-meme.jpg
+tag_id: 4
+published_at: '2021-11-11'
+storage_key: 2021-11-11-hitchhikers-guide-to-angular-development-with-nx
 ---
+
 As developers, we love reusability: components, modules, CSS, code snippets, libraries, you name it... if it can be made generic, one can safely bet that a friendly developer will at some point attempt a Herculean effort to do so. Enter the monorepo - a development style aimed at encouraging reusability, common versioning, and improved developer experience when working on large teams. While there are quite a few benefits of working within a single repository for multiple projects, those aforementioned are just a _few_ of the many perks. As I continue to veer off the .NET blogging path for a bit, I thought it would fun to write a bit about my favorite development tool lately in the JS/TS realm, [Nx](https://nx.dev/).
 
 ## What is Nx?
@@ -36,9 +35,9 @@ of [community plugins](https://nx.dev/community) for varying languages, framewor
 
 To keep things simple, let's use our previous example of building out a todos application using Angular to see how we might cleanly architect such an application. Our game plan will be something like:
 
--   One todo application, serving as nothing more than a glorified dependency injection container/puppeteer for the
-    libraries it depends on
--   Separate libraries that each have a single concern - state management, UI, and utilities
+- One todo application, serving as nothing more than a glorified dependency injection container/puppeteer for the
+  libraries it depends on
+- Separate libraries that each have a single concern - state management, UI, and utilities
 
 While it might be tempting to throw everything into our single todo application in place of separate libraries, we should make it a point to keep our applications as simple as possible, offloading most of our dependencies into scoped libraries and modules each with a designated purpose. What does this mean in practice? Let's look at an example architecture we'll emulate while developing our applications within an Nx monorepo:
 
@@ -83,12 +82,12 @@ npx create-nx-workspace@latest exploring-nx --preset=angular
 Nx will kick off, creating our workspace and prompting for a few inputs from us on the command line.
 Once the process completes, let's go ahead and take a look at what Nx generates for us:
 
--   An `apps` directory containing our applications that will ultimately be the interface for our users into our code
--   A `libs` directory that will eventually contain all of our independent library code each dealing with a specific
-    concern
--   A `tools` directory serving as the home base for custom in-house development scripts and custom workspace generators
--   A bunch of config files that assist in wiring up apps, libs, devtools, and the like (don't worry too much about these
-    for now)
+- An `apps` directory containing our applications that will ultimately be the interface for our users into our code
+- A `libs` directory that will eventually contain all of our independent library code each dealing with a specific
+  concern
+- A `tools` directory serving as the home base for custom in-house development scripts and custom workspace generators
+- A bunch of config files that assist in wiring up apps, libs, devtools, and the like (don't worry too much about these
+  for now)
 
 For our purpose, we'll only be concerned with our todos app and the libraries it depends on. Nx provides some modern developer tooling in ESLint and Prettier to help keep our codebase properly linted and formatted, along with swapping out Karma for Jest and attaching an e2e integration project to our todos app using Cypress. All that out of the box... pretty cool, huh?
 
@@ -114,10 +113,10 @@ Now, to generate an Nx library specific to Angular, Nx provides an amazing CLI t
 
 Let's take a minute to discuss our `libs` strategy to help us keep things organized within our `shared` library:
 
--   We'll create a `features` folder that will contain our state management code
--   Next we'll add a `services` library that will _service_ as our primary data fetching module
--   Finally, we'll create a `ui` folder that will container two sub-libraries in `pages` and `components` (more on this
-    separation later)
+- We'll create a `features` folder that will contain our state management code
+- Next we'll add a `services` library that will _service_ as our primary data fetching module
+- Finally, we'll create a `ui` folder that will container two sub-libraries in `pages` and `components` (more on this
+  separation later)
 
 I use the terms library and folder in the above list _not_ interchangeably - I like to further refine
 my workspace namespaces by including nested folders inside my `libs` directories where it makes sense. For our case, we'll have multiple features as we'll see later, so let's create a space for all individual domains we'll be working with.
@@ -138,12 +137,12 @@ nx g @nrwl/angular:library pages --directory shared/ui
 
 With each containing the following, respectively:
 
--   _features_: will house our state management code utilizing NgRx
--   _services_: our HTTP layer, will be in charge of calling out to our API to fetch data
--   _components_: our home for dumb components, or simple Angular components that solely take in `@Input()` to spit out on
-    the page
--   _pages_: Angular components that compose our smaller, dumb components feeding them the data they'll need to generate
-    their markup
+- _features_: will house our state management code utilizing NgRx
+- _services_: our HTTP layer, will be in charge of calling out to our API to fetch data
+- _components_: our home for dumb components, or simple Angular components that solely take in `@Input()` to spit out on
+  the page
+- _pages_: Angular components that compose our smaller, dumb components feeding them the data they'll need to generate
+  their markup
 
 ## Architectural boundaries made easy
 
@@ -266,13 +265,13 @@ Okay, I promise that _now_ we'll actually write some code. As I previously menti
 
 There are great resources and plenty of articles on NgRx, and I'll defer to those interested in learning NgRx in depth to them. For those familiar with flux/redux-like development, let's create the following in a `+state` folder nesting in our `shared/features/todos` project underneath the `src/lib` subdirectory (subdirectory-ception):
 
--   `todos.reducer.ts`: your typical reducer function that defines our state and which mutations it can take on to form
-    new state
--   `todos.actions.ts`: all of the dispatch-able operations that can affect which shape our state takes
--   `todos.selectors.ts`: slices of (memoized) state to reference across components
--   `todos.effects.ts`: tasks performed when certain actions are `dispatch()`ed, also known as side effects
--   `todos.facade.ts`: an encapsulating service to be used from higher level modules, serving as the API into our state (
-    more or less)
+- `todos.reducer.ts`: your typical reducer function that defines our state and which mutations it can take on to form
+  new state
+- `todos.actions.ts`: all of the dispatch-able operations that can affect which shape our state takes
+- `todos.selectors.ts`: slices of (memoized) state to reference across components
+- `todos.effects.ts`: tasks performed when certain actions are `dispatch()`ed, also known as side effects
+- `todos.facade.ts`: an encapsulating service to be used from higher level modules, serving as the API into our state (
+  more or less)
 
 To keep this post in a readable _state_ <sub>no pun intended</sub>, I'll leave the gory details for the reader to explore [here](https://github.com/JoeyMckenzie/exploring-nx/tree/main/libs/shared/features/todos/src/lib/%2Bstate). We'll save a more in-depth post on NgRx for a rainy day.
 
@@ -387,25 +386,25 @@ Next, the markup:
         <tr>
             <th
                 scope="col"
-                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500"
+                class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
             >
                 ID
             </th>
             <th
                 scope="col"
-                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500"
+                class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
             >
                 Title
             </th>
             <th
                 scope="col"
-                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500"
+                class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
             >
                 User ID
             </th>
             <th
                 scope="col"
-                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500"
+                class="px-6 py-3 text-left text-xs font-medium tracking-wider text-neutral-500 uppercase"
             >
                 Completed
             </th>
@@ -450,16 +449,16 @@ And the markup:
 #### todos-list-item.component.html
 
 ```html
-<td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-neutral-900">
+<td class="px-6 py-4 text-sm font-medium whitespace-nowrap text-neutral-900">
     {{ todo?.id }}
 </td>
-<td class="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
+<td class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500">
     {{ todo?.title }}
 </td>
-<td class="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
+<td class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500">
     {{ todo?.userId }}
 </td>
-<td class="whitespace-nowrap px-6 py-4 text-sm text-neutral-500">
+<td class="px-6 py-4 text-sm whitespace-nowrap text-neutral-500">
     <input
         type="checkbox"
         [defaultChecked]="todo?.completed"

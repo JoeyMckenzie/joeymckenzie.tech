@@ -1,14 +1,13 @@
 ---
-id: ee0b33fa-515f-4c58-8526-6ff931ca92d0
-blueprint: blog
 title: 'State Management with Blazor using Fluxor (Part 2)'
-subtitle: "It's redux, but for... .NET?"
-image: blog/dotnet-blazor-state-management/fluxor_meme_small.jpg
-topics:
-  - net
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746819912
+slug: state-management-with-blazor-using-fluxor-part-2
+description: "It's redux, but for... .NET?"
+image: assets/images/dotnet-blazor-state-management/fluxor_meme_small.jpg
+tag_id: 3
+published_at: '2020-07-26'
+storage_key: 2020-07-26-state-management-with-blazor-using-fluxor-part-2
 ---
+
 Memes aside, if you've been following along with our flux-ified Blazor project, you may have noticed the plethora of initial, success, and failure action types. While this may seem like overkill to some, by creating this separation of concern between action types, we ensure each action has a _single_ responsibility in the flux workflow. If (read: when) our business requirements change that cause us to modify existing actions, we can do so without fear of unintentionally breaking another workflow that might reuse the same action. It's like I always say, "when in doubt, create a new
 action."
 

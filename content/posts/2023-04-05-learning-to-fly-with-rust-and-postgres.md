@@ -1,14 +1,13 @@
 ---
-id: 512d3e69-ed5b-492f-a3a8-9cbb13f541df
-blueprint: blog
 title: 'Learning to fly with Rust and Postgres'
-subtitle: 'If it can be Dockerized, it can be deployed.'
-image: blog/learning-to-fly-with-rust.jpg
-topics:
-  - rust
-updated_by: 1d53ab1c-db27-4618-99cb-45753112cbae
-updated_at: 1762642732
+slug: learning-to-fly-with-rust-and-postgres
+description: 'If it can be Dockerized, it can be deployed.'
+image: assets/images/learning-to-fly-with-rust.jpg
+tag_id: 8
+published_at: '2023-04-05'
+storage_key: 2023-04-05-learning-to-fly-with-rust-and-postgres
 ---
+
 After a long weekend of random life events, I decided I needed to scratch an itch to learn something new. I've been writing a lot serverless [Lambda's](https://aws.amazon.com/lambda/) lately and wanted to jump back into a more managed workflow with a new tool I have yet to use, though seems to be getting a lot of hype in [fly.io](https://fly.io/). I've been hearing quite a bit within the community about the love developers have for fly due to its ease of deployment and ideology about app servers centralizing on the idea of simply just deploying projects based on a Dockerfile. I do my
 fair share of Docker management at work and on side projects, so why not take fly for a spin?
 

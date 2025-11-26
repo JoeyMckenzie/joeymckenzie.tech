@@ -1,14 +1,13 @@
 ---
-id: 14619b03-e0ce-469c-85f8-aa53906d2215
-blueprint: blog
 title: 'Clean architecture, Dapper, MediatR, and buzzword bingo (part 4)'
-subtitle: 'MediatR... so hot right now!'
-image: blog/dotnet-mediatr/use-automapper-meme.jpeg
-topics:
-  - net
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746769409
+slug: clean-architecture-dapper-mediatr-and-buzzword-bingo-part-4
+description: 'MediatR... so hot right now!'
+image: assets/images/dotnet-mediatr/use-automapper-meme.jpeg
+tag_id: 3
+published_at: '2020-02-02'
+storage_key: 2020-02-02-clean-architecture-dapper-mediatr-and-buzzword-bingo-part-4
 ---
+
 The wait is finally over (sort of). As we recover from the scrupulous amount of Christmas cookies we consumed during our annual holiday bulking season (at least what I tell myself), I figured it's time to jump into the bulk of our fictional brewery app, Dappery. So far, we've:
 
 - Defined our domain layer and business entities used application wide

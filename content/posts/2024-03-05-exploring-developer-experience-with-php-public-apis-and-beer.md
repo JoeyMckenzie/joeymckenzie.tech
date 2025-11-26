@@ -1,13 +1,11 @@
 ---
-id: db74d73b-5ca4-4817-b8de-97397c1bebc1
-blueprint: blog
 title: 'Exploring developer experience with PHP, public APIs, and beer'
-subtitle: "It's 2024... and PHP still isn't dead?!"
-topics:
-  - php
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746644127
-image: blog/php-dx.jpeg
+slug: exploring-developer-experience-with-php-public-apis-and-beer
+description: "It's 2024... and PHP still isn't dead?!"
+image: assets/images/php-dx.jpeg
+tag_id: 2
+published_at: '2024-03-05'
+storage_key: 2024-03-05-exploring-developer-experience-with-php-public-apis-and-beer
 ---
 
 I'm back on my bullshit (as the kids say) and decided that it was time to jump back into a project of some sort to keep
@@ -409,12 +407,12 @@ for the library is pretty simple:
 
 ```yaml
 includes:
-  - vendor/phpstan/phpstan-strict-rules/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
 
 parameters:
-  level: max
-  paths:
-    - src
+    level: max
+    paths:
+        - src
 ```
 
 And to keep myself honest, I like to wrap my linting commands within a daemon of sorts to rerun anytime I make source

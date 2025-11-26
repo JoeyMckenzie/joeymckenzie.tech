@@ -1,14 +1,13 @@
 ---
-id: 067ae101-1e58-4775-94a1-0b4dc85017ff
-blueprint: blog
 title: 'Implementing dark mode in Angular with Tailwind'
-subtitle: "If you're website doesn't have dark, it's a no for me dawg."
-image: blog/angular-tailwind-dark-mode/tailwind-dark-mode-meme.jpg
-topics:
-  - angular
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746766967
+slug: implementing-dark-mode-in-angular-with-tailwind
+description: "If you're website doesn't have dark, it's a no for me dawg."
+image: assets/images/angular-tailwind-dark-mode/tailwind-dark-mode-meme.jpg
+tag_id: 4
+published_at: '2021-09-03'
+storage_key: 2021-09-03-implementing-dark-mode-in-angular-with-tailwind
 ---
+
 Admittedly, I'm a dark mode junkie - any app or website I stumble upon, the first thing I look for is the dark mode switch. Wanting to bring that experience to my own applications, I've recently began dark mode-ing all the things using [Tailwind](https://tailwindcss.com/docs/dark-mode) to dark mode-ify my Angular and React apps. In an effort to blog a bit more on my behalf in more bite size chunks, let's take a stab at setting up dark mode in an Angular application using Tailwind!
 
 ## Setting up Tailwind

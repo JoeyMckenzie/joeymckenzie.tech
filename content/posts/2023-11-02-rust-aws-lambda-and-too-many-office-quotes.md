@@ -1,14 +1,13 @@
 ---
-id: 11272438-8ae5-48f4-ba76-3e12ececc199
-blueprint: blog
 title: 'Rust, AWS Lambda, and too many Office quotes'
-subtitle: 'Identity theft is not a joke, Jim!'
-topics:
-  - rust
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746683177
-image: blog/rust-lambda-meme.jpg
+slug: rust-aws-lambda-and-too-many-office-quotes
+description: 'Identity theft is not a joke, Jim!'
+image: assets/images/rust-lambda-meme.jpg
+tag_id: 8
+published_at: '2023-11-02'
+storage_key: 2023-11-02-rust-aws-lambda-and-too-many-office-quotes
 ---
+
 Back from a hard fought battle against writer's block, I've been looking for a way to convince my boss to let me use Rust at work. Most of our infrastructure is on AWS (_surprised pikachu face_) and I've been writing a lot of new system features designed to run serverlessly with things like Lambda, Step Functions, SQS, SNS, and all the other band members we know and love. We're a .NET shop, so moving to Rust wouldn't exactly be an overnight transition, nor would I want to force my zealotry
 upon my fellow developers.
 
@@ -94,17 +93,17 @@ Our quotes file is pretty standard JSON:
 
 ```json
 {
-  "quotes": [
-    {
-      "quote": "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.",
-      "author": "Michael Scott"
-    },
-    {
-      "quote": "Whenever I'm about to do something, I think, 'Would an idiot do that?' and if they would, I do not do that thing.",
-      "author": "Dwight Schrute"
-    }
-    // And many more...
-  ]
+    "quotes": [
+        {
+            "quote": "Would I rather be feared or loved? Easy. Both. I want people to be afraid of how much they love me.",
+            "author": "Michael Scott"
+        },
+        {
+            "quote": "Whenever I'm about to do something, I think, 'Would an idiot do that?' and if they would, I do not do that thing.",
+            "author": "Dwight Schrute"
+        }
+        // And many more...
+    ]
 }
 ```
 

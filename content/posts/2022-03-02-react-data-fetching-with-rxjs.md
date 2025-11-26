@@ -1,14 +1,13 @@
 ---
-id: 20fa8f10-a0c6-4612-9705-311c1cb9843b
-blueprint: blog
 title: 'React data fetching with RxJS'
-subtitle: "Believe it not, it's actual legal to use RxJS outside of Angular."
-topics:
-  - react
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746738964
-image: blog/react-data-fetching-meme.jpg
+slug: react-data-fetching-with-rxjs
+description: "Believe it not, it's actual legal to use RxJS outside of Angular."
+image: assets/images/react-data-fetching-meme.jpg
+tag_id: 7
+published_at: '2022-03-02'
+storage_key: 2022-03-02-react-data-fetching-with-rxjs
 ---
+
 Data fetching with React offers a wide selection of tools to do the job, from simple promises, to more sophisticated caching libraries like [react-query](https://react-query.tanstack.com/) and [swr](https://swr.vercel.app/). With a plethora of options, developers have their choice of favorite fetching tools to get the job done and make our applications performant on all fronts. As an Angular developer, I make heavy usage of [RxJS](https://rxjs.dev/) where I can, and luckily Angular treats the library as a first class citizen with many Angular internals (router events, the `HttpClient`, etc.), making use of `Observables` to stream data in a reactive way.
 
 Lately, however, I've taken the React-fork-in-the-road and have been experimenting with data fetching tools and hooks for the React/next.js applications I've been working on. While, again, there are many tools that solve the problem of data fetching and mutation made by people much, _much_ smarter than myself, I was looking to integrate RxJS into the tools I use for such a task. What I found, coincidentally, was the perfect marriage between my data fetching library of choice, Vercel's [swr](https://swr.vercel.app/) (a gift from the folks behind next.js), and `fetch`-based `Observables`.
@@ -46,8 +45,8 @@ framework's tight integration with the library. RxJS implements, more or less, t
 they happen - we're simply _reacting_ to data as it's published through the stream. In code:
 
 ```js
-import {interval, take} from 'rxjs';
-import {finalize} from 'rxjs/operators';
+import { interval, take } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 const dataSource$ = interval(1000);
 
@@ -93,11 +92,11 @@ I'm partial to swr for data fetching, and you're more than welcome to use your o
 #### pages/with-promises.tsx
 
 ```tsx
-import {GetServerSideProps, NextPage} from 'next';
-import {useEffect} from 'react';
-import {githubBaseUrl} from '../lib/constants';
-import {GitHubRepoMeta, WithFetcherProps} from '../lib/types';
-import {mapRepos} from '../lib/utilities';
+import { GetServerSideProps, NextPage } from 'next';
+import { useEffect } from 'react';
+import { githubBaseUrl } from '../lib/constants';
+import { GitHubRepoMeta, WithFetcherProps } from '../lib/types';
+import { mapRepos } from '../lib/utilities';
 
 export const getServerSideProps: GetServerSideProps = async () => {
     const mappedGitHubRepos = await fetch(githubBaseUrl, {
@@ -119,7 +118,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     };
 };
 
-const WithPromises: NextPage<WithFetcherProps> = ({mappedGitHubRepos}) => {
+const WithPromises: NextPage<WithFetcherProps> = ({ mappedGitHubRepos }) => {
     useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos]);
 
     return (
@@ -144,7 +143,7 @@ export const githubBaseUrl =
 #### lib/utilities.ts
 
 ```ts
-import {GitHubReposApiResponse} from './types';
+import { GitHubReposApiResponse } from './types';
 
 export function mapRepos(repos: GitHubReposApiResponse[]) {
     return repos.map((repo) => ({
@@ -337,14 +336,14 @@ import {
     InferGetServerSidePropsType,
     NextPage,
 } from 'next';
-import {useEffect} from 'react';
-import {githubBaseUrl} from '../lib/constants';
+import { useEffect } from 'react';
+import { githubBaseUrl } from '../lib/constants';
 import {
     GitHubRepoMeta,
     GitHubReposApiResponse,
     WithFetcherProps,
 } from '../lib/types';
-import {mapRepos} from '../lib/utilities';
+import { mapRepos } from '../lib/utilities';
 
 export const getServerSideProps: GetServerSideProps = async () => {
     let mappedGitHubRepos: GitHubRepoMeta[] = [];
@@ -370,7 +369,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     };
 };
 
-const WithTryCatch: NextPage<WithFetcherProps> = ({mappedGitHubRepos}) => {
+const WithTryCatch: NextPage<WithFetcherProps> = ({ mappedGitHubRepos }) => {
     useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos]);
 
     return (
@@ -394,11 +393,11 @@ Alright, let's finally integrate a little RxJS into one of our pages. Let's add 
 #### pages/with-rxjs.tsx
 
 ```tsx
-import {GetServerSideProps, NextPage} from 'next';
-import {useEffect} from 'react';
-import {githubBaseUrl} from '../lib/constants';
-import {WithFetcherProps} from '../lib/types';
-import {fetchFirstReposValue} from '../lib/utilities';
+import { GetServerSideProps, NextPage } from 'next';
+import { useEffect } from 'react';
+import { githubBaseUrl } from '../lib/constants';
+import { WithFetcherProps } from '../lib/types';
+import { fetchFirstReposValue } from '../lib/utilities';
 
 export const getServerSideProps: GetServerSideProps = async () => ({
     props: {
@@ -406,7 +405,7 @@ export const getServerSideProps: GetServerSideProps = async () => ({
     } as WithFetcherProps,
 });
 
-const WithRxJS: NextPage<WithFetcherProps> = ({mappedGitHubRepos}) => {
+const WithRxJS: NextPage<WithFetcherProps> = ({ mappedGitHubRepos }) => {
     useEffect(() => console.log(mappedGitHubRepos), [mappedGitHubRepos]);
 
     return (
@@ -505,13 +504,13 @@ But about within the context of CSR? Let's build out one more page to explore in
 #### pages/with-csr.tsx
 
 ```tsx
-import {NextPage} from 'next';
+import { NextPage } from 'next';
 import useSWR from 'swr';
-import {githubBaseUrl} from '../lib/constants';
-import {fetchFirstReposValue} from '../lib/utilities';
+import { githubBaseUrl } from '../lib/constants';
+import { fetchFirstReposValue } from '../lib/utilities';
 
 const WithCSR: NextPage = () => {
-    const {data: mappedGitHubRepos} = useSWR(
+    const { data: mappedGitHubRepos } = useSWR(
         githubBaseUrl,
         fetchFirstReposValue,
     );

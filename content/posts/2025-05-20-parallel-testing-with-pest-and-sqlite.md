@@ -1,14 +1,13 @@
 ---
-id: 9b29496a-ce29-4698-aaf0-1d6215cad4c6
-blueprint: blog
 title: 'Parallel testing with Pest and SQLite'
-subtitle: 'I live my life one parallel test at a time...'
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1747769889
-image: blog/363002a8-2928-4ea4-9683-e51d593c91ff_1_201_a.jpeg
-topics:
-  - laravel
+slug: parallel-testing-with-pest-and-sqlite
+description: 'I live my life one parallel test at a time...'
+image: assets/images/363002a8-2928-4ea4-9683-e51d593c91ff_1_201_a.jpeg
+tag_id: 1
+published_at: '2025-05-20'
+storage_key: 2025-05-20-parallel-testing-with-pest-and-sqlite
 ---
+
 As an unapologetic wrestling fan, I felt exactly like A.J. Styles burying Undertaker in Wrestlemania 36 after writing my complete test suite, verifying each test passing one at a time, only to kick off the entire suite in parallel to be met with a bit of a head scratcher:
 
 ```bash
@@ -58,7 +57,7 @@ I run a bit of setup in a `beforeEach()` block as well to set the stage:
 beforeEach(function (): void {
     // Setup the expected storage path, mimic the previous creation by another command
     $this->storagePath = storage_path('artisense');
-  
+
     // Seed a markdown file in the expected storage folder
     File::ensureDirectoryExists($this->storagePath . '/docs');
     File::copy(__DIR__ . '/../../Fixtures/artisan.md', $this->storagePath . '/docs/artisan.md');
@@ -151,7 +150,7 @@ final class DiskManager
     {
         $this->storageKey = $storageKey ?? 'artisense';
     }
-  
+
     public function getBasePath(): string
     {
         return storage_path($this->storageKey);
@@ -169,13 +168,13 @@ Now when I run my tests, we're back in the green:
 $ vendor/bin/pest --parallel
 
    PASS  Tests\Console\Commands\SeedDocsCommandTest
-  ✓ Artisense\Console\Commands\SeedDocsCommand → it extracts and stores content without HTML tags                                                                                                   0.10s  
-  ✓ Artisense\Console\Commands\SeedDocsCommand → it creates correct links with slugified headings                                                                                                   0.08s  
-  ✓ Artisense\Console\Commands\SeedDocsCommand → it handles files without headings                                                                                                                  0.07s  
-  ✓ Artisense\Console\Commands\SeedDocsCommand → it processes multiple headings in a single file                                                                                                    0.08s  
-  ✓ Artisense\Console\Commands\SeedDocsCommand → it skips non-markdown files                                                                                                                        0.07s  
-  ✓ Artisense\Console\Commands\SeedDocsCommand → it parses markdown docs and stores them in the database                                                                                            0.08s  
-  ✓ Artisense\Console\Commands\SeedDocsCommand → it creates database tables correctly                                                                                                               0.08s  
+  ✓ Artisense\Console\Commands\SeedDocsCommand → it extracts and stores content without HTML tags                                                                                                   0.10s
+  ✓ Artisense\Console\Commands\SeedDocsCommand → it creates correct links with slugified headings                                                                                                   0.08s
+  ✓ Artisense\Console\Commands\SeedDocsCommand → it handles files without headings                                                                                                                  0.07s
+  ✓ Artisense\Console\Commands\SeedDocsCommand → it processes multiple headings in a single file                                                                                                    0.08s
+  ✓ Artisense\Console\Commands\SeedDocsCommand → it skips non-markdown files                                                                                                                        0.07s
+  ✓ Artisense\Console\Commands\SeedDocsCommand → it parses markdown docs and stores them in the database                                                                                            0.08s
+  ✓ Artisense\Console\Commands\SeedDocsCommand → it creates database tables correctly                                                                                                               0.08s
   ✓ Artisense\Console\Commands\SeedDocsCommand → it handles empty docs directory                                                                                                                    0.02s
 ```
 

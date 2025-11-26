@@ -1,17 +1,16 @@
 ---
-id: f0ea2d7b-00aa-47f6-88c1-99264bfa265d
-blueprint: blog
 title: 'Dynamic error assertions with PHPStan'
-subtitle: 'This blog post could have been tweet, but yet here I am.'
-image: blog/dynamic-error-assertions-with-phpstan.jpg
-topics:
-  - php
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746642147
+slug: dynamic-error-assertions-with-phpstan
+description: 'This blog post could have been tweet, but yet here I am.'
+image: assets/images/dynamic-error-assertions-with-phpstan.jpg
+tag_id: 2
+published_at: '2025-03-11'
+storage_key: 2025-03-11-dynamic-error-assertions-with-phpstan
 ---
+
 So I've been working on a [fun little library](https://github.com/JoeyMckenzie/nasastan) as an excuse to learn how to write extensions for PHPStan. I'll spare the gory details as I'll probably write more extensively about it next week, but in essence, it's a PHPStan extension for enforcing [NASA's Power of Ten](https://en.wikipedia.org/wiki/The_Power_of_10:_Rules_for_Developing_Safety-Critical_Code) programming rules within your PHP code. Coming from nearly a decade working primarily in .NET, PHPStan is that comforting blanket of static analysis that wraps me in its embrace assuring me those pesky runtime errors won't try to scare me in the middle of the night.
 
-I ran into an interesting testing scenario writing some unit tests for one of the rules and thought  I'd share how I solved it. At its core, I needed to assert PHPStan detected some errors on anonymous classes, though I think this technique can be generally applied to any scenario that fits the bill.
+I ran into an interesting testing scenario writing some unit tests for one of the rules and thought I'd share how I solved it. At its core, I needed to assert PHPStan detected some errors on anonymous classes, though I think this technique can be generally applied to any scenario that fits the bill.
 
 ## The problem
 
@@ -23,27 +22,27 @@ Some code that might trigger this PHPStan error could look something like this:
 class TooManyProperties
 {
     private int $prop1;
-    
+
     private int $prop2;
-    
+
     private int $prop3;
-    
+
     private int $prop4;
-    
+
     private int $prop5;
-    
+
     private int $prop6;
-    
+
     private int $prop7;
-    
+
     private int $prop8;
-    
+
     private int $prop9;
-    
+
     private int $prop10;
-    
+
     private int $prop11;
-    
+
     // ...other stuff/methods that might interact with properties
 }
 ```
@@ -51,11 +50,11 @@ class TooManyProperties
 Running a quick analysis with PHPStan using my extension would trigger errors like this:
 
 ```shell
- ------ ---------------------------------------------------------------------------------------------------- 
-  Line   TooManyProperties.php                                                                               
- ------ ---------------------------------------------------------------------------------------------------- 
-  :7     NASA Power of Ten Rule #6: Class "TooManyProperties" has 11 properties, but the maximum allowed is  
-         10.            
+ ------ ----------------------------------------------------------------------------------------------------
+  Line   TooManyProperties.php
+ ------ ----------------------------------------------------------------------------------------------------
+  :7     NASA Power of Ten Rule #6: Class "TooManyProperties" has 11 properties, but the maximum allowed is
+         10.
  ------ ----------------------------------------------------------------------------------------------------
 ```
 
@@ -91,10 +90,10 @@ new readonly class
 With a similar error:
 
 ```shell
- ------ ---------------------------------------------------------------------------------------------------- 
-  Line   TooManyPropertiesAnonymous.php                                                                               
- ------ ---------------------------------------------------------------------------------------------------- 
-  :7     NASA Power of Ten Rule #6: Class "AnonymousClassf133621dffe158efe7db3570c09909a" has 11 properties, 
+ ------ ----------------------------------------------------------------------------------------------------
+  Line   TooManyPropertiesAnonymous.php
+ ------ ----------------------------------------------------------------------------------------------------
+  :7     NASA Power of Ten Rule #6: Class "AnonymousClassf133621dffe158efe7db3570c09909a" has 11 properties,
          but the maximum allowed is 10.
  ------ ----------------------------------------------------------------------------------------------------
 ```
@@ -133,12 +132,12 @@ parameters:
         - tests/Rules
     reportUnmatchedIgnoredErrors: true
     ignoreErrors:
-        -   message: '#Method Nasastan\\Rules\\[a-zA-Z]+::processNode\(\) should return list<PHPStan\\Rules\\IdentifierRuleError> but returns array{PHPStan\\Rules\\RuleError}.#'
-            paths:
-                - src/Rules/*.php
-        -   message: '#Method Nasastan\\Rules\\[a-zA-Z]+::processNode\(\) should return list<PHPStan\\Rules\\IdentifierRuleError> but returns array<PHPStan\\Rules\\RuleError>.#'
-            paths:
-                - src/Rules/*.php
+        - message: '#Method Nasastan\\Rules\\[a-zA-Z]+::processNode\(\) should return list<PHPStan\\Rules\\IdentifierRuleError> but returns array{PHPStan\\Rules\\RuleError}.#'
+          paths:
+              - src/Rules/*.php
+        - message: '#Method Nasastan\\Rules\\[a-zA-Z]+::processNode\(\) should return list<PHPStan\\Rules\\IdentifierRuleError> but returns array<PHPStan\\Rules\\RuleError>.#'
+          paths:
+              - src/Rules/*.php
 ```
 
 Surrounding a message with a hash symbol allows the use of regex to match on reported errors, telling PHPStan to simply ignore any files that it finds matching the string. I tried a test like this:

@@ -1,14 +1,13 @@
 ---
-id: 72bcbf3b-cf6a-4d1d-8ba6-6e1e36226c44
-blueprint: blog
 title: 'Migrating to Astro'
-subtitle: 'Astro, Svelte, and Rust walk into a bar...'
-image: blog/migrating-to-astro.jpg
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746738580
-topics:
-  - astro
+slug: migrating-to-astro
+description: 'Astro, Svelte, and Rust walk into a bar...'
+image: assets/images/migrating-to-astro.jpg
+tag_id: 5
+published_at: '2023-03-15'
+storage_key: 2023-03-15-migrating-to-astro
 ---
+
 During a recent quarter (third?) life crisis, I decided to do what every developer does when they need something to work on - I rewrote my blog from the ground up. I consider rebuilding personal blogs/portfolios a right of passage and have so far been able to squeeze a rewrite out about once every two years.
 
 Are the rewrites ever justified? No.

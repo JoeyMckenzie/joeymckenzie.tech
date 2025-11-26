@@ -20,13 +20,13 @@
         </header>
 
         @if (filled($post->image))
-            <figure class="overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800">
-                <img src="{{ asset($post->image) }}" alt="{{ $post->title }} featured image"
-                    class="object-cover w-full aspect-[16/9]" loading="lazy">
+            <figure class="overflow-hidden rounded-sm border border-neutral-200 dark:border-neutral-800">
+                <img src="{{ asset($post->image) }}" alt="{{ $post->title }} featured image" class="object-cover w-full"
+                    loading="lazy">
             </figure>
         @endif
 
-        <section class="prose prose-invert space-y-6 text-base leading-7 text-zinc-700 dark:text-zinc-200">
+        <section class="prose prose-invert space-y-6 text-base leading-7">
             {!! $content !!}
         </section>
     </article>

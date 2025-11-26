@@ -1,14 +1,13 @@
 ---
-id: 3a42a668-ced1-4ece-be36-fbb12a62ddb8
-blueprint: blog
 title: 'Build a Tailwind modal with Angular and NgRx'
-subtitle: 'Make homemade modals great again!'
-image: blog/angular-modals/off_the_shelf_modal.jpg
-topics:
-  - angular
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746744890
+slug: build-a-tailwind-modal-with-angular-and-ngrx
+description: 'Make homemade modals great again!'
+image: assets/images/angular-modals/off_the_shelf_modal.jpg
+tag_id: 4
+published_at: '2021-08-27'
+storage_key: 2021-08-27-build-a-tailwind-modal-with-angular-and-ngrx
 ---
+
 Coming off a blogging hiatus, I'm finally making my triumphant return. If you've been following my writing up until now, you'll know that I'm primarily a .NET dude. Lately, I've been wanting to get back to my roots with Angular and see what I could build with everyone's new favorite CSS framework on the block, [Tailwind](https://tailwindcss.com/). I'm going to be dialing back the length in content in place of smaller, bit-sized chunks in an effort to get back to helping the general developer population with the lessons I've learned and things that I think are fire (as the kids say) in the community. With that out of the way, let's dive in!
 
 ## What is Tailwind?
@@ -27,13 +26,13 @@ Often times (read: every other sprint), it's helpful to add a bit of pizazz to o
 
 Getting started, let's run through the list of what we'll be building and the tools we'll utilize as we embark on our modal-based journey:
 
--   We'll utilize Tailwind as our style provider to give our modal a modern look and feel
--   Instead of using an injectable service to dynamically render DOM that contains our modal markup and content using
-    something like Angular's [Renderer2](https://angular.io/api/core/Renderer2), we'll lean on a flux-based state approach
-    using [NgRx](https://ngrx.io) to help us manage the displaying of our modal with custom content (more on this in a
-    minute)
--   Using a state-based approach, we'll expose actions that will allow any of our components to call into the modal and
-    display it based on any set of criteria
+- We'll utilize Tailwind as our style provider to give our modal a modern look and feel
+- Instead of using an injectable service to dynamically render DOM that contains our modal markup and content using
+  something like Angular's [Renderer2](https://angular.io/api/core/Renderer2), we'll lean on a flux-based state approach
+  using [NgRx](https://ngrx.io) to help us manage the displaying of our modal with custom content (more on this in a
+  minute)
+- Using a state-based approach, we'll expose actions that will allow any of our components to call into the modal and
+  display it based on any set of criteria
 
 With our approach lined out, let's defer to the second bullet point of the aforementioned list.
 
@@ -108,7 +107,7 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
     aria-modal="true"
 >
     <div
-        class="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0"
+        class="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0"
     >
         <!--
       Background overlay, show/hide based on modal state.
@@ -121,7 +120,7 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
         To: "opacity-0"
     -->
         <div
-            class="fixed inset-0 bg-neutral-500 bg-opacity-75 transition-opacity"
+            class="bg-opacity-75 fixed inset-0 bg-neutral-500 transition-opacity"
             aria-hidden="true"
         ></div>
 
@@ -145,7 +144,7 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
         <div
             class="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
         >
-            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div class="sm:flex sm:items-start">
                     <div
                         class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
@@ -167,9 +166,9 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
                             />
                         </svg>
                     </div>
-                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <h3
-                            class="text-lg font-medium leading-6 text-neutral-900"
+                            class="text-lg leading-6 font-medium text-neutral-900"
                             id="modal-title"
                         >
                             Deactivate account
@@ -189,13 +188,13 @@ We'll add the `--skip-tests` flag for now as we won't be unit testing our modal.
             >
                 <button
                     type="button"
-                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
                 >
                     Deactivate
                 </button>
                 <button
                     type="button"
-                    class="mt-3 inline-flex w-full justify-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-base font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
+                    class="mt-3 inline-flex w-full justify-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-base font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                 >
                     Cancel
                 </button>
@@ -259,10 +258,10 @@ Again, this post _is not_ meant to the de facto grimoire of implementing NgRx pr
 
 Breaking down the code above, we:
 
--   Define our layout feature slice with `LayoutState` that will serve as the source of truth for our current modal
-    displaying
--   Create a reducer to facilitate _what_ our state should look like when the modal actions are dispatched
--   Create an identifying `const` key to declare our layout feature slice with `layoutFeatureKey`
+- Define our layout feature slice with `LayoutState` that will serve as the source of truth for our current modal
+  displaying
+- Create a reducer to facilitate _what_ our state should look like when the modal actions are dispatched
+- Create an identifying `const` key to declare our layout feature slice with `layoutFeatureKey`
 
 While we could easily set singular state on each reducer type to simply set the modal state according, as our application grows, so will our need to only change single, or a handful at most, pieces of state at time. For these cases, we'll go ahead and add in a `...state` to shallow copy our current state as to not mutate any state that is not concerned with the modal state.
 
@@ -360,9 +359,9 @@ We include the required NgRx modules using our `layoutFeatureKey` defined in our
 
 Speaking of transitions, let's go ahead and add a few animations in our `modal.component.ts` to add the pleasing appearing/fading of the modal onto page. In our `modal.component.ts`, we'll add three simple animation attribute:
 
--   `@modalContainer`
--   `@modalOverlay`
--   `@modalContent`
+- `@modalContainer`
+- `@modalOverlay`
+- `@modalContent`
 
 Let's add each of the tags to our markup so that it resembles the following:
 
@@ -377,7 +376,7 @@ Let's add each of the tags to our markup so that it resembles the following:
     aria-modal="true"
 >
     <div
-        class="flex min-h-screen items-end justify-center px-4 pb-20 pt-4 text-center sm:block sm:p-0"
+        class="flex min-h-screen items-end justify-center px-4 pt-4 pb-20 text-center sm:block sm:p-0"
     >
         <!--
       Background overlay, show/hide based on modal state.
@@ -392,7 +391,7 @@ Let's add each of the tags to our markup so that it resembles the following:
         <div
             @modalOverlay
             (click)="onClose()"
-            class="fixed inset-0 bg-neutral-500 bg-opacity-75 transition-opacity"
+            class="bg-opacity-75 fixed inset-0 bg-neutral-500 transition-opacity"
             aria-hidden="true"
         ></div>
 
@@ -417,7 +416,7 @@ Let's add each of the tags to our markup so that it resembles the following:
             @modalContent
             class="inline-block transform overflow-hidden rounded-lg bg-white text-left align-bottom shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:align-middle"
         >
-            <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div class="sm:flex sm:items-start">
                     <div
                         class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
@@ -439,9 +438,9 @@ Let's add each of the tags to our markup so that it resembles the following:
                             />
                         </svg>
                     </div>
-                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                         <h3
-                            class="text-lg font-medium leading-6 text-neutral-900"
+                            class="text-lg leading-6 font-medium text-neutral-900"
                             id="modal-title"
                         >
                             Deactivate account
@@ -462,14 +461,14 @@ Let's add each of the tags to our markup so that it resembles the following:
                 <button
                     (click)="onClose()"
                     type="button"
-                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                    class="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
                 >
                     Deactivate
                 </button>
                 <button
                     (click)="onClose()"
                     type="button"
-                    class="mt-3 inline-flex w-full justify-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-base font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
+                    class="mt-3 inline-flex w-full justify-center rounded-md border border-neutral-300 bg-white px-4 py-2 text-base font-medium text-neutral-700 shadow-sm hover:bg-neutral-50 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                 >
                     Cancel
                 </button>
@@ -615,26 +614,26 @@ export class ModalComponent implements OnInit {
 
 Let's breakdown what our modal component is doing behind the scenes:
 
--   First, we define three animation `trigger`s that will run when our component is rendered into and out of the DOM (I've
-    loosely translated the suggested Tailwind transition classes that should apply to the modal)
-    -   Our first `trigger` is applied to the wrapping `div` element that houses the entirety of our modal component, and
-        it's job is to coordinate running the nested child transitions when it is rendered into/out of the DOM (driven by
-        the `*ngIf="(modalState$ | async) === true"` directive) with the assistance of the `group` and `query` Angular
-        animation helper methods to signify which child transitions to run
-    -   Our second `trigger` is the fading in and out of the background overlay using a simple opacity transition
-    -   Our third `trigger` is the displaying of the modal content using a combination of opacity and scaling transition
-        animations
-    -   You'll notice each `trigger` transitions using the `:enter`/`:leave` aliases which represent the transitioning
-        of `void` state (i.e. not in the rendered DOM), to `*` state (i.e. any state existing in the markup)
--   Next, we pull through a reference from the state facade to the current modal status with `modalStatus$` observable
-    that listens for values based on our selector stream
--   We define an emission `Subject` to help facilitate the closing of our streams when our component is destroyed, i.e.
-    removed from the DOM, in order to avoid memory leaks that can be pretty common in `rxjs` without proper `Observable`
-    management
--   Finally, inside of our mounting lifecycle hook:
-    -   We listen on modal state changes and fire off the action to open the modal anytime on first render using `take(1)`
-    -   We hook into the hot document observable and listen for `esc` keydown strokes to provide a bit of nice UX to close
-        the modal anytime it's open and the key is pressed
+- First, we define three animation `trigger`s that will run when our component is rendered into and out of the DOM (I've
+  loosely translated the suggested Tailwind transition classes that should apply to the modal)
+    - Our first `trigger` is applied to the wrapping `div` element that houses the entirety of our modal component, and
+      it's job is to coordinate running the nested child transitions when it is rendered into/out of the DOM (driven by
+      the `*ngIf="(modalState$ | async) === true"` directive) with the assistance of the `group` and `query` Angular
+      animation helper methods to signify which child transitions to run
+    - Our second `trigger` is the fading in and out of the background overlay using a simple opacity transition
+    - Our third `trigger` is the displaying of the modal content using a combination of opacity and scaling transition
+      animations
+    - You'll notice each `trigger` transitions using the `:enter`/`:leave` aliases which represent the transitioning
+      of `void` state (i.e. not in the rendered DOM), to `*` state (i.e. any state existing in the markup)
+- Next, we pull through a reference from the state facade to the current modal status with `modalStatus$` observable
+  that listens for values based on our selector stream
+- We define an emission `Subject` to help facilitate the closing of our streams when our component is destroyed, i.e.
+  removed from the DOM, in order to avoid memory leaks that can be pretty common in `rxjs` without proper `Observable`
+  management
+- Finally, inside of our mounting lifecycle hook:
+    - We listen on modal state changes and fire off the action to open the modal anytime on first render using `take(1)`
+    - We hook into the hot document observable and listen for `esc` keydown strokes to provide a bit of nice UX to close
+      the modal anytime it's open and the key is pressed
 
 With all of our modal details in place, let's finally add the component to our `app.component.html` by replacing all the placeholder markup with the modal selector:
 

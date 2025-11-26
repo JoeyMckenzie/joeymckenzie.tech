@@ -1,14 +1,13 @@
 ---
-id: d0411e39-17f4-4cbe-97f9-c52de3ec0763
-blueprint: blog
 title: 'JAMstack Angular apps with Scully and Netlify'
-subtitle: 'Something something JAMstack, something something Angular.'
-image: blog/jamstack-angular-apps/angular-scully-netlify-meme.jpg
-topics:
-  - angular
-updated_by: 4f4f9006-4c43-487e-91bc-4c1317005754
-updated_at: 1746734886
+slug: jamstack-angular-apps-with-scully-and-netlify
+description: 'Something something JAMstack, something something Angular.'
+image: assets/images/jamstack-angular-apps/angular-scully-netlify-meme.jpg
+tag_id: 4
+published_at: '2022-02-22'
+storage_key: 2022-02-22-jamstack-angular-apps-with-scully-and-netlify
 ---
+
 There's no denying that the [JAMstack](https://jamstack.org/) has taken the traditional web development world by storm and turned our previous tried and true development models on their heads. The JAMstack is not _new_, per se, but has become an increasingly popular approach to how we write and deploy web applications in the modern developer landscape. With frameworks like Next.js, Nuxt, Gatsby, Hugo, and many others, we as developers have been given the tools to develop entirely serverless applications that run as static web apps in the browser.
 
 > Embrace "serverless" here with big air quotes - you're still running on someone's server, and your choice of hosting provider will more than likely dictate just how "serverless" you can be
@@ -690,7 +689,7 @@ Nice! Now with our functions fully operational and our server running, let's sta
 
 [Angular Netlify functions](/assets/blog/jamstack-angular-apps/scully-jamstack-running.webm)
 
-We've got ourselves a working solution! So far we've spun up our Angular application that calls into our serverless functions, but we're missing one final piece to _truly_ be considered JAMstack: 
+We've got ourselves a working solution! So far we've spun up our Angular application that calls into our serverless functions, but we're missing one final piece to _truly_ be considered JAMstack:
 
 Scully.
 
