@@ -3,7 +3,7 @@
         <article class="group flex flex-col gap-2" data-animation="slideUp" data-stagger="0.15">
             <a href="{{ $post->to }}" wire:navigate.hover>
                 <flux:text variant="subtle">{{ $post->formatted_published_at }}</flux:text>
-                <flux:heading size="lg" class="font-semibold group-hover:text-accent transition-colors">
+                <flux:heading size="lg" class="group-hover:text-zinc-200/50 transition-colors">
                     {{ $post->title }}
                 </flux:heading>
                 <flux:text class="mt-1">
