@@ -25,3 +25,4 @@ yarn-error.log
 .phpstorm.meta.php
 _ide_helper.php
 .phpstan/
+.DS_Store

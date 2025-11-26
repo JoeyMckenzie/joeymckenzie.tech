@@ -11,7 +11,9 @@
         "calebporzio/sushi": "^2.5",
         "laravel/framework": "^12.39",
         "laravel/tinker": "^2.10.1",
+        "league/commonmark": "^2.7",
         "livewire/flux": "^2.7",
+        "phiki/phiki": "^2.0",
         "ryangjchandler/orbit": "^1.4"
     },
     "require-dev": {
