@@ -21,7 +21,41 @@
 </head>
 
 <body class="min-h-screen">
-    <div class="flex items-center justify-center w-full min-h-screen">
+    @php
+        $navLinks = [
+            [
+                'label' => 'home',
+                'href' => route('home'),
+                'active' => request()->routeIs('home'),
+            ],
+            [
+                'label' => 'now',
+                'href' => route('now'),
+                'active' => request()->routeIs('now'),
+            ],
+            [
+                'label' => 'blog',
+                'href' => route('blog.index'),
+                'active' => request()->routeIs('blog.*'),
+            ],
+        ];
+    @endphp
+
+    <div class="w-full px-6 py-8">
+        <nav class="flex justify-center font-mono text-sm text-zinc-500 dark:text-zinc-400">
+            @foreach ($navLinks as $link)
+                <a href="{{ $link['href'] }}"
+                    class="transition-colors {{ $link['active'] ? 'text-accent dark:text-accent-content' : 'hover:text-zinc-700 dark:hover:text-zinc-200' }}">
+                    {{ $link['label'] }}
+                </a>
+                @if (!$loop->last)
+                    <span class="px-3 text-zinc-400 dark:text-zinc-600">/</span>
+                @endif
+            @endforeach
+        </nav>
+    </div>
+
+    <div class="flex justify-center w-full min-h-[calc(100vh-96px)] px-6 pb-12">
         {{ $slot }}
     </div>
     @fluxScripts
