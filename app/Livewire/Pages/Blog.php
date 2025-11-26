@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
-final class Home extends Component
+final class Blog extends Component
 {
     /**
      * @var Collection<int, Post>
@@ -19,11 +19,11 @@ final class Home extends Component
 
     public function mount(AllPostsQuery $posts): void
     {
-        $this->posts = $posts->execute(3);
+        $this->posts = $posts->execute();
     }
 
     public function render(): View
     {
-        return view('livewire.pages.home');
+        return view('livewire.pages.blog');
     }
 }

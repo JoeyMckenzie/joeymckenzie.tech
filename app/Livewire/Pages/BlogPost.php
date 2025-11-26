@@ -19,7 +19,8 @@ final class BlogPost extends Component
     public function mount(Post $post, CommonMarkHighlighter $highlighter): void
     {
         $this->post = $post->loadMissing('tag');
-        $this->content = $highlighter->highlight($post->slug, $post->content) |> Str::markdown(...);
+        $highlighted = $highlighter->highlight($post->slug, $post->content);
+        $this->content = Str::markdown($highlighted);
     }
 
     public function render(): View

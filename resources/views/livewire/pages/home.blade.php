@@ -39,14 +39,9 @@
         <x-preview-posts :posts="$posts" />
 
         <div class="mt-12" data-animation="slideUp" data-stagger="0.2">
-            <a href="#" class="inline-flex items-center gap-2 font-medium hover:underline">
+            <flux:link variant="subtle" href="{{ route('blog.index') }}" wire:navigate.hover>
                 View all posts
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"
-                    class="w-4 h-4">
-                    <path d="M11.6 8L6.8 3.2M11.6 8L6.8 12.8" stroke="currentColor" stroke-linecap="square"
-                        stroke-width="1.5" />
-                </svg>
-            </a>
+            </flux:link>
         </div>
     </div>
 </main>
