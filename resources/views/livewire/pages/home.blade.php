@@ -1,6 +1,6 @@
 <main class="w-full max-w-2xl px-6 py-12 lg:px-8 lg:py-16 space-y-6">
     <x-page-header title="Hi, I'm Joey."
-        description="Full-stack developer passionate about building scalable web applications with PHP and Laravel." />
+        description="Developer. Dad. PHP enjoyer. Building things with Laravel and giving unsolicited advice on tech." />
     <flux:separator variant="subtle" data-animation="slideUp" data-stagger="0.1" />
     <section class="space-y-6">
         <flux:heading size="xl" data-animation="slideUp" data-stagger="0.1">
