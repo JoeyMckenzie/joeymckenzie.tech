@@ -20,6 +20,7 @@ final class AllPostsQuery implements Queryable
         $cacheKey = sprintf('posts:%s', $limit ?? 'all');
         $resolver = fn () => Post::query()
             ->with('tag:id,name')
+            ->when(app()->isProduction(), fn (Builder $query) => $query->published())
             ->latest('published_at')
             ->when($limit !== null, function (Builder $query) use ($limit) {
                 assert($limit !== null);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Eloquent;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +29,7 @@ use Orbit\Concerns\Orbital;
  *
  * @method static Builder<static>|Post newModelQuery()
  * @method static Builder<static>|Post newQuery()
+ * @method static Builder<static>|Post published()
  * @method static Builder<static>|Post query()
  * @method static Builder<static>|Post whereContent($value)
  * @method static Builder<static>|Post whereDescription($value)
@@ -84,6 +86,12 @@ final class Post extends Model
     public function tag(): BelongsTo
     {
         return $this->belongsTo(Tag::class);
+    }
+
+    #[Scope]
+    public function published(Builder $query): void
+    {
+        $query->where('published_at', '!=', null);
     }
 
     public function getKeyName(): string

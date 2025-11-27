@@ -4,7 +4,6 @@ slug: joyful-facades-and-how-to-write-them
 description: '[Queue sparking a holy war of facades vs. contacts]'
 image: assets/images/454b23e8-5bf9-4c11-b161-5dd86e5bbcde_1_105_c.jpeg
 tag_id: 1
-published_at: '2025-09-24'
 storage_key: 2025-09-24-joyful-facades-and-how-to-write-them
 ---
 

@@ -15,6 +15,7 @@ use Sushi\Sushi;
 /**
  * @property int $id
  * @property string|null $name
+ * @property-read string $hash_tagged
  * @property-read Collection<int, Post> $posts
  * @property-read int|null $posts_count
  *
