@@ -2,7 +2,7 @@
     use Illuminate\Support\Str;
 @endphp
 
-<main class="w-full max-w-3xl px-6">
+<main class="w-full max-w-3xl px-4">
     <article class="flex flex-col gap-10">
         <header class="flex flex-col gap-4">
             <flux:heading size="xl" class="text-balance text-center">
@@ -26,7 +26,7 @@
             </figure>
         @endif
 
-        <section class="prose prose-invert space-y-6 text-base leading-7">
+        <section class="prose dark:prose-invert space-y-6 text-base leading-7">
             {!! $content !!}
         </section>
     </article>

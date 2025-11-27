@@ -1,4 +1,4 @@
-<footer class="mx-auto pb-6 flex flex-col sm:flex-row sm:justify-between items-center gap-6 max-w-2xl">
+<footer class="mx-auto py-6 flex flex-row justify-between items-center gap-6 max-w-3xl px-4">
     <livewire:components.spotify-player />
     <x-powered-by />
 </footer>

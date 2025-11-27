@@ -23,21 +23,21 @@
 }
 
 @theme {
-    --color-accent: var(--color-teal-600);
-    --color-accent-content: var(--color-teal-600);
-    --color-accent-foreground: var(--color-white);
-}
-
-@theme {
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
-    'Noto Color Emoji';
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+        'Noto Color Emoji';
 }
 
-@layer theme {
-    .dark {
+@layer base {
+    :root {
         --color-accent: var(--color-teal-600);
-        --color-accent-content: var(--color-teal-400);
+        --color-accent-content: var(--color-teal-600);
+        --color-accent-foreground: var(--color-white);
+    }
+
+    .dark {
+        --color-accent: var(--color-teal-500);
+        --color-accent-content: var(--color-teal-300);
         --color-accent-foreground: var(--color-white);
     }
 }

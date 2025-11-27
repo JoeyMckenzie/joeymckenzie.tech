@@ -4,11 +4,11 @@
             <a href="{{ $post->to }}" wire:navigate.hover>
                 <span class="flex flex-row gap-2">
                     <flux:text variant="subtle">{{ $post->formatted_published_at }}</flux:text>
-                    <flux:badge" size="sm" class="lowercase tracking-wide text-xs">
+                    <flux:badge size="sm" class="lowercase tracking-wide text-xs">
                         {{ $post->tag->hashTagged }}
                     </flux:badge>
                 </span>
-                <flux:heading size="lg" class="group-hover:text-zinc-200/50 transition-colors">
+                <flux:heading size="lg" class="group-hover:text-accent transition-colors">
                     {{ $post->title }}
                 </flux:heading>
                 <flux:text class="mt-1">
