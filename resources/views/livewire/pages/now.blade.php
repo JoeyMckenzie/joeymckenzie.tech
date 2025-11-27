@@ -29,7 +29,7 @@
             <p>
                 In my spare time, I write a lot of PHP and enjoy tinkering on ideas with Laravel. I've got quite a few
                 fun projects I've worked on that usually make their way over to the blog. Find me on <flux:link
-                    href="https://github.com/joey">GitHub</flux:link>.
+                    href="https://github.com/joeymckenzie">GitHub</flux:link>.
             </p>
         </div>
     </section>
