@@ -9,7 +9,8 @@
             <p>
                 I'm currently a Senior Developer at <flux:link variant="ghost" href="https://www.givebutter.com/">
                     Givebutter
-                </flux:link> building things with PHP, Laravel, TypeScript, and React. Our goal is to make the world a
+                </flux:link> building things with PHP, Laravel, TypeScript, and React.
+                Our goal is to make the world a
                 better place and empower the changemaker in all of us. If you're a non-profit, or just looking to give
                 to a cause near and dear to yourself, check us out.
             </p>
