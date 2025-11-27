@@ -27,6 +27,7 @@ use Orbit\Concerns\Orbital;
  * @property-read Tag $tag
  * @property-read string $to
  *
+ * @method static Builder<static>|Post latestPublished()
  * @method static Builder<static>|Post newModelQuery()
  * @method static Builder<static>|Post newQuery()
  * @method static Builder<static>|Post published()
@@ -89,9 +90,18 @@ final class Post extends Model
     }
 
     #[Scope]
-    public function published(Builder $query): void
+    public function published(Builder $query): Builder
     {
-        $query->where('published_at', '!=', null);
+        return $query->where('published_at', '!=', null);
+    }
+
+    #[Scope]
+    public function latestPublished(Builder $query): Builder
+    {
+        return app()->isProduction()
+            ? $query->latest('published_at')
+            : $query->orderByRaw('CASE WHEN published_at IS NULL THEN 0 ELSE 1 END DESC')
+                ->orderByDesc('published_at');
     }
 
     public function getKeyName(): string
