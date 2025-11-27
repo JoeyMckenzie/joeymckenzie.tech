@@ -25,6 +25,7 @@ final class BlogPost extends Component
 
     public function render(): View
     {
-        return view('livewire.pages.blog-post');
+        return view('livewire.pages.blog-post')
+            ->title($this->post->title);
     }
 }

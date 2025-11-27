@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Queries\AllPostsQuery;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\View\View;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 final class Blog extends Component
@@ -22,6 +23,7 @@ final class Blog extends Component
         $this->posts = $posts->execute();
     }
 
+    #[Title('Blog.')]
     public function render(): View
     {
         return view('livewire.pages.blog');
