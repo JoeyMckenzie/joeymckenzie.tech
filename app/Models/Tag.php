@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -77,5 +78,15 @@ final class Tag extends Model
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    /**
+     * @return Attribute<non-falsy-string, never>
+     */
+    public function hashTagged(): Attribute
+    {
+        return Attribute::get(
+            fn (): string => "#$this->name"
+        );
     }
 }

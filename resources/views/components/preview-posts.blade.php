@@ -2,7 +2,12 @@
     @foreach ($posts as $post)
         <article class="group flex flex-col gap-2" data-animation="slideUp" data-stagger="0.15">
             <a href="{{ $post->to }}" wire:navigate.hover>
-                <flux:text variant="subtle">{{ $post->formatted_published_at }}</flux:text>
+                <span class="flex flex-row gap-2">
+                    <flux:text variant="subtle">{{ $post->formatted_published_at }}</flux:text>
+                    <flux:badge" size="sm" class="lowercase tracking-wide text-xs">
+                        {{ $post->tag->hashTagged }}
+                    </flux:badge>
+                </span>
                 <flux:heading size="lg" class="group-hover:text-zinc-200/50 transition-colors">
                     {{ $post->title }}
                 </flux:heading>

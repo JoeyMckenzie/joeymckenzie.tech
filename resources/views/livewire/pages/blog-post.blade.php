@@ -10,8 +10,8 @@
             </flux:heading>
 
             <div class="flex flex-row justify-center items-center gap-2">
-                <flux:badge class="lowercase tracking-wide text-xs">
-                    {{ $post->tag->name }}
+                <flux:badge size="sm" class="lowercase tracking-wide text-xs">
+                    {{ $post->tag->hashTagged }}
                 </flux:badge>
                 <flux:text variant="subtle">
                     {{ $post->formatted_published_at }}
@@ -21,8 +21,8 @@
 
         @if (filled($post->image))
             <figure class="overflow-hidden rounded-sm border border-neutral-200 dark:border-neutral-800">
-                <img src="{{ asset($post->image) }}" alt="{{ $post->title }} featured image" class="object-cover w-full"
-                    loading="lazy">
+                <img src="{{ asset($post->image) }}" alt="{{ $post->title }} featured image"
+                    class="object-cover w-full" loading="lazy">
             </figure>
         @endif
 
