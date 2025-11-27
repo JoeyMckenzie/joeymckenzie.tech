@@ -7,13 +7,7 @@ namespace App\Data\Spotify;
 use Livewire\Mechanisms\HandleComponents\Synthesizers\Synth;
 
 /**
- * @phpstan-type SpotifySchema array{
- *     nowPlaying: bool,
- *     href: ?string,
- *     albumImageSrc: ?string,
- *     trackTitle: ?string,
- *     artist: ?string
- * }
+ * @phpstan-import-type NowPlayingResponseSchema from NowPlayingResponse
  */
 final class SpotifySynthesizer extends Synth
 {
@@ -25,40 +19,21 @@ final class SpotifySynthesizer extends Synth
     }
 
     /**
-     * @return array{0: SpotifySchema, 1: mixed}
+     * @return array{0: NowPlayingResponseSchema, 1: mixed}
      */
     public function dehydrate(NowPlayingResponse $target): array
     {
         return [
-            [
-                'nowPlaying' => $target->nowPlaying,
-                'href' => $target->href,
-                'albumImageSrc' => $target->albumImageSrc,
-                'trackTitle' => $target->trackTitle,
-                'artist' => $target->artist,
-            ],
+            $target->toArray(),
             [],
         ];
     }
 
     /**
-     * @param array{
-     *     nowPlaying: bool,
-     *     href: ?string,
-     *     albumImageSrc: ?string,
-     *     trackTitle: ?string,
-     *     artist: ?string
-     * } $value
+     * @param  NowPlayingResponseSchema  $value
      */
     public function hydrate(array $value): NowPlayingResponse
     {
-        $instance = new NowPlayingResponse;
-        $instance->nowPlaying = $value['nowPlaying'];
-        $instance->href = $value['href'];
-        $instance->albumImageSrc = $value['albumImageSrc'];
-        $instance->trackTitle = $value['trackTitle'];
-        $instance->artist = $value['artist'];
-
-        return $instance;
+        return NowPlayingResponse::fromArray($value);
     }
 }

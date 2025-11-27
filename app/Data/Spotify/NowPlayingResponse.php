@@ -6,6 +6,7 @@ namespace App\Data\Spotify;
 
 use App\Data\Concerns\Defaultable;
 use App\Data\Concerns\MappableResponse;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Client\Response;
 
 /**
@@ -24,8 +25,17 @@ use Illuminate\Http\Client\Response;
  *          external_urls: array{spotify: ?string}
  *     }
  * }
+ * @phpstan-type NowPlayingResponseSchema array{
+ *     nowPlaying: bool,
+ *     href: ?string,
+ *     albumImageSrc: ?string,
+ *     trackTitle: ?string,
+ *     artist: ?string
+ * }
+ *
+ * @implements Arrayable<string, key-of<NowPlayingResponseSchema>>
  */
-final class NowPlayingResponse implements Defaultable, MappableResponse
+final class NowPlayingResponse implements Arrayable, Defaultable, MappableResponse
 {
     private function __construct(
         public bool $nowPlaying,
@@ -79,5 +89,41 @@ final class NowPlayingResponse implements Defaultable, MappableResponse
         ?string $artist = ''
     ): self {
         return new self(true, $href, $albumImageSrc, $trackTitle, $artist);
+    }
+
+    /**
+     * @param  NowPlayingResponseSchema  $payload
+     */
+    public static function hydrate(array $payload): self
+    {
+        return self::fromArray($payload);
+    }
+
+    /**
+     * @param  NowPlayingResponseSchema  $payload
+     */
+    public static function fromArray(array $payload): self
+    {
+        return new self(
+            (bool) ($payload['nowPlaying'] ?? false),
+            $payload['href'] ?? '',
+            $payload['albumImageSrc'] ?? '',
+            $payload['trackTitle'] ?? '',
+            $payload['artist'] ?? '',
+        );
+    }
+
+    /**
+     * @return NowPlayingResponseSchema
+     */
+    public function toArray(): array
+    {
+        return [
+            'nowPlaying' => $this->nowPlaying,
+            'href' => $this->href,
+            'albumImageSrc' => $this->albumImageSrc,
+            'trackTitle' => $this->trackTitle,
+            'artist' => $this->artist,
+        ];
     }
 }
