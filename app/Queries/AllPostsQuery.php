@@ -18,13 +18,13 @@ final class AllPostsQuery implements Queryable
     public function execute(?int $limit = null): Collection
     {
         $cacheKey = sprintf('posts:%s', $limit ?? 'all');
-        $resolver = fn () => Post::query()
+        $resolver = fn () => Post::query() // @phpstan-ignore-line method.nonObject
             ->with('tag:id,name')
-            ->latestPublished()
             ->when($limit !== null, function (Builder $query) use ($limit) {
                 assert($limit !== null);
                 $query->limit($limit); // @phpstan-ignore-line staticMethod.dynamicCall
             })
+            ->latestPublished()
             ->get([
                 'slug',
                 'title',

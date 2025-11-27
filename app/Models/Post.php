@@ -89,12 +89,20 @@ final class Post extends Model
         return $this->belongsTo(Tag::class);
     }
 
+    /**
+     * @param  Builder<Post>  $query
+     * @return Builder<Post>
+     */
     #[Scope]
     public function published(Builder $query): Builder
     {
         return $query->where('published_at', '!=', null);
     }
 
+    /**
+     * @param  Builder<Post>  $query
+     * @return Builder<Post>
+     */
     #[Scope]
     public function latestPublished(Builder $query): Builder
     {

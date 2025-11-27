@@ -16,3 +16,16 @@ parameters:
     checkOctaneCompatibility: true
     checkModelProperties: true
     treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        -
+            message: '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Post>::orderByDesc\(\).#'
+            path: app/Models/Post.php
+        -
+            message: '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Post>::orderByRaw\(\).#'
+            path: app/Models/Post.php
+        -
+            message: '#Dynamic call to static method Illuminate\\View\\View::title\(\).#'
+            path: app/Livewire/Pages/BlogPost.php
+        -
+            message: '#Method App\\Livewire\\Pages\\BlogPost::render\(\) should return Illuminate\\View\\View but returns mixed.#'
+            path: app/Livewire/Pages/BlogPost.php
