@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use App\Data\Spotify\AuthResponse;
 use App\Data\Spotify\NowPlayingResponse;
 use App\Services\Spotify\FakeConnector;
 use App\Services\Spotify\SpotifyConnectorContract;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Facade;
 
 /**
@@ -22,8 +24,11 @@ final class Spotify extends Facade
         $spotify = self::getFacadeRoot();
 
         try {
-            $auth = $spotify->authenticate();
-        } catch (ConnectionException) {
+            /** @var AuthResponse $auth */
+            $auth = Cache::remember('spotify:auth-token', now()->addMinutes(10), fn () => $spotify->authenticate());
+        } catch (ConnectionException $exception) {
+            report($exception);
+
             return NowPlayingResponse::default();
         }
 
