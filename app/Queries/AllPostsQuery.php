@@ -20,6 +20,9 @@ final class AllPostsQuery implements Queryable
         $cacheKey = sprintf('posts:%s', $limit ?? 'all');
         $resolver = fn () => Post::query() // @phpstan-ignore-line method.nonObject
             ->with('tag:id,name')
+            ->when(app()->isProduction(), function (Builder $query) {
+                $query->published();
+            })
             ->when($limit !== null, function (Builder $query) use ($limit) {
                 assert($limit !== null);
                 $query->limit($limit); // @phpstan-ignore-line staticMethod.dynamicCall

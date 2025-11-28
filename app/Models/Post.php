@@ -108,7 +108,7 @@ final class Post extends Model
     {
         return app()->isProduction()
             ? $query->latest('published_at')
-            : $query->orderByRaw('CASE WHEN published_at IS NULL THEN 0 ELSE 1 END DESC')
+            : $query->orderByRaw('CASE WHEN published_at IS NULL THEN 1 ELSE 0 END DESC')
                 ->orderByDesc('published_at');
     }
 
