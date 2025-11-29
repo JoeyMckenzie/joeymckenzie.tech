@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature;
+namespace Tests\Queries;
 
 use App\Models\Post;
 use App\Queries\AllPostsQuery;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Orbit\Facades\Orbit;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -67,14 +69,14 @@ final class AllPostsQueryTest extends TestCase
 
         $posts = app(AllPostsQuery::class)->execute();
 
-        $this->assertSame(['draft-post', 'published-new', 'published-old'], $posts->pluck('slug')->all());
+        Assert::assertSame(['draft-post', 'published-new', 'published-old'], $posts->pluck('slug')->all());
     }
 
     #[Test]
     public function production_filters_unpublished_posts(): void
     {
         App::detectEnvironment(static fn () => 'production');
-        $this->assertTrue(app()->isProduction());
+        Assert::assertTrue(app()->isProduction());
 
         Post::query()->delete();
 
@@ -82,19 +84,23 @@ final class AllPostsQueryTest extends TestCase
         $this->createPost('published-old', '2020-01-01');
         $this->createPost('published-new', '2024-01-01');
 
-        $this->assertSame(2, Post::query()->published()->count());
+        $count = Post::query()
+            ->published()
+            ->count();
+
+        Assert::assertSame(2, Post::query()->published()->count());
 
         $builder = Post::query()
             ->with('tag:id,name')
-            ->when(app()->isProduction(), fn ($q) => $q->published())
+            ->when(app()->isProduction(), fn (Builder $q) => $q->published())
             ->latestPublished();
 
-        $this->assertSame(['published-new', 'published-old'], $builder->pluck('slug')->all());
+        Assert::assertSame(['published-new', 'published-old'], $builder->pluck('slug')->all());
 
         $posts = app(AllPostsQuery::class)->execute();
 
-        $this->assertSame(['published-new', 'published-old'], $posts->pluck('slug')->all());
-        $this->assertTrue($posts->every(fn (Post $post): bool => $post->published_at !== null));
+        Assert::assertSame(['published-new', 'published-old'], $posts->pluck('slug')->all());
+        Assert::assertTrue($posts->every(fn (Post $post): bool => $post->published_at !== null));
     }
 
     private function createPost(string $slug, ?string $publishedAt): void

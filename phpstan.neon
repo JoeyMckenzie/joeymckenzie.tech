@@ -24,6 +24,12 @@ parameters:
             message: '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Post>::orderByRaw\(\).#'
             path: app/Models/Post.php
         -
+            message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Post>::published\(\).#'
+            path: app/Queries/AllPostsQuery.php
+        -
+            message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Post>::published\(\).#'
+            path: tests/Queries/AllPostsQueryTest.php
+        -
             message: '#Dynamic call to static method Illuminate\\View\\View::title\(\).#'
             path: app/Livewire/Pages/BlogPost.php
         -
