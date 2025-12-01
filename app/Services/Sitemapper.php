@@ -21,38 +21,49 @@ final readonly class Sitemapper
 
     public function create(): Sitemap
     {
-        return Cache::rememberForever('sitemap.xml', function (): Sitemap {
-            // Add static pages
-            $this->sitemap->add(Url::create('/')
-                ->setLastModificationDate(now())
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
-                ->setPriority(1.0));
-
-            $this->sitemap->add(Url::create('/blog')
-                ->setLastModificationDate(now())
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
-                ->setPriority(0.9));
-
-            $this->sitemap->add(Url::create('/now')
-                ->setLastModificationDate(now())
-                ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                ->setPriority(0.7));
-
-            $posts = Post::query()
-                ->published()
-                ->latest('published_at')
-                ->get(['slug', 'published_at']);
-
-            foreach ($posts as $post) {
-                $lastMod = Date::parse($post->published_at);
-
-                $this->sitemap->add(Url::create("/blog/$post->slug")
-                    ->setLastModificationDate($lastMod)
-                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                    ->setPriority(0.8));
-            }
+        /** @var Sitemap $sitemap */
+        $sitemap = Cache::rememberForever('sitemap.xml', function (): Sitemap {
+            $this->addStaticPages();
+            $this->addPosts();
 
             return $this->sitemap;
         });
+
+        return $sitemap;
+    }
+
+    private function addStaticPages(): void
+    {
+        $this->sitemap->add(Url::create('/')
+            ->setLastModificationDate(now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+            ->setPriority(1.0));
+
+        $this->sitemap->add(Url::create('/blog')
+            ->setLastModificationDate(now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+            ->setPriority(0.9));
+
+        $this->sitemap->add(Url::create('/now')
+            ->setLastModificationDate(now())
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.7));
+    }
+
+    private function addPosts(): void
+    {
+        $posts = Post::query()
+            ->published()
+            ->latest('published_at')
+            ->get(['slug', 'published_at']);
+
+        foreach ($posts as $post) {
+            $lastMod = Date::parse($post->published_at);
+
+            $this->sitemap->add(Url::create("/blog/$post->slug")
+                ->setLastModificationDate($lastMod)
+                ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+                ->setPriority(0.8));
+        }
     }
 }

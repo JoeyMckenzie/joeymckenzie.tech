@@ -86,12 +86,12 @@ final class AllPostsQueryTest extends TestCase
 
         Assert::assertSame(2, Post::query()->published()->count());
 
-        $builder = Post::query() // @phpstan-ignore-line method.nonObject
+        $builder = Post::query() // @phpstan-ignore argument.templateType
             ->with('tag:id,name')
             ->when(app()->isProduction(), fn (Builder $query) => $query->published())
             ->latestPublished();
 
-        Assert::assertSame(['published-new', 'published-old'], $builder->pluck('slug')->all()); // @phpstan-ignore-line method.nonObject
+        Assert::assertSame(['published-new', 'published-old'], $builder->pluck('slug')->all());
 
         $posts = app(AllPostsQuery::class)->execute();
 

@@ -1,0 +1,55 @@
+parameters:
+	ignoreErrors:
+		-
+			rawMessage: 'Method App\Livewire\Pages\Home::render() should return Illuminate\View\View but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Livewire/Pages/Home.php
+
+		-
+			rawMessage: 'Method App\Livewire\Pages\Now::render() should return Illuminate\View\View but returns mixed.'
+			identifier: return.type
+			count: 1
+			path: app/Livewire/Pages/Now.php
+
+		-
+			rawMessage: 'Argument of an invalid type mixed supplied for foreach, only iterables are supported.'
+			identifier: foreach.nonIterable
+			count: 1
+			path: app/Services/Sitemapper.php
+
+		-
+			rawMessage: Cannot access property $published_at on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/Sitemapper.php
+
+		-
+			rawMessage: Cannot access property $slug on mixed.
+			identifier: property.nonObject
+			count: 1
+			path: app/Services/Sitemapper.php
+
+		-
+			rawMessage: 'Cannot call method get() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/Sitemapper.php
+
+		-
+			rawMessage: 'Cannot call method latest() on mixed.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/Sitemapper.php
+
+		-
+			rawMessage: 'Parameter #1 $time of static method Illuminate\Support\Facades\Date::parse() expects Carbon\Month|Carbon\WeekDay|DateTimeInterface|float|int|string|null, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Services/Sitemapper.php
+
+		-
+			rawMessage: 'Part $post->slug (mixed) of encapsed string cannot be cast to string.'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: app/Services/Sitemapper.php

@@ -12,10 +12,10 @@ use LogicException;
  * @phpstan-type MetadataSchema array{"@type": string, name: string}
  * @phpstan-type EntitySchema array{"@type": string, "@id": string}
  * @phpstan-type StructuredDataSchema array{
- *     context: string,
- *     type: string,
+ *     "@context": string,
+ *     "@type": string,
  *     headline: string,
- *     image: string,
+ *     image: ?string,
  *     author: MetadataSchema,
  *     publisher: MetadataSchema,
  *     datePublished: ?string,
@@ -36,7 +36,7 @@ final class StructuredData implements Arrayable, ArrayAccess
 
     public string $description;
 
-    public string $image;
+    public ?string $image;
 
     /**
      * @var MetadataSchema
@@ -68,16 +68,16 @@ final class StructuredData implements Arrayable, ArrayAccess
     public function toArray(): array
     {
         return [
-            'context' => $this->context,
-            'type' => $this->type,
+            '@context' => $this->context,
+            '@type' => $this->type,
             'headline' => $this->headline,
             'description' => $this->description,
-            'image' => $this->image,
             'author' => $this->author,
             'publisher' => $this->publisher,
+            'mainEntityOfPage' => $this->mainEntityOfPage,
+            'image' => $this->image,
             'datePublished' => $this->datePublished,
             'dateModified' => $this->dateModified,
-            'mainEntityOfPage' => $this->mainEntityOfPage,
         ];
     }
 

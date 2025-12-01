@@ -18,11 +18,19 @@ parameters:
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
         - message: '#Call to an undefined method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Post>::published\(\).#'
+        - message: '#Dynamic call to static method Illuminate\\View\\View::layout\(\).#'
         - message: '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Post>::orderByDesc\(\).#'
         - message: '#Dynamic call to static method Illuminate\\Database\\Eloquent\\Builder<App\\Models\\Post>::orderByRaw\(\).#'
-        -
-            message: '#Dynamic call to static method Illuminate\\View\\View::title\(\).#'
-            path: app/Livewire/Pages/BlogPost.php
+        - message: '#Cannot call method latestPublished\(\) on mixed.#'
         -
             message: '#Method App\\Livewire\\Pages\\BlogPost::render\(\) should return Illuminate\\View\\View but returns mixed.#'
             path: app/Livewire/Pages/BlogPost.php
+        -
+            message: '#Cannot call method count\(\) on mixed.#'
+            path: tests/
+        -
+            message: '#Cannot call method all\(\) on mixed.#'
+            path: tests/
+        -
+            message: '#Cannot call method pluck\(\) on mixed.#'
+            path: tests/

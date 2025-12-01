@@ -72,3 +72,14 @@ $brewery->brew($recipe);
 That, more or less, is the facade pattern in a nutshell. You may often find it dressed up as a `BreweryManager`,
 `BreweryService`, `BreweryOrchestrator`, or some other enterprise-y noun. But it all means the same thing: make a
 complicated process simple.
+
+## Laravel-izing
+
+If you're using Laravel, chances are you're already familiar with a few of the facade centerpieces the framework offers:
+
+- `Route`
+- `Cache`
+- `Confing`
+- `Validator`
+- etc.
+
