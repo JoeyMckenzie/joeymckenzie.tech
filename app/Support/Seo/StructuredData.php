@@ -75,7 +75,7 @@ final class StructuredData implements Arrayable, ArrayAccess
             'author' => $this->author,
             'publisher' => $this->publisher ?? null,
             'mainEntityOfPage' => $this->mainEntityOfPage,
-            'image' => $this->image,
+            'image' => $this->image ?? null,
             'datePublished' => $this->datePublished,
             'dateModified' => $this->dateModified,
         ];
