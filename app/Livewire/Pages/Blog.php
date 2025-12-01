@@ -43,7 +43,8 @@ final class Blog extends Component
         ];
 
         return view('livewire.pages.blog')
-            ->with([
+            ->layout('components.layout', [
+                'title' => 'Blog',
                 'description' => 'Long-form thoughts on Laravel, PHP, and whatever else I\'m tinkering with.',
                 'ogType' => 'website',
                 'structuredData' => $structuredData,

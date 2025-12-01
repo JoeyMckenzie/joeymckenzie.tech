@@ -43,8 +43,8 @@ final class BlogPost extends Component
             ->make();
 
         return view('livewire.pages.blog-post')
-            ->title($this->post->title)
-            ->with([
+            ->layout('components.layout', [
+                'title' => $this->post->title,
                 'description' => $this->post->description,
                 'ogType' => 'article',
                 'ogImage' => $this->post->image,
