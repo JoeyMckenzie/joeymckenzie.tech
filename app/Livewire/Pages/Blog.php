@@ -26,6 +26,27 @@ final class Blog extends Component
     #[Title('Blog.')]
     public function render(): View
     {
-        return view('livewire.pages.blog');
+        $structuredData = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Blog',
+            'name' => config('app.name').' Blog',
+            'description' => 'Long-form thoughts on Laravel, PHP, and whatever else I\'m tinkering with by Joey McKenzie.',
+            'url' => url()->current(),
+            'author' => [
+                '@type' => 'Person',
+                'name' => 'Joey McKenzie',
+            ],
+            'publisher' => [
+                '@type' => 'Organization',
+                'name' => config('app.name'),
+            ],
+        ];
+
+        return view('livewire.pages.blog')
+            ->with([
+                'description' => 'Long-form thoughts on Laravel, PHP, and whatever else I\'m tinkering with.',
+                'ogType' => 'website',
+                'structuredData' => $structuredData,
+            ]);
     }
 }

@@ -1,2 +1,5 @@
 User-agent: *
-Disallow:
+Allow: /
+
+# Note: Update this URL when deploying to production
+Sitemap: https://livewire-blog.test/sitemap.xml

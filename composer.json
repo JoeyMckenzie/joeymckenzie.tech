@@ -8,15 +8,16 @@
     ],
     "require": {
         "php": "^8.4",
+        "ext-pdo": "*",
         "calebporzio/sushi": "^2.5",
         "laravel/framework": "^12.39",
         "laravel/tinker": "^2.10.1",
         "league/commonmark": "^2.7",
-        "livewire/livewire": "^v3.7.0",
         "livewire/flux": "^2.7",
+        "livewire/livewire": "^v3.7.0",
         "phiki/phiki": "^2.0",
         "ryangjchandler/orbit": "^1.4",
-        "ext-pdo": "*"
+        "spatie/laravel-sitemap": "^7.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16",
@@ -25,7 +26,7 @@
         "ergebnis/composer-normalize": "^2.48",
         "fakerphp/faker": "^1.23",
         "infection/infection": "^0.31.2",
-        "larastan/larastan": "^3.7",
+        "larastan/larastan": "^3.8",
         "laravel/boost": "^1.8",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.25.1",
