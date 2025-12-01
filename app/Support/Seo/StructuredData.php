@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Support\Seo;
 
-use App\Concerns\ArraySchemeable;
 use ArrayAccess;
 use Illuminate\Contracts\Support\Arrayable;
 use LogicException;
@@ -19,14 +18,13 @@ use LogicException;
  *     image: string,
  *     author: MetadataSchema,
  *     publisher: MetadataSchema,
- *     datePublished?: string,
- *     dateModified?: string,
- *     mainEntity: EntitySchema
+ *     datePublished: ?string,
+ *     dateModified: ?string,
+ *     mainEntityOfPage: EntitySchema
  * }
  *
  * @implements ArrayAccess<key-of<StructuredDataSchema>, mixed>
  * @implements Arrayable<key-of<StructuredDataSchema>, mixed>
- * @implements ArraySchemeable<StructuredDataSchema>
  */
 final class StructuredData implements Arrayable, ArrayAccess
 {
@@ -57,7 +55,7 @@ final class StructuredData implements Arrayable, ArrayAccess
     /**
      * @var EntitySchema
      */
-    public array $mainEntity;
+    public array $mainEntityOfPage;
 
     public function offsetExists(mixed $offset): bool
     {
@@ -79,7 +77,7 @@ final class StructuredData implements Arrayable, ArrayAccess
             'publisher' => $this->publisher,
             'datePublished' => $this->datePublished,
             'dateModified' => $this->dateModified,
-            'mainEntity' => $this->mainEntity,
+            'mainEntityOfPage' => $this->mainEntityOfPage,
         ];
     }
 

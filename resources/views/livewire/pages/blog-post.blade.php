@@ -1,7 +1,3 @@
-@php
-    use Illuminate\Support\Str;
-@endphp
-
 <main class="w-full max-w-3xl px-4">
     <article class="flex flex-col gap-10">
         <header class="flex flex-col gap-4">
