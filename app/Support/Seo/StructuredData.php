@@ -7,7 +7,6 @@ namespace App\Support\Seo;
 use App\Concerns\ArraySchemeable;
 use ArrayAccess;
 use Illuminate\Contracts\Support\Arrayable;
-use InvalidArgumentException;
 use LogicException;
 
 /**
@@ -29,7 +28,7 @@ use LogicException;
  * @implements Arrayable<key-of<StructuredDataSchema>, mixed>
  * @implements ArraySchemeable<StructuredDataSchema>
  */
-final readonly class StructuredData implements Arrayable, ArrayAccess, ArraySchemeable
+final class StructuredData implements Arrayable, ArrayAccess
 {
     public string $context;
 
@@ -59,76 +58,6 @@ final readonly class StructuredData implements Arrayable, ArrayAccess, ArraySche
      * @var EntitySchema
      */
     public array $mainEntity;
-
-    /**
-     * @param  MetadataSchema  $author
-     * @param  MetadataSchema  $publisher
-     * @param  EntitySchema  $mainEntity
-     */
-    public function __construct(
-        string $context,
-        string $type,
-        string $headline,
-        string $description,
-        string $image,
-        array $author,
-        array $publisher,
-        ?string $datePublished,
-        ?string $dateModified,
-        array $mainEntity
-    ) {
-        $this->context = $context;
-        $this->type = $type;
-        $this->headline = $headline;
-        $this->description = $description;
-        $this->image = $image;
-        $this->author = $author;
-        $this->publisher = $publisher;
-        $this->datePublished = $datePublished;
-        $this->dateModified = $dateModified;
-        $this->mainEntity = $mainEntity;
-    }
-
-    /**
-     * @param  array<key-of<StructuredDataSchema>, value-of<StructuredDataSchema>>  $properties
-     */
-    public function clone(array $properties = []): self
-    {
-        foreach ($properties as $key => $_) {
-            if (! in_array($key, $this->schema(), true)) {
-                throw new InvalidArgumentException("Property $key is not allowed.");
-            }
-        }
-
-        return new self(
-            context: $properties['context'] ?? $this->context,
-            type: $properties['type'] ?? $this->type,
-            headline: $properties['headline'] ?? $this->headline,
-            description: $properties['description'] ?? $this->description,
-            image: $properties['image'] ?? $this->image,
-            author: $properties['author'] ?? $this->author,
-            publisher: $properties['publisher'] ?? $this->publisher,
-            datePublished: $properties['datePublished'] ?? $this->datePublished,
-            dateModified: $properties['dateModified'] ?? $this->dateModified,
-            mainEntity: $properties['mainEntity'] ?? $this->mainEntity,
-        );
-    }
-
-    public function schema(): array
-    {
-        return [
-            'context',
-            'type',
-            'headline',
-            'description',
-            'image',
-            'author',
-            'publisher',
-            'datePublished',
-            'dateModified',
-            'mainEntity',
-        ];
-    }
 
     public function offsetExists(mixed $offset): bool
     {
