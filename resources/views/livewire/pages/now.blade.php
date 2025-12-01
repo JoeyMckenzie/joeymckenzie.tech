@@ -32,7 +32,7 @@
 
     <section class="space-y-6">
         <flux:heading size="lg" data-animation="slideUp" data-stagger="0.1">Offline</flux:heading>
-        <flux:text class="text-sm" data-animation="slideUp" data-stagger="0.05">
+        <flux:text class="text-sm" data-animation="slideUp" data-stagger="0.06">
             If I'm not in sitting in front of a terminal, I'm chasing around my two-year old and spending time with my
             family. I enjoy fishing, grabbing a drink at my local watering hole with friends, or posting mid takes about
             software on <flux:link variant="ghost" href="https://x.com/_joeyMcKenzie">X</flux:link> (the everything
