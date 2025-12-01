@@ -17,7 +17,7 @@ use LogicException;
  *     headline: string,
  *     image: ?string,
  *     author: MetadataSchema,
- *     publisher: MetadataSchema,
+ *     publisher: ?MetadataSchema,
  *     datePublished: ?string,
  *     dateModified: ?string,
  *     mainEntityOfPage: EntitySchema
@@ -73,7 +73,7 @@ final class StructuredData implements Arrayable, ArrayAccess
             'headline' => $this->headline,
             'description' => $this->description,
             'author' => $this->author,
-            'publisher' => $this->publisher ?? [],
+            'publisher' => $this->publisher ?? null,
             'mainEntityOfPage' => $this->mainEntityOfPage,
             'image' => $this->image,
             'datePublished' => $this->datePublished,
