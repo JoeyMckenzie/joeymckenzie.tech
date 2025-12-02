@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Post;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
 use Spatie\Sitemap\Sitemap;
@@ -52,7 +53,8 @@ final readonly class Sitemapper
 
     private function addPosts(): void
     {
-        $posts = Post::query()
+        /** @var Collection<int, Post> $posts */
+        $posts = Post::query() // @phpstan-ignore-line method.nonObject
             ->published()
             ->latest('published_at')
             ->get(['slug', 'published_at']);

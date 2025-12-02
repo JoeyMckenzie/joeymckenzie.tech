@@ -34,3 +34,8 @@ parameters:
         -
             message: '#Cannot call method pluck\(\) on mixed.#'
             path: tests/
+
+        -
+            message: '#Method App\\Livewire\\Pages\\[a-zA-Z]+::render\(\) should return Illuminate\\View\\View but returns mixed.#'
+            path: app/Livewire/**/*.php
+

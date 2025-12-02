@@ -91,12 +91,11 @@ final class Post extends Model
 
     /**
      * @param  Builder<Post>  $query
-     * @return Builder<Post>
      */
     #[Scope]
-    public function published(Builder $query): Builder
+    public function published(Builder $query): void
     {
-        return $query->where('published_at', '!=', null);
+        $query->where('published_at', '!=', null);
     }
 
     /**
