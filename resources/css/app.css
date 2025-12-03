@@ -41,3 +41,8 @@
         --color-accent-foreground: var(--color-white);
     }
 }
+
+.mermaid {
+    display: flex;
+    justify-content: center;
+}

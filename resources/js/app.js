@@ -1,4 +1,5 @@
 import { animate } from 'motion';
+import mermaid from 'mermaid';
 
 /**
  * Reusable animation presets
@@ -92,10 +93,31 @@ function initializeAnimations() {
 }
 
 /**
- * Initialize animations when DOM is ready
+ * Initialize Mermaid diagrams
+ */
+async function initializeMermaid() {
+    mermaid.initialize({ startOnLoad: false });
+    await mermaid.run({ querySelector: '.mermaid' });
+}
+
+/**
+ * Initialize all page features
+ */
+function initializePage() {
+    initializeAnimations();
+    initializeMermaid();
+}
+
+/**
+ * Initialize when DOM is ready
  */
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeAnimations);
+    document.addEventListener('DOMContentLoaded', initializePage);
 } else {
-    initializeAnimations();
+    initializePage();
 }
+
+/**
+ * Re-initialize after Livewire navigation
+ */
+document.addEventListener('livewire:navigated', initializePage);

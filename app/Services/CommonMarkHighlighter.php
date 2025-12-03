@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Services\CommonMark\MermaidExtension;
 use Illuminate\Support\Facades\Cache;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Exception\CommonMarkException;
@@ -34,7 +35,8 @@ final class CommonMarkHighlighter
     {
         $environment = new Environment()
             ->addExtension(new CommonMarkCoreExtension)
-            ->addExtension(new PhikiExtension(Theme::OneDarkPro));
+            ->addExtension(new PhikiExtension(Theme::OneDarkPro))
+            ->addExtension(new MermaidExtension);
 
         $converter = new MarkdownConverter($environment);
 

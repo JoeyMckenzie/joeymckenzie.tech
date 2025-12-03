@@ -11,12 +11,12 @@ So lately I've been taking a hike off Mt. Dogma and re-approaching the Laravel p
 While
 my time with Laravel has been relatively brief, finding my way to the framework sometime around 2022, I've been working
 in other languages and ecosystems throughout my decade-ish long career as a software developer. My time in Java and .NET
-in the mid-to-late aughts indoctrinated the principles of the enterprise that I still hold with me today. Though, This
+in the mid-to-late aughts indoctrinated the principles of the enterprise that I still hold with me today. Though, this
 isn't a blog post about SOLID, CUPID, or whatever the hell acronym we're going by these days.
 
 When I'm really digging something, I like to write about it, and I'm long overdue for one of my internet programming
 rambles on here on the homestead. Facades, and how they broke through my thick dependency injection framework-wired
-brain, feels like the perfect topic at the move.
+brain, feels like the perfect topic at the moment.
 
 TL;DR - I think I've truly found the _joy_ of using facades.
 
@@ -31,9 +31,9 @@ the academic definition of it, it's a fascinating 30 minute read. I'll skip the 
 as there's no shortage of devs much more equipped in the noggin than myself that can explain the technical aspect of the
 facade pattern.
 
-For the regular Joe's of us out there, facades enabling working with complex objects easier. In plain english, a facade
+For the regular Joes of us out there, facades enable working with complex objects easier. In plain english, a facade
 is wrapper around a rather involved class, or set of classes, that provides simplified APIs to access the underlying
-object(s), often time easing the interaction for the outside world.
+object(s), oftentimes easing the interaction for the outside world.
 
 Taking a play out of the pretty much any "clean code"-esque style book, imagine we're writing software to help brewers
 brew beer. Being a craft snob, I'm overdue for a good beer-based analogy. To brew a batch of the perfect programmer's
@@ -66,7 +66,7 @@ We've got five actors in `$kettle`, `$mashtun`, `$lauteringSystem`, `$chiller`, 
 own dependencies and semantics. It would be much simpler if we could _just_ do something like:
 
 ```php
-$brewery->brew($recipe);
+$breweryManager->brew($recipe);
 ```
 
 That, more or less, is the facade pattern in a nutshell. You may often find it dressed up as a `BreweryManager`,
@@ -79,7 +79,115 @@ If you're using Laravel, chances are you're already familiar with a few of the f
 
 - `Route`
 - `Cache`
-- `Confing`
+- `Config`
 - `Validator`
 - etc.
 
+And if we give the same treatment to our conjured example of the brewery operations, we could use something like:
+
+```php
+Brewer::brew($recipe);
+```
+
+We're accomplishing the same thing, wrapping up a bunch of intertwined business logic in one call that coordinates
+the work of brewing a recipe without the need of the caller to figure out which pieces are responsible for individual
+parts of the recipe. That's the where the facade comes in, to make complex use cases of underlying services and logic
+easy to use from the outsider's perspective.
+
+## What makes up a facade
+
+Let's zoom out from the code perspective and take a look at what a facade _might_ look like from a bird's eye view:
+
+```mermaid
+graph TD
+    Client[Client Code] --> Facade[Brewer Facade]
+    Facade --> Kettle
+    Facade --> Mashtun
+    Facade --> Lauter[Lautering System]
+    Facade --> Chiller
+    Facade --> Fermenter
+```
+
+Our `Brewer` facade, in this case, coordinates the work between (betwixt?) the client code and the underlying
+dependencies that are required to brew a recipe. Each of these services can themselves have additional dependencies,
+idiosyncrasies, validation, and a litany of all sorts of things core business logic usually handles. From the client's
+perspective, it doesn't care that our mashtun needs to hold a temperature of 60C to brew a recipe -- it just wants a
+damn beer.
+
+While you're typical Laravel-ian facade is simply just an access pattern for dependencies, nothing stops you from
+writing your own facades that coordinate work from a complex service into a simple API for client's to consume.
+
+## Facades in action
+
+Laravel's [facade abstraction](https://github.com/laravel/framework/blob/c04df13f3b180b5889fbc4c2103f3a10035e501e/src/Illuminate/Support/Facades/Facade.php)
+does a bunch of stuff under the covers, like caching, providing first-party defaults for services, and sets up testing
+to name a few things. The most _interesting_ thing it does is in this bit [here](https://github.com/laravel/framework/blob/c04df13f3b180b5889fbc4c2103f3a10035e501e/src/Illuminate/Support/Facades/Facade.php#L355):
+
+```php
+/**
+ * Handle dynamic, static calls to the object.
+ *
+ * @param  string  $method
+ * @param  array  $args
+ * @return mixed
+ *
+ * @throws \RuntimeException
+ */
+public static function __callStatic($method, $args)
+{
+    $instance = static::getFacadeRoot();
+
+    if (! $instance) {
+        throw new RuntimeException('A facade root has not been set.');
+    }
+
+    return $instance->$method(...$args);
+}
+```
+
+That's where the "magic" happens that you've probably seen developers arguing over the internet, giving weight to the
+argument that Laravel's "magic" is a bit too magical at times. I'd argue the magic, at least in the case of facades,
+is no more than a cheeky use of PHP's dynamic nature.
+
+So there's nothing really "special" about facades. They resolve services from the container in a static fashion and shim
+through calls to the underlying service.
+
+To play devil's advocate -- yes, this is service locator in action. The older I get, however, I care less about
+pattern-y type dogma and more about DX to simply get stuff done. I'll eat the fact that Laravel's going against the
+software grain here, because after some time, I've really grown to love the ease of use facades bring to allow me to 
+simply just do the things I care about.
+
+## With great power comes great responsibility
+
+I'd wager the primary argument against the use of facades is their tendency to hide dependencies within a unit of work.
+Take, for instance, some business logic-y type service/action that creates an account in a multi-tenant application:
+
+```php
+final class AccountManager
+{
+    public function create(string $tenantId, User $owner, array $tenantDetails): Account
+    {
+        // Do our DD and never trust the outside world
+        $validated = Validator::make([...], $tenantDetails);
+        
+        // Do some tenancy sanity checks
+        Tenant::create([...]);
+        
+        // Post creation notifications
+        Mail::to($owner)->sendNow(new NewTenantWelcomeEmail());
+        
+        // Create an audit trail for tracking
+        Auditor::papertrail([...]);
+    }
+}
+```
+
+In our `create()` method alone, we have four dependencies, and nowhere in our calling surface do we specify that the 
+details of creating an account for a tenant do we specify to the outside world that these dependencies exist. If we 
+were to attempt to test this logic, we would need _some_ way to isolate the four dependencies and make them invariant
+of the method itself. Without the jargin, we'd a way to mock or provide fakes for these dependencies _if we're testing
+this code in isolation_. A better test, in this case, would be a more e2e approach, where I'd expect:
+
+- The actual validation to run
+- A tenant to exist in our test database
+- An email to exist
