@@ -121,7 +121,8 @@ writing your own facades that coordinate work from a complex service into a simp
 
 Laravel's [facade abstraction](https://github.com/laravel/framework/blob/c04df13f3b180b5889fbc4c2103f3a10035e501e/src/Illuminate/Support/Facades/Facade.php)
 does a bunch of stuff under the covers, like caching, providing first-party defaults for services, and sets up testing
-to name a few things. The most _interesting_ thing it does is in this bit [here](https://github.com/laravel/framework/blob/c04df13f3b180b5889fbc4c2103f3a10035e501e/src/Illuminate/Support/Facades/Facade.php#L355):
+to name a few things. The most _interesting_ thing it does is in this
+bit [here](https://github.com/laravel/framework/blob/c04df13f3b180b5889fbc4c2103f3a10035e501e/src/Illuminate/Support/Facades/Facade.php#L355):
 
 ```php
 /**
@@ -154,7 +155,7 @@ through calls to the underlying service.
 
 To play devil's advocate -- yes, this is service locator in action. The older I get, however, I care less about
 pattern-y type dogma and more about DX to simply get stuff done. I'll eat the fact that Laravel's going against the
-software grain here, because after some time, I've really grown to love the ease of use facades bring to allow me to 
+software grain here, because after some time, I've really grown to love the ease of use facades bring to allow me to
 simply just do the things I care about.
 
 ## With great power comes great responsibility
@@ -169,25 +170,121 @@ final class AccountManager
     {
         // Do our DD and never trust the outside world
         $validated = Validator::make([...], $tenantDetails);
-        
+
+        // Call an external service because... reasons
+        ExternalService::checkLegitness($owner);
+
         // Do some tenancy sanity checks
         Tenant::create([...]);
-        
+
         // Post creation notifications
         Mail::to($owner)->sendNow(new NewTenantWelcomeEmail());
-        
+
         // Create an audit trail for tracking
         Auditor::papertrail([...]);
+
     }
 }
 ```
 
-In our `create()` method alone, we have four dependencies, and nowhere in our calling surface do we specify that the 
-details of creating an account for a tenant do we specify to the outside world that these dependencies exist. If we 
+In our `create()` method alone, we have five dependencies, and nowhere in our calling surface do we specify that the
+details of creating an account for a tenant do we specify to the outside world that these dependencies exist. If we
 were to attempt to test this logic, we would need _some_ way to isolate the four dependencies and make them invariant
-of the method itself. Without the jargin, we'd a way to mock or provide fakes for these dependencies _if we're testing
-this code in isolation_. A better test, in this case, would be a more e2e approach, where I'd expect:
+of the method itself. Sparing the jargin, we'd need a way to mock or provide fakes for these dependencies _if we're
+testing this code in isolation_. A better test, in this case, would be a more e2e approach, where I'd expect:
 
 - The actual validation to run
+- A spied call out to our external service
 - A tenant to exist in our test database
-- An email to exist
+- An email to fire
+- An audit record with updated values to exist in our test database
+
+Bottom line, we're hiding a lot of abstraction. But what's the alternative? It might look something like:
+
+```php
+use App\Contracts\TenantManagerInterface;
+use App\Contracts\AuditManagerInterface;
+use App\Contracts\ExternalServiceInterface;
+use Illuminate\Contracts\Mail\Factory as Mail;
+use Illuminate\Contracts\Validation\Factory as Validator;
+
+final class AccountManager
+{
+    public function __construct(
+        private Validator $validator,
+        private ExternalServiceInterface $externalService,
+        private TenantManagerInterface $tenantManager,
+        private Mail $mail,
+        private AuditManagerInterface $auditManager,
+    ) {
+        //
+    }
+
+    public function create(string $tenantId, User $owner, array $tenantDetails): Account
+    {
+        // Do our DD and never trust the outside world
+        $validated = $this->make([...], $tenantDetails);
+
+        // Call an external service because... reasons
+        $this->externalService->checkLegitness($owner);
+
+        // Do some tenancy sanity checks
+        $this->tenantManager->create([...]);
+
+        // Post creation notifications
+        $this->mail
+            ->to($owner)
+            ->sendNow(new NewTenantWelcomeEmail());
+
+        // Create an audit trail for tracking
+        $this->auditManager->papertrail([...]);
+    }
+}
+```
+
+Okay, so now at least we're communicating with the outside world that we _have_ dependencies. Furthermore, as we
+inevitably continue to bloat this class due to unrealistic project deadlines and general laziness, we can use the
+constructor as a litmus test of when a class needs to be filibustered. One can imagine that as the class grows in
+complexity and needing more dependencies, we'll be in direct violation of most of the letters in SOLID.
+
+Two paths that ultimately end up merging into the same road. But what about testing?
+
+## Mock the pain away
+
+As with any good bit of code, we need to validate its behavior. In the case of facades, we might have something like:
+
+```php
+#[CoversClass(AccountManager::class)]
+final class AccountManagerTest extends TestCase
+{
+    private AccountManager $manager;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        //
+        $this->manager = app(AccountManager::class);
+    }
+
+    #[Test]
+    public function it_creates_an_account(): void
+    {
+        // Arrange
+        Mail::fake();
+
+        // No need to call the real service in a testing context
+        ExternalService::fake([
+            // Fake a few responses to get the behavior we'd expect
+            ExternalServiceResponse::make([
+                'is_legit' => true
+            ])
+        ]);
+
+        // Act
+
+
+        // Assert
+    }
+}
+```

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Livewire\Pages;
 
 use App\Models\Post;
-use App\Services\CommonMarkHighlighter;
+use App\Services\CommonMark\CommonMarkHighlighter;
 use App\Support\Seo\StructuredDataBuilder;
 use Illuminate\View\View;
 use League\CommonMark\Exception\CommonMarkException;
