@@ -29,15 +29,23 @@
 }
 
 @layer base {
+    /* Tokyo Night color palette */
     :root {
-        --color-accent: var(--color-teal-600);
-        --color-accent-content: var(--color-teal-600);
+        --tokyo-night-blue: #7aa2f7;
+        --tokyo-night-purple: #bb9af7;
+        --tokyo-night-pink: #f7768e;
+        --tokyo-night-green: #9ece6a;
+    }
+
+    :root {
+        --color-accent: #7aa2f7;
+        --color-accent-content: #7aa2f7;
         --color-accent-foreground: var(--color-white);
     }
 
     .dark {
-        --color-accent: var(--color-teal-500);
-        --color-accent-content: var(--color-teal-300);
+        --color-accent: #bb9af7;
+        --color-accent-content: #bb9af7;
         --color-accent-foreground: var(--color-white);
     }
 }

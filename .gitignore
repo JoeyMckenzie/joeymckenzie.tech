@@ -26,3 +26,4 @@ yarn-error.log
 _ide_helper.php
 .phpstan/
 .DS_Store
+docs/plans/

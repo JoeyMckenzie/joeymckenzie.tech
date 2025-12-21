@@ -112,10 +112,51 @@ right back in to whatever I was working where ever I left off.
 
 I don't deviate from the defaults of ghostty and tmux _too_ much, but I've landed
 on a setup with neovim that I'm really starting to enjoy and wanted to share with
-the world. Let's get into it!
+the world. Okay, that's enough talk. Let's get into it!
 
 ## Neovim for PHP and Laravel
 
 The first order of business is to get yourself a fresh LazyVim install. They have
 some fairly comprehensive documentation and it's a great starting point for getting
-up and running with neovim.
+up and running with neovim. Neovim also has some great documentation on installing
+and setting it up, which is obviously required to get up and running with LazyVim.
+
+Once you've installed neovim, LazyVim is just a starter setup/configuration that
+will live under your `$HOME/.config/nvim` directory. You can override your nvim
+directory if you're starting fresh, though you can also backup your current config
+with a quick `mv ~/.config/nvim ~/.config/nvim.bak`. Once that's done, clone the
+LazyVim config with:
+
+```bash
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+```
+
+LazyVim requires a few tools for the full experience, but nothing too complicated
+to install. To make life easier, it helps to have rust and cargo setup, which is
+a breeze to manage with [rustup](https://rustup.rs/). You'll also need:
+
+- A [Nerd Font](https://www.nerdfonts.com/) (I use JetBrains Mono)
+- [lazygit](https://github.com/jesseduffield/lazygit), an excellent TUI for git
+- [tree-sitter-cli](https://github.com/tree-sitter/tree-sitter/blob/master/crates/cli/README.md), installable via `cargo`
+- [curl](https://curl.se/), which you probably already have installed
+- [fzf](https://github.com/junegunn/fzf?tab=readme-ov-file#using-homebrew) for fuzzy finding
+- [ripgrep](https://github.com/BurntSushi/ripgrep) for directory searching, installable via `cargo`
+- [fd], a `find` alternative for files, installable via `cargo`
+
+It _seems_ like a lot, but it's really just a handful of tools that are all helpful
+outside of a neovim setup. Again, I recommend ghostty, but any true color terminal works.
+
+Once you got that up and running, we're just some configuration tinkering away
+from getting up and running with a solid (imo) setup for PHP and Laravel.
+
+[Sean Kegel](https://seankegel.com/neovim-for-php-and-laravel) has an _excellent_
+blog post on setting up Laravel and PHP that is well worth the read, especially
+for supplementing treesitter with knowledge about Blade files. I won't regurgitate
+the content here, thought you should definitely give that article a read yourself.
+
+To make this stupid easy, [here's](https://github.com/JoeyMckenzie/nvim.bak/blob/main/lua/plugins/php.lua) my current
+PHP setup for neovim. A few of the primary few plugins to supplement neovim for PHP:
+
+- [Intelephense](https://intelephense.com/) as my LSP of choice for PHP
+- [neotest](https://github.com/nvim-neotest/neotest?tab=readme-ov-file#installation) for running PHPUnit tests
+- [laravel.nvim](https://github.com/adalessa/laravel.nvim) for Laravel actions in neovim
