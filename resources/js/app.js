@@ -101,11 +101,67 @@ async function initializeMermaid() {
 }
 
 /**
+ * Initialize copy buttons for code blocks
+ */
+function initializeCodeCopyButtons() {
+    // Find all pre elements (code blocks)
+    const codeBlocks = document.querySelectorAll('pre');
+
+    codeBlocks.forEach((pre) => {
+        // Wrap the pre in a div with relative positioning
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('code-block-wrapper');
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+
+        // Create the copy button
+        const copyButton = document.createElement('button');
+        copyButton.classList.add('code-copy-btn');
+        copyButton.textContent = 'Copy';
+        copyButton.type = 'button';
+        copyButton.setAttribute('aria-label', 'Copy code to clipboard');
+
+        // Add click handler
+        copyButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            // Get the text content from the code block
+            const codeText = pre.textContent;
+
+            try {
+                // Copy to clipboard
+                await navigator.clipboard.writeText(codeText);
+
+                // Show success state
+                copyButton.textContent = 'Copied!';
+                copyButton.classList.add('copied');
+
+                // Reset after 2 seconds
+                setTimeout(() => {
+                    copyButton.textContent = 'Copy';
+                    copyButton.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy code:', err);
+                copyButton.textContent = 'Failed';
+                setTimeout(() => {
+                    copyButton.textContent = 'Copy';
+                }, 2000);
+            }
+        });
+
+        // Insert the button into the wrapper
+        wrapper.appendChild(copyButton);
+    });
+}
+
+/**
  * Initialize all page features
  */
 function initializePage() {
     initializeAnimations();
     initializeMermaid();
+    initializeCodeCopyButtons();
 }
 
 /**
