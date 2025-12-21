@@ -104,10 +104,13 @@ async function initializeMermaid() {
  * Initialize copy buttons for code blocks
  */
 function initializeCodeCopyButtons() {
-    // Find all pre elements (code blocks)
-    const codeBlocks = document.querySelectorAll('pre');
+    // Find all pre elements that haven't been initialized yet
+    const codeBlocks = document.querySelectorAll('pre:not(.code-initialized)');
 
     codeBlocks.forEach((pre) => {
+        // Mark this pre as initialized to prevent re-wrapping
+        pre.classList.add('code-initialized');
+
         // Wrap the pre in a div with relative positioning
         const wrapper = document.createElement('div');
         wrapper.classList.add('code-block-wrapper');
