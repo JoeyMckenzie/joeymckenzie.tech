@@ -141,22 +141,45 @@ a breeze to manage with [rustup](https://rustup.rs/). You'll also need:
 - [curl](https://curl.se/), which you probably already have installed
 - [fzf](https://github.com/junegunn/fzf?tab=readme-ov-file#using-homebrew) for fuzzy finding
 - [ripgrep](https://github.com/BurntSushi/ripgrep) for directory searching, installable via `cargo`
-- [fd], a `find` alternative for files, installable via `cargo`
+- [fd](https://github.com/sharkdp/fd), a `find` alternative for files, installable via `cargo`
 
 It _seems_ like a lot, but it's really just a handful of tools that are all helpful
-outside of a neovim setup. Again, I recommend ghostty, but any true color terminal works.
+outside of a neovim setup. I'm a ghostty, but any true color terminal works.
 
 Once you got that up and running, we're just some configuration tinkering away
 from getting up and running with a solid (imo) setup for PHP and Laravel.
 
-[Sean Kegel](https://seankegel.com/neovim-for-php-and-laravel) has an _excellent_
+[Sean Kegel](https://seankegel.com/neovim-for-php-and-laravel) has an excellent
 blog post on setting up Laravel and PHP that is well worth the read, especially
 for supplementing treesitter with knowledge about Blade files. I won't regurgitate
 the content here, thought you should definitely give that article a read yourself.
 
-To make this stupid easy, [here's](https://github.com/JoeyMckenzie/nvim.bak/blob/main/lua/plugins/php.lua) my current
+One caveat, `nvim-treesitter` supports Blade these days via [tree-sitter-blade](https://github.com/EmranMR/tree-sitter-blade),
+so you don't need the custom syntax configuration these days. All that's needed
+is a simple `:TSInstall blade` and you're off to the races.
+
+To make this stupid easy, [here](https://github.com/JoeyMckenzie/nvim.bak/blob/main/lua/plugins/php.lua) is my current
 PHP setup for neovim. A few of the primary few plugins to supplement neovim for PHP:
 
 - [Intelephense](https://intelephense.com/) as my LSP of choice for PHP
 - [neotest](https://github.com/nvim-neotest/neotest?tab=readme-ov-file#installation) for running PHPUnit tests
 - [laravel.nvim](https://github.com/adalessa/laravel.nvim) for Laravel actions in neovim
+- [confirm.nvim](https://github.com/stevearc/conform.nvim) for code linting and formatting via PHPStan and Pint/PHP-CS-Fixer
+
+I have some other stuff, like an entirely vibe coded [Linear](https://github.com/JoeyMckenzie/linear.nvim)
+plugin I co-wrote (with Claude, ofc) to give myself an excuse to learn Lua.
+There's some other things in there, like [dadbod](https://github.com/tpope/vim-dadbod) for
+database integration (more on that later) and [dotenv](https://github.com/ellisonleao/dotenv.nvim)
+to allow neovim to parse `.env` files (good for integrations that require API keys 'n such).
+
+Rather than spend the majority of this blog post talking about how to setup/install neovim
+to your liking, I want to walk through more so how I _use_ neovim has a daily driver
+for my PHP and Laravel work.
+
+## From GUI to TUI
+
+To keep myself from having to `alt` + `tab` a million times a day,
+I keep _pretty_ much everything I need scoped to a tmux session that most of time
+looks something like this:
+
+## PLACEHOLDER IMAGE
