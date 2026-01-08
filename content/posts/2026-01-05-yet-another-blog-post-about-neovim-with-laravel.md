@@ -1,10 +1,10 @@
 ---
 title: Terminal-driven Laravel workflows
 slug: terminal-driven-laravel-workflows
-description: 'I use neovim (btw)'
+description: 'Neovim (btw)'
 image: assets/images/tmux_neovim_meme.jpeg
 tag_id: 1
-storage_key: 2025-12-25-terminal-driven-laravel-workflows
+storage_key: 2026-01-05-terminal-driven-laravel-workflows
 ---
 
 So I've taken the last month or so to completely rethink my workflow for Laravel
@@ -25,9 +25,9 @@ they've helped me pay the mortgage on my house for years at this point by giving
 me the tools to effectively do my job well.
 
 Lately, though, I couldn't help but feel the call to throw it all away and get
-back to the primordial state where all computer nerds are born with the terminal.
+back to a primordial state where all computer nerds are born... the terminal.
 I use the terminal for basically everything anyway, so why not just edit my
-code there anyway? I'm already there.
+code there? I'm already there.
 
 ## Call of the terminal
 
@@ -161,10 +161,11 @@ is a simple `:TSInstall blade` and you're off to the races.
 To make this stupid easy, [here](https://github.com/JoeyMckenzie/nvim.bak/blob/main/lua/plugins/php.lua) is my current
 PHP setup for neovim. A few of the primary few plugins to supplement neovim for PHP:
 
-- [Intelephense](https://intelephense.com/) as my LSP of choice for PHP
+- [intelephense](https://intelephense.com/) as my LSP of choice for PHP, though there's also [phpactor](https://github.com/phpactor/phpactor)
 - [neotest](https://github.com/nvim-neotest/neotest?tab=readme-ov-file#installation) for running PHPUnit tests
 - [laravel.nvim](https://github.com/adalessa/laravel.nvim) for Laravel actions in neovim
 - [confirm.nvim](https://github.com/stevearc/conform.nvim) for code linting and formatting via PHPStan and Pint/PHP-CS-Fixer
+- [dap](https://github.com/mfussenegger/nvim-dap) and [dap-ui](https://github.com/rcarriga/nvim-dap-ui)
 
 I have some other stuff, like an entirely vibe coded [Linear](https://github.com/JoeyMckenzie/linear.nvim)
 plugin I co-wrote (with Claude, ofc) to give myself an excuse to learn Lua.
