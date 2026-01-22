@@ -22,7 +22,7 @@
             </figure>
         @endif
 
-        <section class="prose dark:prose-invert space-y-6 text-base leading-7">
+        <section class="prose dark:prose-invert space-y-6 text-base leading-7 prose-img:mx-auto">
             {!! $content !!}
         </section>
     </article>

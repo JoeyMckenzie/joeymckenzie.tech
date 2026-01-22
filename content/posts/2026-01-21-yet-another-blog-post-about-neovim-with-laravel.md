@@ -1,10 +1,11 @@
 ---
-title: Terminal-driven Laravel workflows
-slug: terminal-driven-laravel-workflows
+title: Terminally driven, Laravel inspired
+slug: terminally-driven-laravel-inspired
 description: 'Neovim (btw)'
 image: assets/images/tmux_neovim_meme.jpeg
 tag_id: 1
-storage_key: 2026-01-05-terminal-driven-laravel-workflows
+published_at: '2026-01-22'
+storage_key: 2026-01-22-terminal-driven-laravel-workflows
 ---
 
 So I've taken the last month or so to completely rethink my workflow for Laravel
@@ -29,13 +30,15 @@ back to a primordial state where all computer nerds are born... the terminal.
 I use the terminal for basically everything anyway, so why not just edit my
 code there? I'm already there.
 
-## Call of the terminal
+## "I'm not f#@king leaving!"
 
-So over the past month, I've taken a journey to really embrace the terminal-driven
+Over the past few month, I've taken a journey to really embrace the terminal-driven
 workflow tailored to PHP, TypeScript, Laravel, and React. After tinkering with tools,
 configurations, and everything in between, I've landed somewhere that I'm _really_
 starting to enjoy. I can't believe I'm saying this, but... I don't think I'm leaving
 my terminal anytime soon.
+
+![meme](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExbjd1NGZwdXNwOHU3YjhuMW15ODRuYmRpZzVwOXZmZXhicHYzbjN0cSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Vi4MRwWi9sYpi/giphy.gif)
 
 I'll go through my setup and what works for me in the hope that it helps someone looking
 for a change of pace like myself. A few tools I'm using:
@@ -43,12 +46,12 @@ for a change of pace like myself. A few tools I'm using:
 - Neovim (btw)
 - LazyVim
 - Ghostty
-- tmux
+- tmux (and more recently, [zellij](https://zellij.dev/))
 - A bunch of plugins to trick myself into thinking I'm using an IDE
 
 I've had an on again/off again relationship with neovim for the last several years.
-I would usually try to force myself to use it for at least a week out of the year,
-even going so far as to delete my daily driver IDE (usually PhpStorm or Rider). It
+I would usually try to force myself to use it for at least a week or two out of the year,
+even going so far as to delete my daily driver IDE (usually PhpStorm, WebStore, or Rider). It
 never stuck, and I usually ended up throwing my hands in the air a few days in, and
 would run back to the sweet embrace of my spaceship editor.
 
@@ -63,6 +66,13 @@ without it, _nor_ would I wish a tmux-less world upon my worst enemy. If you're
 curious about what tmux is, or how it could help you, [Alex Six](https://www.youtube.com/watch?v=cbn3y_f8eDM)
 gave an excellent talk at Laracon US this year about some of the whimsy tmux
 brings into the life of a developer. Definitely worth the watch.
+
+I've been forcing myself to use zellij more recently, and once I kicked the tmux
+muscle memory and tweaked a few things to my liking to avoid common keybind
+conflicts with neovim, it actually became a joy to use. While I still fallback
+to tmux when I'm being lazy, zellij is a breath of fresh air and a great modern
+take on tmux. And of course... it's written in Rust, so it's got the [RIIR](https://transitiontech.ca/random/RIIR)
+thing going for it.
 
 Back to tmux, I was already spending a good chunk of time in my tmux sessions doing
 all the normal things we developers do to make it look like we're actually working,
@@ -89,6 +99,11 @@ simple to configure (tbh, most terminals are) and it's got great support. It's a
 creation, so it's got the backing and I'm bullish on it as a long term product. We'll see
 if that changes in the near future.
 
+[Kitty] is great, too, simply because of built-in sessions, which is most of the reason
+I use tmux anyway. If you're not ready to embrace tmux/zellij, it's definitely worth
+taking it for a spin. Like most things in life, terminal emulators are a matter of
+taste, so find one that suites you and your needs.
+
 Neovim was a no-brainer, since if I was to go all in on a terminal-driven workflow,
 it's the obvious choice for editing code. Paired with tmux, it feels like a literal
 super power to quickly swap between panes and windows for different projects all
@@ -103,14 +118,14 @@ entry (imo) and makes it easy to jump into neovim. Now that I'm bought in, I'm t
 with my [config](https://github.com/JoeyMckenzie/nvim.bak) more and more and keep it updated so I can keep my setup the same not matter
 what machine I'm working on.
 
-Last, but not least, tmux is the glue that pulls it altogether, allowing me to
+Last, but not least, tmux/zellij are the glue that pull it all altogether, allowing me to
 keep a workflow clean and devoid of distraction. I'll get into this in just a bit,
-but in short, I run a tmux session per project each equipped with it's own terminal
+but in short, I run a tmux/zellij session per project each equipped with it's own terminal
 workspace and neovim session up running. Makes it easy to encapsulate projects
 and keep them as long running processes that even works over ssh so I can jump
 right back in to whatever I was working where ever I left off.
 
-I don't deviate from the defaults of ghostty and tmux _too_ much, but I've landed
+I don't deviate from the defaults of ghostty and tmux/zellij _too_ much, but I've landed
 on a setup with neovim that I'm really starting to enjoy and wanted to share with
 the world. Okay, that's enough talk. Let's get into it!
 
@@ -164,7 +179,7 @@ PHP setup for neovim. A few of the primary few plugins to supplement neovim for 
 - [intelephense](https://intelephense.com/) as my LSP of choice for PHP, though there's also [phpactor](https://github.com/phpactor/phpactor)
 - [neotest](https://github.com/nvim-neotest/neotest?tab=readme-ov-file#installation) for running PHPUnit tests
 - [laravel.nvim](https://github.com/adalessa/laravel.nvim) for Laravel actions in neovim
-- [confirm.nvim](https://github.com/stevearc/conform.nvim) for code linting and formatting via PHPStan and Pint/PHP-CS-Fixer
+- [confirm.nvim](https://github.com/stevearc/conform.nvim) for code linting and formatting via PHPStan pint/php-cs-fixer
 - [dap](https://github.com/mfussenegger/nvim-dap) and [dap-ui](https://github.com/rcarriga/nvim-dap-ui)
 
 I have some other stuff, like an entirely vibe coded [Linear](https://github.com/JoeyMckenzie/linear.nvim)
@@ -173,14 +188,131 @@ There's some other things in there, like [dadbod](https://github.com/tpope/vim-d
 database integration (more on that later) and [dotenv](https://github.com/ellisonleao/dotenv.nvim)
 to allow neovim to parse `.env` files (good for integrations that require API keys 'n such).
 
-Rather than spend the majority of this blog post talking about how to setup/install neovim
-to your liking, I want to walk through more so how I _use_ neovim has a daily driver
-for my PHP and Laravel work.
+`laravel.nvim` is a must, giving you some nice introspection on models through
+[virtual information](https://github.com/adalessa/laravel.nvim?tab=readme-ov-file#virtual-information),
+especially useful when you're bouncing around models and controllers and can see the
+database schema and route information co-located right in the file view. Absolute must have,
+include it in your `php.lua` (or wherever you store your PHP/Laravel config) and don't look back.
 
-## From GUI to TUI
+## Extras
 
-To keep myself from having to `alt` + `tab` a million times a day,
-I keep _pretty_ much everything I need scoped to a tmux session that most of time
-looks something like this:
+One of my favorite diagnostics in PhpStorm is being able to jump into a PHP and see a yellow
+squiggle if the file is missing `declare(strict_types=1)`. It's 2026, there's really no reason
+we should be avoiding types in PHP. Your PHP should be typed as maximally as possible, and
+that's a hill I'm willing to die. There's obviously caveats here and it can actually be
+pretty dangerous to blindly throw a strict type declaration on a file without physically tracing
+the callstack to the file in question. Strict types declarations will introduce runtime errors
+where their previously may not have been any in the call context, so it should be done cautiously
+in older code, but absolutely enforced in new code.
 
-## PLACEHOLDER IMAGE
+Alas, I digress. All this is to say to get the thing in neovim, I throw this in my config to
+get the yellow squiggles on the `<?php` tag for the instant visual feedback when I jump into
+a file to know right away what I'm dealing with:
+
+```lua
+return {
+  cmd = "cat",
+  stdin = true,
+  args = {},
+  stream = "stdout",
+  ignore_exitcode = true,
+  parser = function(_, bufnr)
+    local diagnostics = {}
+    local lines = vim.api.nvim_buf_get_lines(bufnr, 0, 10, false)
+    local has_php_tag = false
+    local has_strict_types = false
+
+    for _, line in ipairs(lines) do
+      if line:match("<%?php") or line:match("<\\?") then
+        has_php_tag = true
+      end
+      if line:match("declare%s*%(%s*strict_types%s*=%s*1") then
+        has_strict_types = true
+      end
+    end
+
+    if has_php_tag and not has_strict_types then
+      table.insert(diagnostics, {
+        lnum = 0,
+        col = 0,
+        end_lnum = 0,
+        end_col = 5,
+        severity = vim.diagnostic.severity.WARN,
+        message = "Missing declare(strict_types=1);",
+        source = "strict_types",
+      })
+    end
+
+    return diagnostics
+  end,
+}
+```
+
+I throw this in separate `lua/linters/strict_types.lua` file and then include it
+when neovim boots up by including it in a `lua/linters/init.lua` file:
+
+```lua
+local lint = require("lint")
+
+local ok, strict_types = pcall(require, "linters.strict_types")
+
+if ok then
+  lint.linters.strict_types = strict_types
+else
+  vim.notify("Failed to load strict_types linter: " .. tostring(strict_types), vim.log.levels.WARN)
+end
+```
+
+To make sure it's included when `nvim-lint` runs, I then add it as an additional linter:
+
+```lua
+return {
+  -- Other config stuff
+  {
+    "mfussenegger/nvim-lint",
+    opts = function(_, opts)
+      require("linters")
+      opts.linters_by_ft = opts.linters_by_ft or {}
+      opts.linters_by_ft.php = { "phpstan", "strict_types", "mago_lint" }
+    end,
+  }
+}
+```
+
+For work and most things, I'm always PHPStan as the default linter, though for personal
+projects, I've been test driving [mago](https://mago.carthage.software/) a lot more recently
+now that it's hit v1. If I'm feeling masochistic, I'll throw in `mago_analyze` on my
+linters, though on large Laravel projects, it can quickly become overwhelming with
+the sheer amount of shit it catches. Luckily, mago has PHPStan-like baseline files though,
+so it's always an option to run your baseline and lint accordingly.
+
+I have a handy snippet, `strict`, that also punches out a quick `declare(strict_types=1);`
+on a PHP file to keep my sanity and save a few keystrokes as well:
+
+```lua
+{
+  "strict types": {
+    "prefix": "strict",
+    "body": ["declare(strict_types=1);"],
+    "description": "Add strict types declaration"
+  }
+}
+```
+
+I throw that in my `snippets/php.lua` and it's a handy way to drop in anywhere
+in the code, see the warning of missing strict types, and throw that bad boy
+on the file. There's rector, php-cs-fixer, pint, and mago rules that will handle
+it for you, but you should do so cautiously in a large codebase that lacks them.
+
+## The never ending configuration
+
+There's definitely more I want to write in the future in regards to PHP, Laravel,
+and neovim, though I assume if you've made it this far, you're fighting an urge to
+fall asleep at your keyboard. The beauty (and curse) of things like neovim, tmux,
+zellij, ghostty, zsh, and the vast sea of terminal tools out there is the endless
+configurability they offer. I'm embarrassed at this point to admit how much time
+I've wasted tinkering with, though I'd argue it's time well spent. Configure once,
+use anywhere is the motto I've chosen to adopt, and now I can confidently say I
+wouldn't have it any other way.
+
+Stay tuned for another one of these ramblings. Until next time, friends!
