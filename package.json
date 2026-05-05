@@ -2,6 +2,7 @@
     "$schema": "https://www.schemastore.org/package.json",
     "private": true,
     "type": "module",
+    "name": "website",
     "scripts": {
         "build": "tsc && vite build",
         "build:ssr": "tsc && vite build && vite build --ssr",
