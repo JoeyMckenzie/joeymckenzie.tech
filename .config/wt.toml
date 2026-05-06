@@ -1,16 +1,78 @@
 [post-create]
+# Allocate a free .devenv-index by scanning sibling worktrees, then register
+# this worktree's hostname with Caddy so https://<short>.<slug>.test:8443
+# routes to the right ports.
+devenv-onboard = """
+set -euo pipefail
+slug=joeymckenzie.tech
+
+# Pick the next free index. Treat 0 as always taken (reserved for main,
+# which doesn't need its own .devenv-index file).
+parent="$(cd .. && pwd)"
+used="$( {
+  echo 0
+  find "$parent" -mindepth 2 -maxdepth 2 -name .devenv-index -exec cat {} +
+} 2>/dev/null | sort -un )"
+idx=0
+while echo "$used" | grep -qFx "$idx"; do idx=$((idx+1)); done
+echo "$idx" > .devenv-index
+
+short={{ worktree_name }}
+short="${short#${slug}-}"
+
+hostname="${short}.${slug}.test"
+~/.config/devenv/bin/write-site "$hostname" $((8000 + idx)) $((5173 + idx))
+~/.config/devenv/bin/reload-caddy
+"""
+
+# Trust .envrc so direnv loads automatically on cd
+direnv-allow = "direnv allow ."
+
+# Copy gitignored files (.env, vendor/, node_modules/, etc.) from main worktree
 copy = "wt step copy-ignored"
-env = "sed -i '' 's|^APP_URL=.*|APP_URL=https://{{ branch | sanitize }}.test|' {{ worktree_path }}/.env"
-database = "touch database/database.sqlite && php artisan migrate:fresh --seed --no-interaction"
-storage = "php artisan storage:link --no-interaction"
-wayfinder = "php artisan wayfinder:generate --with-form"
-build = "npm run build"
-herd = "herd link {{ branch | sanitize }} --secure"
+
+# Rewrite APP_URL in the just-copied .env to this worktree's subdomain
+set-app-url = """
+set -euo pipefail
+slug=joeymckenzie.tech
+short={{ worktree_name }}
+short="${short#${slug}-}"
+hostname="${short}.${slug}.test"
+
+sed -i.bak "s|^APP_URL=.*|APP_URL=https://${hostname}:8443|" .env && rm .env.bak
+"""
+
+# Fresh per-worktree sqlite DB + seed
+database = "touch database/database.sqlite && direnv exec . php artisan migrate:fresh --seed --no-interaction"
+
+# Storage symlink
+storage = "direnv exec . php artisan storage:link --no-interaction"
+
+# Generate wayfinder route types
+wayfinder = "direnv exec . php artisan wayfinder:generate --with-form"
+
+# Build production assets
+build = "direnv exec . npm run build"
 
 [pre-remove]
-herd-unsecure = "herd unsecure {{ branch | sanitize }}.test --silent || true"
-herd-unlink = "herd unlink {{ branch | sanitize }} || true"
+# Stop the worktree's devenv processes before deletion so the daemon doesn't orphan
+devenv-down = "direnv exec . devenv processes down 2>/dev/null || true"
+
+# Drop the per-worktree sqlite database file
 database = "rm -f {{ worktree_path }}/database/database.sqlite"
 
+[post-remove]
+# Drop the worktree's caddy site fragment and reload
+devenv-cleanup = """
+set -euo pipefail
+slug=joeymckenzie.tech
+short={{ worktree_name }}
+short="${short#${slug}-}"
+hostname="${short}.${slug}.test"
+
+rm -f ~/.config/devenv/sites/"${hostname}.caddy"
+~/.config/devenv/bin/reload-caddy
+"""
+
 [list]
-url = "{% if branch == 'main' %}https://website-laravel.test{% else %}https://{{ branch | sanitize }}.test{% endif %}"
+url = "{% if branch == 'main' %}https://joeymckenzie.tech.test:8443{% else %}https://{{ branch | sanitize }}.joeymckenzie.tech.test:8443{% endif %}"

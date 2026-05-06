@@ -1,7 +1,7 @@
 { pkgs, lib, ... }:
 
 let
-  slug = "website";
+  slug = "joeymckenzie.tech";
 
   rawName = builtins.baseNameOf (toString ./.);
   shortName = lib.removePrefix "${slug}-" rawName;
@@ -15,7 +15,10 @@ let
 
   appPort = 8000 + index;
   vitePort = 5173 + index;
-  hostname = "${slug}-${shortName}.test";
+  hostname =
+    if shortName == "main"
+    then "${slug}.test"
+    else "${shortName}.${slug}.test";
 
   toolsPath = /. + "${builtins.getEnv "HOME"}/.config/devenv/tools.nix";
 in
@@ -51,15 +54,17 @@ in
   processes.app.process-compose.depends_on.migrate.condition = "process_completed_successfully";
 
   env = {
-    APP_URL = "https://${hostname}";
+    APP_URL = "https://${hostname}:8443";
     APP_PORT = toString appPort;
+
+    SESSION_DOMAIN = ".${slug}.test";
 
     DB_CONNECTION = "sqlite";
   };
 
   enterShell = ''
     echo "── ${shortName} (index=${toString index}) ──"
-    echo "  url   https://${hostname}"
+    echo "  url   https://${hostname}:8443"
     echo "  app   127.0.0.1:${toString appPort}"
     echo "  vite  127.0.0.1:${toString vitePort}"
 
