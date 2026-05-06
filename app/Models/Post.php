@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
 use Orbit\Concerns\Orbital;
 use Override;
@@ -103,7 +104,7 @@ final class Post extends Model
     #[Override]
     protected static function booted(): void
     {
-        if (app()->isProduction()) {
+        if (App::isProduction()) {
             self::addGlobalScope('published', static fn (Builder $query) => $query->whereNotNull('published_at'));
         }
     }
@@ -142,7 +143,7 @@ final class Post extends Model
     #[Scope]
     protected function latestPublished(Builder $query): Builder
     {
-        return app()->isProduction()
+        return App::isProduction()
             ? $query->latest('published_at')
             : $query->orderByRaw('CASE WHEN published_at IS NULL THEN 1 ELSE 0 END DESC')->orderByDesc('published_at');
     }

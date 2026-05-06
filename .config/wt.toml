@@ -5,6 +5,9 @@
 devenv-onboard = """
 set -euo pipefail
 slug=joeymckenzie.tech
+# Per-project port band — keep in sync with devenv.nix's appPortBase/vitePortBase.
+app_base=8100
+vite_base=5273
 
 # Pick the next free index. Treat 0 as always taken (reserved for main,
 # which doesn't need its own .devenv-index file).
@@ -21,7 +24,7 @@ short={{ worktree_name }}
 short="${short#${slug}-}"
 
 hostname="${short}.${slug}.test"
-~/.config/devenv/bin/write-site "$hostname" $((8000 + idx)) $((5173 + idx))
+~/.config/devenv/bin/write-site "$hostname" $((app_base + idx)) $((vite_base + idx))
 ~/.config/devenv/bin/reload-caddy
 """
 

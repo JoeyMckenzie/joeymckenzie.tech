@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -30,7 +31,7 @@ final class HomeController extends Controller
             ->values()
             ->toArray();
 
-        $recentPosts = app()->isProduction()
+        $recentPosts = App::isProduction()
             ? Cache::remember('home:recent_posts', now()->addMinutes(5), $resolver)
             : $resolver();
 

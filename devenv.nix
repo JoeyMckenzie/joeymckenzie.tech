@@ -13,12 +13,11 @@ let
     else
       0;
 
-  appPort = 8000 + index;
-  vitePort = 5173 + index;
-  hostname =
-    if shortName == "main"
-    then "${slug}.test"
-    else "${shortName}.${slug}.test";
+  appPortBase = 8100;
+  vitePortBase = 5273;
+  appPort = appPortBase + index;
+  vitePort = vitePortBase + index;
+  hostname = if shortName == "main" then "${slug}.test" else "${shortName}.${slug}.test";
 
   toolsPath = /. + "${builtins.getEnv "HOME"}/.config/devenv/tools.nix";
 in
