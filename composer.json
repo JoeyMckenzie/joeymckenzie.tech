@@ -23,7 +23,6 @@
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",
-        "carthage-software/mago": "^1.16.0",
         "driftingly/rector-laravel": "^2.3",
         "ergebnis/composer-normalize": "^2.48",
         "fakerphp/faker": "^1.24",
