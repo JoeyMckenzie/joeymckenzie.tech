@@ -1,1 +1,7 @@
-strictPorts: true
+inputs:
+  git-hooks:
+    url: github:cachix/git-hooks.nix
+    inputs:
+      nixpkgs:
+        follows: nixpkgs
+strict_ports: true

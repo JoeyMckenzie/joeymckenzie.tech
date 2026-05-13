@@ -28,6 +28,7 @@ let
 in
 {
   dotenv.disableHint = true;
+  claude.code.enable = true;
 
   languages.php = {
     enable = true;
@@ -43,6 +44,50 @@ in
     enable = true;
     package = pkgs.nodejs_22;
     npm.enable = true;
+  };
+
+  git-hooks.hooks = {
+    oxfmt = {
+      enable = true;
+      name = "oxfmt (frontend formatting)";
+      entry = "npm run fmt";
+      files = "\\.(js|jsx|ts|tsx|json|md)$";
+      language = "system";
+      pass_filenames = false;
+    };
+    pint = {
+      enable = true;
+      name = "pint (php formatting)";
+      entry = "composer fmt";
+      files = "\\.php$";
+      language = "system";
+      pass_filenames = false;
+    };
+    rector = {
+      enable = true;
+      name = "rector (php refactor)";
+      entry = "composer refactor";
+      files = "\\.php$";
+      language = "system";
+      pass_filenames = false;
+    };
+
+    npm-audit = {
+      enable = true;
+      name = "npm packages audit";
+      entry = "npm audit";
+      language = "system";
+      pass_filenames = false;
+      stages = [ "pre-push" ];
+    };
+    composer-audit = {
+      enable = true;
+      name = "composer packages audit";
+      entry = "composer audit";
+      language = "system";
+      pass_filenames = false;
+      stages = [ "pre-push" ];
+    };
   };
 
   processes.app.exec = "php artisan serve --host=127.0.0.1 --port=${toString appPort}";
