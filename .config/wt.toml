@@ -14,7 +14,7 @@ vite_base=5273
 parent="$(cd .. && pwd)"
 used="$( {
   echo 0
-  find "$parent" -mindepth 2 -maxdepth 2 -name .devenv-index -exec cat {} +
+  fd --hidden --glob '.devenv-index' "$parent" --min-depth 2 --max-depth 2 --exec-batch cat
 } 2>/dev/null | sort -un )"
 idx=0
 while echo "$used" | grep -qFx "$idx"; do idx=$((idx+1)); done

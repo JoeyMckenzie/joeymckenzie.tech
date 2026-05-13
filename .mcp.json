@@ -15,6 +15,10 @@
         "magicuidesign-mcp": {
             "command": "npx",
             "args": ["-y", "@magicuidesign/mcp@latest"]
+        },
+        "chrome-devtools": {
+            "command": "npx",
+            "args": ["-y", "chrome-devtools-mcp@latest"]
         }
     }
 }

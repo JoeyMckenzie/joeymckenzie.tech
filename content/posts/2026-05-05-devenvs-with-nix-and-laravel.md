@@ -618,6 +618,284 @@ The `env` block uses the `let` bindings to create those variables Laravel expect
 caching its config on first boot. This means **you should remove these from `.env`** so they don't collide
 with the value managed by devenv for the worktree.
 
+## A poor man's port allocator
+
+You might have noticed a magic incantation back in the `let` block:
+
+```nix
+indexFile = ./.devenv-index;
+index =
+  if builtins.pathExists indexFile then
+    lib.toInt (lib.removeSuffix "\n" (builtins.readFile indexFile))
+  else
+    0;
+
+appPort = 8000 + index;
+vitePort = 5173 + index;
+xdebugPort = 9003 + index;
+```
+
+This deserves an explainer. Worktrees are gloriously isolated, except for one small detail: ports are
+global. The OS only has one `:8000` to give out, and if I'm running `php artisan serve` in `main` and try
+to spin up the same in `feature-foo`, one of them is going to lose. And it's usually whichever one I care
+more about at the time.
+
+So we need each worktree to know "I'm worktree #3, you go grab port 8003." We also want it to be
+deterministic, so that `APP_URL` doesn't change every time the dev shell boots, otherwise our caddy
+config goes stale and we're back to manually editing things like cavemen.
+
+I tried a few clever solutions first (hashing the worktree name to a port, picking a random free port at
+boot, etc.) and they all had the same problem: either they collided in some clever way, or they made the
+URL non-stable, or they required a service registry which is comically over-engineered for one developer
+on one laptop.
+
+The dumb solution wins: a single integer in a file called `.devenv-index`. `main` is index `0` and gets
+the base ports (8000 for the app, 5173 for vite, 9003 for xdebug). Every other worktree gets the next
+free integer, and ports are computed by adding the index. Index 1 gets `:8001`, index 2 gets `:8002`, and
+so on, ad nauseam.
+
+Stable, collision-free, requires zero infrastructure. This is what every distributed systems class warns
+you about (no central authority, no lease, no consensus), but it's fine because the "cluster" is my
+laptop and the "consensus protocol" is `fd` plus `sort -u`.
+
+So how does the integer get into the file? Worktrunk hooks. When I create a new worktree, worktrunk runs
+whatever I've configured in `.config/wt.toml`, including a `[post-create]` hook that scans sibling
+worktrees, picks the lowest free index, and writes it to `.devenv-index` before the nix shell ever sees
+the directory.
+
+#### `.config/wt.toml`
+
+```toml
+[post-create]
+devenv-onboard = """
+set -euo pipefail
+
+# 0 is reserved for main. Scan sibling worktrees for indices already in use.
+parent="$(cd .. && pwd)"
+used="$( {
+  echo 0
+  fd --hidden --glob '.devenv-index' "$parent" --min-depth 2 --max-depth 2 --exec-batch cat
+} 2>/dev/null | sort -un )"
+
+# Pick the lowest free integer.
+idx=0
+while echo "$used" | grep -qFx "$idx"; do idx=$((idx+1)); done
+echo "$idx" > .devenv-index
+"""
+```
+
+A few things to call out:
+
+- The hook runs `fd` in the parent directory because of the bare-repository layout we set up earlier. All worktrees are siblings, so a 2-deep scan picks them all up.
+- `0` is hardcoded as taken even though `main` doesn't actually have a `.devenv-index` file. Saves a special case.
+- Gaps are intentional. If I delete worktree #2 and then create a new one, it'll grab `2` again. Renumbering live worktrees would be its own special kind of hell.
+
+That's it. Hook runs once per worktree creation, writes a single number, and the nix file does the rest.
+
+## Caddy, but for worktrees
+
+Remember that single caddy site file we wrote way back in "Not your dad's web server"? That was the toy
+version. With worktrees, each one needs its own hostname pointing at its own port (since each worktree
+got its own app and vite ports via the `.devenv-index` trick), which means each worktree needs its own
+caddy fragment.
+
+The good news: we already have everything we need. `/etc/resolver/test` wildcards every `.test`
+subdomain to `127.0.0.1`, so `feature-foo.my-awesome-project.test` resolves correctly without any
+per-worktree DNS work. Caddy is doing all the actual routing by Host header.
+
+The remaining job is generating one caddy fragment per worktree and gently nudging caddy to pick it up.
+I keep a small helper script for the templating:
+
+#### `~/.config/devenv/bin/write-site`
+
+```bash
+#!/usr/bin/env bash
+# usage: write-site <hostname> <app_port> <vite_port>
+set -euo pipefail
+
+hostname="${1:?usage: write-site <hostname> <app_port> <vite_port>}"
+app_port="${2:?missing app_port}"
+vite_port="${3:?missing vite_port}"
+
+out="$HOME/.config/devenv/sites/${hostname}.caddy"
+cat > "$out" <<CADDY
+${hostname}:8443 {
+    tls internal
+
+    @websocket {
+        header Connection *Upgrade*
+        header Upgrade websocket
+    }
+    handle @websocket {
+        reverse_proxy 127.0.0.1:${vite_port}
+    }
+
+    @vite path /@vite/* /@id/* /@fs/* /@react-refresh /resources/* /node_modules/* /__laravel_vite_plugin__/*
+    handle @vite {
+        reverse_proxy 127.0.0.1:${vite_port}
+    }
+
+    handle {
+        reverse_proxy 127.0.0.1:${app_port}
+    }
+}
+CADDY
+```
+
+This is the same caddy fragment from before, just with the hostname and ports as variables. Drop it into
+`~/.config/devenv/sites/` next to its siblings, and the `import sites/*.caddy` line in our root
+`Caddyfile` picks it up on the next reload.
+
+For the reload, I have another helper that POSTs the rendered config to caddy's admin API:
+
+#### `~/.config/devenv/bin/reload-caddy`
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+
+if curl -sf http://127.0.0.1:2019/config/ >/dev/null 2>&1; then
+    curl -fsS -X POST 'http://127.0.0.1:2019/load' \
+        -H 'Content-Type: text/caddyfile' \
+        --data-binary @"$HOME/.config/devenv/Caddyfile"
+fi
+```
+
+Why hit the admin API instead of just running `caddy reload`? Because this script gets called from
+worktrunk hooks that run outside the devenv shell, and the `caddy` binary isn't always on PATH. The admin
+API is on `127.0.0.1:2019` whether or not your shell is set up. The leading `if curl -sf ...` is a no-op
+guard for when caddy isn't actually running (no point yelling about it, the next `devenv up` will start
+things).
+
+Now we wire it all up by extending the `devenv-onboard` hook from the previous section:
+
+#### `.config/wt.toml`
+
+```toml {}{15-19}
+[post-create]
+devenv-onboard = """
+set -euo pipefail
+slug=my-awesome-project
+
+parent="$(cd .. && pwd)"
+used="$( {
+  echo 0
+  fd --hidden --glob '.devenv-index' "$parent" --min-depth 2 --max-depth 2 --exec-batch cat
+} 2>/dev/null | sort -un )"
+idx=0
+while echo "$used" | grep -qFx "$idx"; do idx=$((idx+1)); done
+echo "$idx" > .devenv-index
+
+# Register this worktree's hostname with caddy.
+hostname="{{ worktree_name }}.${slug}.test"
+~/.config/devenv/bin/write-site "$hostname" $((8000 + idx)) $((5173 + idx))
+~/.config/devenv/bin/reload-caddy
+"""
+```
+
+And the inverse on `[post-remove]` so dead worktrees don't leave stale caddy fragments hanging around:
+
+```toml
+[post-remove]
+devenv-cleanup = """
+set -euo pipefail
+slug=my-awesome-project
+hostname="{{ worktree_name }}.${slug}.test"
+rm -f ~/.config/devenv/sites/"${hostname}.caddy"
+~/.config/devenv/bin/reload-caddy
+"""
+```
+
+Self-cleaning, self-allocating, self-routing. The only manual step left is `wt new feature-something`,
+and the rest happens before I've finished typing `cd`.
+
+## Vite, meet caddy
+
+Here's a fun gotcha that bit me only after wiring all of the above up. I loaded
+`https://my-awesome-project.test:8443` in a fresh browser, popped open devtools, and got a wall of red
+in the network panel. Every asset request was going to `http://127.0.0.1:5173` and getting nuked by
+mixed-content blocking.
+
+The page is HTTPS. The asset URLs are HTTP. Modern browser sees that and noped out.
+
+The cause is obvious in hindsight. `laravel-vite-plugin` writes the dev server's URL into `public/hot`
+so Laravel knows where to load assets from during dev. By default that URL is wherever vite is bound
+internally — `http://127.0.0.1:5173` in our case. Caddy is happily proxying `/resources/*` to vite,
+but the browser never goes through caddy because vite told Laravel "ignore that, hit me directly."
+
+The fix is to tell vite that its _public_ origin is the caddy URL, not its internal listen address.
+We can derive everything we need from `APP_URL` and the same `.devenv-index` trick we used for ports:
+
+#### `vite.config.ts`
+
+```ts
+import inertia from '@inertiajs/vite';
+import { wayfinder } from '@laravel/vite-plugin-wayfinder';
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
+import laravel from 'laravel-vite-plugin';
+import { readFileSync } from 'node:fs';
+import { defineConfig, loadEnv } from 'vite';
+
+const VITE_PORT_BASE = 5173;
+
+function readWorktreeIndex(): number {
+    try {
+        return Number.parseInt(readFileSync('.devenv-index', 'utf8').trim(), 10) || 0;
+    } catch {
+        return 0;
+    }
+}
+
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '');
+    const appUrl = new URL(env.APP_URL ?? 'https://my-awesome-project.test:8443');
+    const vitePort = VITE_PORT_BASE + readWorktreeIndex();
+
+    return {
+        plugins: [
+            laravel({
+                input: ['resources/css/app.css', 'resources/js/app.tsx'],
+                refresh: true,
+            }),
+            inertia(),
+            react({
+                babel: {
+                    plugins: ['babel-plugin-react-compiler'],
+                },
+            }),
+            tailwindcss(),
+            wayfinder({
+                formVariants: true,
+            }),
+        ],
+        server: {
+            host: '127.0.0.1',
+            port: vitePort,
+            strictPort: true,
+            cors: true,
+            origin: appUrl.origin,
+            hmr: {
+                host: appUrl.hostname,
+                protocol: 'wss',
+                clientPort: Number.parseInt(appUrl.port, 10) || 443,
+            },
+        },
+    };
+});
+```
+
+A few things worth calling out:
+
+- `server.origin` is the line doing the heavy lifting. It tells `laravel-vite-plugin` to write the caddy URL into `public/hot` instead of the internal `127.0.0.1:5173`. Asset requests now route through caddy like everything else.
+- `hmr.protocol: 'wss'` + `hmr.clientPort: 8443` sends the HMR websocket through caddy too. The `@websocket` matcher in the caddy fragment from earlier already handles the upgrade, no extra wiring needed.
+- `APP_URL` and the worktree index come from the same sources we already use everywhere else, so this works zero-config across all worktrees. Same recipe, every tree.
+
+The `server` block is only consulted by `vite dev`. `vite build` ignores it entirely, so prod builds
+are completely unaffected. Herd handles this for you under the hood via `detectTls`, since it knows
+about its own TLS certs and can wire vite up accordingly. With our setup, we get to handle it ourselves.
+Small price to pay for owning the stack.
+
 ## Shell hooks
 
 # TODO
