@@ -33,3 +33,4 @@ _ide_helper.php
 .devenv/
 .devenv-index
 .direnv/
+.claude/settings.json
