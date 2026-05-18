@@ -28,7 +28,46 @@ let
 in
 {
   dotenv.disableHint = true;
+
   claude.code.enable = true;
+  claude.code.mcpServers = {
+    devenv = {
+      type = "stdio";
+      command = "devenv";
+      args = [ "mcp" ];
+    };
+    shadcn = {
+      type = "stdio";
+      command = "npx";
+      args = [
+        "shadcn@latest"
+        "mcp"
+      ];
+    };
+    magicuidesign = {
+      type = "stdio";
+      command = "npx";
+      args = [
+        "-y"
+        "@magicuidesign/mcp@latest"
+      ];
+    };
+    boost = {
+      type = "stdio";
+      command = "php";
+      args = [
+        "artisan"
+        "boost:mcp"
+      ];
+    };
+    playwright = {
+      type = "stdio";
+      command = "bunx";
+      args = [
+        "@playwright/mcp@latest"
+      ];
+    };
+  };
 
   languages.php = {
     enable = true;
