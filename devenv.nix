@@ -29,6 +29,8 @@ in
 {
   dotenv.disableHint = true;
 
+  packages = [ pkgs.just ];
+
   claude.code.enable = true;
   claude.code.mcpServers = {
     devenv = {
@@ -129,15 +131,18 @@ in
     };
   };
 
-  processes.app.exec = "php artisan serve --host=127.0.0.1 --port=${toString appPort}";
-  processes.vite.exec = "npm run dev -- --host 127.0.0.1 --port ${toString vitePort} --strictPort";
-  processes.pail.exec = "php artisan pail --timeout=0";
+  processes = {
+    app.exec = "php artisan serve --host=127.0.0.1 --port=${toString appPort}";
+    vite.exec = "npm run dev -- --host 127.0.0.1 --port ${toString vitePort} --strictPort";
+    pail.exec = "php artisan pail --timeout=0";
 
-  processes.migrate = {
-    exec = "php artisan migrate --force";
-    process-compose.availability.restart = "no";
+    migrate = {
+      exec = "php artisan migrate --force";
+      process-compose.availability.restart = "no";
+    };
+
+    app.process-compose.depends_on.migrate.condition = "process_completed_successfully";
   };
-  processes.app.process-compose.depends_on.migrate.condition = "process_completed_successfully";
 
   env = {
     APP_URL = "https://${hostname}";

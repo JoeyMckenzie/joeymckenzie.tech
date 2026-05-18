@@ -13,62 +13,60 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-      - uses: extractions/setup-just@v3
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
         with:
-          php-version: '8.4'
+          extra_nix_config: |
+            accept-flake-config = true
+            extra-substituters = https://devenv.cachix.org
+            extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
 
-      - name: Install Dependencies
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
+        with:
+          name: devenv
+
+      - name: Install devenv
+        run: nix profile install nixpkgs#devenv
+
+      - name: Lint
         run: |
-          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm install
-
-      - name: Generate types
-        run: php artisan wayfinder:generate --with-form
-
-      - name: Run checks
-        run: just check
+          devenv shell -- bash -c '
+            set -e
+            php artisan wayfinder:generate --with-form
+            just check
+          '
 
   tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Install Nix
+        uses: cachix/install-nix-action@v30
         with:
-          php-version: '8.4'
-          tools: composer:v2
-          coverage: xdebug
+          extra_nix_config: |
+            accept-flake-config = true
+            extra-substituters = https://devenv.cachix.org
+            extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
 
-      - name: Setup Node
-        uses: actions/setup-node@v6
+      - name: Setup Cachix
+        uses: cachix/cachix-action@v15
         with:
-          node-version: '22'
+          name: devenv
 
-      - name: Install Node Dependencies
-        run: npm i
+      - name: Install devenv
+        run: nix profile install nixpkgs#devenv
 
-      - name: Install Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
-
-      - name: Copy Environment File
-        run: cp .env.example .env
-
-      - name: Generate Application Key
-        run: php artisan key:generate
-
-      - name: Generate types
-        run: php artisan wayfinder:generate --with-form
-
-      - name: Build Assets
-        run: npm run build
-
-      - name: Tests
-        run: ./vendor/bin/phpunit
+      - name: Test
+        run: |
+          devenv shell -- bash -c '
+            set -e
+            php artisan wayfinder:generate --with-form
+            npm run build
+            ./vendor/bin/phpunit
+          '
 
   deploy:
     needs: [lint, tests]
