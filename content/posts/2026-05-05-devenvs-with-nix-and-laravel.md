@@ -1,7 +1,7 @@
 ---
 title: Local Laravel with nix and devenv
 slug: local-laravel-with-nix
-description: 'We have Herd at home.'
+description: "We have Herd at home."
 image: assets/images/nix-meme.jpg
 tag_id: 1
 storage_key: 2026-05-05-local-laravel-with-nix-and-devenv
@@ -13,9 +13,9 @@ ago and multiple failures to launch trying to get myself using neovim. Once I go
 I physically couldn't leave my terminal (cue the "stuck in vim" memes), I moved onto finding
 terminal replacements for tools I use and pay for (most of the time, happily). A few notable ones:
 
-- Postman => hurl
-- JetBrains => neovim (btw)
-- TablePlus => lazysql/harlequin
+- [Postman](https://www.postman.com/) => [hurl](https://hurl.dev/)
+- [JetBrains](https://www.jetbrains.com/) => [neovim (btw)](https://neovim.io/)
+- [TablePlus](https://tableplus.com/) => [lazysql](https://github.com/jorgerojas26/lazysql)/[harlequin](https://github.com/tconbeer/harlequin)
 
 I'm happy with my setup that I've fine tuned for Laravel and PHP, but I wanted to take it one step
 farther and see if I could home grow a Herd replacement to save yet another subscription. I should
@@ -39,10 +39,13 @@ Another thing is global state, particularly with PHP and the associated services
 Herd can often step on its own toes when spinning up services like FPM for specific versions of PHP.
 If you're working on multiple projects across multiple PHP versions, or maybe the same project, but in a
 branch/worktree that's upgrading a PHP version, you might run into port contention at some point and have
-to do a round of process massacre to get back to a stable state.
+to do a round of process massacre to get back to a stable state. This compounds when running multiple versions
+of PHP FPM as well, where the port contention can become painful sometimes with a handful of worktrees running
+concurrently.
 
 These are **not Herd's fault** at all. This is a result of trying to wrangle processes all in coordination
-on a machine, which has been a thorn in the side of developers for as long as we've been programming professionally.
+on a machine, which has been a thorn in the side of developers for as long as professional programming has
+been a thing.
 
 There's alternatives, though. And one alternative I've been particularly keen on is [nix](https://nixos.org/) with [devenv](https://devenv.sh/).
 
@@ -61,15 +64,18 @@ know exactly what's running in my dev environment at all times and how I can man
 That's where nix comes in. I won't go into much detail as I'm still a nix noob myself, but for what I'm using it
 for, I can't see a world where I go back.
 
-Nix provides a system for declarative system builds for whatever you need. It's like a `composer.json` or
-`package.json` file but for your runtime environment. You tell nix that for a particular project you need PHP,
+Nix provides a framework for declarative system builds for whatever you need. It's like a `composer.json` or
+`package.json` file but for your machine environment. You tell nix via devenv that for a particular project you need PHP,
 a specific version of it, what extensions you need, what database you need running, what version of Redis, etc.
-You probably get the picture, but the biggest win is that these are defined in a file, that you can version control, tweak, manage, remove things, add services and tools, and anything else your project needs in its
+You probably get the picture, but the biggest win is that these are defined in a file that you can version control,
+tweak, manage, remove things, add services and tools, and anything else your project needs in its
 environment to run. This alone is the perfect marriage for worktrees, where a worktree exists in _complete_
 isolation from other worktrees where I'm free to tinker with its environment if I need to _without_ affecting
 any other worktree. For example, if I'm doing a PHP 8.3 to PHP 8.4 upgrade, I keep `main` declaratively
 pinned to 8.3, while my `feature/update-php-to-8.4` worktree branch pins itself to 8.4 with maybe a few
 extra extensions and some `php.ini` tweaks and I can run both simultaneously in parallel without any headache.
+
+> You can absolutely still do this in Herd. There's a few gotchas, though it's still doable (read the other blog post!)
 
 [Devenv](https://devenv.sh/) is a layer that sits atop nix that makes it ridiculously simple to declare
 what your project and environment needs to hit the ground running. All managed in a single `devenv.nix` file.
@@ -107,94 +113,107 @@ running instance of the app locally. For example, the caddy file for my website 
 #### joeymckenzie.tech.test.caddy
 
 ```caddy
-joeymckenzie.tech.test:8443 {
-    tls internal
+joeymckenzie.tech.test {
+  reverse_proxy 127.0.0.1:8100
+}
 
-    @websocket {
-        header Connection *Upgrade*
-        header Upgrade websocket
-    }
-    handle @websocket {
-        reverse_proxy 127.0.0.1:5273
-    }
-
-    @vite path /@vite/* /@id/* /@fs/* /@react-refresh /resources/* /node_modules/* /__laravel_vite_plugin__/*
-    handle @vite {
-        reverse_proxy 127.0.0.1:5273
-    }
-
-    handle {
-        reverse_proxy 127.0.0.1:8100
-    }
+assets.joeymckenzie.tech.test {
+  reverse_proxy 127.0.0.1:5273
 }
 ```
 
-I keep all my caddy sites in my `~/.config/devenv/sites` folder and wire them up in a `~/.config/devenv/Caddyfile` like so:
+I keep all my caddy sites in my `~/.config/caddy/sites` folder and wire them up in a `Caddyfile` that nix
+declaratively manages for me, like so:
 
 #### `~/.config/devenv/Caddyfile`
 
 ```caddyfile
-{
- auto_https disable_redirects
-}
+environment.etc."caddy/Caddyfile".text = ''
+  {
+    local_certs
+  }
 
-import sites/*.caddy
+  import /Users/${username}/.config/caddy/sites/*.caddy
+'';
 ```
 
-So when I drop into my devenv shell with caddy running, it knows to import all the websites I have wired
-up in that `sites/` folder and routes each one accordingly. The flip side to that coin is [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html) which Herd also uses under the hood. I declare dnsmasq in my `devenv.nix` file (we'll get to that in a minute), and wire up an `/etc/resolver/test` file that points DNS lookups
-for `.test` domains to `127.0.0.1`, also lovingly known as localhost:
+I'm telling nix here that my system, when I build it, needs a `Caddyfile` running withing `/etc` that
+nix generates when I build my system. I'm glossing over a ton of details here, namely [nix-darwin](https://github.com/nix-darwin/nix-darwin)
+and [home-manager](https://github.com/nix-community/home-manager) for declaratively managing my MacBook Pro,
+but I promise I'll write about those soon. Skimming over the finer details, what this looks like in my
+system declaration where I tell nix what services I want launched as background processes when I build is:
 
-#### `/etc/resolver/test`
-
-```bash
-nameserver 127.0.0.1
-port 8053
+```nix
+launchd.daemons.caddy = {
+  serviceConfig = {
+    ProgramArguments = [
+      "${pkgs.caddy}/bin/caddy"
+      "run"
+      "--config"
+      "/etc/caddy/Caddyfile"
+      "--adapter"
+      "caddyfile"
+    ];
+    RunAtLoad = true;
+    KeepAlive = true;
+    EnvironmentVariables = {
+      HOME = "/var/root";
+      XDG_CONFIG_HOME = "/var/root/.config";
+      XDG_DATA_HOME = "/var/root/.local/share";
+    };
+    StandardOutPath = "/var/log/caddy.out.log";
+    StandardErrorPath = "/var/log/caddy.err.log";
+  };
+};
 ```
 
-The port 8053 here is where dnsmasq runs. The browser essentially asks "hey, what's the IP for this `.test` domain?" Dnsmasq answers that question with "go to `127.0.0.1`, buddy." The browser then opens a TCP connection to `127.0.0.1:8443` (the port came from the URL, not DNS), where caddy is camped out waiting. Caddy picks the request up, terminates TLS, and forwards it to whichever upstream the matching site block points to (e.g. the caddy file wired up to the domain). Herd/Valet, yet again, does this for you so you don't have to worry
-about DNS. Because when something breaks... it's somehow _always_ DNS.
+Now when I rebuild my system via `nix-darwin`, caddy launches in the background and I have full access
+to the `caddy` CLI to do whatever I need. More importantly, because I'm launching caddy as a background
+process from the root, I get access to ports :80 and :443, so I can run my Laravel apps from a TLD without
+specifying a port that it needs to run on. This is essentially what Herd does, but with nginx instead.
 
-Visually, the request flow looks like this:
+![Drew Carey meme](/assets/images/drew-carey-meme.png)
 
-```mermaid
-graph LR
-    B["Browser<br/>my-awesome-project.test:8443"]
-    R["/etc/resolver/test"]
-    D["dnsmasq<br/>127.0.0.1:8053"]
-    C["Caddy<br/>127.0.0.1:8443"]
-    U["Upstream<br/>php-fpm / vite"]
+Now the other side of the coin: [dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html).
 
-    B -- "DNS lookup for .test" --> R
-    R -- "ask 127.0.0.1:8053" --> D
-    D -- "answer: 127.0.0.1" --> B
-    B -- "TCP + TLS to :8443" --> C
-    C -- "reverse_proxy" --> U
+I wire caddy up so that it knows that any caddy file setup in `~/.config/caddy/sites` needs reverse proxying.
+I'll get into _how_ exactly I do that in a bit, but the important information is that caddy knows that there's
+sites it needs forward requests to that run on my local machine. _Something_ has to tell the browser though
+that those requests actually need to go to `127.0.0.1`, the artist also known as `localhost`.
 
-    style B fill:#bbf,stroke:#333
-    style D fill:#fbf,stroke:#333
-    style C fill:#bfb,stroke:#333
-    style U fill:#fdb,stroke:#333
+With dnsmasq, requests from the browser to a TLD like `.test` will ask `/etc/resolver/test` _where_ those
+requests need to go. Dnsmasq answers that question with "to `127.0.0.1`, my guy," and all is good in the world.
+With dnsmasq directing browser requests and caddy acting as a reverse proxy, `.test` domains work exactly as
+they do with Herd. I setup dnsmasq as another launch service so that when I (re)build my system with nix,
+it starts up alongside caddy and I'm off to the races:
+
+```nix
+pservices.dnsmasq = {
+  enable = true;
+  addresses = {
+    test = "127.0.0.1";
+  };
+};
+
+environment.etc."resolver/test".text = ''
+  nameserver 127.0.0.1
+'';
 ```
-
-The primary difference between running your
-own setup with devenv, caddy, and dnsmasq and Herd is that Herd runs those processes as root, where devenv does not. Port 443 is a restricted port, so if you're not root, the system more than likely won't let you scoop it (unless you port forward, but I don't care enough to do that). The tradeoff here is that we have to hit `my-awesome-project.test:8443` instead of just `my-awesome-project.test`. That's something I'm willing to live with,
-but you should take that into account should you decide to venture into the deep waters of Herd-less Laravel local dev.
 
 ## Declarative nix files
 
-Okay, that's enough networking for the week. Now to the fun stuff, actually running devenv. For a full-fledged
+Okay, that's enough networking for the week. Now to the fun stuff, actually running a dev environment for Laravel. For a full-fledged
 Laravel app, we need a few things going for us:
 
 - We need PHP and JavaScript (obviously)
 - We need environment variables
-- We need queues, so Redis
+- We need queues, so Redis and maybe Horizon
 - We need a database: MySQL, Postgres, SQLite, etc.
 - We might want full-text search with meilisearch or typesense
-- Feature flags with LaunchDarkly
-- Any other service that our app needs to run
+- We might need feature flags with LaunchDarkly
+- ...and any other service that our app needs to run
 
-And that's where nix joins us, to set those things up for us in an isolated development shell, hidden from
+And that's where nix joins us once again, to set those things up for us in an isolated development shell, hidden from
 the outside world. The devenv [docs](https://devenv.sh/getting-started/) will do a better job of getting
 you setup with nix and devenv than I ever will, so I highly encourage you to give them a quick once over.
 
@@ -261,11 +280,15 @@ where our recipe uses these to hook in the things we need.
 The rest of the scope block, or the stuff in between the brackets, is just a recipe for how to build
 this dev shell. We assign an env var for the environment, wire up git as a tool for us to be able to use,
 build out some arbitrary scripts to execute, and some hooks for when we enter the dev shell that'll
-run some arbitrary commands as well as a hook for when we want to specifically run tests on this shell.
+run some arbitrary commands as well as a hook for when we want to specifically run tests on this shellj
 
 ## Laravel-ization
 
-Now we need to Laravel-ize it. First, we get rid of everything so we can work from a clean slate.
+Now we need to Laravel-ize it. I'm going to be using [my fork](https://github.com/JoeyMckenzie/laravel-official-react-starter-kit/tree/feature/add-nix-support)
+of the official Laravel/React starter kit to build up a `devenv.nix` file that allows us to run a Laravel app, so feel free to reference that file
+anytime. I have a separate branch in `feature/add-nix-support` that I usually clone anytime I start a new project that inevitably doesn't go anywhere.
+
+First, we get rid of everything so we can work from a clean slate.
 For my setup, I only use `pkgs` and `libs` as the named arguments as I don't need `config` or `inputs`:
 
 ```nix
@@ -274,633 +297,740 @@ For my setup, I only use `pkgs` and `libs` as the named arguments as I don't nee
 
 Next, we need some variables to pass around for the app setup for the common things we'll be reusing:
 
-```nix {}{3-25}
+```nix
 { pkgs, lib, ... }:
 
 let
-  worktreeName = builtins.baseNameOf (toString ./.);
+  # ─── Project identity ─────────────────────────────────────────────────
+  # Kebab for hosts/Caddy site files, snake for Postgres identifiers
+  # (which can't contain dashes without double-quoting at every callsite).
+  appName = "laravel-official-react-starter-kit";
+  appSlug = lib.replaceStrings [ "-" ] [ "_" ] appName;
+
+  # ─── Worktree identity ────────────────────────────────────────────────
+  worktreeName =
+    let
+      base = builtins.baseNameOf (toString ./.);
+    in
+    if base == appName then "main" else lib.toLower base;
+
+  isPrimary = worktreeName == "main";
+
+  # ─── Per-worktree slot allocation ─────────────────────────────────────
+  #
+  # Problem: running multiple git worktrees of this project at the same
+  # time (e.g. `main` plus a feature branch) would have them fight over
+  # the same TCP ports (php-fpm, vite), the same Postgres database name,
+  # the same Redis DB number, and the same `.test` hostname. The second
+  # `devenv up` either crashes on port-bind or silently corrupts the
+  # first worktree's state.
+  #
+  # Solution: each worktree gets a stable integer slot (0-499) derived
+  # from a hash of its directory name. That slot becomes a port offset
+  # (phpPort = 8000 + slot, vitePort = 5173 + slot), a Redis DB index,
+  # a database-name suffix, and a hostname prefix. The primary checkout
+  # is always slot 0 / standard ports / unsuffixed names so it gets the
+  # most ergonomic URLs.
+  #
+  # The slot is derived from a hash of the directory name (rather than
+  # from a shared registry or by enumerating worktrees at eval time) so
+  # it's stable across re-clones and needs no coordination between
+  # worktrees. mod 500 keeps the birthday-collision probability under
+  # ~9% across 10 active worktrees; if you draw the short straw, drop
+  # any unused integer 1-499 into `.devenv-index` to pin the slot by
+  # hand.
+  #
+  # Redis is the one special case: the daemon only ships with 64 DBs,
+  # so the Redis slot mods by 63 instead. A collision there is harmless
+  # because HORIZON_PREFIX further scopes the keyspace per worktree, so
+  # two worktrees sharing a Redis DB index can coexist without keys
+  # bleeding across.
+  hexDigit =
+    c:
+    {
+      "0" = 0;
+      "1" = 1;
+      "2" = 2;
+      "3" = 3;
+      "4" = 4;
+      "5" = 5;
+      "6" = 6;
+      "7" = 7;
+      "8" = 8;
+      "9" = 9;
+      "a" = 10;
+      "b" = 11;
+      "c" = 12;
+      "d" = 13;
+      "e" = 14;
+      "f" = 15;
+    }
+    .${c};
+
+  hashValue =
+    let
+      hex = builtins.substring 0 4 (builtins.hashString "sha256" worktreeName);
+      chars = lib.stringToCharacters hex;
+    in
+    lib.foldl' (acc: c: acc * 16 + (hexDigit c)) 0 chars;
+
+  hashIndex = (lib.mod hashValue 500) + 1;
 
   indexFile = ./.devenv-index;
   index =
-    if builtins.pathExists indexFile then
+    if isPrimary then
+      0
+    else if builtins.pathExists indexFile then
       lib.toInt (lib.removeSuffix "\n" (builtins.readFile indexFile))
     else
-      0;
+      hashIndex;
 
-  appPort = 8000 + index;
+  redisDbIndex = if isPrimary then 0 else (lib.mod hashValue 63) + 1;
+
+  # Per-worktree ports. Postgres/Redis/Caddy/Mailpit are nix-darwin daemons
+  # on their standard ports — see ~/.config/nix-darwin/darwin/services.nix.
+  phpPort = 8000 + index;
   vitePort = 5173 + index;
-  xdebugPort = 9003 + index;
-  dbName = "my_awesome_project_" + lib.replaceStrings [ "-" "." ] [ "_" "_" ] worktreeName;
-  hostname = if worktreeName == "main" then "my-awesome-project.test" else "${worktreeName}.my-awesome-project.test";
 
-  toolsPath = /. + "${builtins.getEnv "HOME"}/.config/devenv/tools.nix";
-in
+  # ─── Names + hosts ────────────────────────────────────────────────────
+  dbName =
+    if isPrimary then
+      appSlug
+    else
+      "${appSlug}_" + lib.replaceStrings [ "-" "." "/" ] [ "_" "_" "_" ] worktreeName;
+
+  appHost =
+    if isPrimary then
+      "${appName}.test"
+    else
+      "${worktreeName}.${appName}.test";
+
+  # vite.config.ts should set `server.origin` to this and `server.hmr.host`
+  # to this with `protocol = 'wss'` + `clientPort = 443` so HMR works over
+  # HTTPS without mixed-content blocks.
+  viteHost = "vite.${appHost}";
+
+  home = builtins.getEnv "HOME";
+  caddySite = "${home}/.config/caddy/sites/${appName}-${worktreeName}.caddy";
+  caddySitesDir = "${home}/.config/caddy/sites";
+
+  worktreesRoot = builtins.dirOf (toString ./.);in
 {
   # TODO
 }
 ```
 
-The `let` binding functions pretty much like any other programming language that supports block-level
+Okay, that's a lot of shit going in the setup. The `let` binding functions pretty much like any other programming language that supports block-level
 assignments, just declaring a bunch of variables in a block to reuse. I use a few things here:
 
-- Because I use worktrees primarily, the `worktreeName` is just a reference to the current folder I'm in
-- I use index files that simply just hold a single number that gets parsed into a value that gets used to deterministically bump ports so worktrees don't collide with one another (poor man's implementation of port hashing)
-- I assign port values based on the port index (`main` has a port index of 0, as it's the trunk branch)
-- Subsequent worktrees get values of 1, 2, 3, and so on (again, there's probably a better way to do this)
-- I hold a reference to the database name this worktree will use
-- I grab the hostname this worktree will run under as well
-- I reference a path to the common tools I use for all my nix files that I version control in my dotfiles
-
-## Sharing tools
-
-For that last reference there, I keep a `tools.nix` file that acts as a common set of shared tools that,
-more often than not, any dev shell I'm working will need:
-
-#### ~/.config/devenv/tools.nix
-
-```nix
-{ pkgs, ... }:
-{
-  packages = with pkgs; [
-    git
-    curl
-    gh
-    jq
-    ripgrep
-    fd
-    fzf
-
-    nil
-    statix
-    deadnix
-    nixfmt-rfc-style
-
-    sqlite
-    pgcli
-    mycli
-    litecli
-  ];
-}
-```
-
-I use a few terminal tools, CLIs, and some nix stuff. I tend to keep language stuff out since this is meant
-to be used by any project that I use nix/devenv with.
+- We start off with project identities so we can reuse the project name for hosts, DBs, worktrees, etc.
+- Slugifying the project name allows for a lot of reuse in our services, as we'll see in just a bit
+- Next, we have to do a bit of port olympics to keep ports from colliding as spin up worktrees
+    - If you don't use worktrees, you can remove that whole section
+    - If you _do_ use worktrees (which I'd highly recommend), the hashing function there allows for ~500 free ports
+    - I have a port man's port allocator workaround where I use a `.devenv-index` file with a static number in to override the port index if I need to (rarely)
+    - This is totally optional, but allows for a truly per-worktree isolated environment
+- We do a bit of determination to figure out the appropriate host name based on the worktree
+- Same thing for our vite server, since we have configured with caddy to service at a `vite.` apex domain
+- I make a few references to the caddy site and the worktrees root that'll be used here in just a bit
 
 ## Declaring the important stuff
 
-Okay, with that out of the way, let's get into the meat and potatoes of my `devenv.nix` recipe:
+Okay, with that out of the way, let's get into the meat and potatoes of my `devenv.nix` recipe. First thing's first,
+We need some AI integration because I have no idea how to write code by hand anymore:
 
-```nix {}{20-55}
+```nix
 { pkgs, lib, ... }:
 
 let
-  worktreeName = builtins.baseNameOf (toString ./.);
-
-  indexFile = ./.devenv-index;
-  index =
-    if builtins.pathExists indexFile then
-      lib.toInt (lib.removeSuffix "\n" (builtins.readFile indexFile))
-    else
-      0;
-
-  appPort = 8000 + index;
-  vitePort = 5173 + index;
-  xdebugPort = 9003 + index;
-  dbName = "my_awesome_project_" + lib.replaceStrings [ "-" "." ] [ "_" "_" ] worktreeName;
-  hostname = if worktreeName == "main" then "my-awesome-project.test" else "${worktreeName}.my-awesome-project.test";
-
-  toolsPath = /. + "${builtins.getEnv "HOME"}/.config/devenv/tools.nix";
+  # ...other stuff
 in
 {
-  imports = [ toolsPath ];
-
   dotenv.disableHint = true;
 
-  languages.php = {
-    enable = true;
-    version = "8.4";
-    extensions = [
-      "redis"
-      "pdo_pgsql"
-      "pgsql"
-      "intl"
-      "bcmath"
-      "gd"
-      "zip"
-      "xdebug"
-    ];
-    ini = ''
-      ${builtins.readFile ./php.ini.base}
-      xdebug.client_port = ${toString xdebugPort}
-      ${lib.optionalString (builtins.pathExists ./php.local.ini) (builtins.readFile ./php.local.ini)}
-    '';
+  claude = {
+    code.enable = true;
+    code.mcpServers = {
+      devenv = {
+        type = "stdio";
+        command = "devenv";
+        args = [ "mcp" ];
+      };
+      shadcn = {
+        type = "stdio";
+        command = "npx";
+        args = [
+          "shadcn@latest"
+          "mcp"
+        ];
+      };
+      boost = {
+        type = "stdio";
+        command = "php";
+        args = [
+          "artisan"
+          "boost:mcp"
+        ];
+      };
+    };
   };
-
-  languages.javascript = {
-    enable = true;
-    package = pkgs.nodejs_22;
-    npm.enable = true;
-  };
-
-  packages = with pkgs; [
-    postgresql_16
-    redis
-  ];
 }
 ```
 
 The `in` block captures over variables in the `let` block where I'm now telling nix that I need a few things
-in my dev environment:
+in my dev environment. We'll flesh this out bit-by-bit, but to start, I like to wire up Claude Code integration
+as it's my agentic development daily driver and through nix, I can consolidate all of my Claude Code config into
+a nix file alongside all the other stuff I need to run my code. Nix becomes the source of truth for _everything_
+taking this approach. Whether that's good or bad, I'll let you decide. I've spent enough time working at places
+where dev environment setup took two weeks, a lot of patience, and even more cursing waiting on ServiceNow tickets
+to be resolved to get access to things that I'd never touch again. I want to clone a project and hit the ground
+running within minutes, and that's what I tailor my approach here for.
 
-- Import the common tools for terminal stuff I'll be doing
-- Disable `.env` warnings (more on this later)
-- Wire up PHP for me, complete with companion `php.ini.base` file that can optionally resolve values from a `php.local.ini` file, if needed
-- Wire up node for me (so long, 10 different ways to manage node versions)
-- Include Postgres and Redis since Laravel needs the drivers available
-
-## Spinning up dev servers
-
-These represent core tools I need to actually do stuff with Laravel. This is great, but we actually have to
-_run_ the app at some point. So, let's define what processes devenv can spin up when I boot up the environment:
-
-```nix {}{56-67}
-{ pkgs, lib, ... }:
-
-let
-  worktreeName = builtins.baseNameOf (toString ./.);
-
-  indexFile = ./.devenv-index;
-  index =
-    if builtins.pathExists indexFile then
-      lib.toInt (lib.removeSuffix "\n" (builtins.readFile indexFile))
-    else
-      0;
-
-  appPort = 8000 + index;
-  vitePort = 5173 + index;
-  xdebugPort = 9003 + index;
-  dbName = "my_awesome_project_" + lib.replaceStrings [ "-" "." ] [ "_" "_" ] worktreeName;
-  hostname = if worktreeName == "main" then "my-awesome-project.test" else "${worktreeName}.my-awesome-project.test";
-
-  toolsPath = /. + "${builtins.getEnv "HOME"}/.config/devenv/tools.nix";
-in
-{
-  imports = [ toolsPath ];
-
-  dotenv.disableHint = true;
-
-  languages.php = {
-    enable = true;
-    version = "8.4";
-    extensions = [
-      "redis"
-      "pdo_pgsql"
-      "pgsql"
-      "intl"
-      "bcmath"
-      "gd"
-      "zip"
-      "xdebug"
-    ];
-    ini = ''
-      ${builtins.readFile ./php.ini.base}
-      xdebug.client_port = ${toString xdebugPort}
-      ${lib.optionalString (builtins.pathExists ./php.local.ini) (builtins.readFile ./php.local.ini)}
-    '';
-  };
-
-  languages.javascript = {
-    enable = true;
-    package = pkgs.nodejs_22;
-    npm.enable = true;
-  };
-
-  packages = with pkgs; [
-    postgresql_16
-    redis
-  ];
-
-  processes.app.exec = "php artisan serve --host=127.0.0.1 --port=${toString appPort}";
-  processes.queue.exec = "php artisan queue:listen --tries=1";
-  processes.logs.exec = "php artisan pail --timeout=0";
-  processes.horizon.exec = "php artisan horizon";
-  processes.vite.exec = "npm run dev -- --port ${toString vitePort} --strictPort";
-
-  processes.migrate = {
-    exec = "php artisan migrate --force";
-    process-compose.availability.restart = "no";
-  };
-  processes.app.process-compose.depends_on.migrate.condition = "process_completed_successfully";
-  processes.horizon.process-compose.depends_on.migrate.condition = "process_completed_successfully";
-  processes.queue.process-compose.depends_on.migrate.condition = "process_completed_successfully";
-}
-```
-
-I tell devenv that when I boot up the environment with `devenv up` (akin to a good ole fashioned `docker compose up`), I need to run a few processes:
-
-- Laravel's built-in dev server on the port we computed for the worktree
-- The queue workers
-- Tail logs with `pail`
-- Horizon, because you should be running Horizon
-- Boot up the vite dev server
-- Run any pending migrations
-- And lastly through [process-compose](https://f1bonacc1.github.io/process-compose/), I gate the app, queue, and Horizon processes from running until migrations have successfully applied
-
-One little block does everything I need all at once. All in a day's work 😅.
-One thing to note is that devenv uses [process-compose](https://f1bonacc1.github.io/process-compose/) as a
-supervisor of sorts to manage the fleet of related processes. Getting familiar with it is well worth while
-and a welcome alternative to those that want a Docker-like experience with bare metal processes. As of devenv 2.0, though, they've replaced process-compose with a native version, but with a compat layer so old stuff doesn't break.
-
-## Setting the environment
-
-At some point, we're gonna need environment variables. Luckily, devenv can handle that for us.
-
-Because I take a worktree first approach, I need to change a few things so the environment is properly
-set for Laravel. There's a bit of contention here, as Laravel wants to manage its own environment through
-a `.env` file. Devenv can inject environment variables into the dev shell too, and ultimately only one variable
-can win the race (condition). For worktrees, I think of it like this:
-
-- If the environment variable is dynamic, put it in `devenv.nix`
-- If the environment variable is static, keep it in `.env`
-
-For a basic Laravel app, this means we need to keep a few variables managed by `devenv.nix`, namely:
-
-- APP_URL: The URL we use here will be specific to the domain the worktree is using
-- APP_PORT: Each worktree gets it's own server port
-- DB_DATABASE: We don't want worktrees muddying up data between themselves
-- REDIS_DB: Same idea as above, we don't want stale caches between trees OR jobs pulling off the wrong queue (if using Redis as the queue driver)
-- XDEBUG_PORT: Nice to have to run xdebug among multiple trees if needed
-
-Simply enough, we can set these directly in our `devenv.nix`:
-
-```nix {}{71-77}
-{ pkgs, lib, ... }:
-
-let
-  worktreeName = builtins.baseNameOf (toString ./.);
-
-  indexFile = ./.devenv-index;
-  index =
-    if builtins.pathExists indexFile then
-      lib.toInt (lib.removeSuffix "\n" (builtins.readFile indexFile))
-    else
-      0;
-
-  appPort = 8000 + index;
-  vitePort = 5173 + index;
-  xdebugPort = 9003 + index;
-  dbName = "my_awesome_project_" + lib.replaceStrings [ "-" "." ] [ "_" "_" ] worktreeName;
-  hostname = if worktreeName == "main" then "my-awesome-project.test" else "${worktreeName}.my-awesome-project.test";
-
-  toolsPath = /. + "${builtins.getEnv "HOME"}/.config/devenv/tools.nix";
-in
-{
-  imports = [ toolsPath ];
-
-  dotenv.disableHint = true;
-
-  languages.php = {
-    enable = true;
-    version = "8.4";
-    extensions = [
-      "redis"
-      "pdo_pgsql"
-      "pgsql"
-      "intl"
-      "bcmath"
-      "gd"
-      "zip"
-      "xdebug"
-    ];
-    ini = ''
-      ${builtins.readFile ./php.ini.base}
-      xdebug.client_port = ${toString xdebugPort}
-      ${lib.optionalString (builtins.pathExists ./php.local.ini) (builtins.readFile ./php.local.ini)}
-    '';
-  };
-
-  languages.javascript = {
-    enable = true;
-    package = pkgs.nodejs_22;
-    npm.enable = true;
-  };
-
-  packages = with pkgs; [
-    postgresql_16
-    redis
-  ];
-
-  processes.app.exec = "php artisan serve --host=127.0.0.1 --port=${toString appPort}";
-  processes.queue.exec = "php artisan queue:listen --tries=1";
-  processes.logs.exec = "php artisan pail --timeout=0";
-  processes.horizon.exec = "php artisan horizon";
-  processes.vite.exec = "npm run dev -- --port ${toString vitePort} --strictPort";
-
-  processes.migrate = {
-    exec = "php artisan migrate --force";
-    process-compose.availability.restart = "no";
-  };
-  processes.app.process-compose.depends_on.migrate.condition = "process_completed_successfully";
-  processes.horizon.process-compose.depends_on.migrate.condition = "process_completed_successfully";
-  processes.queue.process-compose.depends_on.migrate.condition = "process_completed_successfully";
-
-  env = {
-    APP_URL = "https://${hostname}:8443";
-    APP_PORT = toString appPort;
-    DB_DATABASE = dbName;
-    REDIS_DB = toString index;
-    XDEBUG_PORT = toString xdebugPort;
-  };
-}
-```
-
-The `env` block uses the `let` bindings to create those variables Laravel expects to be in place when
-caching its config on first boot. This means **you should remove these from `.env`** so they don't collide
-with the value managed by devenv for the worktree.
-
-## A poor man's port allocator
-
-You might have noticed a magic incantation back in the `let` block:
+Okay, rant aside, next we need to tell nix what languages and language tooling we're going to need to get us off the ground:ground
 
 ```nix
-indexFile = ./.devenv-index;
-index =
-  if builtins.pathExists indexFile then
-    lib.toInt (lib.removeSuffix "\n" (builtins.readFile indexFile))
-  else
-    0;
+let
+  # ...other stuff
+in
+{
+  # ...claude stuff
 
-appPort = 8000 + index;
-vitePort = 5173 + index;
-xdebugPort = 9003 + index;
-```
-
-This deserves an explainer. Worktrees are gloriously isolated, except for one small detail: ports are
-global. The OS only has one `:8000` to give out, and if I'm running `php artisan serve` in `main` and try
-to spin up the same in `feature-foo`, one of them is going to lose. And it's usually whichever one I care
-more about at the time.
-
-So we need each worktree to know "I'm worktree #3, you go grab port 8003." We also want it to be
-deterministic, so that `APP_URL` doesn't change every time the dev shell boots, otherwise our caddy
-config goes stale and we're back to manually editing things like cavemen.
-
-I tried a few clever solutions first (hashing the worktree name to a port, picking a random free port at
-boot, etc.) and they all had the same problem: either they collided in some clever way, or they made the
-URL non-stable, or they required a service registry which is comically over-engineered for one developer
-on one laptop.
-
-The dumb solution wins: a single integer in a file called `.devenv-index`. `main` is index `0` and gets
-the base ports (8000 for the app, 5173 for vite, 9003 for xdebug). Every other worktree gets the next
-free integer, and ports are computed by adding the index. Index 1 gets `:8001`, index 2 gets `:8002`, and
-so on, ad nauseam.
-
-Stable, collision-free, requires zero infrastructure. This is what every distributed systems class warns
-you about (no central authority, no lease, no consensus), but it's fine because the "cluster" is my
-laptop and the "consensus protocol" is `fd` plus `sort -u`.
-
-So how does the integer get into the file? Worktrunk hooks. When I create a new worktree, worktrunk runs
-whatever I've configured in `.config/wt.toml`, including a `[post-create]` hook that scans sibling
-worktrees, picks the lowest free index, and writes it to `.devenv-index` before the nix shell ever sees
-the directory.
-
-#### `.config/wt.toml`
-
-```toml
-[post-create]
-devenv-onboard = """
-set -euo pipefail
-
-# 0 is reserved for main. Scan sibling worktrees for indices already in use.
-parent="$(cd .. && pwd)"
-used="$( {
-  echo 0
-  fd --hidden --glob '.devenv-index' "$parent" --min-depth 2 --max-depth 2 --exec-batch cat
-} 2>/dev/null | sort -un )"
-
-# Pick the lowest free integer.
-idx=0
-while echo "$used" | grep -qFx "$idx"; do idx=$((idx+1)); done
-echo "$idx" > .devenv-index
-"""
-```
-
-A few things to call out:
-
-- The hook runs `fd` in the parent directory because of the bare-repository layout we set up earlier. All worktrees are siblings, so a 2-deep scan picks them all up.
-- `0` is hardcoded as taken even though `main` doesn't actually have a `.devenv-index` file. Saves a special case.
-- Gaps are intentional. If I delete worktree #2 and then create a new one, it'll grab `2` again. Renumbering live worktrees would be its own special kind of hell.
-
-That's it. Hook runs once per worktree creation, writes a single number, and the nix file does the rest.
-
-## Caddy, but for worktrees
-
-Remember that single caddy site file we wrote way back in "Not your dad's web server"? That was the toy
-version. With worktrees, each one needs its own hostname pointing at its own port (since each worktree
-got its own app and vite ports via the `.devenv-index` trick), which means each worktree needs its own
-caddy fragment.
-
-The good news: we already have everything we need. `/etc/resolver/test` wildcards every `.test`
-subdomain to `127.0.0.1`, so `feature-foo.my-awesome-project.test` resolves correctly without any
-per-worktree DNS work. Caddy is doing all the actual routing by Host header.
-
-The remaining job is generating one caddy fragment per worktree and gently nudging caddy to pick it up.
-I keep a small helper script for the templating:
-
-#### `~/.config/devenv/bin/write-site`
-
-```bash
-#!/usr/bin/env bash
-# usage: write-site <hostname> <app_port> <vite_port>
-set -euo pipefail
-
-hostname="${1:?usage: write-site <hostname> <app_port> <vite_port>}"
-app_port="${2:?missing app_port}"
-vite_port="${3:?missing vite_port}"
-
-out="$HOME/.config/devenv/sites/${hostname}.caddy"
-cat > "$out" <<CADDY
-${hostname}:8443 {
-    tls internal
-
-    @websocket {
-        header Connection *Upgrade*
-        header Upgrade websocket
-    }
-    handle @websocket {
-        reverse_proxy 127.0.0.1:${vite_port}
-    }
-
-    @vite path /@vite/* /@id/* /@fs/* /@react-refresh /resources/* /node_modules/* /__laravel_vite_plugin__/*
-    handle @vite {
-        reverse_proxy 127.0.0.1:${vite_port}
-    }
-
-    handle {
-        reverse_proxy 127.0.0.1:${app_port}
-    }
-}
-CADDY
-```
-
-This is the same caddy fragment from before, just with the hostname and ports as variables. Drop it into
-`~/.config/devenv/sites/` next to its siblings, and the `import sites/*.caddy` line in our root
-`Caddyfile` picks it up on the next reload.
-
-For the reload, I have another helper that POSTs the rendered config to caddy's admin API:
-
-#### `~/.config/devenv/bin/reload-caddy`
-
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-if curl -sf http://127.0.0.1:2019/config/ >/dev/null 2>&1; then
-    curl -fsS -X POST 'http://127.0.0.1:2019/load' \
-        -H 'Content-Type: text/caddyfile' \
-        --data-binary @"$HOME/.config/devenv/Caddyfile"
-fi
-```
-
-Why hit the admin API instead of just running `caddy reload`? Because this script gets called from
-worktrunk hooks that run outside the devenv shell, and the `caddy` binary isn't always on PATH. The admin
-API is on `127.0.0.1:2019` whether or not your shell is set up. The leading `if curl -sf ...` is a no-op
-guard for when caddy isn't actually running (no point yelling about it, the next `devenv up` will start
-things).
-
-Now we wire it all up by extending the `devenv-onboard` hook from the previous section:
-
-#### `.config/wt.toml`
-
-```toml {}{15-19}
-[post-create]
-devenv-onboard = """
-set -euo pipefail
-slug=my-awesome-project
-
-parent="$(cd .. && pwd)"
-used="$( {
-  echo 0
-  fd --hidden --glob '.devenv-index' "$parent" --min-depth 2 --max-depth 2 --exec-batch cat
-} 2>/dev/null | sort -un )"
-idx=0
-while echo "$used" | grep -qFx "$idx"; do idx=$((idx+1)); done
-echo "$idx" > .devenv-index
-
-# Register this worktree's hostname with caddy.
-hostname="{{ worktree_name }}.${slug}.test"
-~/.config/devenv/bin/write-site "$hostname" $((8000 + idx)) $((5173 + idx))
-~/.config/devenv/bin/reload-caddy
-"""
-```
-
-And the inverse on `[post-remove]` so dead worktrees don't leave stale caddy fragments hanging around:
-
-```toml
-[post-remove]
-devenv-cleanup = """
-set -euo pipefail
-slug=my-awesome-project
-hostname="{{ worktree_name }}.${slug}.test"
-rm -f ~/.config/devenv/sites/"${hostname}.caddy"
-~/.config/devenv/bin/reload-caddy
-"""
-```
-
-Self-cleaning, self-allocating, self-routing. The only manual step left is `wt new feature-something`,
-and the rest happens before I've finished typing `cd`.
-
-## Vite, meet caddy
-
-Here's a fun gotcha that bit me only after wiring all of the above up. I loaded
-`https://my-awesome-project.test:8443` in a fresh browser, popped open devtools, and got a wall of red
-in the network panel. Every asset request was going to `http://127.0.0.1:5173` and getting nuked by
-mixed-content blocking.
-
-The page is HTTPS. The asset URLs are HTTP. Modern browser sees that and noped out.
-
-The cause is obvious in hindsight. `laravel-vite-plugin` writes the dev server's URL into `public/hot`
-so Laravel knows where to load assets from during dev. By default that URL is wherever vite is bound
-internally — `http://127.0.0.1:5173` in our case. Caddy is happily proxying `/resources/*` to vite,
-but the browser never goes through caddy because vite told Laravel "ignore that, hit me directly."
-
-The fix is to tell vite that its _public_ origin is the caddy URL, not its internal listen address.
-We can derive everything we need from `APP_URL` and the same `.devenv-index` trick we used for ports:
-
-#### `vite.config.ts`
-
-```ts
-import inertia from '@inertiajs/vite';
-import { wayfinder } from '@laravel/vite-plugin-wayfinder';
-import tailwindcss from '@tailwindcss/vite';
-import react from '@vitejs/plugin-react';
-import laravel from 'laravel-vite-plugin';
-import { readFileSync } from 'node:fs';
-import { defineConfig, loadEnv } from 'vite';
-
-const VITE_PORT_BASE = 5173;
-
-function readWorktreeIndex(): number {
-    try {
-        return (
-            Number.parseInt(readFileSync('.devenv-index', 'utf8').trim(), 10) ||
-            0
-        );
-    } catch {
-        return 0;
-    }
-}
-
-export default defineConfig(({ mode }) => {
-    const env = loadEnv(mode, process.cwd(), '');
-    const appUrl = new URL(
-        env.APP_URL ?? 'https://my-awesome-project.test:8443',
-    );
-    const vitePort = VITE_PORT_BASE + readWorktreeIndex();
-
-    return {
-        plugins: [
-            laravel({
-                input: ['resources/css/app.css', 'resources/js/app.tsx'],
-                refresh: true,
-            }),
-            inertia(),
-            react({
-                babel: {
-                    plugins: ['babel-plugin-react-compiler'],
-                },
-            }),
-            tailwindcss(),
-            wayfinder({
-                formVariants: true,
-            }),
-        ],
-        server: {
-            host: '127.0.0.1',
-            port: vitePort,
-            strictPort: true,
-            cors: true,
-            origin: appUrl.origin,
-            hmr: {
-                host: appUrl.hostname,
-                protocol: 'wss',
-                clientPort: Number.parseInt(appUrl.port, 10) || 443,
-            },
-        },
+  # ─── Languages ─────────────────────────────────────────────────────────
+  languages = {
+    php = {
+      enable = true;
+      version = "8.4";
+      extensions = [
+        "bcmath"
+        "gd"
+        "zip"
+        "pdo_pgsql"
+        "redis"
+        "opcache"
+        "intl"
+        "xdebug"
+      ];
+      ini = ''
+        ${builtins.readFile ./php.ini.base}
+        ${lib.optionalString (builtins.pathExists ./php.local.ini) (builtins.readFile ./php.local.ini)}
+      '';
+      fpm.pools.web = {
+        settings = {
+          "listen" = "127.0.0.1:${toString phpPort}";
+          "pm" = "dynamic";
+          "pm.max_children" = 10;
+          "pm.start_servers" = 2;
+          "pm.min_spare_servers" = 1;
+          "pm.max_spare_servers" = 3;
+          # Inherit the devenv shell env so DB_DATABASE / REDIS_DB /
+          # SESSION_DOMAIN / HORIZON_PREFIX reach the FPM workers. Without
+          # this, php-fpm scrubs the env and only the .env file is visible.
+          "clear_env" = "no";
+          # macOS fork-safety workaround for pdo_pgsql. libpq tries GSSAPI
+          # encryption negotiation by default, which pulls Kerberos →
+          # CoreFoundation prefs → mach IPC. The IPC state can't be reused
+          # after fork(), so php-fpm workers SIGSEGV inside PQconnectdb.
+          # Setting PGGSSENCMODE=disable tells libpq to skip the GSSAPI
+          # codepath entirely — no kerberos init, no CFPrefs, no crash.
+          # OBJC_DISABLE_… is kept as a belt-and-suspenders for any other
+          # CF-touching library that might creep in.
+          "env[PGGSSENCMODE]" = "disable";
+        };
+      };
     };
-});
+
+    javascript = {
+      enable = true;
+      package = pkgs.nodejs_22;
+      npm.enable = true;
+    };
+  };
+}
 ```
 
-A few things worth calling out:
+Alright, now we're getting somewhere. We know we're going to need PHP and JS, along with a few PHP extensions to
+going and some FPM configuration. The JS block is pretty simple, just telling nix I need node on v22. Notice
+there's no mention of nvm, asdf, mise, etc. The beauty of per-project devenv nix environments is that we
+don't _need_ version managers, because our environment is pinned to the exact version we need. Working on multiple
+projects at a time? Update your `devenv.nix` accordingly and you're off to the races.
 
-- `server.origin` is the line doing the heavy lifting. It tells `laravel-vite-plugin` to write the caddy URL into `public/hot` instead of the internal `127.0.0.1:5173`. Asset requests now route through caddy like everything else.
-- `hmr.protocol: 'wss'` + `hmr.clientPort: 8443` sends the HMR websocket through caddy too. The `@websocket` matcher in the caddy fragment from earlier already handles the upgrade, no extra wiring needed.
-- `APP_URL` and the worktree index come from the same sources we already use everywhere else, so this works zero-config across all worktrees. Same recipe, every tree.
+For our PHP setup, we include the usual suspects we need for a a solid PHP extension setup with xdebug, zip, opcache, etc.
+I'm opting to use Postgres like the rest of the modern world, and things get a bit interesting here. I'm gonna pause here,
+as I think it'd be valuable for anyone to read two posts that are pretty important for our setup here:
 
-The `server` block is only consulted by `vite dev`. `vite build` ignores it entirely, so prod builds
-are completely unaffected. Herd handles this for you under the hood via `detectTls`, since it knows
-about its own TLS certs and can wire vite up accordingly. With our setup, we get to handle it ourselves.
-Small price to pay for owning the stack.
+- [Fixing Postgres Connection Issues in Laravel Valet on macOS](https://janostlund.com/2024-08-16/502-error-laravel-valet-pgsql)
+- [Laravel valet 502 error when using postgres pgsql driver](https://www.sabatino.dev/laravel-valet-502-error-when-using-postgres-pgsql-driver/)
 
-## Shell hooks
+Yeah, we're not using Valet, but this bad boy bit me while working on a recent project and had me scratching my head
+for longer than I'd care to admit. If you didn't read those, here's the TL;DR:
 
-# TODO
+- When you use `php artisan serve`, your Laravel app talks directly to Postgres with no frills or fuss
+- When you reverse proxy to your Laravel app through something like caddy, you usually have PHP FPM handling those requests
+- PHP FPM manages a pool of PHP workers ready to handle requests, but lives outside of Laravel's PHP view of the world
+- _Those_ PHP request workers use separate configuration when connecting to Postgres
+- Postgres relies on something called Generic Security Services API, or GSSAPI
+- When a worker attempts to talk to Postgres, Postgres uses GSSAPI to authenticate the worker
+- When you're on a local dev machine, odds are you don't need this level of authentication (unless you're working in an enterprise environment with Kerberos/AD everywhere)
+- To get around this authentication blocking Postgres will do to a PHP FPM worker, you set `env[PGGSSENCMODE]` to `disable`
+- Congrats, your PHP FPM workers no longer 502 when handling requests sent from caddy
+
+The TL;DR of the TL;DR above - when using a reverse proxy on a Laravel app with Postgres, you set `env[PGGSSENCMODE] = disable` in your FPM config.
+Without it, you'll get some mysterious 502 errors back from FPM attempting to handle the request. I'm glad I know this now, but boy... that sure
+was annoying trying to figure out in the first place.
+
+With that out of the way, let's move onto to what we _actually_ need to run when we're spin up our app. In this contrived example,
+I have a few things setup:
+
+- We have our Laravel app that needs to handle requests
+- We have an asset server for vite
+- We need a queue worker via Horizon (because I couldn't imagine a real Laravel app without it)
+- We need a scheduler running to test those pesky scheduled commmands
+
+We can define _all_ of that in our devenv nix setup. All of these processes and services, though, need environment variables at some point
+to know _how_ they should run. So, we wire it all up with an `env` and `processes` block in our nix setup:
+
+```nix
+let
+  # ...other stuff
+in
+{
+  # ─── Per-worktree env ─────────────────────────────────────────────────
+  # Only worktree-dependent values live here. Static project config (DB
+  # driver/host/creds, Redis host, mail host, etc.) lives in .env so that
+  # artisan commands work the same whether or not the devenv shell is
+  # active. Anything in this block overrides .env at runtime via
+  # phpdotenv's immutable mode.
+  env = {
+    APP_URL = "https://${appHost}";
+    APP_DOMAIN = appHost;
+    ASSET_URL = "https://${appHost}";
+
+    # Vite served behind caddy. VITE_DEV_SERVER_URL is what laravel-vite-
+    # plugin emits in <script> tags; without it, asset URLs default to
+    # http://localhost:VITE_PORT and the HTTPS app page blocks them as
+    # mixed content.
+    VITE_PORT = toString vitePort;
+    VITE_DEV_SERVER_URL = "https://${viteHost}";
+
+    HORIZON_DOMAIN = "horizon.${appHost}";
+    HORIZON_PATH = "/";
+
+    # Scope sessions to this worktree's subtree so two open worktrees
+    # don't collide. dashboard.${worktreeName}.${appName}.test is under
+    # .${worktreeName}.${appName}.test, so any subdomain sharing still works.
+    SESSION_DOMAIN = if isPrimary then ".${appName}.test" else ".${worktreeName}.${appName}.test";
+
+    # Per-worktree database name (cluster-shared role lives in .env).
+    DB_DATABASE = dbName;
+
+    # Redis DB number — mod 63 since Redis only has 64 DBs. Collisions are
+    # harmless thanks to HORIZON_PREFIX scoping below.
+    REDIS_DB = toString redisDbIndex;
+
+    # Queue key prefix — keeps each worktree's queue keys isolated even
+    # when redisDbIndex collides between worktrees.
+    HORIZON_PREFIX = "horizon-${worktreeName}:";
+  };
+
+  processes = {
+    # PHP-FPM is managed by languages.php.fpm above. If `devenv up` was
+    # killed ungracefully and a php-fpm master is leaked on port phpPort,
+    # the new master fails silently to bind and the OLD one serves requests
+    # with stale env. Recovery: `pkill -f 'php-fpm: master'` then re-up.
+    #
+    # When `devenv up` is killed ungracefully, vite doesn't always propagate
+    # SIGTERM either, leaving an orphan bound to the port. The pre-bind lsof
+    # reclaims it; `exec` replaces the shell so SIGTERMs reach vite directly.
+    vite.exec = ''
+      pids=$(lsof -ti:${toString vitePort} 2>/dev/null || true)
+      [ -n "$pids" ] && { echo "→ killing orphan on :${toString vitePort} ($pids)"; kill -9 $pids; }
+      exec npm run dev -- --host 127.0.0.1 --port ${toString vitePort} --strictPort
+    '';
+
+    # Horizon + scheduler run in every worktree (against the shared redis;
+    # HORIZON_PREFIX + REDIS_DB isolate keys per worktree).
+    horizon.exec = "php artisan config:clear && php artisan horizon:listen";
+    scheduler.exec = "php artisan config:clear && php artisan schedule:work";
+
+    logs.exec = "php artisan pail --timeout=0";
+  };
+}
+```
+
+Let's go section-by-section:
+
+- `env`
+    - Because I use worktrees by default these days, all of our URLs need to be unique when the Laravel/vite servers spin up
+    - Horizon gets its own apex URL
+    - Each worktree gets it's own database copy so it can work in isolation from `main`
+    - Each worktree _also_ gets it's own Redis DB so I don't have clashing cache values or queue workers consuming jobs from other worktrees
+- `processes`
+    - `vite.exec` - Runs our actual vite server via `npm run dev` and kills any orphaned instances anytime I spin up the dev environment
+    - `horizon.exec` - Runs the queues workers via Horizon (you'll need `chokidar` if you're using the `listen` option so jobs get HMR when you update PHP code)
+    - `scheduler.exec` - Runs the scheduler for any schedule command code I might have
+    - `logs.exec` - Runs `pail` so I can see what the heck is going on when I'm running my app
+
+I'm waving over the fact that through my `nix-darwin` setup, I have Postgres and Redis as a launch service (very much like Herd does) and keeping
+my `devenv.nix` definition here to just project-specfic processes that run.
+
+Similarly in my `env` block, I use that for any dynamic environment variables, like hosts and port numbers, and keep all the static stuff in `.env`.
+I get to derive all these values based on worktree indexes, which in turn allows me to create individual hosts, database names, and anything else
+that's environment specific.
+
+Next, one of my favorite parts of using nix and devenv: tasks. Just like how we have scripts in `package.json` and `composer.json`, devenv allows us to run
+tasks in a very similar fashion. Same concept: define something that needs to run and tell devenv to run it. My typical task block looks is the largest
+piece of nix DSL, so we'll incrementally build it up. To start, I define a few caddy tasks that help me register, reload, and clean reverse proxied URLs:
+
+```nix
+let
+  # ...other stuff
+in
+{
+  # ...other stuff
+
+  tasks = {
+    # Caddy, runs every entry (no status) to handle config drift.
+    "caddy:write-site" = {
+      description = "Write per-worktree Caddyfile";
+      exec = ''
+        set -euo pipefail
+        mkdir -p "${caddySitesDir}"
+        cat > "${caddySite}" <<EOF
+        ${appHost}, horizon.${appHost} {
+          root * ${config.devenv.root}/public
+          php_fastcgi 127.0.0.1:${toString phpPort}
+          encode zstd gzip
+          file_server
+        }
+
+        ${viteHost} {
+          reverse_proxy 127.0.0.1:${toString vitePort}
+        }
+        EOF
+      '';
+      before = [ "devenv:enterShell" ];
+    };
+
+    "caddy:reload" = {
+      description = "Reload Caddy via admin API";
+      exec = ''
+        set -euo pipefail
+        if curl -fsS --max-time 2 http://localhost:2019/config/ >/dev/null 2>&1; then
+          if curl -fsS -X POST -H "Content-Type: text/caddyfile" \
+               --data-binary @/etc/caddy/Caddyfile \
+               "http://localhost:2019/load?adapter=caddyfile" >/dev/null; then
+            echo "✓ caddy reloaded (${appHost})"
+          else
+            echo "⚠ caddy admin API rejected reload — check /etc/caddy/Caddyfile syntax"
+          fi
+        else
+          echo "⚠ caddy admin API not reachable. Try: sudo launchctl kickstart -k system/org.nixos.caddy"
+        fi
+      '';
+      after = [ "caddy:write-site" ];
+      before = [ "devenv:enterShell" ];
+    };
+
+    "caddy:self-clean" = {
+      description = "Remove caddy site files for deleted worktrees";
+      exec = ''
+        set -euo pipefail
+        shopt -s nullglob 2>/dev/null || true
+        for f in "${caddySitesDir}/"${appName}-*.caddy; do
+          base=$(basename "$f" .caddy)
+          name=''${base#${appName}-}
+          [ "$name" = "main" ] && continue
+          [ "$name" = "${worktreeName}" ] && continue
+          if [ ! -d "${worktreesRoot}/$name" ]; then
+            echo "→ removing stale caddy site: $name"
+            rm -f "$f"
+          fi
+        done
+      '';
+      before = [ "devenv:enterShell" ];
+    };
+  };
+}
+```
+
+I have three tasks that run anytime I spin up my dev environment:
+
+- `caddy:write-site`: Writes a literal `<branch-name>.<app-name>.test` file to my `~/.config/caddy/sites` folder that caddy can pick up and begin reverse proxying.
+- `caddy:reload`: When a new caddy site is added, we have to tell caddy to start listening for those requests and reverse proxying as needed, so we ping the caddy admin API that runs locally to pick it up
+- `caddy:self-clean`: When I nuke a worktree, I like to clean up after myself to avoid a bunch of orphaned site URLs that no longer exist
+
+One thing that's really cool about devenv task blocks is the `before` and `after` markers that tell that specific task _when_ to run: either before a task or set of tasks, and similarly for after.
+
+With the caddy management out of the way, we can move onto to application initialization stuff:
+
+```nix
+let
+  # ...other stuff
+in
+{
+  # ...other stuff
+
+  tasks = {
+    # ...other task stuff
+
+    # Fresh worktrees inherit primary's .env (which carries any real keys/
+    # secrets your .env.example lacks). Falls back to .env.example if primary
+    # has none. Devenv's `env = { ... }` block overrides URL/DB/Redis at the
+    # shell-env layer via phpdotenv's immutable mode, so worktree-specific
+    # values don't bleed in.
+    "app:env-init" = {
+      description = "Copy .env from primary worktree (or .env.example) into place";
+      exec = ''
+        set -euo pipefail
+        primary_root="${worktreesRoot}/main"
+        dst="${config.devenv.root}/.env"
+        [ -f "$dst" ] && exit 0
+        if [ -f "$primary_root/.env" ] && [ "$primary_root/.env" != "$dst" ]; then
+          echo "→ Copying .env from primary worktree"
+          cp "$primary_root/.env" "$dst"
+        else
+          echo "→ Copying .env from .env.example (primary has none)"
+          cp "${config.devenv.root}/.env.example" "$dst"
+        fi
+      '';
+      status = ''test -f "${config.devenv.root}/.env"'';
+      before = [ "devenv:enterShell" ];
+    };
+
+    "app:key-generate" = {
+      description = "Generate Laravel APP_KEY";
+      cwd = config.devenv.root;
+      exec = "php artisan key:generate --force --no-interaction";
+      status = ''grep -qE '^APP_KEY=base64:' "${config.devenv.root}/.env"'';
+      after = [
+        "deps:composer"
+        "app:env-init"
+      ];
+      before = [ "devenv:enterShell" ];
+    };
+
+    # For dependencies, we use execIfModified to track lockfile content hashes in
+    # so something like a `git pull` that changes the lockfile and triggers
+    # a re-install on next shell entry.
+    "deps:composer" = {
+      description = "Install composer dependencies";
+      cwd = config.devenv.root;
+      exec = "composer install --no-interaction --prefer-dist";
+      execIfModified = [
+        "${config.devenv.root}/composer.lock"
+        "${config.devenv.root}/composer.json"
+      ];
+      before = [ "devenv:enterShell" ];
+      showOutput = true;
+    };
+
+    "deps:npm" = {
+      description = "Install npm dependencies";
+      cwd = config.devenv.root;
+      exec = "npm ci";
+      execIfModified = [
+        "${config.devenv.root}/package-lock.json"
+        "${config.devenv.root}/package.json"
+      ];
+      before = [ "devenv:enterShell" ];
+      showOutput = true;
+    };
+  };
+}
+```
+
+These tasks setup our application dependencies and environment variables as Laravel/vite expects them:
+
+- `app:env-init`: Creates a copy of `.env` in the target worktree folder and falls back to using `.env.example` in case the primary worktree has none (has no effect if not using worktrees)
+- `app:key-generate`: Generates a new `APP_KEY` for our Laravel app to use
+- `deps:composer`: Installs composer dependencies, and also re-installs them if the contents of those files have changed when `git pull`ing in case another dev added some new packages
+- `deps:npm`: Same as above, but just for our npm dependencies
+
+I'm also relying on the `status` for the task here as well to test if the task itself ran successfully. This can be anything that returns a typical shell status code of 0/1 and really
+helpful for simply verifying a file, or value within a file, was correctly put in place by the task itself. Failures will block other tasks loudly from running so you'll know right away
+if something broke.
+
+Lastly, I like to run all my database initialization as well so when I drop into my worktree, I'm ready to go:
+
+```nix
+let
+  # ...other stuff
+in
+{
+  # ...other stuff
+
+  tasks = {
+    # ...other task stuff
+
+    # Databases are per-worktree. We connect as $USER, as my nix-darwin
+    # postgres setup runs `initdb` without --username, so the cluster's
+    # only superuser is the OS user a.k.a me (no `postgres` role exists). The app
+    # itself connects as `${appSlug}` over TCP using the env credentials.
+    "db:ensure" = {
+      description = "Create the worktree's Postgres role + database";
+      exec = ''
+        set -euo pipefail
+        if ! psql -h 127.0.0.1 -U "$USER" -d postgres -tAc 'SELECT 1' >/dev/null 2>&1; then
+          echo "⚠ Postgres not reachable on 127.0.0.1:5432 as $USER — is the nix-darwin daemon running?"
+          exit 1
+        fi
+
+        # Shared role used by every worktree's app, created idempotently.
+        # CREATEDB lets the role own per-worktree databases.
+        if ! psql -h 127.0.0.1 -U "$USER" -d postgres -tAc \
+             "SELECT 1 FROM pg_roles WHERE rolname='${appSlug}'" | grep -q 1; then
+          echo "→ Creating role ${appSlug}"
+          psql -h 127.0.0.1 -U "$USER" -d postgres -c \
+            "CREATE ROLE ${appSlug} WITH LOGIN PASSWORD 'laravel' CREATEDB"
+        fi
+
+        if ! psql -h 127.0.0.1 -U "$USER" -d postgres -tAc \
+             "SELECT 1 FROM pg_database WHERE datname='${dbName}'" | grep -q 1; then
+          echo "→ Creating database ${dbName}"
+          createdb -h 127.0.0.1 -U "$USER" -O ${appSlug} ${dbName}
+          mkdir -p "${config.devenv.root}/.devenv-state"
+          touch "${config.devenv.root}/.devenv-state/needs-seed"
+        fi
+      '';
+      status = ''psql -h 127.0.0.1 -U "$USER" -d ${dbName} -tAc 'SELECT 1' >/dev/null 2>&1'';
+      before = [ "devenv:enterShell" ];
+      showOutput = true;
+    };
+
+    # Idempotent (artisan checks the migrations table), so it runs every
+    # entry but no-ops when nothing's pending.
+    "db:migrate" = {
+      description = "Run pending Laravel migrations";
+      cwd = config.devenv.root;
+      exec = "php artisan migrate --force";
+      after = [
+        "deps:composer"
+        "app:key-generate"
+        "db:ensure"
+      ];
+      before = [ "devenv:enterShell" ];
+      showOutput = true;
+    };
+
+    "db:seed" = {
+      description = "Seed the DB if it was just created";
+      cwd = config.devenv.root;
+      exec = ''
+        set -euo pipefail
+        php artisan db:seed --force
+        rm -f "${config.devenv.root}/.devenv-state/needs-seed"
+      '';
+      # Skip (status=0) when marker is absent; run when marker exists.
+      status = ''! test -f "${config.devenv.root}/.devenv-state/needs-seed"'';
+      after = [ "db:migrate" ];
+      before = [ "devenv:enterShell" ];
+      showOutput = true;
+    };
+
+    "db:storage-link" = {
+      description = "Create public/storage symlink";
+      cwd = config.devenv.root;
+      exec = "php artisan storage:link";
+      status = ''test -L "${config.devenv.root}/public/storage"'';
+      after = [
+        "deps:composer"
+        "app:env-init"
+      ];
+      before = [ "devenv:enterShell" ];
+    };
+  };
+}
+```
+
+Again, we've got a few things going on here:
+
+- `db:ensure`: The most complicated-ish bit, though simply just creates a role and database for my Postgres user. I'm the only one on working in my dev environment, so I keep this simple by just creating the database and adding some flags to help me seed the database if I need to
+- `db:migrate`: Runs any pending migrations everytime I enter the shell so my schema is always up-to-date
+- `db:seed`: Checks if the database needs seeding, and runs the seeders if it does (shell re-entry doesn't need seeding, so we can skip it)
+- `db:storage-link`: Runs the storage links to public storage because I forget to do this literally everytime
+
+With our database stuff out of the way, we wire up one last bit of nix-y stuff so I can tell devenv _what_ exactly it needs to do when I enter my dev environment. For these,
+I use the `enterShell` and `enterTest` hooks:
+
+```nix
+let
+  # ...other stuff
+in
+{
+  # ...other stuff
+
+  # devenv:enterTest runs `after = [ "devenv:enterShell" ]` by default, so
+  # every bootstrap task above has already completed (vendor/, .env, key,
+  # DB, migrations) by the time we get here. Pass-through args:
+  # `devenv test --filter=SomeTest`.
+  enterTest = ''
+    set -euo pipefail
+    echo "→ Running test suite"
+    php artisan test --parallel --recreate-databases "$@"
+  '';
+
+  enterShell = ''
+    figlet "Laravel"
+    echo "── ${worktreeName} (index=${toString index}) ──"
+    echo "  app             https://${appHost}"
+    echo "  vite assets     https://${viteHost}"
+    echo "  horizon ui      https://horizon.${appHost}"
+    echo "  php-fpm         127.0.0.1:${toString phpPort}"
+    echo "  vite            127.0.0.1:${toString vitePort}"
+    echo "  db              ${dbName}"
+    echo "  redis db        ${toString redisDbIndex}  (horizon prefix: horizon-${worktreeName}:)"
+  '';
+}
+```
+
+These are pretty small, with `enterTest` just running my tests with `devenv test` and going through all of my environment setup,
+and `enterShell` just displayhhing some information about the runtime environment like the hosts, connection strings, etc.
+
+## Seeing it all come together
+
+Now... the grand finale. When I run a `devenv up`, I see everything I need my app to run come together:
+
+```bash
+✓ Validating lock                                                                                                                                                               0ms
+✓ Configuring shell                                                                                                                                                            2.6s
+  └ ✓ Configuring cachix                                                                                                                                                        2ms
+  └ ✓ Evaluating shell 2390 files                                                                                                                                              2.4s
+✓ Loading tasks                                                                                                                                                                 3ms
+  └ ✓ Evaluating devenv.config.task.config                                                                                                                                      2ms
+✓ Running tasks                                                                                                                                                               755ms
+  └ ✓ devenv:enterShell                                                                                                                                                        22ms
+    └ ✓ caddy:self-clean                                                                                                                                                      159ms
+    └ ✓ db:storage-link skipped                                                                                                                                                99ms
+      └ ✓ app:env-init skipped                                                                                                                                                149ms
+      └ ✓ deps:composer skipped                                                                                                                                                 3ms
+    └ ✓ caddy:reload 1 lines → ✓ caddy reloaded (feature-add-nix-support.laravel-official-react-starter-kit.test)                                                            150ms
+      └ ✓ caddy:write-site                                                                                                                                                    157ms
+    └ ✓ devenv:files                                                                                                                                                          119ms
+      └ ✓ devenv:files:cleanup                                                                                                                                                173ms
+    └ ✓ db:seed skipped                                                                                                                                                        83ms
+      └ ✓ db:migrate 3 lines                                                                                                                                                  372ms
+  │
+  │    INFO  Nothing to migrate.
+  │
+        └ ✓ app:key-generate skipped                                                                                                                                          106ms
+          └ ✓ app:env-init skipped                                                                                                                                            149ms
+          └ ✓ deps:composer skipped                                                                                                                                             3ms
+        └ ✓ db:ensure skipped                                                                                                                                                 274ms
+    └ ✓ deps:npm skipped                                                                                                                                                        2ms
+  └ ✓ devenv:enterTest skipped                                                                                                                                                  0ms
+✨ devenv 2.1.0 is out of date. Please update to 2.1.2: https://devenv.sh/getting-started/#installation
+ _                              _
+| |    __ _ _ __ __ ___   _____| |
+| |   / _` | '__/ _` \ \ / / _ \ |
+| |__| (_| | | | (_| |\ V /  __/ |
+|_____\__,_|_|  \__,_| \_/ \___|_|
+
+── feature-add-nix-support (index=311) ──
+  app             https://feature-add-nix-support.laravel-official-react-starter-kit.test
+  vite assets     https://vite.feature-add-nix-support.laravel-official-react-starter-kit.test
+  horizon ui      https://horizon.feature-add-nix-support.laravel-official-react-starter-kit.test
+  php-fpm         127.0.0.1:8311
+  vite            127.0.0.1:5484
+  db              laravel_official_react_starter_kit_feature_add_nix_support
+  redis db        49  (horizon prefix: horizon-feature-add-nix-support:)
+```
