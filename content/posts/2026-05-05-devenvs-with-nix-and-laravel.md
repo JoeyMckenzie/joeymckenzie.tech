@@ -1,7 +1,7 @@
 ---
 title: Local Laravel with nix and devenv
 slug: local-laravel-with-nix
-description: "We have Herd at home."
+description: 'We have Herd at home.'
 image: assets/images/nix-meme.jpg
 tag_id: 1
 storage_key: 2026-05-05-local-laravel-with-nix-and-devenv
@@ -841,7 +841,10 @@ const VITE_PORT_BASE = 5173;
 
 function readWorktreeIndex(): number {
     try {
-        return Number.parseInt(readFileSync('.devenv-index', 'utf8').trim(), 10) || 0;
+        return (
+            Number.parseInt(readFileSync('.devenv-index', 'utf8').trim(), 10) ||
+            0
+        );
     } catch {
         return 0;
     }
@@ -849,7 +852,9 @@ function readWorktreeIndex(): number {
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
-    const appUrl = new URL(env.APP_URL ?? 'https://my-awesome-project.test:8443');
+    const appUrl = new URL(
+        env.APP_URL ?? 'https://my-awesome-project.test:8443',
+    );
     const vitePort = VITE_PORT_BASE + readWorktreeIndex();
 
     return {

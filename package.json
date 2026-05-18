@@ -12,7 +12,8 @@
         "fmt:check": "oxfmt --check",
         "lint": "oxlint",
         "lint:check": "oxlint --fix",
-        "types:check": "tsc --noEmit"
+        "types:check": "tsc --noEmit",
+        "check": "npm run fmt:check && npm run lint:check && npm run types:check"
     },
     "dependencies": {
         "@headlessui/react": "^2.2.10",

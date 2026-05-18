@@ -10,7 +10,10 @@ const VITE_PORT_BASE = 5273;
 
 function readWorktreeIndex(): number {
     try {
-        return Number.parseInt(readFileSync('.devenv-index', 'utf8').trim(), 10) || 0;
+        return (
+            Number.parseInt(readFileSync('.devenv-index', 'utf8').trim(), 10) ||
+            0
+        );
     } catch {
         return 0;
     }
@@ -18,7 +21,9 @@ function readWorktreeIndex(): number {
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
-    const viteUrl = new URL(env.VITE_APP_URL ?? 'https://assets.joeymckenzie.tech.test');
+    const viteUrl = new URL(
+        env.VITE_APP_URL ?? 'https://assets.joeymckenzie.tech.test',
+    );
     const vitePort = VITE_PORT_BASE + readWorktreeIndex();
 
     return {

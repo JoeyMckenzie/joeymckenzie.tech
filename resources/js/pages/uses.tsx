@@ -1,112 +1,112 @@
-import { Head } from "@inertiajs/react";
+import { Head } from '@inertiajs/react';
 import {
     FadeInSection,
     StaggeredItem,
     StaggeredList,
-} from "@/components/motion";
+} from '@/components/motion';
 
 const sections = [
     {
-        title: "Stack",
+        title: 'Stack',
         items: [
-            { name: "Laravel", description: "As the good Lord intended" },
+            { name: 'Laravel', description: 'As the good Lord intended' },
             {
-                name: "React + TypeScript",
+                name: 'React + TypeScript',
                 description:
                     "At some point it's easier to follow the zeitgeist",
             },
-            { name: "Tailwind", description: "Self-explanatory" },
+            { name: 'Tailwind', description: 'Self-explanatory' },
             {
-                name: "SQLite / MySQL",
+                name: 'SQLite / MySQL',
                 description: "I'll get around to Postgres eventually",
             },
             {
-                name: "AWS",
+                name: 'AWS',
                 description: "There's no other options",
             },
             {
-                name: "Cloudflare",
+                name: 'Cloudflare',
                 description: "Can't trust anyone these days",
             },
         ],
     },
     {
-        title: "Software",
+        title: 'Software',
         items: [
             {
-                name: "Comet",
+                name: 'Comet',
                 description:
-                    "FOTM browser of choice (until I go back to Firefox)",
+                    'FOTM browser of choice (until I go back to Firefox)',
             },
             {
-                name: "Linear",
+                name: 'Linear',
                 description:
                     "I'm not middle management enough to respect a Jira dashboard",
             },
             {
-                name: "Notion",
-                description: "Miss me with those Atlassian products",
+                name: 'Notion',
+                description: 'Miss me with those Atlassian products',
             },
             {
-                name: "Claude",
-                description: "Truly innovative, I know",
+                name: 'Claude',
+                description: 'Truly innovative, I know',
             },
             {
-                name: "Monologue",
+                name: 'Monologue',
                 description:
-                    "I work remote, gotta talk to someone (read: Claude)",
+                    'I work remote, gotta talk to someone (read: Claude)',
             },
             {
-                name: "Slack",
-                description: "Teams users are hostages of Microslop",
+                name: 'Slack',
+                description: 'Teams users are hostages of Microslop',
             },
         ],
     },
     {
-        title: "Hardware",
+        title: 'Hardware',
         items: [
             {
-                name: "MacBook Pro M4",
+                name: 'MacBook Pro M4',
                 description: "Because I'm not smart enough for Linux",
             },
             {
-                name: "Fifine Condenser Mic",
+                name: 'Fifine Condenser Mic',
                 description: "I've been told I have a face for radio",
             },
             {
-                name: "AirPods Max 2",
-                description: "Sticking to the uninformed consumerist theme",
+                name: 'AirPods Max 2',
+                description: 'Sticking to the uninformed consumerist theme',
             },
             {
-                name: "ZSA Moonlander",
+                name: 'ZSA Moonlander',
                 description: "I still hit 'x' instead of 'c' 200 times a day",
             },
         ],
     },
     {
-        title: "Tools",
+        title: 'Tools',
         items: [
             {
-                name: "Ghostty",
+                name: 'Ghostty',
                 description:
                     "Because I don't want AI in my terminal (looking at you, Warp...)",
             },
             {
-                name: "Neovim",
-                description: "btw",
+                name: 'Neovim',
+                description: 'btw',
             },
             {
-                name: "Nix",
+                name: 'Nix',
                 description:
                     "I'm a creature of habit, I can't function if it's not a flake",
             },
             {
-                name: "Claude Code",
-                description: "Like the rest of the world",
+                name: 'Claude Code',
+                description: 'Like the rest of the world',
             },
             {
-                name: "Zellij",
-                description: "Most of my success is due to tmux",
+                name: 'Zellij',
+                description: 'Most of my success is due to tmux',
             },
         ],
     },
@@ -140,7 +140,7 @@ export default function Uses() {
                             <StaggeredItem key={item.name}>
                                 <span className="font-medium">{item.name}</span>
                                 <span className="text-muted-foreground">
-                                    {" "}
+                                    {' '}
                                     &mdash; {item.description}
                                 </span>
                             </StaggeredItem>
