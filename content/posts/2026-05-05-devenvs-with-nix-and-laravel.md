@@ -21,7 +21,7 @@ I'm happy with my setup that I've fine tuned for Laravel and PHP, but I wanted t
 farther and see if I could home grow a Herd replacement to save yet another subscription. I should
 preface that **you should use, and happily pay for, Herd**. It's hands down the best Laravel/PHP
 get-your-project-off-the-ground tool out there right now (imo). You can fiddle with Docker containers,
-tweak volumes paths, rage at how much storage Docker is filling up on your machine, etc. though Herd
+tweak volume paths, rage at how much storage Docker is filling up on your machine, etc. though Herd
 is a one-time install that removes all the noise so you can focus on building stuff.
 
 With that said, Herd can have some rough edges.
@@ -52,7 +52,7 @@ There's alternatives, though. And one alternative I've been particularly keen on
 ## Going Herd-less
 
 One of the great things Herd does is manage services like Redis, your databases (MySQL, Postgres, etc.),
-Typesense, mail, and whole litany of stuff. Pretty much anything you need to run an app, Herd has a
+Typesense, mail, and a whole litany of stuff. Pretty much anything you need to run an app, Herd has a
 managed process for it. One thing that I don't particularly _love_ about Herd, though, is how these services
 are somewhat obfuscated from you and abstracted away. And rightfully so. I mean, we're building apps
 and writing code (lmao, no we're not). I don't always want to deal with setting up databases and making sure
@@ -106,7 +106,7 @@ need to see the dang thing run in a browser. That's where [Caddy](https://caddys
 ## Not your dad's web server
 
 Caddy is the spiritual successor to nginx. It's fast, has a bunch of modern features, an nginx-like DSL,
-written in go, etc. I'm not a caddy expert, I just need local reverse proxying. That's what caddy helps
+written in Go, etc. I'm not a caddy expert, I just need local reverse proxying. That's what caddy helps
 accomplish akin to how Herd uses nginx to forward those `my-awesome-project.test` requests to the correct
 running instance of the app locally. For example, the caddy file for my website here looks like this:
 
@@ -125,9 +125,9 @@ assets.joeymckenzie.tech.test {
 I keep all my caddy sites in my `~/.config/caddy/sites` folder and wire them up in a `Caddyfile` that nix
 declaratively manages for me, like so:
 
-#### `~/.config/devenv/Caddyfile`
+#### `~/.config/nix-darwin/darwin/services.nix`
 
-```caddyfile
+```nix
 environment.etc."caddy/Caddyfile".text = ''
   {
     local_certs
@@ -137,7 +137,7 @@ environment.etc."caddy/Caddyfile".text = ''
 '';
 ```
 
-I'm telling nix here that my system, when I build it, needs a `Caddyfile` running withing `/etc` that
+I'm telling nix here that my system, when I build it, needs a `Caddyfile` running within `/etc` that
 nix generates when I build my system. I'm glossing over a ton of details here, namely [nix-darwin](https://github.com/nix-darwin/nix-darwin)
 and [home-manager](https://github.com/nix-community/home-manager) for declaratively managing my MacBook Pro,
 but I promise I'll write about those soon. Skimming over the finer details, what this looks like in my
@@ -188,7 +188,7 @@ they do with Herd. I setup dnsmasq as another launch service so that when I (re)
 it starts up alongside caddy and I'm off to the races:
 
 ```nix
-pservices.dnsmasq = {
+services.dnsmasq = {
   enable = true;
   addresses = {
     test = "127.0.0.1";
@@ -280,7 +280,7 @@ where our recipe uses these to hook in the things we need.
 The rest of the scope block, or the stuff in between the brackets, is just a recipe for how to build
 this dev shell. We assign an env var for the environment, wire up git as a tool for us to be able to use,
 build out some arbitrary scripts to execute, and some hooks for when we enter the dev shell that'll
-run some arbitrary commands as well as a hook for when we want to specifically run tests on this shellj
+run some arbitrary commands as well as a hook for when we want to specifically run tests on this shell
 
 ## Laravel-ization
 
@@ -289,7 +289,7 @@ of the official Laravel/React starter kit to build up a `devenv.nix` file that a
 anytime. I have a separate branch in `feature/add-nix-support` that I usually clone anytime I start a new project that inevitably doesn't go anywhere.
 
 First, we get rid of everything so we can work from a clean slate.
-For my setup, I only use `pkgs` and `libs` as the named arguments as I don't need `config` or `inputs`:
+For my setup, I only use `pkgs` and `lib` as the named arguments as I don't need `config` or `inputs`:
 
 ```nix
 { pkgs, lib, ... }:
@@ -414,13 +414,14 @@ let
   caddySite = "${home}/.config/caddy/sites/${appName}-${worktreeName}.caddy";
   caddySitesDir = "${home}/.config/caddy/sites";
 
-  worktreesRoot = builtins.dirOf (toString ./.);in
+  worktreesRoot = builtins.dirOf (toString ./.);
+in
 {
   # TODO
 }
 ```
 
-Okay, that's a lot of shit going in the setup. The `let` binding functions pretty much like any other programming language that supports block-level
+Okay, that's a lot of shit going on in the setup. The `let` binding functions pretty much like any other programming language that supports block-level
 assignments, just declaring a bunch of variables in a block to reuse. I use a few things here:
 
 - We start off with project identities so we can reuse the project name for hosts, DBs, worktrees, etc.
@@ -428,7 +429,7 @@ assignments, just declaring a bunch of variables in a block to reuse. I use a fe
 - Next, we have to do a bit of port olympics to keep ports from colliding as spin up worktrees
     - If you don't use worktrees, you can remove that whole section
     - If you _do_ use worktrees (which I'd highly recommend), the hashing function there allows for ~500 free ports
-    - I have a port man's port allocator workaround where I use a `.devenv-index` file with a static number in to override the port index if I need to (rarely)
+    - I have a poor man's port allocator workaround where I use a `.devenv-index` file with a static number in to override the port index if I need to (rarely)
     - This is totally optional, but allows for a truly per-worktree isolated environment
 - We do a bit of determination to figure out the appropriate host name based on the worktree
 - Same thing for our vite server, since we have configured with caddy to service at a `vite.` apex domain
@@ -486,7 +487,7 @@ where dev environment setup took two weeks, a lot of patience, and even more cur
 to be resolved to get access to things that I'd never touch again. I want to clone a project and hit the ground
 running within minutes, and that's what I tailor my approach here for.
 
-Okay, rant aside, next we need to tell nix what languages and language tooling we're going to need to get us off the ground:ground
+Okay, rant aside, next we need to tell nix what languages and language tooling we're going to need to get us off the ground:
 
 ```nix
 let
@@ -549,12 +550,12 @@ in
 ```
 
 Alright, now we're getting somewhere. We know we're going to need PHP and JS, along with a few PHP extensions to
-going and some FPM configuration. The JS block is pretty simple, just telling nix I need node on v22. Notice
+get going and some FPM configuration. The JS block is pretty simple, just telling nix I need node on v22. Notice
 there's no mention of nvm, asdf, mise, etc. The beauty of per-project devenv nix environments is that we
 don't _need_ version managers, because our environment is pinned to the exact version we need. Working on multiple
 projects at a time? Update your `devenv.nix` accordingly and you're off to the races.
 
-For our PHP setup, we include the usual suspects we need for a a solid PHP extension setup with xdebug, zip, opcache, etc.
+For our PHP setup, we include the usual suspects we need for a solid PHP extension setup with xdebug, zip, opcache, etc.
 I'm opting to use Postgres like the rest of the modern world, and things get a bit interesting here. I'm gonna pause here,
 as I think it'd be valuable for anyone to read two posts that are pretty important for our setup here:
 
@@ -584,7 +585,7 @@ I have a few things setup:
 - We have our Laravel app that needs to handle requests
 - We have an asset server for vite
 - We need a queue worker via Horizon (because I couldn't imagine a real Laravel app without it)
-- We need a scheduler running to test those pesky scheduled commmands
+- We need a scheduler running to test those pesky scheduled commands
 
 We can define _all_ of that in our devenv nix setup. All of these processes and services, though, need environment variables at some point
 to know _how_ they should run. So, we wire it all up with an `env` and `processes` block in our nix setup:
@@ -671,14 +672,14 @@ Let's go section-by-section:
     - `logs.exec` - Runs `pail` so I can see what the heck is going on when I'm running my app
 
 I'm waving over the fact that through my `nix-darwin` setup, I have Postgres and Redis as a launch service (very much like Herd does) and keeping
-my `devenv.nix` definition here to just project-specfic processes that run.
+my `devenv.nix` definition here to just project-specific processes that run.
 
 Similarly in my `env` block, I use that for any dynamic environment variables, like hosts and port numbers, and keep all the static stuff in `.env`.
 I get to derive all these values based on worktree indexes, which in turn allows me to create individual hosts, database names, and anything else
 that's environment specific.
 
 Next, one of my favorite parts of using nix and devenv: tasks. Just like how we have scripts in `package.json` and `composer.json`, devenv allows us to run
-tasks in a very similar fashion. Same concept: define something that needs to run and tell devenv to run it. My typical task block looks is the largest
+tasks in a very similar fashion. Same concept: define something that needs to run and tell devenv to run it. My typical task block is the largest
 piece of nix DSL, so we'll incrementally build it up. To start, I define a few caddy tasks that help me register, reload, and clean reverse proxied URLs:
 
 ```nix
@@ -947,7 +948,7 @@ Again, we've got a few things going on here:
 - `db:ensure`: The most complicated-ish bit, though simply just creates a role and database for my Postgres user. I'm the only one on working in my dev environment, so I keep this simple by just creating the database and adding some flags to help me seed the database if I need to
 - `db:migrate`: Runs any pending migrations everytime I enter the shell so my schema is always up-to-date
 - `db:seed`: Checks if the database needs seeding, and runs the seeders if it does (shell re-entry doesn't need seeding, so we can skip it)
-- `db:storage-link`: Runs the storage links to public storage because I forget to do this literally everytime
+- `db:storage-link`: Runs the storage links to public storage because I forget to do this literally every time
 
 With our database stuff out of the way, we wire up one last bit of nix-y stuff so I can tell devenv _what_ exactly it needs to do when I enter my dev environment. For these,
 I use the `enterShell` and `enterTest` hooks:
@@ -984,7 +985,7 @@ in
 ```
 
 These are pretty small, with `enterTest` just running my tests with `devenv test` and going through all of my environment setup,
-and `enterShell` just displayhhing some information about the runtime environment like the hosts, connection strings, etc.
+and `enterShell` just displaying some information about the runtime environment like the hosts, connection strings, etc.
 
 ## Seeing it all come together
 
