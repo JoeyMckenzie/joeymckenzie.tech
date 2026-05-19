@@ -4,7 +4,8 @@ slug: local-laravel-with-nix
 description: "We have Herd at home."
 image: assets/images/nix-meme.jpg
 tag_id: 1
-storage_key: 2026-05-05-local-laravel-with-nix-and-devenv
+published_at: "2026-05-19"
+storage_key: 2026-05-19-local-laravel-with-nix-and-devenv
 ---
 
 I've been on a spiritual journey this past year or so really tinkering with my dev workflow and spending
@@ -140,7 +141,8 @@ environment.etc."caddy/Caddyfile".text = ''
 I'm telling nix here that my system, when I build it, needs a `Caddyfile` running within `/etc` that
 nix generates when I build my system. I'm glossing over a ton of details here, namely [nix-darwin](https://github.com/nix-darwin/nix-darwin)
 and [home-manager](https://github.com/nix-community/home-manager) for declaratively managing my MacBook Pro,
-but I promise I'll write about those soon. Skimming over the finer details, what this looks like in my
+but I promise I'll write about those soon. In the meantime, you can poke around my [nixfiles](https://github.com/JoeyMckenzie/nixfiles) if
+you want to see the full setup. Skimming over the finer details, what this looks like in my
 system declaration where I tell nix what services I want launched as background processes when I build is:
 
 ```nix
@@ -388,7 +390,7 @@ let
   redisDbIndex = if isPrimary then 0 else (lib.mod hashValue 63) + 1;
 
   # Per-worktree ports. Postgres/Redis/Caddy/Mailpit are nix-darwin daemons
-  # on their standard ports — see ~/.config/nix-darwin/darwin/services.nix.
+  # on their standard ports, see ~/.config/nix-darwin/darwin/services.nix.
   phpPort = 8000 + index;
   vitePort = 5173 + index;
 
@@ -532,9 +534,7 @@ in
           # CoreFoundation prefs → mach IPC. The IPC state can't be reused
           # after fork(), so php-fpm workers SIGSEGV inside PQconnectdb.
           # Setting PGGSSENCMODE=disable tells libpq to skip the GSSAPI
-          # codepath entirely — no kerberos init, no CFPrefs, no crash.
-          # OBJC_DISABLE_… is kept as a belt-and-suspenders for any other
-          # CF-touching library that might creep in.
+          # codepath entirely, so no kerberos init, no CFPrefs, no crash.
           "env[PGGSSENCMODE]" = "disable";
         };
       };
@@ -624,11 +624,11 @@ in
     # Per-worktree database name (cluster-shared role lives in .env).
     DB_DATABASE = dbName;
 
-    # Redis DB number — mod 63 since Redis only has 64 DBs. Collisions are
+    # Redis DB number, mod 63 since Redis only has 64 DBs. Collisions are
     # harmless thanks to HORIZON_PREFIX scoping below.
     REDIS_DB = toString redisDbIndex;
 
-    # Queue key prefix — keeps each worktree's queue keys isolated even
+    # Queue key prefix, keeps each worktree's queue keys isolated even
     # when redisDbIndex collides between worktrees.
     HORIZON_PREFIX = "horizon-${worktreeName}:";
   };
@@ -722,7 +722,7 @@ in
                "http://localhost:2019/load?adapter=caddyfile" >/dev/null; then
             echo "✓ caddy reloaded (${appHost})"
           else
-            echo "⚠ caddy admin API rejected reload — check /etc/caddy/Caddyfile syntax"
+            echo "⚠ caddy admin API rejected reload, check /etc/caddy/Caddyfile syntax"
           fi
         else
           echo "⚠ caddy admin API not reachable. Try: sudo launchctl kickstart -k system/org.nixos.caddy"
@@ -872,7 +872,7 @@ in
       exec = ''
         set -euo pipefail
         if ! psql -h 127.0.0.1 -U "$USER" -d postgres -tAc 'SELECT 1' >/dev/null 2>&1; then
-          echo "⚠ Postgres not reachable on 127.0.0.1:5432 as $USER — is the nix-darwin daemon running?"
+          echo "⚠ Postgres not reachable on 127.0.0.1:5432 as $USER, is the nix-darwin daemon running?"
           exit 1
         fi
 
@@ -1019,7 +1019,6 @@ Now... the grand finale. When I run a `devenv up`, I see everything I need my ap
         └ ✓ db:ensure skipped                                                                                                                                                 274ms
     └ ✓ deps:npm skipped                                                                                                                                                        2ms
   └ ✓ devenv:enterTest skipped                                                                                                                                                  0ms
-✨ devenv 2.1.0 is out of date. Please update to 2.1.2: https://devenv.sh/getting-started/#installation
  _                              _
 | |    __ _ _ __ __ ___   _____| |
 | |   / _` | '__/ _` \ \ / / _ \ |
@@ -1035,3 +1034,33 @@ Now... the grand finale. When I run a `devenv up`, I see everything I need my ap
   db              laravel_official_react_starter_kit_feature_add_nix_support
   redis db        49  (horizon prefix: horizon-feature-add-nix-support:)
 ```
+
+And if we visit `https://feature-add-nix-support.laravel-official-react-starter-kit.test`, we have a fully functional, environment-isolated Laravel app.
+And since I'm a worktree enjoyer, I keep a copy of my `main` worktree in a sibling folder, so `https://laravel-official-react-starter-kit.test` resolves
+to my running instance of `main`, where the port defaults kick in as we'd expect (FPM running on 8000, vite running on 5173). I find it immensely helpful
+to keep my `main` worktree pinned on main so I can always cross reference UI/UX changes in the browser quickly, since I'm usually running multiple
+instances of my application that all run in isolation from one another. Have a breaking change in a feature branch/worktree? `main` won't care,
+it's using its own databases, cache, PHP version, etc.
+
+If you're interested in seeing the full setup, I keep a [fork](https://github.com/JoeyMckenzie/laravel-official-react-starter-kit/tree/feature/add-nix-support)
+of the React starter kit with nix and devenv setup so anytime I'm spinning up a new project, I'm ready to go.
+
+## Wrapping up
+
+Okay, so this was a long one. I promise to eventually write about my nix-darwin setup so anyone who's interested in jumping into a purpose built Laravel/nix
+setup can do so with minimal friction. In the meantime, you can browse my [nixfiles](https://github.com/JoeyMckenzie/nixfiles) for the full picture of how
+caddy, dnsmasq, Postgres, Redis, and the rest are wired up as nix-darwin launch services. The beauty of nix is truly in the ethos of "clone and go" where pulling
+in a nix-darwin + home-manager setup and building on the target machine can hit the ground running with everything anyone would ever need to run a typical Laravel app.
+
+I'm still learning new nix things every day and constantly tweaking things in my setup (who knew I could waste more time in config files NOT related to neovim).
+It's been a great experience so far and I'm excited to share what I've learned.
+
+If you take anything from this giant wall of text, I would hope it would be the following:
+
+- Herd is great, though it can have some rough edges
+- Nix is a great alternative, though with more upfront cost
+- The beauty of nix is custom tailoring a setup that works for your application
+- Nix + worktrees = match made in heaven
+- Yes, Claude has helped me immensely flesh this setup out and tailor it for what I need
+
+Until next time friends!
