@@ -1045,6 +1045,23 @@ it's using its own databases, cache, PHP version, etc.
 If you're interested in seeing the full setup, I keep a [fork](https://github.com/JoeyMckenzie/laravel-official-react-starter-kit/tree/feature/add-nix-support)
 of the React starter kit with nix and devenv setup so anytime I'm spinning up a new project, I'm ready to go.
 
+## What I didn't cover
+
+Okay, I'll come clean. There's a few things I left out of this post to keep things scoped to the local dev story,
+but they're worth a quick callout because they're a big part of why I've gone all-in on nix and devenv in the first place.
+The TL;DR, everything we've built up here doesn't stop at your laptop.
+
+A few things worth poking around on your own time:
+
+- Pre-commit hooks via devenv's first-class [git-hooks](https://devenv.sh/git-hooks/) integration. I wire up `pint`, `rector`, `oxfmt`, audit checks, the works, all declaratively in the same nix file as everything else. No more half-installed husky setups, no more "oh whoops, I forgot to run the formatter" PR comments.
+- Test shells via `enterTest`. The hook from earlier isn't just for show. `devenv test` runs the entire bootstrap (composer install, key gen, migrations, the lot) and then runs your test suite. The same shell you develop in is the same shell you test in.
+- CI through devenv and [GitHub Actions](https://devenv.sh/integrations/github-actions/). You can run your actions through the same `devenv.nix` you use locally. Same PHP version, same extensions, same Postgres, same Node, same `pint`/`rector`/`phpunit`, same _everything_. If it passes locally, it passes in CI, because they're literally the same environment. The "works on my machine" meme retires with dignity.
+
+Most projects I've worked on end up with two environments that drift constantly between the local one devs actually use, and the CI one nobody touches until it breaks.
+With nix and devenv, those become the same thing. One file, one source of truth, one environment from clone to deploy.
+
+Anyway, I'll save going deeper for a rainy day.
+
 ## Wrapping up
 
 Okay, so this was a long one. I promise to eventually write about my nix-darwin setup so anyone who's interested in jumping into a purpose built Laravel/nix
