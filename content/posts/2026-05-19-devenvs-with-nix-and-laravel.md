@@ -1,10 +1,10 @@
 ---
 title: Local Laravel with nix and devenv
 slug: local-laravel-with-nix
-description: "We have Herd at home."
+description: 'We have Herd at home.'
 image: assets/images/nix-meme.jpg
 tag_id: 1
-published_at: "2026-05-19"
+published_at: '2026-05-19'
 storage_key: 2026-05-19-local-laravel-with-nix-and-devenv
 ---
 
