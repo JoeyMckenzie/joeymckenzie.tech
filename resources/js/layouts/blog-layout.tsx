@@ -29,13 +29,13 @@ export default function BlogLayout({
         <div className="relative flex min-h-svh flex-col overflow-hidden bg-background">
             <AnimatedGridPattern
                 className={cn(
-                    'absolute inset-0 h-full w-full',
+                    'absolute inset-0 h-full w-full fill-gray-400/[0.04] stroke-gray-400/[0.04]',
                     'mask-[radial-gradient(ellipse_80%_50%_at_50%_0%,white,transparent)]',
                 )}
                 width={40}
                 height={40}
                 numSquares={40}
-                maxOpacity={0.06}
+                maxOpacity={0.025}
                 duration={3}
                 repeatDelay={0.5}
             />
