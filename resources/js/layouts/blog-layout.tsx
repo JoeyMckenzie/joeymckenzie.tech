@@ -6,7 +6,7 @@ import { SpotifyNowPlaying } from '@/components/spotify-now-playing';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { cv, home, now, uses } from '@/routes';
 import { LaravelLogo } from '@/components/laravel-icon';
-import { AnimatedGridPattern } from '@/components/ui/animated-grid-pattern';
+import { DotPattern } from '@/components/ui/dot-pattern';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -27,27 +27,24 @@ export default function BlogLayout({
 
     return (
         <div className="relative flex min-h-svh flex-col overflow-hidden bg-background">
-            <AnimatedGridPattern
+            <DotPattern
                 className={cn(
-                    'absolute inset-0 h-full w-full fill-gray-400/[0.04] stroke-gray-400/[0.04]',
+                    'absolute inset-0 h-full w-full text-foreground/[0.12]',
                     'mask-[radial-gradient(ellipse_80%_50%_at_50%_0%,white,transparent)]',
                 )}
-                width={40}
-                height={40}
-                numSquares={40}
-                maxOpacity={0.025}
-                duration={3}
-                repeatDelay={0.5}
+                width={24}
+                height={24}
+                cr={0.75}
             />
             <header className="relative z-10 border-b border-border bg-background/80 backdrop-blur-sm">
                 <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
                     <Link
                         href={home()}
-                        className="font-semibold tracking-tight text-foreground"
+                        className="font-mono font-semibold tracking-tight text-foreground"
                     >
                         jm.
                     </Link>
-                    <nav className="flex items-center gap-6 text-sm">
+                    <nav className="flex items-center gap-6 font-mono text-sm">
                         {navItems.map((item) => {
                             const isActive = item.prefixMatch
                                 ? isCurrentOrParentUrl(item.href)
@@ -68,7 +65,7 @@ export default function BlogLayout({
                                     {isActive && !shouldReduceMotion && (
                                         <motion.span
                                             layoutId="nav-active"
-                                            className="absolute -bottom-1 left-0 h-0.5 w-full bg-foreground"
+                                            className="absolute -bottom-1 left-0 h-0.5 w-full bg-primary"
                                             transition={{
                                                 type: 'spring',
                                                 stiffness: 500,
@@ -95,7 +92,7 @@ export default function BlogLayout({
                         href="https://laravel.com"
                         target="_blank"
                         rel="noreferrer"
-                        className="flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                        className="flex items-center gap-2 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
                     >
                         <span>Powered by</span>
                         <LaravelLogo className="size-4 fill-current text-[#FF2D20]" />

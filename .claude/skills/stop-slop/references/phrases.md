@@ -36,19 +36,19 @@ These add no meaning. Delete them.
 
 Replace with plain language.
 
-| Avoid | Use instead |
-|-------|-------------|
-| Navigate (challenges) | Handle, address |
-| Unpack (analysis) | Explain, examine |
-| Lean into | Accept, embrace |
-| Landscape (context) | Situation, field |
-| Game-changer | Significant, important |
-| Double down | Commit, increase |
-| Deep dive | Analysis, examination |
-| Take a step back | Reconsider |
-| Moving forward | Next, from now |
-| Circle back | Return to, revisit |
-| On the same page | Aligned, agreed |
+| Avoid                 | Use instead            |
+| --------------------- | ---------------------- |
+| Navigate (challenges) | Handle, address        |
+| Unpack (analysis)     | Explain, examine       |
+| Lean into             | Accept, embrace        |
+| Landscape (context)   | Situation, field       |
+| Game-changer          | Significant, important |
+| Double down           | Commit, increase       |
+| Deep dive             | Analysis, examination  |
+| Take a step back      | Reconsider             |
+| Moving forward        | Next, from now         |
+| Circle back           | Return to, revisit     |
+| On the same page      | Aligned, agreed        |
 
 ## Adverbs
 

@@ -3,6 +3,7 @@ import { index } from '@/actions/App/Http/Controllers/BlogController';
 import { StaggeredItem, StaggeredList } from '@/components/motion';
 import PostPreviewCard from '@/components/post-preview-card';
 import SocialLinks from '@/components/social-links';
+import { AnimatedShinyText } from '@/components/ui/animated-shiny-text';
 import type { PostSummary } from '@/types';
 
 export default function Home({ recentPosts }: { recentPosts: PostSummary[] }) {
@@ -16,8 +17,18 @@ export default function Home({ recentPosts }: { recentPosts: PostSummary[] }) {
             </Head>
 
             <div className="space-y-3">
+                <p className="font-mono text-xs tracking-wide text-muted-foreground">
+                    ~/joeymckenzie
+                </p>
                 <h1 className="text-2xl font-bold tracking-tight">
-                    Hi, I'm Joey.
+                    Hi, I'm{' '}
+                    <AnimatedShinyText
+                        shimmerWidth={80}
+                        className="inline text-foreground"
+                    >
+                        Joey
+                    </AnimatedShinyText>
+                    .
                 </h1>
                 <p className="leading-7 text-muted-foreground">
                     Developer. Product builder. Dad. PHP enjoyer. Building
@@ -31,9 +42,9 @@ export default function Home({ recentPosts }: { recentPosts: PostSummary[] }) {
                     <h2 className="text-xl tracking-tight">Recent Posts</h2>
                     <Link
                         href={index()}
-                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        className="font-mono text-sm text-muted-foreground transition-colors hover:text-primary"
                     >
-                        More
+                        more →
                     </Link>
                 </div>
 
