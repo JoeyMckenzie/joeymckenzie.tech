@@ -1,8 +1,11 @@
 {
-    "agents": ["claude_code"],
+    "agents": [
+        "claude_code"
+    ],
+    "cloud": true,
     "guidelines": true,
     "mcp": true,
-    "nightwatch_mcp": false,
+    "nightwatch": false,
     "sail": false,
     "skills": [
         "fortify-development",
@@ -11,6 +14,7 @@
         "wayfinder-development",
         "ai-sdk-development",
         "inertia-react-development",
-        "tailwindcss-development"
+        "tailwindcss-development",
+        "deploying-laravel-cloud"
     ]
 }
