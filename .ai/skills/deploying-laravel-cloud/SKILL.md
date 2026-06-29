@@ -1,7 +1,8 @@
 ---
 name: deploying-laravel-cloud
-description: "Deploys and manages Laravel applications on Laravel Cloud using the `cloud` CLI. Use when the user wants to deploy an app, ship to cloud, create/manage environments, databases, caches, domains, instances, background processes, check billing/usage/spend, or any Laravel Cloud infrastructure. Triggers on deploy, ship, cloud management, environment setup, database provisioning, billing/usage queries, and similar cloud operations."
+description: 'Deploys and manages Laravel applications on Laravel Cloud using the `cloud` CLI. Use when the user wants to deploy an app, ship to cloud, create/manage environments, databases, caches, domains, instances, background processes, check billing/usage/spend, or any Laravel Cloud infrastructure. Triggers on deploy, ship, cloud management, environment setup, database provisioning, billing/usage queries, and similar cloud operations.'
 ---
+
 # Deploying with Laravel Cloud CLI
 
 ## Setup
@@ -27,6 +28,7 @@ Always add `-n` to every command — prevents the CLI from hanging.
 Never use `-q` or `--silent` — they suppress all output.
 
 Flag combos per operation:
+
 - Read (`:list`, `:get`) → `--json -n`
 - Create (`:create`) → `--json -n`
 - Update (`:update`) → `--json -n --force`
@@ -41,6 +43,7 @@ Determine the task and follow the matching path:
 First deploy? → `cloud ship -n` (discover options via `cloud ship -h`)
 
 Existing app? →
+
 ```sh
 cloud repo:config
 cloud deploy {app_name} {environment} -n --open
@@ -72,12 +75,14 @@ Always run `cloud deploy:monitor -n` after every deploy. If it fails, show the u
 Delegate high-output operations to subagents (using the Task tool) to keep the main context window small. Only the summary comes back — verbose output stays in the subagent's context.
 
 Delegate these to a subagent:
+
 - `cloud deploy:monitor -n` — deployment logs can be very long
 - `cloud deployment:get --json -n` — full deployment details
 - `cloud <resource>:list --json -n` — listing many resources produces large JSON
 - Fetching docs from https://cloud.laravel.com/docs/llms.txt via `WebFetch`
 
 Keep in the main context:
+
 - Short commands like `:create`, `:delete`, `:update` — output is small
 - `cloud deploy -n` — you need the deployment ID immediately
 - Any command where you need the result for the next step right away
@@ -85,12 +90,14 @@ Keep in the main context:
 ## Rules
 
 Follow exact steps:
+
 - Flag selection — always use the documented combos above
 - Deploy sequence — deploy then monitor, never skip monitoring
 - Destructive commands — always confirm with user first, show the command and wait for approval
 - Error loop — diagnose, fix once, ask user if it fails again
 
 Use your judgment:
+
 - Instance sizes, regions, cluster types — ask the user if not specified
 - Which resources to provision — based on what the user describes
 - Order of provisioning — no strict sequence required

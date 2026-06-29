@@ -32,7 +32,25 @@ in
 {
   dotenv.disableHint = true;
 
-  packages = [ pkgs.just ];
+  scripts = {
+    ci-lint.exec = ''
+      set -euo pipefail
+      php artisan wayfinder:generate --with-form
+      composer fmt:check
+      composer refactor:check
+      composer lint
+      npm run fmt:check
+      npm run types:check
+      npm run lint
+    '';
+
+    ci-test.exec = ''
+      set -euo pipefail
+      php artisan wayfinder:generate --with-form
+      npm run build
+      php artisan test
+    '';
+  };
 
   claude.code.enable = true;
   claude.code.mcpServers = {

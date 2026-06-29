@@ -8,75 +8,69 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v30
+        uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
-            accept-flake-config = true
-            extra-substituters = https://devenv.cachix.org
-            extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
+            experimental-features = nix-command flakes
 
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
+      - name: Set up devenv cache
+        uses: cachix/cachix-action@v16
         with:
           name: devenv
 
       - name: Install devenv
         run: nix profile install nixpkgs#devenv
 
-      - name: Lint
-        run: |
-          devenv shell -- bash -c '
-            set -e
-            php artisan wayfinder:generate --with-form
-            just check
-          '
+      - name: Lint 'n format
+        run: devenv shell ci-lint
 
-  tests:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout code
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+        with:
+          persist-credentials: false
 
       - name: Install Nix
-        uses: cachix/install-nix-action@v30
+        uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
-            accept-flake-config = true
-            extra-substituters = https://devenv.cachix.org
-            extra-trusted-public-keys = devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw=
+            experimental-features = nix-command flakes
 
-      - name: Setup Cachix
-        uses: cachix/cachix-action@v15
+      - name: Set up devenv cache
+        uses: cachix/cachix-action@v16
         with:
           name: devenv
 
       - name: Install devenv
         run: nix profile install nixpkgs#devenv
 
-      - name: Test
-        run: |
-          devenv shell -- bash -c '
-            set -e
-            php artisan wayfinder:generate --with-form
-            npm run build
-            ./vendor/bin/phpunit
-          '
+      - name: Build assets & run tests
+        run: devenv shell ci-test
 
   deploy:
-    needs: [lint, tests]
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [lint, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    concurrency:
-      group: deploy
-      cancel-in-progress: false
     steps:
       - name: Trigger Laravel Cloud deployment
-        run: curl -fsSL -X POST "$CLOUD_DEPLOY_HOOK_URL"
         env:
-          CLOUD_DEPLOY_HOOK_URL: ${{ secrets.CLOUD_DEPLOY_HOOK_URL }}
+          DEPLOY_HOOK: ${{ secrets.LARAVEL_CLOUD_DEPLOY_HOOK }}
+        run: |
+          curl --fail-with-body --silent --show-error \
+            --request POST \
+            "${DEPLOY_HOOK}"
