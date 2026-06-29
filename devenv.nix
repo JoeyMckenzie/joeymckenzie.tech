@@ -21,9 +21,12 @@ let
   hostname = if shortName == "main" then "${slug}.test" else "${shortName}.${slug}.test";
   assetsHost = "assets.${hostname}";
 
+  dbName = "joeymckenzie_tech_" + lib.replaceStrings [ "-" "." "/" ] [ "_" "_" "_" ] shortName;
+
   home = builtins.getEnv "HOME";
   caddySitesDir = "${home}/.config/caddy/sites";
   caddySite = "${caddySitesDir}/joeymckenzie-${shortName}.caddy";
+  worktreeRoot = toString ./.;
   worktreesRoot = builtins.dirOf (toString ./.);
 in
 {
@@ -78,7 +81,19 @@ in
       "intl"
       "bcmath"
       "zip"
+      "pdo_mysql"
     ];
+    fpm.pools.web = {
+      settings = {
+        "listen" = "127.0.0.1:${toString appPort}";
+        "pm" = "dynamic";
+        "pm.max_children" = 10;
+        "pm.start_servers" = 2;
+        "pm.min_spare_servers" = 1;
+        "pm.max_spare_servers" = 3;
+        "clear_env" = "no";
+      };
+    };
   };
 
   languages.javascript = {
@@ -132,25 +147,17 @@ in
   };
 
   processes = {
-    app.exec = "php artisan serve --host=127.0.0.1 --port=${toString appPort}";
     vite.exec = "npm run dev -- --host 127.0.0.1 --port ${toString vitePort} --strictPort";
     pail.exec = "php artisan pail --timeout=0";
-
-    migrate = {
-      exec = "php artisan migrate --force";
-      process-compose.availability.restart = "no";
-    };
-
-    app.process-compose.depends_on.migrate.condition = "process_completed_successfully";
   };
 
   env = {
     APP_URL = "https://${hostname}";
-    APP_PORT = toString appPort;
 
     SESSION_DOMAIN = ".${slug}.test";
 
-    DB_CONNECTION = "sqlite";
+    DB_CONNECTION = "mysql";
+    DB_DATABASE = dbName;
 
     VITE_APP_URL = "https://${assetsHost}";
   };
@@ -161,7 +168,10 @@ in
     mkdir -p "${caddySitesDir}"
     cat > "${caddySite}" <<EOF
     ${hostname} {
-      reverse_proxy 127.0.0.1:${toString appPort}
+      root * ${worktreeRoot}/public
+      php_fastcgi 127.0.0.1:${toString appPort}
+      encode zstd gzip
+      file_server
     }
 
     ${assetsHost} {
@@ -199,14 +209,20 @@ in
       cp .env.example .env
       php artisan key:generate
     fi
-    if [ ! -f database/database.sqlite ]; then
-      touch database/database.sqlite
+    if mysqladmin ping -h 127.0.0.1 -P 3306 -u root --silent 2>/dev/null; then
+      if ! mysql -h 127.0.0.1 -P 3306 -u root -N -e "SHOW DATABASES LIKE '${dbName}'" | grep -q "${dbName}"; then
+        echo "Creating database ${dbName}..."
+        mysql -h 127.0.0.1 -P 3306 -u root -e "CREATE DATABASE \`${dbName}\`"
+      fi
+      php artisan migrate --force
+    else
+      echo "⚠ MySQL is not accepting connections on 127.0.0.1:3306; start it, then re-enter the shell (or run: mysql -u root -e 'CREATE DATABASE \`${dbName}\`;')."
     fi
 
     echo "── ${shortName} (index=${toString index}) ──"
     echo "  url    https://${hostname}"
     echo "  assets https://${assetsHost}"
-    echo "  app    127.0.0.1:${toString appPort}"
+    echo "  fpm    127.0.0.1:${toString appPort}"
     echo "  vite   127.0.0.1:${toString vitePort}"
   '';
 }

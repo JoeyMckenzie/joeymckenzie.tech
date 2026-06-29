@@ -76,7 +76,7 @@ jobs:
       group: deploy
       cancel-in-progress: false
     steps:
-      - name: Trigger Forge deployment
-        run: curl -fsSL "$FORGE_DEPLOY_URL"
+      - name: Trigger Laravel Cloud deployment
+        run: curl -fsSL -X POST "$CLOUD_DEPLOY_HOOK_URL"
         env:
-          FORGE_DEPLOY_URL: ${{ secrets.FORGE_DEPLOY_URL }}
+          CLOUD_DEPLOY_HOOK_URL: ${{ secrets.CLOUD_DEPLOY_HOOK_URL }}
