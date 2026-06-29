@@ -22,6 +22,7 @@ let
   assetsHost = "assets.${hostname}";
 
   dbName = "joeymckenzie_tech_" + lib.replaceStrings [ "-" "." "/" ] [ "_" "_" "_" ] shortName;
+  testDbName = "joeymckenzie_tech_test";
 
   home = builtins.getEnv "HOME";
   caddySitesDir = "${home}/.config/caddy/sites";
@@ -228,13 +229,15 @@ in
       php artisan key:generate
     fi
     if mysqladmin ping -h 127.0.0.1 -P 3306 -u root --silent 2>/dev/null; then
-      if ! mysql -h 127.0.0.1 -P 3306 -u root -N -e "SHOW DATABASES LIKE '${dbName}'" | grep -q "${dbName}"; then
-        echo "Creating database ${dbName}..."
-        mysql -h 127.0.0.1 -P 3306 -u root -e "CREATE DATABASE \`${dbName}\`"
-      fi
+      for db in "${dbName}" "${testDbName}"; do
+        if ! mysql -h 127.0.0.1 -P 3306 -u root -N -e "SHOW DATABASES LIKE '$db'" | grep -q "$db"; then
+          echo "Creating database $db..."
+          mysql -h 127.0.0.1 -P 3306 -u root -e "CREATE DATABASE \`$db\`"
+        fi
+      done
       php artisan migrate --force
     else
-      echo "⚠ MySQL is not accepting connections on 127.0.0.1:3306; start it, then re-enter the shell (or run: mysql -u root -e 'CREATE DATABASE \`${dbName}\`;')."
+      echo "⚠ MySQL is not accepting connections on 127.0.0.1:3306; start it, then re-enter the shell (or run: mysql -u root -e 'CREATE DATABASE \`${dbName}\`; CREATE DATABASE \`${testDbName}\`;')."
     fi
 
     echo "── ${shortName} (index=${toString index}) ──"
