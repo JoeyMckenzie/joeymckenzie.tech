@@ -101,6 +101,9 @@ export default function Cv() {
 
             <div className="flex items-start justify-between gap-4">
                 <div className="space-y-2">
+                    <p className="font-mono text-xs tracking-wide text-muted-foreground">
+                        ~/cv
+                    </p>
                     <h1 className="text-2xl font-bold tracking-tight">
                         Joey McKenzie
                     </h1>

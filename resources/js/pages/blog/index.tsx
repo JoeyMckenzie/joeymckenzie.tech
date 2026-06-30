@@ -45,6 +45,9 @@ export default function BlogIndex({
             </Head>
 
             <div className="space-y-2">
+                <p className="font-mono text-xs tracking-wide text-muted-foreground">
+                    ~/blog
+                </p>
                 <h1 className="text-2xl font-bold tracking-tight">Blog</h1>
                 <p className="text-muted-foreground">
                     Thoughts on software development and things I find

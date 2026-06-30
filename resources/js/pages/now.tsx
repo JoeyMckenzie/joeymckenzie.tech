@@ -12,6 +12,9 @@ export default function Now() {
             </Head>
 
             <div className="space-y-2">
+                <p className="font-mono text-xs tracking-wide text-muted-foreground">
+                    ~/now
+                </p>
                 <h1 className="text-2xl font-bold tracking-tight">Now</h1>
                 <p className="text-muted-foreground">
                     A living changelog of what I'm learning, tinkering with, and

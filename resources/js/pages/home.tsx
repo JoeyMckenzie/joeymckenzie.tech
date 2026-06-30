@@ -18,7 +18,7 @@ export default function Home({ recentPosts }: { recentPosts: PostSummary[] }) {
 
             <div className="space-y-3">
                 <p className="font-mono text-xs tracking-wide text-muted-foreground">
-                    ~/joeymckenzie
+                    ~/
                 </p>
                 <h1 className="text-2xl font-bold tracking-tight">
                     Hi, I'm{' '}

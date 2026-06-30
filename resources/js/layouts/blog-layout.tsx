@@ -1,12 +1,14 @@
 import { Link } from '@inertiajs/react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { index } from '@/actions/App/Http/Controllers/BlogController';
+import { CommandTerminal } from '@/components/command-terminal';
 import { PageTransition } from '@/components/motion';
 import { SpotifyNowPlaying } from '@/components/spotify-now-playing';
 import { useCurrentUrl } from '@/hooks/use-current-url';
 import { cv, home, now, uses } from '@/routes';
 import { LaravelLogo } from '@/components/laravel-icon';
 import { DotPattern } from '@/components/ui/dot-pattern';
+import { Kbd } from '@/components/ui/kbd';
 import { cn } from '@/lib/utils';
 
 const navItems = [
@@ -88,6 +90,20 @@ export default function BlogLayout({
             <footer className="relative z-10 bg-background/80 backdrop-blur-sm">
                 <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
                     <SpotifyNowPlaying />
+                    <button
+                        type="button"
+                        onClick={() =>
+                            window.dispatchEvent(
+                                new KeyboardEvent('keydown', {
+                                    key: 'k',
+                                    metaKey: true,
+                                }),
+                            )
+                        }
+                        className="hidden font-mono text-xs text-muted-foreground transition-colors hover:text-foreground sm:inline-flex sm:items-center sm:gap-1"
+                    >
+                        <Kbd>⌘K</Kbd>
+                    </button>
                     <a
                         href="https://laravel.com"
                         target="_blank"
@@ -99,6 +115,7 @@ export default function BlogLayout({
                     </a>
                 </div>
             </footer>
+            <CommandTerminal />
         </div>
     );
 }

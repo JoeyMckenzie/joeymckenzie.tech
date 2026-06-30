@@ -123,6 +123,9 @@ export default function Uses() {
             </Head>
 
             <div className="space-y-2">
+                <p className="font-mono text-xs tracking-wide text-muted-foreground">
+                    ~/uses
+                </p>
                 <h1 className="text-2xl font-bold tracking-tight">Uses</h1>
                 <p className="text-muted-foreground">
                     The tools, software, and hardware I use on a daily basis.
