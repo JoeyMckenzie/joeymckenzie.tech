@@ -10,11 +10,17 @@
     "require": {
         "php": "^8.3",
         "inertiajs/inertia-laravel": "^3.0",
+        "intervention/image": "^4.0",
         "laravel/chisel": "^0.1.0",
         "laravel/fortify": "^1.37.2",
         "laravel/framework": "^13.17",
         "laravel/tinker": "^3.0",
-        "laravel/wayfinder": "^0.1.14"
+        "laravel/wayfinder": "^0.1.14",
+        "league/commonmark": "^2.7",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "phiki/phiki": "^2.0",
+        "spatie/laravel-sitemap": "^8.0",
+        "spatie/yaml-front-matter": "^2.1"
     },
     "require-dev": {
         "brianium/paratest": "^7.20",

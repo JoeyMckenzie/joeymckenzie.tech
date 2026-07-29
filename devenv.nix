@@ -11,6 +11,11 @@ let
   backendHost = "${appName}.test";
   viteHost = "assets.${backendHost}";
 
+  minioPort = 9000;
+  minioAccessKey = "minioadmin";
+  minioSecretKey = "minioadmin";
+  minioBucket = "website";
+
   home = builtins.getEnv "HOME";
   caddySitesDir = "${home}/.config/caddy/sites";
   caddySite = "${caddySitesDir}/${appName}.caddy";
@@ -24,6 +29,14 @@ in
 
     DB_DATABASE = dbName;
     DB_USERNAME = "root";
+
+    R2_ACCESS_KEY_ID = minioAccessKey;
+    R2_SECRET_ACCESS_KEY = minioSecretKey;
+    R2_REGION = "us-east-1";
+    R2_BUCKET = minioBucket;
+    R2_URL = "http://127.0.0.1:${toString minioPort}/${minioBucket}";
+    R2_ENDPOINT = "http://127.0.0.1:${toString minioPort}";
+    R2_USE_PATH_STYLE_ENDPOINT = "true";
 
     VITE_PORT = toString vitePort;
     VITE_DEV_HOST = viteHost;
@@ -213,6 +226,15 @@ in
       done
     else
       echo "⚠ MySQL is not accepting connections on 127.0.0.1:3306; start it, then re-enter the shell."
+    fi
+
+    if curl -fsS --max-time 2 "http://127.0.0.1:${toString minioPort}/minio/health/live" >/dev/null 2>&1; then
+      mc alias set ${appName}-local "http://127.0.0.1:${toString minioPort}" "${minioAccessKey}" "${minioSecretKey}" >/dev/null 2>&1
+      if mc mb --ignore-existing "${appName}-local/${minioBucket}" >/dev/null 2>&1; then
+        echo "✓ minio bucket ready (${minioBucket})"
+      fi
+    else
+      echo "⚠ MinIO not reachable on 127.0.0.1:${toString minioPort}; skipping bucket creation."
     fi
 
     echo "Applying migrations..."

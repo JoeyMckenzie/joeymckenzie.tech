@@ -1,0 +1,5 @@
+# No public registration; the single operator user is created via CLI
+
+This is a single-author site: the only account that ever logs in is the owner, into the admin. Public registration is therefore disabled in `config/fortify.php` (the `register` route and page are removed), closing the hole where a self-registered user could reach an admin gated only on `auth()`. The admin is gated on `auth` + `verified` middleware with no roles/permissions system — with exactly one user, that middleware *is* the authorization.
+
+The operator account is created from the command line by a `users:create` artisan command (modeled on bidscope's `CreateUser`, minus teams): it runs the inputs through Fortify's `CreateNewUser` action for identical validation, then marks the email verified (no mail round-trip for the operator creating their own account). Inputs are flags so it runs non-interactively from the Laravel Cloud Artisan UI, prompting for anything omitted. Login, password reset, 2FA, and passkeys remain enabled — only open signup is removed.
