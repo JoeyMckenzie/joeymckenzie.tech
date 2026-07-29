@@ -1,9 +1,10 @@
 ---
 id: JOEY-2
 title: 'Disable public registration and add a users:create command'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-07-29 23:12'
+updated_date: '2026-07-29 23:33'
 labels:
   - backend
   - auth
@@ -12,6 +13,15 @@ dependencies: []
 references:
   - docs/adr/0003-no-public-registration-single-operator-user.md
   - ../../doghead-digital-web/bidscope/app/Console/Commands/CreateUser.php
+modified_files:
+  - app/Console/Commands/CreateUser.php
+  - app/Providers/FortifyServiceProvider.php
+  - config/fortify.php
+  - resources/js/pages/auth/login.tsx
+  - resources/js/pages/auth/register.tsx
+  - resources/js/pages/welcome.tsx
+  - tests/Feature/Auth/RegistrationTest.php
+  - tests/Feature/Console/CreateUserCommandTest.php
 priority: high
 ordinal: 2000
 ---
@@ -26,9 +36,21 @@ Model the command on bidscope's CreateUser at ../../doghead-digital-web/bidscope
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Fortify's registration feature is disabled and the register route plus resources/js/pages/auth/register.tsx are removed; requesting /register returns 404
-- [ ] #2 A users:create artisan command creates a user via Fortify's CreateNewUser action, accepts --name/--email/--password flags, prompts for any omitted value, and marks the email as verified
-- [ ] #3 Login, password reset, 2FA, and passkeys remain functional (not broken by removing registration)
-- [ ] #4 Feature tests cover: the registration endpoint is unavailable, and users:create creates a verified user while surfacing CreateNewUser validation errors on bad input
-- [ ] #5 composer fmt, lint, and refactor checks pass
+- [x] #1 Fortify's registration feature is disabled and the register route plus resources/js/pages/auth/register.tsx are removed; requesting /register returns 404
+- [x] #2 A users:create artisan command creates a user via Fortify's CreateNewUser action, accepts --name/--email/--password flags, prompts for any omitted value, and marks the email as verified
+- [x] #3 Login, password reset, 2FA, and passkeys remain functional (not broken by removing registration)
+- [x] #4 Feature tests cover: the registration endpoint is unavailable, and users:create creates a verified user while surfacing CreateNewUser validation errors on bad input
+- [x] #5 composer fmt, lint, and refactor checks pass
 <!-- AC:END -->
+
+## Implementation Plan
+
+<!-- SECTION:PLAN:BEGIN -->
+1. Disable Fortify registration, remove its Inertia page and public signup links, then regenerate Wayfinder routes. 2. Add a Laravel 13 attribute-based users:create command that delegates validation and persistence to Fortify's CreateNewUser action, prompts for omitted options, and verifies the created email. 3. Update registration coverage, add command feature tests, verify remaining auth routes/tests, and run all PHP/frontend quality gates.
+<!-- SECTION:PLAN:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Disabled Fortify registration, removed the registration page and public signup links, and regenerated Wayfinder routes without registration helpers. Added an attribute-based users:create command that accepts flags, prompts for omitted values, delegates to Fortify's CreateNewUser validation, marks email verified, and reports validation failures. Added focused tests and verified login, password reset, 2FA, passkeys, PHP/frontend quality checks, and the production build.
+<!-- SECTION:FINAL_SUMMARY:END -->
