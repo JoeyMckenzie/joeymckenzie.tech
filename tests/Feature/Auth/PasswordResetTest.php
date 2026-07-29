@@ -4,14 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
+use App\Actions\Fortify\ResetUserPassword;
 use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Fortify\Features;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class PasswordResetTest extends TestCase
+#[CoversClass(ResetUserPassword::class)]
+final class PasswordResetTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -22,14 +26,16 @@ class PasswordResetTest extends TestCase
         $this->skipUnlessFortifyHas(Features::resetPasswords());
     }
 
-    public function test_reset_password_link_screen_can_be_rendered(): void
+    #[Test]
+    public function reset_password_link_screen_can_be_rendered(): void
     {
         $response = $this->get(route('password.request'));
 
         $response->assertOk();
     }
 
-    public function test_reset_password_link_can_be_requested(): void
+    #[Test]
+    public function reset_password_link_can_be_requested(): void
     {
         Notification::fake();
 
@@ -40,7 +46,8 @@ class PasswordResetTest extends TestCase
         Notification::assertSentTo($user, ResetPassword::class);
     }
 
-    public function test_reset_password_screen_can_be_rendered(): void
+    #[Test]
+    public function reset_password_screen_can_be_rendered(): void
     {
         Notification::fake();
 
@@ -57,7 +64,8 @@ class PasswordResetTest extends TestCase
         });
     }
 
-    public function test_password_can_be_reset_with_valid_token(): void
+    #[Test]
+    public function password_can_be_reset_with_valid_token(): void
     {
         Notification::fake();
 
@@ -81,7 +89,8 @@ class PasswordResetTest extends TestCase
         });
     }
 
-    public function test_password_cannot_be_reset_with_invalid_token(): void
+    #[Test]
+    public function password_cannot_be_reset_with_invalid_token(): void
     {
         $user = User::factory()->create();
 

@@ -8,20 +8,23 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\RateLimiter;
 use Laravel\Fortify\Features;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class AuthenticationTest extends TestCase
+final class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_login_screen_can_be_rendered(): void
+    #[Test]
+    public function login_screen_can_be_rendered(): void
     {
         $response = $this->get(route('login'));
 
         $response->assertOk();
     }
 
-    public function test_users_can_authenticate_using_the_login_screen(): void
+    #[Test]
+    public function users_can_authenticate_using_the_login_screen(): void
     {
         $user = User::factory()->create();
 
@@ -34,7 +37,8 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect(route('dashboard', absolute: false));
     }
 
-    public function test_users_with_two_factor_enabled_are_redirected_to_two_factor_challenge(): void
+    #[Test]
+    public function users_with_two_factor_enabled_are_redirected_to_two_factor_challenge(): void
     {
         $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
 
@@ -55,7 +59,8 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_users_can_not_authenticate_with_invalid_password(): void
+    #[Test]
+    public function users_can_not_authenticate_with_invalid_password(): void
     {
         $user = User::factory()->create();
 
@@ -67,7 +72,8 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_users_can_logout(): void
+    #[Test]
+    public function users_can_logout(): void
     {
         $user = User::factory()->create();
 
@@ -78,7 +84,8 @@ class AuthenticationTest extends TestCase
         $this->assertGuest();
     }
 
-    public function test_users_are_rate_limited(): void
+    #[Test]
+    public function users_are_rate_limited(): void
     {
         $user = User::factory()->create();
 

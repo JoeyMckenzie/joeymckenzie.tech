@@ -9,9 +9,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia;
 use Inertia\Testing\AssertableInertia as Assert;
 use Laravel\Fortify\Features;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class TwoFactorChallengeTest extends TestCase
+final class TwoFactorChallengeTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -22,14 +23,16 @@ class TwoFactorChallengeTest extends TestCase
         $this->skipUnlessFortifyHas(Features::twoFactorAuthentication());
     }
 
-    public function test_two_factor_challenge_redirects_to_login_when_not_authenticated(): void
+    #[Test]
+    public function two_factor_challenge_redirects_to_login_when_not_authenticated(): void
     {
         $response = $this->get(route('two-factor.login'));
 
         $response->assertRedirect(route('login'));
     }
 
-    public function test_two_factor_challenge_can_be_rendered(): void
+    #[Test]
+    public function two_factor_challenge_can_be_rendered(): void
     {
         Features::twoFactorAuthentication([
             'confirm' => true,

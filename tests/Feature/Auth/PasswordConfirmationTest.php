@@ -8,13 +8,15 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia;
 use Inertia\Testing\AssertableInertia as Assert;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class PasswordConfirmationTest extends TestCase
+final class PasswordConfirmationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_confirm_password_screen_can_be_rendered(): void
+    #[Test]
+    public function confirm_password_screen_can_be_rendered(): void
     {
         $user = User::factory()->create();
 
@@ -27,7 +29,8 @@ class PasswordConfirmationTest extends TestCase
         );
     }
 
-    public function test_password_confirmation_requires_authentication(): void
+    #[Test]
+    public function password_confirmation_requires_authentication(): void
     {
         $response = $this->get(route('password.confirm'));
 
