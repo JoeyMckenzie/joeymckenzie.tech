@@ -1,13 +1,23 @@
 includes:
-    - vendor/larastan/larastan/extension.neon
-    - vendor/nesbot/carbon/extension.neon
+	- phar://phpstan.phar/conf/bleedingEdge.neon
 
 parameters:
+    level: max
     paths:
-        - app/
+        - app
+        - config
+        - database
+        - routes
+        - tests
+        - public/index.php
         - bootstrap/app.php
-        - config/
-        - database/
-        - routes/
-
-    level: 7
+        - bootstrap/providers.php
+    tmpDir: .phpstan
+    type_coverage:
+        return: 100
+        param: 100
+        property: 100
+        constant: 100
+        declare: 100
+    ignoreErrors:
+        - identifier: staticMethod.dynamicCall

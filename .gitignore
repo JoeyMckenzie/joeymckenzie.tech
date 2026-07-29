@@ -29,6 +29,7 @@ yarn-error.log
 /.zed
 /.claude/settings.json
 .mcp.json
+.phpstan
 
 # Devenv
 .devenv*

@@ -145,7 +145,7 @@ return [
     */
 
     'passkeys' => [
-        'relying_party_id' => parse_url((string) config('app.url'), PHP_URL_HOST),
+        'relying_party_id' => parse_url((string) env('APP_URL', 'http://localhost'), PHP_URL_HOST),
         'allowed_origins' => [config('app.url')],
         'user_handle_secret' => env('PASSKEYS_USER_HANDLE_SECRET', config('app.key')),
         'timeout' => 60000,

@@ -1,0 +1,175 @@
+parameters:
+	ignoreErrors:
+		-
+			rawMessage: 'Method App\Actions\Fortify\CreateNewUser::emailRules() should return array<int, array<mixed>|Illuminate\Contracts\Validation\ValidationRule|string> but returns array<int, Illuminate\Validation\Rules\Unique|string>.'
+			identifier: return.type
+			count: 1
+			path: app/Actions/Fortify/CreateNewUser.php
+
+		-
+			rawMessage: 'Parameter #1 $input (array<string, string>) of method App\Actions\Fortify\CreateNewUser::create() should be contravariant with parameter $input (array) of method Laravel\Fortify\Contracts\CreatesNewUsers::create()'
+			identifier: method.childParameterType
+			count: 1
+			path: app/Actions/Fortify/CreateNewUser.php
+
+		-
+			rawMessage: Cannot access property $email_verified_at on App\Models\User|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: 'Cannot call method delete() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: 'Cannot call method fill() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: 'Cannot call method isDirty() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: 'Cannot call method save() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			rawMessage: 'Cannot call method diffForHumans() on Illuminate\Support\Carbon|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/SecurityController.php
+
+		-
+			rawMessage: 'Cannot call method hasEnabledTwoFactorAuthentication() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/SecurityController.php
+
+		-
+			rawMessage: 'Cannot call method passkeys() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/SecurityController.php
+
+		-
+			rawMessage: 'Cannot call method update() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 1
+			path: app/Http/Controllers/Settings/SecurityController.php
+
+		-
+			rawMessage: 'Out of 32 possible param types, only 29 - 90.6 %% actually have it. Add more param types to get over 100 %%'
+			identifier: typeCoverage.paramTypeCoverage
+			count: 1
+			path: app/Http/Controllers/Settings/SecurityController.php
+
+		-
+			rawMessage: Cannot access property $id on App\Models\User|null.
+			identifier: property.nonObject
+			count: 1
+			path: app/Http/Requests/Settings/ProfileUpdateRequest.php
+
+		-
+			rawMessage: 'Method App\Http\Requests\Settings\ProfileUpdateRequest::emailRules() should return array<int, array<mixed>|Illuminate\Contracts\Validation\ValidationRule|string> but returns array<int, Illuminate\Validation\Rules\Unique|string>.'
+			identifier: return.type
+			count: 1
+			path: app/Http/Requests/Settings/ProfileUpdateRequest.php
+
+		-
+			rawMessage: 'Class App\Models\User uses generic trait Illuminate\Database\Eloquent\Factories\HasFactory but does not specify its types: TFactory'
+			identifier: missingType.generics
+			count: 1
+			path: app/Models/User.php
+
+		-
+			rawMessage: Binary operation "." between mixed and '|' results in an error.
+			identifier: binaryOp.invalid
+			count: 1
+			path: app/Providers/FortifyServiceProvider.php
+
+		-
+			rawMessage: 'Parameter #1 $value of static method Illuminate\Support\Str::lower() expects string, mixed given.'
+			identifier: argument.type
+			count: 1
+			path: app/Providers/FortifyServiceProvider.php
+
+		-
+			rawMessage: Short ternary operator is not allowed. Use null coalesce operator if applicable or consider using long ternary.
+			identifier: ternary.shortNotAllowed
+			count: 1
+			path: app/Providers/FortifyServiceProvider.php
+
+		-
+			rawMessage: 'Call to function array_filter() requires parameter #2 to be passed to avoid loose comparison semantics.'
+			identifier: arrayFilter.strict
+			count: 1
+			path: config/app.php
+
+		-
+			rawMessage: 'Call to function array_filter() requires parameter #2 to be passed to avoid loose comparison semantics.'
+			identifier: arrayFilter.strict
+			count: 2
+			path: config/database.php
+
+		-
+			rawMessage: Cannot cast mixed to string.
+			identifier: cast.string
+			count: 1
+			path: config/fortify.php
+
+		-
+			rawMessage: 'Out of 46 possible declare(strict_types=1), only 43 - 93.5 %% actually have it. Add more declares to get over 100 %%'
+			identifier: typeCoverage.declareCoverage
+			count: 1
+			path: database/factories/UserFactory.php
+
+		-
+			rawMessage: 'Out of 46 possible declare(strict_types=1), only 43 - 93.5 %% actually have it. Add more declares to get over 100 %%'
+			identifier: typeCoverage.declareCoverage
+			count: 1
+			path: database/seeders/DatabaseSeeder.php
+
+		-
+			rawMessage: 'Out of 46 possible declare(strict_types=1), only 43 - 93.5 %% actually have it. Add more declares to get over 100 %%'
+			identifier: typeCoverage.declareCoverage
+			count: 1
+			path: public/index.php
+
+		-
+			rawMessage: 'Cannot call method hasVerifiedEmail() on App\Models\User|null.'
+			identifier: method.nonObject
+			count: 4
+			path: tests/Feature/Auth/EmailVerificationTest.php
+
+		-
+			rawMessage: Casting to string something that's already string.
+			identifier: cast.useless
+			count: 3
+			path: tests/Feature/Auth/EmailVerificationTest.php
+
+		-
+			rawMessage: Cannot access property $token on mixed.
+			identifier: property.nonObject
+			count: 2
+			path: tests/Feature/Auth/PasswordResetTest.php
+
+		-
+			rawMessage: 'Out of 32 possible param types, only 29 - 90.6 %% actually have it. Add more param types to get over 100 %%'
+			identifier: typeCoverage.paramTypeCoverage
+			count: 2
+			path: tests/Feature/Auth/PasswordResetTest.php
+
+		-
+			rawMessage: 'Call to method PHPUnit\Framework\Assert::assertTrue() with true will always evaluate to true.'
+			identifier: method.alreadyNarrowedType
+			count: 1
+			path: tests/Unit/ExampleTest.php

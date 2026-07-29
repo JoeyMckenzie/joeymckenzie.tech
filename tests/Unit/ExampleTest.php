@@ -13,8 +13,8 @@ final class ExampleTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function that_true_is_true(): void
+    public function environment_is_testing(): void
     {
-        $this->assertTrue(true);
+        $this->assertSame('testing', app()->environment());
     }
 }
