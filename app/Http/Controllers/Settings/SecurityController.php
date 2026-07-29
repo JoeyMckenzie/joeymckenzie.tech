@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
@@ -19,10 +21,7 @@ class SecurityController extends Controller
     public function edit(TwoFactorAuthenticationRequest $request): Response
     {
         $props = [
-            /* @chisel-2fa */
             'canManageTwoFactor' => Features::canManageTwoFactorAuthentication(),
-            /* @end-chisel-2fa */
-            /* @chisel-passkeys */
             'canManagePasskeys' => Features::canManagePasskeys(),
             'passkeys' => Features::canManagePasskeys()
                 ? $request->user()
@@ -30,7 +29,7 @@ class SecurityController extends Controller
                     ->select(['id', 'name', 'credential', 'created_at', 'last_used_at'])
                     ->latest()
                     ->get()
-                    ->map(fn ($passkey) => [
+                    ->map(fn ($passkey): array => [
                         'id' => $passkey->id,
                         'name' => $passkey->name,
                         'authenticator' => $passkey->authenticator,
@@ -40,18 +39,15 @@ class SecurityController extends Controller
                     ->values()
                     ->all()
                 : [],
-            /* @end-chisel-passkeys */
             'passwordRules' => Password::defaults()->toPasswordRulesString(),
         ];
 
-        /* @chisel-2fa */
         if (Features::canManageTwoFactorAuthentication()) {
             $request->ensureStateIsValid();
 
             $props['twoFactorEnabled'] = $request->user()->hasEnabledTwoFactorAuthentication();
             $props['requiresConfirmation'] = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm');
         }
-        /* @end-chisel-2fa */
 
         return Inertia::render('settings/security', $props);
     }
