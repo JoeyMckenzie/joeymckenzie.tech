@@ -28,6 +28,9 @@
         "laravel/sail": "^1.53",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.9.3",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^12.5.23",
         "rector/rector": "^2.5"
     },
@@ -49,7 +52,8 @@
         "allow-plugins": {
             "ergebnis/composer-normalize": true,
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true
         },
         "optimize-autoloader": true,
         "preferred-install": "dist",
@@ -125,7 +129,7 @@
             "@php artisan test"
         ],
         "lint": [
-            "phpstan analyse"
+            "phpstan analyse --memory-limit=2G"
         ]
     },
     "$schema": "https://getcomposer.org/schema.json"
