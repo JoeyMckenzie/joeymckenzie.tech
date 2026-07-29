@@ -170,14 +170,7 @@ in
   processes = {
     app.exec = "php artisan serve --port ${toString phpPort} ";
     pail.exec = "php artisan pail --timeout=0";
-    vite.exec = ''
-      pids=$(lsof -ti:${toString vitePort} 2>/dev/null || true)
-      if [ -n "$pids" ]; then
-        echo "→ killing orphan on :${toString vitePort} ($pids)"
-        kill -9 $pids
-      fi
-      exec pnpm dev --host 127.0.0.1 --port ${toString vitePort} --strictPort
-    '';
+    vite.exec = "pnpm dev --port ${toString vitePort} --strictPort";
   };
 
   enterShell = ''
