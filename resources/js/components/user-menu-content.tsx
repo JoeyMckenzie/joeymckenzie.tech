@@ -55,7 +55,6 @@ export function UserMenuContent({ user }: Props) {
                     <Link
                         className="block w-full cursor-pointer"
                         href={logout()}
-                        as="button"
                         onClick={handleLogout}
                         data-test="logout-button"
                     >
