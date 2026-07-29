@@ -57,16 +57,18 @@ export default function PasskeyItem({ passkey, onDelete }: Props) {
             </div>
 
             <Dialog>
-                <DialogTrigger asChild>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-                    >
-                        <Trash2 className="h-4 w-4" />
-                        <span className="sr-only">Remove</span>
-                    </Button>
-                </DialogTrigger>
+                <DialogTrigger
+                    render={
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                        >
+                            <Trash2 className="h-4 w-4" />
+                            <span className="sr-only">Remove</span>
+                        </Button>
+                    }
+                />
                 <DialogContent>
                     <DialogTitle>Remove passkey</DialogTitle>
                     <DialogDescription>
@@ -75,9 +77,9 @@ export default function PasskeyItem({ passkey, onDelete }: Props) {
                         in.
                     </DialogDescription>
                     <DialogFooter className="gap-2">
-                        <DialogClose asChild>
-                            <Button variant="secondary">Cancel</Button>
-                        </DialogClose>
+                        <DialogClose
+                            render={<Button variant="secondary">Cancel</Button>}
+                        />
                         <Button
                             variant="destructive"
                             onClick={handleDelete}

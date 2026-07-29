@@ -1,18 +1,12 @@
 { pkgs, ... }:
 
 let
-  appName = "website";
+  appName = "joeymckenzie.tech";
   phpPort = 8000;
   vitePort = 5173;
-  workingDir = toString ./.;
 
-  dbName = appName;
-  testDbName = "${appName}_test";
-  dbUser =
-    let
-      envUser = builtins.getEnv "USER";
-    in
-    if envUser == "" then "mysql" else envUser;
+  dbName = "website";
+  testDbName = "${dbName}_test";
 
   backendHost = "${appName}.test";
   viteHost = "assets.${backendHost}";
@@ -29,7 +23,7 @@ in
     APP_HOST = backendHost;
 
     DB_DATABASE = dbName;
-    DB_USERNAME = dbUser;
+    DB_USERNAME = "root";
 
     VITE_PORT = toString vitePort;
     VITE_DEV_HOST = viteHost;
@@ -38,7 +32,7 @@ in
   packages = [
     pkgs.figlet
     pkgs.minio-client
-    pkgs.postgresql_17
+    pkgs.mysql84
   ];
 
   scripts = {
@@ -116,7 +110,7 @@ in
       "gd"
       "imagick"
       "zip"
-      "pdo_pgsql"
+      "pdo_mysql"
       "redis"
       "intl"
       "xdebug"
@@ -197,10 +191,7 @@ in
     mkdir -p "${caddySitesDir}"
     cat > "${caddySite}" <<EOF
     ${backendHost} {
-      root * ${workingDir}/public
-      php_fastcgi 127.0.0.1:${toString phpPort}
-      encode zstd gzip
-      file_server
+      reverse_proxy 127.0.0.1:${toString phpPort}
     }
 
     ${viteHost} {
@@ -220,15 +211,15 @@ in
       echo "⚠ caddy admin API not reachable. Try: sudo launchctl kickstart -k system/org.nixos.caddy"
     fi
 
-    if pg_isready -h 127.0.0.1 -p 5432 >/dev/null 2>&1; then
+    if mysqladmin ping -h 127.0.0.1 -P 3306 --silent 2>/dev/null; then
       for db in "${dbName}" "${testDbName}"; do
-        if ! psql -h 127.0.0.1 -p 5432 -U "${dbUser}" -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname = '$db'" | grep -q 1; then
+        if ! mysql -N -s -h 127.0.0.1 -P 3306 -u root -e "SHOW DATABASES LIKE '$db'" | grep -q .; then
           echo "Creating database $db..."
-          createdb -h 127.0.0.1 -p 5432 -U "${dbUser}" "$db"
+          mysqladmin -h 127.0.0.1 -P 3306 -u root create "$db"
         fi
       done
     else
-      echo "⚠ Postgres is not accepting connections on 127.0.0.1:5432; start it, then re-enter the shell (or run: createdb ${dbName} && createdb ${testDbName})."
+      echo "⚠ MySQL is not accepting connections on 127.0.0.1:3306; start it, then re-enter the shell."
     fi
 
     echo "Applying migrations..."

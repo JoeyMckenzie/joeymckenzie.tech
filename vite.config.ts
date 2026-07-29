@@ -6,14 +6,36 @@ import laravel from 'laravel-vite-plugin';
 import { bunny } from 'laravel-vite-plugin/fonts';
 import { defineConfig } from 'vite';
 
+const appHost = process.env.APP_HOST ?? 'joeymckenzie.test';
+const viteHost = process.env.VITE_DEV_HOST ?? 'assets.joeymckenzie.test';
+const vitePort = Number(process.env.VITE_PORT ?? 5173);
+
 export default defineConfig({
+    server: {
+        host: '127.0.0.1',
+        port: vitePort,
+        strictPort: true,
+        cors: true,
+        allowedHosts: [appHost, viteHost],
+        hmr: {
+            host: viteHost,
+            clientPort: 443,
+            protocol: 'wss',
+        },
+    },
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             refresh: true,
             fonts: [
-                bunny('Instrument Sans', {
-                    weights: [400, 500, 600],
+                bunny('Barlow', {
+                    weights: [400, 500, 600, 700],
+                }),
+                bunny('Barlow Semi Condensed', {
+                    weights: [500, 600],
+                }),
+                bunny('Geist Mono', {
+                    weights: [400, 500],
                 }),
             ],
         }),
