@@ -1,11 +1,10 @@
 import { Head, Link } from '@inertiajs/react';
-import { ArrowLeft, Clock, Eye } from 'lucide-react';
+import { ArrowLeft, Clock } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import Reactions from '@/components/blog/reactions';
 import { useAppearance } from '@/hooks/use-appearance';
 import { mermaidTheme } from '@/lib/mermaid-theme';
 import { index } from '@/routes/blog';
-import { formatViews } from '@/types/blog';
 
 interface Article {
     title: string;
@@ -83,7 +82,7 @@ export default function BlogShow({ post }: { post: Article }) {
                 <meta name="description" content={post.description} />
             </Head>
 
-            <div className="mx-auto max-w-2xl px-6 py-16">
+            <div className="mx-auto max-w-3xl px-6 py-16">
                 <Link
                     href={index.url()}
                     className="inline-flex items-center gap-1.5 font-mono text-xs text-subtle transition-colors hover:text-iris"
@@ -107,10 +106,6 @@ export default function BlogShow({ post }: { post: Article }) {
                         <span className="inline-flex items-center gap-1.5">
                             <Clock className="size-3.5" aria-hidden />{' '}
                             {post.readingMinutes} min
-                        </span>
-                        <span className="inline-flex items-center gap-1.5">
-                            <Eye className="size-3.5" aria-hidden />{' '}
-                            {formatViews(post.views)}
                         </span>
                     </div>
                 </header>

@@ -1,8 +1,7 @@
 import { Link } from '@inertiajs/react';
-import { Clock, Eye } from 'lucide-react';
+import { Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { show } from '@/routes/blog';
-import { formatViews } from '@/types/blog';
 import type { BlogPost } from '@/types/blog';
 
 interface PostCardProps {
@@ -69,10 +68,6 @@ export default function PostCard({ post, href, className }: PostCardProps) {
                     <span className="inline-flex items-center gap-1.5">
                         <Clock className="size-3.5" aria-hidden />
                         {post.readingMinutes} min
-                    </span>
-                    <span className="inline-flex items-center gap-1.5">
-                        <Eye className="size-3.5" aria-hidden />
-                        {formatViews(post.views)}
                     </span>
                 </div>
             </div>

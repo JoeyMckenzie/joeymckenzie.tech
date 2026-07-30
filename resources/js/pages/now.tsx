@@ -14,7 +14,7 @@ export default function Now() {
                 />
             </Head>
 
-            <div className="mx-auto max-w-2xl px-6 py-16">
+            <div className="mx-auto max-w-3xl px-6 py-16">
                 <header>
                     <div className="flex flex-wrap items-center justify-between gap-3 font-mono text-xs tracking-wide text-subtle">
                         <span>~/now</span>
