@@ -28,11 +28,14 @@ export default defineConfig({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
             refresh: true,
             fonts: [
-                bunny('Barlow', {
-                    weights: [400, 500, 600, 700],
+                // Nocturne blog design system (JOEY-4.1):
+                // Fraunces = display + italic asides, Geist = body/UI, Geist Mono = code/chrome.
+                bunny('Fraunces', {
+                    weights: [400, 500, 600],
+                    styles: ['normal', 'italic'],
                 }),
-                bunny('Barlow Semi Condensed', {
-                    weights: [500, 600],
+                bunny('Geist', {
+                    weights: [400, 500, 600, 700],
                 }),
                 bunny('Geist Mono', {
                     weights: [400, 500],

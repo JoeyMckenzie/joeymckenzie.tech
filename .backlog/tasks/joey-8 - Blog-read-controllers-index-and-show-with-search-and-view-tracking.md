@@ -4,6 +4,7 @@ title: Blog read controllers (index and show) with search and view tracking
 status: To Do
 assignee: []
 created_date: '2026-07-29 23:14'
+updated_date: '2026-07-30 06:39'
 labels:
   - backend
 milestone: m-2
@@ -31,3 +32,9 @@ View recording (docs/adr/0001 analytics model): insert one post_views row per ip
 - [ ] #4 Tests cover search, tag filtering, draft visibility by auth state, 24h view dedupe, and author views not being counted
 - [ ] #5 composer fmt, lint, and refactor checks pass
 <!-- AC:END -->
+
+## Implementation Notes
+
+<!-- SECTION:NOTES:BEGIN -->
+Heads-up: the **index** half of this task was pulled forward during JOEY-4.2 to unblock the frontend. Already implemented: `app/Http/Controllers/BlogController@index` + `GET /blog` route (name `blog.index`), `database/seeders/PostSeeder.php`, and `tests/Feature/Blog/BlogIndexTest.php` covering index search, tag filtering, and draft/future visibility by auth state (AC#1 + the index portion of AC#4). Still to do here: the **show** endpoint (AC#2), **view recording** with 24h ip_hash dedupe + author-view exclusion (AC#3), and its tests (rest of AC#4). Extend the existing BlogController rather than recreating index.
+<!-- SECTION:NOTES:END -->

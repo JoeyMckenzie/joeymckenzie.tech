@@ -13,6 +13,11 @@
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
         'Noto Color Emoji';
 
+    /* Nocturne blog design system (JOEY-4.1) */
+    --font-display: 'Fraunces', ui-serif, Georgia, Cambria, serif;
+    --font-body: 'Geist', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Geist Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
     --radius-lg: var(--radius);
     --radius-md: calc(var(--radius) - 2px);
     --radius-sm: calc(var(--radius) - 4px);
@@ -59,6 +64,15 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+
+    /* Nocturne palette — consumed by blog surfaces as bg-canvas, text-prose, text-iris, etc. */
+    --color-canvas: var(--canvas);
+    --color-panel: var(--panel);
+    --color-hairline: var(--hairline);
+    --color-prose: var(--prose);
+    --color-subtle: var(--subtle);
+    --color-iris: var(--iris);
+    --color-ember: var(--ember);
 }
 
 :root {
@@ -95,6 +109,15 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.87 0 0);
+
+    /* Nocturne — light (faithful inversion of the dark-first primary) */
+    --canvas: #f7f5ef;
+    --panel: #ffffff;
+    --hairline: #e4e0d6;
+    --prose: #1b1d24;
+    --subtle: #5b6070;
+    --iris: #4c5cc5;
+    --ember: #b4863b;
 }
 
 .dark {
@@ -130,6 +153,15 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(0.269 0 0);
     --sidebar-ring: oklch(0.439 0 0);
+
+    /* Nocturne — dark (primary / canonical) */
+    --canvas: #0e1016;
+    --panel: #171a23;
+    --hairline: #262b38;
+    --prose: #e8e6df;
+    --subtle: #8b90a0;
+    --iris: #9aa7ff;
+    --ember: #e0b978;
 }
 
 @layer base {
@@ -139,5 +171,230 @@
 
     body {
         @apply bg-background text-foreground;
+    }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   Nocturne — blog article prose (JOEY-4.1)
+   Styles server-rendered `content_html` (Phiki code + Mermaid fences).
+   Consumed by the post page (JOEY-4.3) via <article class="prose-nocturne">.
+   ══════════════════════════════════════════════════════════════════ */
+@layer components {
+    .prose-nocturne {
+        color: var(--prose);
+        font-family: var(--font-body);
+        font-size: 1.0625rem;
+        line-height: 1.75;
+        font-feature-settings:
+            'liga' 1,
+            'calt' 1;
+    }
+
+    .prose-nocturne > * + * {
+        margin-top: 1.25em;
+    }
+
+    .prose-nocturne h1,
+    .prose-nocturne h2,
+    .prose-nocturne h3,
+    .prose-nocturne h4 {
+        font-family: var(--font-display);
+        color: var(--prose);
+        font-weight: 500;
+        line-height: 1.15;
+        letter-spacing: -0.01em;
+    }
+
+    .prose-nocturne h2 {
+        margin-top: 2.5em;
+        margin-bottom: 0.2em;
+        padding-bottom: 0.3em;
+        font-size: 1.6rem;
+        border-bottom: 1px solid var(--hairline);
+    }
+
+    .prose-nocturne h3 {
+        margin-top: 2em;
+        font-size: 1.3rem;
+    }
+
+    .prose-nocturne h4 {
+        margin-top: 1.6em;
+        font-size: 1.1rem;
+    }
+
+    /* Links: gradient underline that grows on hover (the one link flourish) */
+    .prose-nocturne a {
+        color: var(--iris);
+        text-decoration: none;
+        padding-bottom: 1px;
+        background-image: linear-gradient(var(--iris), var(--iris));
+        background-repeat: no-repeat;
+        background-position: 0 100%;
+        background-size: 0% 1.5px;
+        transition: background-size 0.25s ease;
+    }
+
+    .prose-nocturne a:hover {
+        background-size: 100% 1.5px;
+    }
+
+    .prose-nocturne strong {
+        color: var(--prose);
+        font-weight: 600;
+    }
+
+    /* Asides / pull-quotes: the one place the serif turns italic and warm */
+    .prose-nocturne blockquote {
+        margin-left: 0;
+        padding-left: 1.1em;
+        border-left: 2px solid var(--ember);
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: 1.15rem;
+        color: color-mix(in oklab, var(--prose) 82%, transparent);
+    }
+
+    .prose-nocturne ul,
+    .prose-nocturne ol {
+        padding-left: 1.4em;
+    }
+
+    .prose-nocturne li {
+        margin-top: 0.4em;
+    }
+
+    .prose-nocturne ul > li::marker {
+        color: var(--iris);
+    }
+
+    .prose-nocturne ol > li::marker {
+        color: var(--subtle);
+        font-family: var(--font-mono);
+        font-size: 0.85em;
+    }
+
+    .prose-nocturne hr {
+        height: 1px;
+        border: 0;
+        margin: 2.5em 0;
+        background: var(--hairline);
+    }
+
+    .prose-nocturne img {
+        border: 1px solid var(--hairline);
+        border-radius: 0.6rem;
+    }
+
+    /* Inline code — tinted toward the accent, distinct from code blocks */
+    .prose-nocturne :not(pre) > code {
+        padding: 0.12em 0.4em;
+        border: 1px solid var(--hairline);
+        border-radius: 0.35rem;
+        background: var(--panel);
+        font-family: var(--font-mono);
+        font-size: 0.85em;
+        color: color-mix(in oklab, var(--iris) 55%, var(--prose));
+    }
+
+    /* Code block — TokyoNight kept intact as a cool inset "plate".
+       Phiki emits its own background via inline style; #1a1b26 is the fallback. */
+    .prose-nocturne pre {
+        overflow-x: auto;
+        padding: 1.15rem 1.25rem;
+        border: 1px solid var(--hairline);
+        border-top: 2px solid color-mix(in oklab, var(--iris) 60%, transparent);
+        border-radius: 0.7rem;
+        background: #1a1b26;
+        /* Plate is the dark TokyoNight material in both modes, so the base
+           foreground is fixed light — Phiki's inline token colours override it. */
+        color: #c0caf5;
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        line-height: 1.6;
+    }
+
+    .prose-nocturne pre code {
+        padding: 0;
+        border: 0;
+        background: none;
+        font-family: inherit;
+        color: inherit;
+    }
+
+    /* Language tag, when Phiki exposes data-language on the <pre> */
+    .prose-nocturne pre[data-language]::before {
+        content: attr(data-language);
+        display: block;
+        margin-bottom: 0.7rem;
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        /* Fixed muted light: legible on the dark plate in both modes. */
+        color: #8b90a0;
+    }
+
+    /* Mermaid — rendered client-side (JOEY-4.3) with mermaidTheme() from
+       @/lib/mermaid-theme; this is the container plate it lands in. */
+    .prose-nocturne .mermaid,
+    .prose-nocturne pre.mermaid {
+        overflow-x: auto;
+        padding: 1.25rem;
+        border: 1px solid var(--hairline);
+        border-radius: 0.7rem;
+        background: var(--panel);
+        text-align: center;
+    }
+}
+
+/* ── Nocturne motion primitives (respect reduced motion) ─────────── */
+@keyframes nocturne-sweep {
+    from {
+        transform: scaleX(0);
+        opacity: 0;
+    }
+    60% {
+        opacity: 1;
+    }
+    to {
+        transform: scaleX(1);
+        opacity: 1;
+    }
+}
+
+@keyframes nocturne-blink {
+    0%,
+    49% {
+        opacity: 1;
+    }
+    50%,
+    100% {
+        opacity: 0;
+    }
+}
+
+/* "First light": ember→iris hairline sweeps once beneath the title on load. */
+.nocturne-sweep {
+    height: 2px;
+    transform-origin: left center;
+    background: linear-gradient(90deg, var(--ember), var(--iris));
+    animation: nocturne-sweep 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Blinking block cursor for the statusline / command-line motifs. */
+.nocturne-cursor {
+    animation: nocturne-blink 1.1s steps(1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nocturne-sweep {
+        transform: none;
+        animation: none;
+    }
+
+    .nocturne-cursor {
+        opacity: 1;
+        animation: none;
     }
 }

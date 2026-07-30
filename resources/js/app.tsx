@@ -14,6 +14,12 @@ createInertiaApp({
         switch (true) {
             case name === 'welcome':
                 return null;
+            // Public surfaces own their own chrome, not the app shell: the standing
+            // style-guide colophon and the redesigned blog (JOEY-4).
+            case name === 'style-guide':
+                return null;
+            case name.startsWith('blog/'):
+                return null;
             case name.startsWith('auth/'):
                 return AuthLayout;
             case name.startsWith('settings/'):
