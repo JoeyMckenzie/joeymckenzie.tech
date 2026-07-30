@@ -24,7 +24,7 @@ final class ImportPostsCommand extends Command
         $imagesOption = $this->option('images');
         $imagesRoot = is_string($imagesOption) && $imagesOption !== ''
             ? $imagesOption
-            : base_path('../joeymckenzie.tech.old/main/public/assets/images');
+            : base_path('content/legacy-images');
 
         $files = array_filter(
             File::files(base_path('content/posts')),
