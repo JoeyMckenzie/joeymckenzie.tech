@@ -28,10 +28,13 @@ yarn-error.log
 /.vscode
 /.zed
 /.claude/settings.json
+.codex/config.toml
 .mcp.json
+opencode.jsonc
 .phpstan
 _ide_helper.php
 .playwright-mcp
+.codex/mcp-oauth-locks
 
 # Devenv
 .devenv*

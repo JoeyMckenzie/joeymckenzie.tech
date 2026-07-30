@@ -19,6 +19,65 @@ let
   home = builtins.getEnv "HOME";
   caddySitesDir = "${home}/.config/caddy/sites";
   caddySite = "${caddySitesDir}/${appName}.caddy";
+
+  mcpServers = {
+    devenv = {
+      command = "devenv";
+      args = [ "mcp" ];
+    };
+    shadcn = {
+      command = "pnpm";
+      args = [
+        "dlx"
+        "shadcn@latest"
+        "mcp"
+      ];
+    };
+    boost = {
+      command = "php";
+      args = [
+        "artisan"
+        "boost:mcp"
+      ];
+    };
+    playwright = {
+      command = "pnpm";
+      args = [
+        "dlx"
+        "@playwright/mcp@latest"
+      ];
+    };
+    nightwatch.url = "https://nightwatch.laravel.com/mcp";
+    backlog = {
+      command = "backlog";
+      args = [
+        "mcp"
+        "start"
+      ];
+    };
+  };
+
+  claudeMcpServers = builtins.mapAttrs (
+    _name: server:
+    server
+    // {
+      type = if server ? command then "stdio" else "http";
+    }
+  ) mcpServers;
+
+  opencodeMcpServers = builtins.mapAttrs (
+    _name: server:
+    if server ? command then
+      {
+        type = "local";
+        command = [ server.command ] ++ (server.args or [ ]);
+      }
+    else
+      {
+        type = "remote";
+        inherit (server) url;
+      }
+  ) mcpServers;
 in
 {
   dotenv.disableHint = true;
@@ -76,43 +135,13 @@ in
     '';
   };
 
+  files.".codex/config.toml".toml.mcp_servers = mcpServers;
+
   claude.code.enable = true;
-  claude.code.mcpServers = {
-    devenv = {
-      type = "stdio";
-      command = "devenv";
-      args = [ "mcp" ];
-    };
-    shadcn = {
-      type = "stdio";
-      command = "pnpm";
-      args = [
-        "dlx"
-        "shadcn@latest"
-        "mcp"
-      ];
-    };
-    boost = {
-      type = "stdio";
-      command = "php";
-      args = [
-        "artisan"
-        "boost:mcp"
-      ];
-    };
-    playwright = {
-      type = "stdio";
-      command = "pnpm";
-      args = [
-        "dlx"
-        "@playwright/mcp@latest"
-      ];
-    };
-    nightwatch = {
-      type = "http";
-      url = "https://nightwatch.laravel.com/mcp";
-    };
-  };
+  claude.code.mcpServers = claudeMcpServers;
+
+  opencode.enable = true;
+  opencode.mcp = opencodeMcpServers;
 
   languages.php = {
     enable = true;

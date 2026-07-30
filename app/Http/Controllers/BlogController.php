@@ -9,6 +9,8 @@ use App\Models\Tag;
 use App\Support\VisitorHash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -64,9 +66,7 @@ final class BlogController extends Controller
                 'slug' => $post->slug,
                 'description' => $post->description,
                 'tag' => $post->tag->name,
-                // Seeded images are storage keys, not URLs — fall back to the
-                // coverless plate until real R2 covers land (ADR 0002).
-                'cover' => str_starts_with($post->image, 'http') ? $post->image : null,
+                'cover' => $this->coverUrl($post->image),
                 'publishedAt' => $post->published_at?->toDateString() ?? '',
                 'publishedLabel' => $post->formatted_published_at,
                 'readingMinutes' => $post->reading_time_minutes,
@@ -102,7 +102,7 @@ final class BlogController extends Controller
                 'slug' => $post->slug,
                 'description' => $post->description,
                 'tag' => $post->tag->name,
-                'cover' => str_starts_with($post->image, 'http') ? $post->image : null,
+                'cover' => $this->coverUrl($post->image),
                 'contentHtml' => $post->content_html ?? '',
                 'publishedAt' => $post->published_at?->toDateString() ?? '',
                 'publishedLabel' => $post->formatted_published_at,
@@ -110,6 +110,24 @@ final class BlogController extends Controller
                 'views' => $post->views_count,
             ],
         ]);
+    }
+
+    /**
+     * Resolve a stored cover to a URL: object keys go through the image disk,
+     * absolute URLs pass through, and an empty cover falls back to null (the
+     * coverless plate).
+     */
+    private function coverUrl(string $image): ?string
+    {
+        if ($image === '') {
+            return null;
+        }
+
+        if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://')) {
+            return $image;
+        }
+
+        return Storage::disk(Config::string('blog.image_disk'))->url($image);
     }
 
     /**

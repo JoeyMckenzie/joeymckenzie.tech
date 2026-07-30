@@ -255,9 +255,19 @@
         color: color-mix(in oklab, var(--prose) 82%, transparent);
     }
 
+    /* Restore list markers (Tailwind's preflight resets them to none). */
     .prose-nocturne ul,
     .prose-nocturne ol {
         padding-left: 1.4em;
+        list-style-position: outside;
+    }
+
+    .prose-nocturne ul {
+        list-style-type: disc;
+    }
+
+    .prose-nocturne ol {
+        list-style-type: decimal;
     }
 
     .prose-nocturne li {
@@ -282,6 +292,10 @@
     }
 
     .prose-nocturne img {
+        display: block;
+        margin-inline: auto;
+        max-width: 100%;
+        height: auto;
         border: 1px solid var(--hairline);
         border-radius: 0.6rem;
     }
