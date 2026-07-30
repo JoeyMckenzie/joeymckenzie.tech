@@ -3,12 +3,17 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostReactionController;
 use App\Http\Controllers\SpotifyNowPlayingController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', fn () => Inertia::render('welcome'))->name('home');
+Route::get('/', HomeController::class)->name('home');
+
+Route::get('now', fn () => Inertia::render('now'))->name('now');
+Route::get('uses', fn () => Inertia::render('uses'))->name('uses');
+Route::get('cv', fn () => Inertia::render('cv'))->name('cv');
 
 // Spotify now-playing JSON (JOEY-13.5), polled by the footer widget ~30s.
 Route::get('now-playing', SpotifyNowPlayingController::class)->name('now-playing');

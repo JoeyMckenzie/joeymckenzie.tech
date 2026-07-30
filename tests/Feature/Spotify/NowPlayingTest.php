@@ -7,6 +7,7 @@ namespace Tests\Feature\Spotify;
 use App\Http\Controllers\SpotifyNowPlayingController;
 use App\Services\Spotify\NowPlayingData;
 use App\Services\Spotify\SpotifyService;
+use GuzzleHttp\Promise\PromiseInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -29,13 +30,7 @@ final class NowPlayingTest extends TestCase
         Cache::flush();
     }
 
-    /**
-     * Fake both the token and player endpoints together so one Http::fake
-     * call doesn't overwrite the other.
-     *
-     * @param  callable|array<string, mixed>  $playerResponse
-     */
-    private function fakeSpotify($playerResponse): void
+    private function fakeSpotify(PromiseInterface $playerResponse): void
     {
         Http::fake([
             'accounts.spotify.com/api/token' => Http::response([
@@ -105,6 +100,17 @@ final class NowPlayingTest extends TestCase
         $this->getJson(route('now-playing'))
             ->assertOk()
             ->assertJsonPath('nowPlaying', null);
+    }
+
+    #[Test]
+    public function it_caches_the_not_playing_response(): void
+    {
+        $this->fakeSpotify(Http::response(null, 204));
+
+        $this->getJson(route('now-playing'))->assertOk();
+        $this->getJson(route('now-playing'))->assertOk();
+
+        Http::assertSentCount(2);
     }
 
     #[Test]

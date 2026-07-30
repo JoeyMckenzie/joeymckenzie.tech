@@ -1,9 +1,10 @@
 ---
 id: JOEY-13.5
 title: Spotify now-playing (backend + footer widget)
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-07-30 18:33'
+updated_date: '2026-07-30 19:40'
 labels:
   - frontend
   - backend
@@ -21,9 +22,9 @@ Port the Spotify now-playing integration that lives in the PublicLayout footer s
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A now-playing endpoint returns the current track/episode (title, artist, album image, href) or a not-playing state, response cached ~30s; the access token is refreshed and cached
-- [ ] #2 The footer widget renders now-playing in the statusline, polls ~30s, and falls back gracefully when nothing is playing or the API errors
-- [ ] #3 A test with a faked HTTP client covers both a playing and a not-playing response
-- [ ] #4 No new Composer dependency; configuration via config/services.php + env
-- [ ] #5 composer fmt/lint/refactor and frontend format/lint/type checks pass
+- [x] #1 A now-playing endpoint returns the current track/episode (title, artist, album image, href) or a not-playing state, response cached ~30s; the access token is refreshed and cached
+- [x] #2 The footer widget renders now-playing in the statusline, polls ~30s, and falls back gracefully when nothing is playing or the API errors
+- [x] #3 A test with a faked HTTP client covers both a playing and a not-playing response
+- [x] #4 No new Composer dependency; configuration via config/services.php + env
+- [x] #5 composer fmt/lint/refactor and frontend format/lint/type checks pass
 <!-- AC:END -->

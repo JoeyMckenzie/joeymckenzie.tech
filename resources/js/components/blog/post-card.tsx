@@ -1,6 +1,7 @@
 import { Link } from '@inertiajs/react';
 import { Clock, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { show } from '@/routes/blog';
 import { formatViews } from '@/types/blog';
 import type { BlogPost } from '@/types/blog';
 
@@ -22,7 +23,7 @@ interface PostCardProps {
 export default function PostCard({ post, href, className }: PostCardProps) {
     return (
         <Link
-            href={href ?? `/blog/${post.slug}`}
+            href={href ?? show.url({ post: post.slug })}
             className={cn(
                 'group grid grid-cols-[auto_1fr] gap-5 rounded-xl border border-hairline bg-panel/40 p-4 transition-colors hover:bg-panel sm:gap-6 sm:p-5',
                 className,

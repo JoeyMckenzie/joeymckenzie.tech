@@ -17,7 +17,9 @@ final readonly class NowPlayingData
         public string $artist,
         public ?string $albumImage = null,
         public ?string $href = null,
-    ) {}
+    ) {
+        //
+    }
 
     /**
      * @return array{title: string, artist: string, albumImage: string|null, href: string|null}

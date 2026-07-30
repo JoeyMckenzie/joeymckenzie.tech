@@ -18,18 +18,20 @@ final class SpotifyNowPlayingController extends Controller
     public function __construct(
         private readonly SpotifyService $spotify,
         private readonly CacheManager $cache,
-    ) {}
+    ) {
+        //
+    }
 
     public function __invoke(): JsonResponse
     {
-        $playing = $this->cache->remember(
+        $payload = $this->cache->remember(
             'spotify:now_playing',
             now()->addSeconds(30),
-            fn (): ?array => $this->spotify->nowPlaying()?->toArray(),
+            fn (): array => [
+                'nowPlaying' => $this->spotify->nowPlaying()?->toArray(),
+            ],
         );
 
-        return response()->json([
-            'nowPlaying' => $playing,
-        ]);
+        return response()->json($payload);
     }
 }

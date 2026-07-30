@@ -1,10 +1,10 @@
 ---
 id: JOEY-13.4
 title: Error page (Nocturne)
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-07-30 18:33'
-updated_date: '2026-07-30 18:33'
+updated_date: '2026-07-30 19:53'
 labels:
   - frontend
   - design
@@ -23,8 +23,8 @@ A Nocturne error page for 404/500/503 with the terminal motif: status code, a st
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 Production error responses (404/500/503) render a Nocturne error page showing the status, a message, and Home + Blog links
-- [ ] #2 Uses Nocturne chrome (PublicLayout or a minimal standalone Nocturne frame); dark/light aware
-- [ ] #3 A feature test asserts an unknown route renders the error page component with a 404
-- [ ] #4 Frontend and backend checks pass
+- [x] #1 Production error responses (404/500/503) render a Nocturne error page showing the status, a message, and Home + Blog links
+- [x] #2 Uses Nocturne chrome (PublicLayout or a minimal standalone Nocturne frame); dark/light aware
+- [x] #3 A feature test asserts an unknown route renders the error page component with a 404
+- [x] #4 Frontend and backend checks pass
 <!-- AC:END -->

@@ -1,9 +1,10 @@
 ---
 id: JOEY-13
 title: Port public site pages to Nocturne
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-07-30 18:32'
+updated_date: '2026-07-30 19:53'
 labels:
   - frontend
   - design

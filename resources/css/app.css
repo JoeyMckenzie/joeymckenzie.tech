@@ -430,6 +430,20 @@
     animation: nocturne-blink 1.1s steps(1) infinite;
 }
 
+/* Static-page sections reveal once as they enter the reading viewport. */
+.nocturne-reveal {
+    opacity: 0;
+    transform: translateY(0.75rem);
+    transition:
+        opacity 0.55s ease,
+        transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nocturne-reveal[data-visible='true'] {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .nocturne-sweep {
         transform: none;
@@ -439,5 +453,12 @@
     .nocturne-cursor {
         opacity: 1;
         animation: none;
+    }
+
+    .nocturne-reveal,
+    .nocturne-reveal[data-visible='true'] {
+        opacity: 1;
+        transform: none;
+        transition: none;
     }
 }

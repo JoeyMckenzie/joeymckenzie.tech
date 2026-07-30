@@ -1,10 +1,10 @@
 ---
 id: JOEY-13.3
 title: 'Static pages: now, uses, cv (Nocturne)'
-status: To Do
+status: Done
 assignee: []
 created_date: '2026-07-30 18:33'
-updated_date: '2026-07-30 18:33'
+updated_date: '2026-07-30 19:53'
 labels:
   - frontend
   - design
@@ -23,9 +23,9 @@ Port the now, uses, and cv pages into Nocturne. Content is a verbatim port of th
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 /now, /uses, and /cv render the ported content in Nocturne styling inside PublicLayout
-- [ ] #2 Copy matches the old site (verbatim port), with `now` given a freshness pass
-- [ ] #3 Motion is Nocturne-restrained (sweep + subtle scroll fade), not Framer Motion; prefers-reduced-motion respected
-- [ ] #4 Responsive and dark/light aware
-- [ ] #5 Frontend format, lint, and type checks pass
+- [x] #1 /now, /uses, and /cv render the ported content in Nocturne styling inside PublicLayout
+- [x] #2 Copy matches the old site (verbatim port), with `now` given a freshness pass
+- [x] #3 Motion is Nocturne-restrained (sweep + subtle scroll fade), not Framer Motion; prefers-reduced-motion respected
+- [x] #4 Responsive and dark/light aware
+- [x] #5 Frontend format, lint, and type checks pass
 <!-- AC:END -->

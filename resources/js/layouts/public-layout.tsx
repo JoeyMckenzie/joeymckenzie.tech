@@ -5,13 +5,15 @@ import SocialLinks from '@/components/social-links';
 import SpotifyNowPlaying from '@/components/spotify-now-playing';
 import { useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
+import { cv, home, now as nowRoute, styleGuide, uses } from '@/routes';
+import { index as blogIndex } from '@/routes/blog';
 
 const NAV = [
-    { href: '/', label: 'home', prefix: false },
-    { href: '/blog', label: 'blog', prefix: true },
-    { href: '/now', label: 'now', prefix: false },
-    { href: '/uses', label: 'uses', prefix: false },
-    { href: '/cv', label: 'cv', prefix: false },
+    { href: home.url(), label: 'home', prefix: false },
+    { href: blogIndex.url(), label: 'blog', prefix: true },
+    { href: nowRoute.url(), label: 'now', prefix: false },
+    { href: uses.url(), label: 'uses', prefix: false },
+    { href: cv.url(), label: 'cv', prefix: false },
 ];
 
 function isActive(pathname: string, href: string, prefix: boolean): boolean {
@@ -36,7 +38,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             <header className="border-b border-hairline">
                 <div className="mx-auto flex max-w-3xl items-center justify-between px-6 py-4">
                     <Link
-                        href="/"
+                        href={home.url()}
                         className="font-mono text-sm font-semibold tracking-tight text-prose"
                     >
                         jm.
@@ -104,7 +106,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
                             ·
                         </span>
                         <Link
-                            href="/style-guide"
+                            href={styleGuide.url()}
                             className="transition-colors hover:text-iris"
                         >
                             colophon
