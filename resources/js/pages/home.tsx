@@ -8,21 +8,13 @@ interface HomeProps {
     posts: BlogPost[];
 }
 
-/**
- * Home page (JOEY-13.2): a Fraunces typographic hero with the first-light
- * sweep, a short bio, social links, and the 3 most-recent published posts.
- *
- * The hero is intentionally sparse — one thesis line in Joey's register, set
- * large in Fraunces, with the ember→iris sweep beneath it. Everything below
- * earns its place by leading the reader toward the writing.
- */
 export default function Home({ posts }: HomeProps) {
     return (
         <>
             <Head>
                 <meta
                     name="description"
-                    content="Software engineer, professional rabbit-hole diver. Writing about Laravel, Rust, and whatever has my attention this month."
+                    content="Software engineer, professional rabbit-hole diver. Writing about Laravel, PHP, and whatever has my attention this month."
                 />
             </Head>
 
@@ -40,7 +32,7 @@ export default function Home({ posts }: HomeProps) {
                     </h1>
                     <div className="nocturne-sweep mt-6 w-40 rounded-full" />
                     <p className="mt-6 max-w-xl text-lg text-subtle">
-                        I build things with Laravel, Rust, and whatever has my
+                        I build things with Laravel, PHP, and whatever has my
                         attention this month. Mostly code, occasionally
                         opinions, perpetually down a wiki trail.
                     </p>
