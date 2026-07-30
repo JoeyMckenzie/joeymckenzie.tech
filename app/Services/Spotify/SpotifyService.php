@@ -132,6 +132,36 @@ final class SpotifyService
     }
 
     /**
+     * Exchange an OAuth authorization code for a long-lived refresh token, used
+     * by the spotify:authorize command to mint a fresh token. Returns null when
+     * the exchange fails.
+     */
+    public function exchangeAuthorizationCode(string $code, string $redirectUri): ?string
+    {
+        $response = Http::asForm()
+            ->withBasicAuth(
+                Config::string('services.spotify.client_id'),
+                Config::string('services.spotify.client_secret'),
+            )
+            ->timeout(5)
+            ->post('https://accounts.spotify.com/api/token', [
+                'grant_type' => 'authorization_code',
+                'code' => $code,
+                'redirect_uri' => $redirectUri,
+            ]);
+
+        if (! $response->ok()) {
+            Log::warning('Spotify authorization code exchange failed', [
+                'status' => $response->status(),
+            ]);
+
+            return null;
+        }
+
+        return $this->stringValue($response->json('refresh_token'));
+    }
+
+    /**
      * @param  array<mixed>  $episode
      */
     private function episodeArtist(array $episode): string
