@@ -56,7 +56,6 @@ final readonly class PostImporter
     public function import(string $rawContents, string $imagesRoot): Post
     {
         $document = YamlFrontMatter::parse($rawContents);
-
         $slug = $this->stringMatter($document->matter('slug'));
         $tagId = $this->intMatter($document->matter('tag_id'));
 
