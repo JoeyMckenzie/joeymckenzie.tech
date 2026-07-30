@@ -30,6 +30,7 @@ yarn-error.log
 /.claude/settings.json
 .mcp.json
 .phpstan
+_ide_helper.php
 
 # Devenv
 .devenv*
