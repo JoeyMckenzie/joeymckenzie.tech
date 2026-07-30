@@ -38,7 +38,7 @@ final class ImageProcessor
         $key = sprintf('posts/%s/%s.webp', $slug, $name ?? Str::random(20));
         $disk = Storage::disk(Config::string('blog.image_disk'));
 
-        $disk->put($key, $image->optimize('webp', self::WEBP_QUALITY)->toBytes(), 'public');
+        $disk->put($key, $image->optimize('webp', self::WEBP_QUALITY)->toBytes());
 
         return [
             'key' => $key,
