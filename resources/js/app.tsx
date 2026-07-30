@@ -4,9 +4,20 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { initializeTheme } from '@/hooks/use-appearance';
 import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
+import PublicLayout from '@/layouts/public-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+
+// Public pages share the Nocturne chrome (PublicLayout). Blog pages match by prefix.
+const publicPages = new Set([
+    'home',
+    'now',
+    'uses',
+    'cv',
+    'error',
+    'style-guide',
+]);
 
 createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
@@ -14,12 +25,9 @@ createInertiaApp({
         switch (true) {
             case name === 'welcome':
                 return null;
-            // Public surfaces own their own chrome, not the app shell: the standing
-            // style-guide colophon and the redesigned blog (JOEY-4).
-            case name === 'style-guide':
-                return null;
-            case name.startsWith('blog/'):
-                return null;
+            // Public site (JOEY-13): blog + home/now/uses/cv/error/style-guide share PublicLayout.
+            case name.startsWith('blog/') || publicPages.has(name):
+                return PublicLayout;
             case name.startsWith('auth/'):
                 return AuthLayout;
             case name.startsWith('settings/'):

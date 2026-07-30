@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\PostReactionController;
+use App\Http\Controllers\SpotifyNowPlayingController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', fn () => Inertia::render('welcome'))->name('home');
+
+// Spotify now-playing JSON (JOEY-13.5), polled by the footer widget ~30s.
+Route::get('now-playing', SpotifyNowPlayingController::class)->name('now-playing');
 
 // Public style-guide colophon — the site's design system, kept live on purpose.
 Route::get('style-guide', fn () => Inertia::render('style-guide'))->name('style-guide');

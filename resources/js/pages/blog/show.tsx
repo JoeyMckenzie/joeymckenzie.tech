@@ -83,56 +83,54 @@ export default function BlogShow({ post }: { post: Article }) {
                 <meta name="description" content={post.description} />
             </Head>
 
-            <div className="min-h-screen bg-canvas font-body text-prose">
-                <div className="mx-auto max-w-2xl px-6 py-16">
-                    <Link
-                        href={index.url()}
-                        className="inline-flex items-center gap-1.5 font-mono text-xs text-subtle transition-colors hover:text-iris"
-                    >
-                        <ArrowLeft className="size-3.5" aria-hidden /> ~/blog
-                    </Link>
+            <div className="mx-auto max-w-2xl px-6 py-16">
+                <Link
+                    href={index.url()}
+                    className="inline-flex items-center gap-1.5 font-mono text-xs text-subtle transition-colors hover:text-iris"
+                >
+                    <ArrowLeft className="size-3.5" aria-hidden /> ~/blog
+                </Link>
 
-                    <header className="mt-8">
-                        <div className="flex items-center gap-2 font-mono text-xs tracking-wide text-subtle">
-                            <time dateTime={post.publishedAt}>
-                                {post.publishedLabel}
-                            </time>
-                            <span aria-hidden>·</span>
-                            <span className="text-iris">{post.tag}</span>
-                        </div>
-                        <h1 className="mt-3 font-display text-4xl font-medium tracking-tight text-prose sm:text-5xl">
-                            {post.title}
-                        </h1>
-                        <div className="nocturne-sweep mt-5 w-40 rounded-full" />
-                        <div className="mt-5 flex items-center gap-4 font-mono text-xs text-subtle">
-                            <span className="inline-flex items-center gap-1.5">
-                                <Clock className="size-3.5" aria-hidden />{' '}
-                                {post.readingMinutes} min
-                            </span>
-                            <span className="inline-flex items-center gap-1.5">
-                                <Eye className="size-3.5" aria-hidden />{' '}
-                                {formatViews(post.views)}
-                            </span>
-                        </div>
-                    </header>
+                <header className="mt-8">
+                    <div className="flex items-center gap-2 font-mono text-xs tracking-wide text-subtle">
+                        <time dateTime={post.publishedAt}>
+                            {post.publishedLabel}
+                        </time>
+                        <span aria-hidden>·</span>
+                        <span className="text-iris">{post.tag}</span>
+                    </div>
+                    <h1 className="mt-3 font-display text-4xl font-medium tracking-tight text-prose sm:text-5xl">
+                        {post.title}
+                    </h1>
+                    <div className="nocturne-sweep mt-5 w-40 rounded-full" />
+                    <div className="mt-5 flex items-center gap-4 font-mono text-xs text-subtle">
+                        <span className="inline-flex items-center gap-1.5">
+                            <Clock className="size-3.5" aria-hidden />{' '}
+                            {post.readingMinutes} min
+                        </span>
+                        <span className="inline-flex items-center gap-1.5">
+                            <Eye className="size-3.5" aria-hidden />{' '}
+                            {formatViews(post.views)}
+                        </span>
+                    </div>
+                </header>
 
-                    {post.cover && (
-                        <img
-                            src={post.cover}
-                            alt=""
-                            className="mt-8 w-full rounded-xl border border-hairline"
-                        />
-                    )}
-
-                    {/* Server-rendered Phiki HTML; Mermaid blocks are initialised above. */}
-                    <article
-                        ref={articleRef}
-                        className="prose-nocturne mt-10"
-                        dangerouslySetInnerHTML={{ __html: post.contentHtml }}
+                {post.cover && (
+                    <img
+                        src={post.cover}
+                        alt=""
+                        className="mt-8 w-full rounded-xl border border-hairline"
                     />
+                )}
 
-                    <Reactions postSlug={post.slug} />
-                </div>
+                {/* Server-rendered Phiki HTML; Mermaid blocks are initialised above. */}
+                <article
+                    ref={articleRef}
+                    className="prose-nocturne mt-10"
+                    dangerouslySetInnerHTML={{ __html: post.contentHtml }}
+                />
+
+                <Reactions postSlug={post.slug} />
             </div>
         </>
     );
