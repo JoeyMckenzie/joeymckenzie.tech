@@ -346,6 +346,35 @@
         background: var(--panel);
         text-align: center;
     }
+
+    /* Re-skin Mermaid's rendered SVG to the Nocturne palette. Layered
+       !important beats Mermaid's injected (unlayered) theme styles, so this is
+       deterministic regardless of its internal themeVariables derivation. */
+    .prose-nocturne .mermaid svg .node rect,
+    .prose-nocturne .mermaid svg .node polygon,
+    .prose-nocturne .mermaid svg .node circle,
+    .prose-nocturne .mermaid svg .node ellipse,
+    .prose-nocturne .mermaid svg .node path {
+        fill: var(--canvas) !important;
+        stroke: var(--iris) !important;
+    }
+
+    .prose-nocturne .mermaid svg .nodeLabel,
+    .prose-nocturne .mermaid svg .edgeLabel {
+        color: var(--prose) !important;
+        fill: var(--prose) !important;
+        background: transparent !important;
+    }
+
+    .prose-nocturne .mermaid svg .edgePaths path,
+    .prose-nocturne .mermaid svg .flowchart-link {
+        stroke: var(--subtle) !important;
+    }
+
+    .prose-nocturne .mermaid svg marker path {
+        fill: var(--subtle) !important;
+        stroke: var(--subtle) !important;
+    }
 }
 
 /* ── Nocturne motion primitives (respect reduced motion) ─────────── */

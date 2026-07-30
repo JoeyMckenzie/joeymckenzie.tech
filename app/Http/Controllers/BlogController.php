@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Tag;
+use App\Support\VisitorHash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -80,5 +81,66 @@ final class BlogController extends Controller
                 'search' => $search,
             ],
         ]);
+    }
+
+    /**
+     * Show a single post with its stored rendered HTML, recording a view.
+     *
+     * Route-model binding applies the Post `visibleToGuest` global scope, so
+     * guests get a 404 for drafts and future-dated posts while the author sees
+     * them.
+     */
+    public function show(Request $request, Post $post): Response
+    {
+        $this->recordView($request, $post);
+
+        $post->loadMissing('tag:id,name');
+
+        return Inertia::render('blog/show', [
+            'post' => [
+                'title' => $post->title,
+                'slug' => $post->slug,
+                'description' => $post->description,
+                'tag' => $post->tag->name,
+                'cover' => str_starts_with($post->image, 'http') ? $post->image : null,
+                'contentHtml' => $post->content_html ?? '',
+                'publishedAt' => $post->published_at?->toDateString() ?? '',
+                'publishedLabel' => $post->formatted_published_at,
+                'readingMinutes' => $post->reading_time_minutes,
+                'views' => $post->views_count,
+            ],
+        ]);
+    }
+
+    /**
+     * Record at most one view per ip_hash per post per rolling 24h window,
+     * incrementing views_count only when a new event is inserted. The
+     * authenticated author's visits are never recorded.
+     */
+    private function recordView(Request $request, Post $post): void
+    {
+        if (! auth()->guest()) {
+            return;
+        }
+
+        $ipHash = VisitorHash::for($request);
+
+        $alreadyViewed = $post->views()
+            ->where('ip_hash', $ipHash)
+            ->where('viewed_at', '>=', now()->subDay())
+            ->exists();
+
+        if ($alreadyViewed) {
+            return;
+        }
+
+        $post->views()->create([
+            'ip_hash' => $ipHash,
+            'referrer' => $request->headers->get('referer'),
+            'user_agent' => $request->userAgent(),
+            'viewed_at' => now(),
+        ]);
+
+        $post->increment('views_count');
     }
 }

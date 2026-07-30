@@ -5,12 +5,38 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Post;
+use App\Models\PostReaction;
 use App\Models\Tag;
+use App\Reaction;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
 class PostSeeder extends Seeder
 {
+    /**
+     * A representative rendered article (Phiki-style code + a Mermaid block)
+     * applied to one post so the show page (JOEY-4.3) can be reviewed against
+     * real content until the markdown import lands.
+     */
+    private const string SAMPLE_ARTICLE_HTML = <<<'HTML'
+<h2>The setup</h2>
+<p>So I've taken the last month or so rethinking my Laravel workflow. Here's the shape of it, with a fast <code>artisan</code> loop and real type-checking, minus the ceremony.</p>
+<blockquote>We have Herd at home. The Herd at home: a pile of nix expressions and a suspicious amount of confidence.</blockquote>
+<p>A small helper to prove the toolchain is wired up:</p>
+<pre data-language="php"><code><span style="color:#bb9af7">function</span> <span style="color:#7aa2f7">greet</span>(<span style="color:#e0af68">string $name</span>): <span style="color:#2ac3de">string</span>
+{
+    <span style="color:#bb9af7">return</span> <span style="color:#9ece6a">"gday, {$name}"</span>;
+}</code></pre>
+<h2>How it fits together</h2>
+<p>The pipeline, start to finish:</p>
+<pre class="mermaid">graph LR
+  A[Markdown] --> B[Phiki]
+  B --> C[content_html]
+  C --> D[Nocturne]</pre>
+<p>And that's the whole trick — content in, static-fast pages out.</p>
+HTML;
+
     /**
      * Seed a realistic set of published posts (plus one draft and one
      * scheduled post to exercise author-only visibility) so the redesigned
@@ -57,6 +83,23 @@ class PostSeeder extends Seeder
                 'published_at' => $post['published_at'],
                 'views_count' => $post['views'],
             ]);
+        }
+
+        // Give one post real rendered content + a spread of reactions so the show
+        // page has code, a diagram, and non-zero reaction counts to render.
+        $sample = Post::query()->where('slug', 'local-laravel-with-nix-and-devenv')->first();
+
+        if ($sample !== null) {
+            $sample->update(['content_html' => self::SAMPLE_ARTICLE_HTML]);
+
+            PostReaction::factory()
+                ->for($sample)
+                ->count(18)
+                ->sequence(fn (Sequence $sequence): array => [
+                    'ip_hash' => hash('xxh128', 'seed-visitor-'.$sequence->index),
+                    'reaction' => Reaction::cases()[$sequence->index % count(Reaction::cases())],
+                ])
+                ->create();
         }
     }
 }

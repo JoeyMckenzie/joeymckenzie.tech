@@ -1,3 +1,4 @@
+import type { MermaidConfig } from 'mermaid';
 import type { ResolvedAppearance } from '@/hooks/use-appearance';
 
 /**
@@ -34,7 +35,7 @@ const palette = {
  * Mermaid config object for the given resolved appearance. Typed loosely
  * because `mermaid` is only added as a dependency in JOEY-4.3.
  */
-export function mermaidTheme(appearance: ResolvedAppearance) {
+export function mermaidTheme(appearance: ResolvedAppearance): MermaidConfig {
     const c = palette[appearance];
 
     return {
@@ -64,5 +65,5 @@ export function mermaidTheme(appearance: ResolvedAppearance) {
             curve: 'basis',
             padding: 12,
         },
-    } as const;
+    };
 }
