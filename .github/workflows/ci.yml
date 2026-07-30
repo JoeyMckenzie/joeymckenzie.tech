@@ -77,15 +77,15 @@ jobs:
       - name: Build assets & run tests
         run: devenv shell ci-test
 
-  # deploy:
-  #   needs: [lint, test]
-  #   if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Trigger Laravel Cloud deployment
-  #       env:
-  #         DEPLOY_HOOK: ${{ secrets.LARAVEL_CLOUD_DEPLOY_HOOK }}
-  #       run: |
-  #         curl --fail-with-body --silent --show-error \
-  #           --request POST \
-  #           "${DEPLOY_HOOK}"
+  deploy:
+    needs: [lint, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Laravel Cloud deployment
+        env:
+          DEPLOY_HOOK: ${{ secrets.LARAVEL_CLOUD_DEPLOY_HOOK }}
+        run: |
+          curl --fail-with-body --silent --show-error \
+            --request POST \
+            "${DEPLOY_HOOK}"
