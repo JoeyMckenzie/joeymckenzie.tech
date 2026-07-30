@@ -39,6 +39,10 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    env:
+      SPOTIFY_CLIENT_ID: test-spotify-client-id
+      SPOTIFY_CLIENT_SECRET: test-spotify-client-secret
+      SPOTIFY_REFRESH_TOKEN: test-spotify-refresh-token
 
     services:
       mysql:
