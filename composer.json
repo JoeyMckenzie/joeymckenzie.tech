@@ -14,6 +14,7 @@
         "laravel/chisel": "^0.1.0",
         "laravel/fortify": "^1.37.2",
         "laravel/framework": "^13.17",
+        "laravel/nightwatch": "^1.28",
         "laravel/tinker": "^3.0",
         "laravel/wayfinder": "^0.1.14",
         "league/commonmark": "^2.7",
