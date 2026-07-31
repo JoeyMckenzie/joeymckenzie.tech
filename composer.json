@@ -137,7 +137,7 @@
         "test": [
             "@php artisan config:clear --ansi",
             "@fmt:check",
-            "@rector:check",
+            "@refactor:check",
             "@lint",
             "@php artisan test"
         ],

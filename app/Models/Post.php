@@ -27,10 +27,10 @@ use Illuminate\Support\Facades\Date;
  * @property string $description
  * @property string $content
  * @property string|null $content_html
- * @property string $image
+ * @property string|null $image
  * @property int $reading_time_minutes
  * @property CarbonImmutable|null $published_at
- * @property int $views_count
+ * @property-read int|null $views_count
  * @property CarbonImmutable|null $created_at
  * @property CarbonImmutable|null $updated_at
  * @property-read string $formatted_published_at

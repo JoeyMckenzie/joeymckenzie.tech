@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\HasCoverUrl;
 use App\Models\Post;
+use App\Support\BlogCache;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -17,7 +18,7 @@ final class HomeController extends Controller
     public function __invoke(): Response
     {
         $posts = Cache::remember(
-            'home:recent_posts',
+            BlogCache::RECENT_POSTS,
             now()->addMinutes(5),
             $this->recentPosts(...),
         );

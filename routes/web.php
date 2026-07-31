@@ -35,4 +35,5 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
 });
 
+require __DIR__.'/admin.php';
 require __DIR__.'/settings.php';

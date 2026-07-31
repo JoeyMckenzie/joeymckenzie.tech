@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
  */
 trait HasCoverUrl
 {
-    private function coverUrl(string $image): ?string
+    private function coverUrl(?string $image): ?string
     {
         if (blank($image)) {
             return null;

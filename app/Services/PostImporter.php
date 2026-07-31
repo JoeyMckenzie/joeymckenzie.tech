@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Models\Post;
 use App\Models\Tag;
+use App\Support\ReadingTime;
 use Carbon\CarbonImmutable;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
@@ -15,8 +16,6 @@ use SplFileInfo;
 
 final readonly class PostImporter
 {
-    private const int WORDS_PER_MINUTE = 200;
-
     /**
      * @var array<int, string>
      */
@@ -64,7 +63,7 @@ final readonly class PostImporter
                 'content' => $body,
                 'content_html' => $this->renderer->render($body),
                 'image' => $coverKey,
-                'reading_time_minutes' => $this->readingTime($body),
+                'reading_time_minutes' => ReadingTime::forMarkdown($body),
                 'published_at' => $this->dateMatter($document->matter('published_at')),
             ],
         );
@@ -152,11 +151,6 @@ final readonly class PostImporter
         }
 
         return null;
-    }
-
-    private function readingTime(string $body): int
-    {
-        return max(1, (int) ceil(str_word_count($body) / self::WORDS_PER_MINUTE));
     }
 
     private function stringMatter(mixed $value): string
