@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
  * IntersectionObserver toggles a data attribute once; CSS handles the subtle
  * fade and translates. The reduced-motion media query renders it immediately.
  */
-export default function ScrollFade({
+export function ScrollFade({
     children,
     className,
 }: {

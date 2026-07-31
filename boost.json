@@ -2,16 +2,18 @@
     "agents": [
         "claude_code",
         "opencode",
-        "codex"
+        "codex",
+        "pi"
     ],
     "cloud": true,
     "guidelines": true,
     "mcp": true,
-    "nightwatch": false,
+    "nightwatch": true,
     "sail": false,
     "skills": [
         "fortify-development",
         "laravel-best-practices",
+        "configure-nightwatch",
         "wayfinder-development",
         "inertia-react-development",
         "tailwindcss-development",

@@ -1,6 +1,6 @@
 import { Head, Link } from '@inertiajs/react';
-import PostCard from '@/components/blog/post-card';
-import SocialLinks from '@/components/social-links';
+import { PostCard } from '@/components/blog/post-card';
+import { SocialLinks } from '@/components/social-links';
 import { index as blogIndex } from '@/routes/blog';
 import type { BlogPost } from '@/types/blog';
 

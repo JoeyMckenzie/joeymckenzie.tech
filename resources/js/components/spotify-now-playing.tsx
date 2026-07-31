@@ -1,51 +1,14 @@
-import { useEffect, useState } from 'react';
-import { nowPlaying } from '@/routes';
-
-interface NowPlaying {
-    title: string;
-    artist: string;
-    albumImage: string | null;
-    href: string | null;
-}
-
-type NowPlayingResponse = { nowPlaying: NowPlaying | null };
+import { useNowPlaying } from '@/hooks/use-now-playing';
 
 /**
  * Spotify now-playing — footer statusline slot (JOEY-13.5).
  *
- * Polls `/now-playing` ~30s. When a track is playing, renders `▶ track —
- * artist` with an iris accent; otherwise rests on "not listening". All errors
- * degrade silently to the resting state so the footer never looks broken.
+ * When a track is playing, renders `▶ track — artist` with an iris accent;
+ * otherwise rests on "not listening". Polling and error handling live in
+ * `useNowPlaying`, which only ever hands back a track or `null`.
  */
-export default function SpotifyNowPlaying() {
-    const [playing, setPlaying] = useState<NowPlaying | null>(null);
-
-    useEffect(() => {
-        const controller = new AbortController();
-
-        const poll = () =>
-            fetch(nowPlaying.url(), {
-                headers: { Accept: 'application/json' },
-                credentials: 'same-origin',
-                signal: controller.signal,
-            })
-                .then(
-                    (response) =>
-                        response.json() as Promise<NowPlayingResponse>,
-                )
-                .then((data) => setPlaying(data.nowPlaying))
-                .catch(() => {
-                    // Ignore network/abort errors; widget stays in its last state.
-                });
-
-        poll();
-        const interval = setInterval(poll, 30_000);
-
-        return () => {
-            controller.abort();
-            clearInterval(interval);
-        };
-    }, []);
+export function SpotifyNowPlaying() {
+    const playing = useNowPlaying();
 
     if (playing === null) {
         return (

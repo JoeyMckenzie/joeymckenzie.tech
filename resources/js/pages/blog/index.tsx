@@ -1,7 +1,7 @@
 import { Head, router } from '@inertiajs/react';
 import { Search, X } from 'lucide-react';
 import { useRef, useState } from 'react';
-import PostCard from '@/components/blog/post-card';
+import { PostCard } from '@/components/blog/post-card';
 import { cn } from '@/lib/utils';
 import { index } from '@/routes/blog';
 import type { BlogPost } from '@/types/blog';

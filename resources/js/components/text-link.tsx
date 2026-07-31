@@ -4,11 +4,7 @@ import { cn } from '@/lib/utils';
 
 type Props = ComponentProps<typeof Link>;
 
-export default function TextLink({
-    className = '',
-    children,
-    ...props
-}: Props) {
+export function TextLink({ className = '', children, ...props }: Props) {
     return (
         <Link
             className={cn(

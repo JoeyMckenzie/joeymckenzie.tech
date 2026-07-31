@@ -17,7 +17,7 @@ type Props = {
     onDelete: (id: number, onError: () => void) => void;
 };
 
-export default function PasskeyItem({ passkey, onDelete }: Props) {
+export function PasskeyItem({ passkey, onDelete }: Props) {
     const [isDeleting, setIsDeleting] = useState(false);
 
     const handleDelete = () => {

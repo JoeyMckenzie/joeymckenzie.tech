@@ -1,8 +1,8 @@
 import { Link, usePage } from '@inertiajs/react';
 import { Moon, Sun } from 'lucide-react';
 import type { ReactNode } from 'react';
-import SocialLinks from '@/components/social-links';
-import SpotifyNowPlaying from '@/components/spotify-now-playing';
+import { SocialLinks } from '@/components/social-links';
+import { SpotifyNowPlaying } from '@/components/spotify-now-playing';
 import { useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
 import { cv, home, now as nowRoute, styleGuide, uses } from '@/routes';
@@ -29,7 +29,7 @@ function isActive(pathname: string, href: string, prefix: boolean): boolean {
  * light/dark toggle, and a site-wide mono statusline footer (Spotify slot +
  * socials + colophon). Applied via the layout resolver in app.tsx.
  */
-export default function PublicLayout({ children }: { children: ReactNode }) {
+export function PublicLayout({ children }: { children: ReactNode }) {
     const pathname = usePage().url.split('?')[0];
     const { resolvedAppearance, updateAppearance } = useAppearance();
 

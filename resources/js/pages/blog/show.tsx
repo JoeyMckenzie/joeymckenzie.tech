@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, Clock } from 'lucide-react';
 import { useEffect, useRef } from 'react';
-import Reactions from '@/components/blog/reactions';
+import { Reactions } from '@/components/blog/reactions';
 import { useAppearance } from '@/hooks/use-appearance';
 import { mermaidTheme } from '@/lib/mermaid-theme';
 import { index } from '@/routes/blog';

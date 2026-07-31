@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import ScrollFade from '@/components/scroll-fade';
+import { ScrollFade } from '@/components/scroll-fade';
 
 const linkClass =
     'text-iris underline decoration-iris/35 underline-offset-4 transition-colors hover:decoration-iris';

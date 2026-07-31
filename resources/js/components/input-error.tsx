@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
-export default function InputError({
+export function InputError({
     message,
     className = '',
     ...props

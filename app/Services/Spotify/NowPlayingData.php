@@ -6,6 +6,9 @@ namespace App\Services\Spotify;
 
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @implements Arrayable<string, string|null>
+ */
 final readonly class NowPlayingData implements Arrayable
 {
     public function __construct(

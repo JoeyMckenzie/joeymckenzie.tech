@@ -93,7 +93,7 @@ final class SpotifyService
         return Cache::remember(
             self::TOKEN_CACHE_KEY,
             self::TOKEN_TTL_SECONDS,
-            $this->refreshAccessToken(),
+            $this->refreshAccessToken(...),
         );
     }
 

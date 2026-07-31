@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import PostCard from '@/components/blog/post-card';
+import { PostCard } from '@/components/blog/post-card';
 import type { BlogPost } from '@/types/blog';
 
 const samplePosts: BlogPost[] = [

@@ -19,7 +19,7 @@ interface PostCardProps {
  * title, and a Geist Mono metadata line. Proves the token system for the
  * index page (JOEY-4.2) to build on.
  */
-export default function PostCard({ post, href, className }: PostCardProps) {
+export function PostCard({ post, href, className }: PostCardProps) {
     return (
         <Link
             href={href ?? show.url({ post: post.slug })}

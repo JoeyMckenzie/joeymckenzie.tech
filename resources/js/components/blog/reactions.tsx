@@ -31,7 +31,7 @@ function xsrfToken(): string {
  * per-type counts + this visitor's reactions on mount, and toggles optimistically
  * — reconciling from the server response (or reverting on failure).
  */
-export default function Reactions({ postSlug }: { postSlug: string }) {
+export function Reactions({ postSlug }: { postSlug: string }) {
     const [counts, setCounts] = useState<Record<string, number>>({});
     const [mine, setMine] = useState<string[]>([]);
     const [pending, setPending] = useState<ReactionKey | null>(null);

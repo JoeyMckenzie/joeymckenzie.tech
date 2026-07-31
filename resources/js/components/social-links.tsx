@@ -34,7 +34,7 @@ const socials: { label: string; href: string; Icon: SocialIcon }[] = [
     },
 ];
 
-export default function SocialLinks({ className }: { className?: string }) {
+export function SocialLinks({ className }: { className?: string }) {
     return (
         <div className={cn('flex items-center gap-3.5', className)}>
             {socials.map(({ label, href, Icon }) => (

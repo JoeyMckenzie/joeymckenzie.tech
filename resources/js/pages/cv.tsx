@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import ScrollFade from '@/components/scroll-fade';
+import { ScrollFade } from '@/components/scroll-fade';
 
 const experience = [
     {

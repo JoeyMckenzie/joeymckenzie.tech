@@ -1,6 +1,6 @@
-import AuthLayoutTemplate from '@/layouts/auth/auth-simple-layout';
+import { AuthSimpleLayout as AuthLayoutTemplate } from '@/layouts/auth/auth-simple-layout';
 
-export default function AuthLayout({
+export function AuthLayout({
     title = '',
     description = '',
     children,
