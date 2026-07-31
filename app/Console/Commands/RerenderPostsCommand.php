@@ -14,16 +14,14 @@ use Illuminate\Console\Command;
 #[Description('Re-render every stored post markdown into content_html')]
 final class RerenderPostsCommand extends Command
 {
-    /**
-     * Idempotent: re-rendering the same markdown produces the same HTML.
-     * Includes drafts and future-dated posts (bypasses the visibility scope).
-     */
     public function handle(MarkdownRenderer $renderer): int
     {
         $posts = Post::query()->withoutGlobalScopes()->get();
 
         foreach ($posts as $post) {
-            $post->update(['content_html' => $renderer->render($post->content)]);
+            $post->update([
+                'content_html' => $renderer->render($post->content),
+            ]);
         }
 
         $this->info(sprintf('Re-rendered %d posts', $posts->count()));

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\Reaction;
 use App\Models\Post;
 use App\Models\PostReaction;
-use App\Reaction;
 use App\Support\VisitorHash;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

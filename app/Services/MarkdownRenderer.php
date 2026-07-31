@@ -16,11 +16,6 @@ use Phiki\Theme\Theme;
 final class MarkdownRenderer
 {
     /**
-     * Convert post markdown to the HTML stored in posts.content_html.
-     *
-     * Rendering is write-time (import + admin save); read requests serve the
-     * stored HTML. Deterministic — identical markdown yields identical HTML.
-     *
      * @throws CommonMarkException
      */
     public function render(string $markdown): string
@@ -31,6 +26,6 @@ final class MarkdownRenderer
         $environment->addExtension(new MermaidExtension);
         $environment->addExtension(new StrikethroughExtension);
 
-        return (new MarkdownConverter($environment))->convert($markdown)->getContent();
+        return new MarkdownConverter($environment)->convert($markdown)->getContent();
     }
 }

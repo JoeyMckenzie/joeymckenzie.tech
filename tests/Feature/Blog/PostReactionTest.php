@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Blog;
 
+use App\Enums\Reaction;
 use App\Http\Controllers\PostReactionController;
 use App\Models\Post;
 use App\Models\PostReaction;
-use App\Reaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use PHPUnit\Framework\Attributes\CoversClass;

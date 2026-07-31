@@ -47,7 +47,6 @@ final class SpotifyAuthorizeCommand extends Command
         $port = (int) $this->option('port');
         $redirectUri = sprintf('http://127.0.0.1:%d/callback', $port);
         $state = Str::random(32);
-
         $authorizeUrl = 'https://accounts.spotify.com/authorize?'.http_build_query([
             'client_id' => $clientId,
             'response_type' => 'code',

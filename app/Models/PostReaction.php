@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Reaction;
+use App\Enums\Reaction;
 use Carbon\CarbonImmutable;
 use Database\Factories\PostReactionFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;

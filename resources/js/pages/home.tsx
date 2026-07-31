@@ -20,8 +20,8 @@ export default function Home({ posts }: HomeProps) {
 
             <div className="mx-auto max-w-3xl px-6 py-16">
                 <header>
-                    <p className="font-mono text-xs tracking-widest text-subtle uppercase">
-                        joey mckenzie
+                    <p className="font-mono text-xs tracking-wide text-subtle">
+                        ~/
                     </p>
                     <h1 className="mt-4 font-display text-5xl leading-[1.05] font-medium tracking-tight text-prose sm:text-6xl">
                         Software developer.
@@ -31,9 +31,9 @@ export default function Home({ posts }: HomeProps) {
                     </h1>
                     <div className="nocturne-sweep mt-6 w-40 rounded-full" />
                     <p className="mt-6 max-w-xl text-lg text-subtle">
-                        I build things with Laravel, PHP, and whatever has my
-                        attention this month. Mostly code, occasionally
-                        opinions, perpetually down a rabbit-hole.
+                        Hey, I'm Joey. I build things with Laravel, PHP, and
+                        whatever has my attention this month. Mostly code,
+                        occasionally opinions, perpetually down a rabbit-hole.
                     </p>
                     <div className="mt-8">
                         <SocialLinks />

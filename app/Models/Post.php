@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 
 /**
@@ -119,8 +120,8 @@ class Post extends Model
     #[\Override]
     protected static function booted(): void
     {
-        static::addGlobalScope('visibleToGuest', function (Builder $query): void {
-            if (auth()->guest()) {
+        static::addGlobalScope('visibleToGuest', static function (Builder $query): void {
+            if (Auth::guest()) {
                 $query
                     ->whereNotNull('published_at')
                     ->where('published_at', '<=', now());

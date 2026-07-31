@@ -64,8 +64,8 @@ export default function BlogIndex({ posts, tags, filters }: BlogIndexProps) {
 
             <div className="mx-auto max-w-3xl px-6 py-16">
                 <header>
-                    <p className="font-mono text-xs tracking-widest text-subtle uppercase">
-                        joey mckenzie · writing
+                    <p className="font-mono text-xs tracking-wide text-subtle">
+                        ~/blog
                     </p>
                     <h1 className="mt-3 font-display text-5xl font-medium tracking-tight text-prose">
                         Writing

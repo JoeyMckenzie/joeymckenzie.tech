@@ -13,22 +13,11 @@ use RecursiveIteratorIterator;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
 use SplFileInfo;
 
-/**
- * Imports one legacy markdown post into MySQL (JOEY-11). Idempotent per slug.
- *
- * Uploads the cover and every local inline image through the ImageProcessor
- * (JOEY-7): the cover is stored as an R2 object key, inline references are
- * rewritten to their absolute R2 URLs in the stored markdown, and the body is
- * rendered to content_html (JOEY-6). External image URLs are left untouched.
- */
 final readonly class PostImporter
 {
     private const int WORDS_PER_MINUTE = 200;
 
     /**
-     * Canonical tag id → name map (mirrors TagSeeder) so an absent tag is
-     * created with a real name rather than a placeholder.
-     *
      * @var array<int, string>
      */
     private const array TAG_NAMES = [
@@ -58,7 +47,6 @@ final readonly class PostImporter
         $document = YamlFrontMatter::parse($rawContents);
         $slug = $this->stringMatter($document->matter('slug'));
         $tagId = $this->intMatter($document->matter('tag_id'));
-
         $tag = Tag::query()->firstOrCreate(
             ['id' => $tagId],
             ['name' => self::TAG_NAMES[$tagId] ?? 'tag-'.$tagId],

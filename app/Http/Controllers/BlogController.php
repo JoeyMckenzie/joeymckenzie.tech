@@ -4,33 +4,24 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\HasCoverUrl;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Support\VisitorHash;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
 final class BlogController extends Controller
 {
-    /**
-     * List published posts for the public blog index.
-     *
-     * Guests see published posts only; the authenticated author also sees
-     * drafts and future-dated posts (via the Post `visibleToGuest` global
-     * scope). Heavy content columns are never selected. Supports a `tag` name
-     * filter and a `search` LIKE over title + description.
-     *
-     * View tracking, the show endpoint, and feature tests belong to JOEY-8.
-     */
+    use HasCoverUrl;
+
     public function index(Request $request): Response
     {
         $tagInput = $request->string('tag')->trim()->toString();
-        $tag = $tagInput === '' ? null : $tagInput;
-
+        $tag = blank($tagInput) ? null : $tagInput;
         $searchInput = $request->string('search')->trim()->toString();
         $search = $searchInput === '' ? null : $searchInput;
 
@@ -47,13 +38,13 @@ final class BlogController extends Controller
                 'views_count',
             ])
             ->with('tag:id,name')
-            ->when($tag !== null, function (Builder $query) use ($tag): void {
-                $query->whereHas('tag', function (Builder $tagQuery) use ($tag): void {
+            ->when($tag !== null, static function (Builder $query) use ($tag): void {
+                $query->whereHas('tag', static function (Builder $tagQuery) use ($tag): void {
                     $tagQuery->where('name', $tag);
                 });
             })
-            ->when($search !== null, function (Builder $query) use ($search): void {
-                $query->where(function (Builder $group) use ($search): void {
+            ->when($search !== null, static function (Builder $query) use ($search): void {
+                $query->where(static function (Builder $group) use ($search): void {
                     $group
                         ->where('title', 'like', '%'.$search.'%')
                         ->orWhere('description', 'like', '%'.$search.'%');
@@ -83,13 +74,6 @@ final class BlogController extends Controller
         ]);
     }
 
-    /**
-     * Show a single post with its stored rendered HTML, recording a view.
-     *
-     * Route-model binding applies the Post `visibleToGuest` global scope, so
-     * guests get a 404 for drafts and future-dated posts while the author sees
-     * them.
-     */
     public function show(Request $request, Post $post): Response
     {
         $this->recordView($request, $post);
@@ -112,37 +96,13 @@ final class BlogController extends Controller
         ]);
     }
 
-    /**
-     * Resolve a stored cover to a URL: object keys go through the image disk,
-     * absolute URLs pass through, and an empty cover falls back to null (the
-     * coverless plate).
-     */
-    private function coverUrl(string $image): ?string
-    {
-        if ($image === '') {
-            return null;
-        }
-
-        if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://')) {
-            return $image;
-        }
-
-        return Storage::disk(Config::string('blog.image_disk'))->url($image);
-    }
-
-    /**
-     * Record at most one view per ip_hash per post per rolling 24h window,
-     * incrementing views_count only when a new event is inserted. The
-     * authenticated author's visits are never recorded.
-     */
     private function recordView(Request $request, Post $post): void
     {
-        if (! auth()->guest()) {
+        if (! Auth::guest()) {
             return;
         }
 
         $ipHash = VisitorHash::for($request);
-
         $alreadyViewed = $post->views()
             ->where('ip_hash', $ipHash)
             ->where('viewed_at', '>=', now()->subDay())

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\Reaction;
 use App\Models\Post;
 use App\Models\PostReaction;
 use App\Models\Tag;
-use App\Reaction;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;

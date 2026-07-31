@@ -15,20 +15,16 @@ use SplFileInfo;
 #[Description('One-time backfill: import the legacy markdown posts from content/posts into MySQL')]
 final class ImportPostsCommand extends Command
 {
-    /**
-     * Idempotent (upserts by slug); run once by hand against production, never
-     * on deploy, so it can't clobber later admin edits.
-     */
     public function handle(PostImporter $importer): int
     {
         $imagesOption = $this->option('images');
-        $imagesRoot = is_string($imagesOption) && $imagesOption !== ''
+        $imagesRoot = filled($imagesOption)
             ? $imagesOption
             : base_path('content/legacy-images');
 
         $files = array_filter(
             File::files(base_path('content/posts')),
-            fn (SplFileInfo $file): bool => $file->getExtension() === 'md',
+            static fn (SplFileInfo $file): bool => $file->getExtension() === 'md',
         );
 
         foreach ($files as $file) {

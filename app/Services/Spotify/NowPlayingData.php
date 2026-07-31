@@ -4,13 +4,9 @@ declare(strict_types=1);
 
 namespace App\Services\Spotify;
 
-/**
- * Normalised "now playing" shape for both tracks and podcast episodes.
- *
- * The frontend footer widget only needs a few fields; this isolates callers
- * from Spotify's verbose API response.
- */
-final readonly class NowPlayingData
+use Illuminate\Contracts\Support\Arrayable;
+
+final readonly class NowPlayingData implements Arrayable
 {
     public function __construct(
         public string $title,

@@ -9,14 +9,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Talks to the Spotify Web API to report what's currently playing.
- *
- * The access token is short-lived (~1h) so it's cached for 10 minutes and
- * refreshed on demand. {@see nowPlaying()} returns null when nothing is
- * playing or the API errors, allowing callers to render a graceful fallback.
- */
 final class SpotifyService
 {
     private const string TOKEN_CACHE_KEY = 'spotify:access_token';
@@ -58,10 +52,6 @@ final class SpotifyService
             ->timeout(5);
     }
 
-    /**
-     * Return the current track or podcast episode, or null when nothing is
-     * playing (paused, idle) or the API errors.
-     */
     public function nowPlaying(): ?NowPlayingData
     {
         $response = $this->playerRequest()
@@ -70,7 +60,7 @@ final class SpotifyService
             ]);
 
         if (! $response->ok()) {
-            if ($response->status() !== 204) {
+            if ($response->status() !== Response::HTTP_NO_CONTENT) {
                 Log::warning('Spotify player request failed', [
                     'status' => $response->status(),
                 ]);
@@ -103,7 +93,7 @@ final class SpotifyService
         return Cache::remember(
             self::TOKEN_CACHE_KEY,
             self::TOKEN_TTL_SECONDS,
-            fn (): string => $this->refreshAccessToken(),
+            $this->refreshAccessToken(),
         );
     }
 
@@ -131,11 +121,6 @@ final class SpotifyService
         return $this->stringValue($response->json('access_token')) ?? '';
     }
 
-    /**
-     * Exchange an OAuth authorization code for a long-lived refresh token, used
-     * by the spotify:authorize command to mint a fresh token. Returns null when
-     * the exchange fails.
-     */
     public function exchangeAuthorizationCode(string $code, string $redirectUri): ?string
     {
         $response = Http::asForm()

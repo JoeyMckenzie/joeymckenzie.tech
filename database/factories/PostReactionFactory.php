@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\Reaction;
 use App\Models\Post;
 use App\Models\PostReaction;
-use App\Reaction;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

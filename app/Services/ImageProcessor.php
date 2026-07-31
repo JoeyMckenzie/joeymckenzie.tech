@@ -11,12 +11,6 @@ use Illuminate\Support\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-/**
- * Normalises an image and stores it on the Cloudflare R2 disk (ADR 0002),
- * shared by the import backfill (JOEY-11) and the admin editor upload (JOEY-5.2).
- * Caps width at 1600px, re-encodes to WebP (~q70), stores publicly under
- * posts/{slug}/, and returns both the object key and its public URL.
- */
 final class ImageProcessor
 {
     private const int MAX_WIDTH = 1600;
@@ -52,8 +46,6 @@ final class ImageProcessor
             return Image::fromUpload($source);
         }
 
-        // Raw image bytes contain null bytes (and are never a path), so only
-        // treat null-byte-free strings as candidate file paths.
         if (! str_contains($source, "\0") && is_file($source)) {
             return Image::fromPath($source);
         }
