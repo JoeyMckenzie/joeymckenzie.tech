@@ -15,6 +15,7 @@ let
   minioAccessKey = "minioadmin";
   minioSecretKey = "minioadmin";
   minioBucket = "website";
+  minioAlias = "website-local";
 
   home = builtins.getEnv "HOME";
   caddySitesDir = "${home}/.config/caddy/sites";
@@ -258,9 +259,9 @@ in
     fi
 
     if curl -fsS --max-time 2 "http://127.0.0.1:${toString minioPort}/minio/health/live" >/dev/null 2>&1; then
-      mc alias set ${appName}-local "http://127.0.0.1:${toString minioPort}" "${minioAccessKey}" "${minioSecretKey}" >/dev/null 2>&1
-      if mc mb --ignore-existing "${appName}-local/${minioBucket}" >/dev/null 2>&1; then
-        mc anonymous set download "${appName}-local/${minioBucket}" >/dev/null 2>&1
+      mc alias set ${minioAlias} "http://127.0.0.1:${toString minioPort}" "${minioAccessKey}" "${minioSecretKey}" >/dev/null 2>&1
+      if mc mb --ignore-existing "${minioAlias}/${minioBucket}" >/dev/null 2>&1; then
+        mc anonymous set download "${minioAlias}/${minioBucket}" >/dev/null 2>&1
         echo "✓ minio bucket ready (${minioBucket})"
       fi
     else
