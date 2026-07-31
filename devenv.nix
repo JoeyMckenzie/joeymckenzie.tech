@@ -260,6 +260,7 @@ in
     if curl -fsS --max-time 2 "http://127.0.0.1:${toString minioPort}/minio/health/live" >/dev/null 2>&1; then
       mc alias set ${appName}-local "http://127.0.0.1:${toString minioPort}" "${minioAccessKey}" "${minioSecretKey}" >/dev/null 2>&1
       if mc mb --ignore-existing "${appName}-local/${minioBucket}" >/dev/null 2>&1; then
+        mc anonymous set download "${appName}-local/${minioBucket}" >/dev/null 2>&1
         echo "✓ minio bucket ready (${minioBucket})"
       fi
     else
