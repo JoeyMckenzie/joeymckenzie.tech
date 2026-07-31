@@ -2,14 +2,6 @@ import { Head } from '@inertiajs/react';
 import PostCard from '@/components/blog/post-card';
 import type { BlogPost } from '@/types/blog';
 
-/**
- * Style guide — the public colophon for the site (route: /style-guide).
- *
- * A standing "here's the design system" page: it renders the Nocturne tokens,
- * the PostCard primitive, the article prose, the code-block plate, and the
- * statusline motif on one screen. Kept live as a deliberate personality detail.
- */
-
 const samplePosts: BlogPost[] = [
     {
         title: 'Local Laravel with nix and devenv',
@@ -51,7 +43,6 @@ export default function StyleGuide() {
             <Head title="Style guide" />
 
             <div className="mx-auto max-w-3xl px-6 py-16">
-                {/* Hero + "first light" sweep */}
                 <header>
                     <p className="font-mono text-xs tracking-widest text-subtle uppercase">
                         joey mckenzie · colophon
@@ -61,15 +52,14 @@ export default function StyleGuide() {
                     </h1>
                     <div className="nocturne-sweep mt-4 w-40 rounded-full" />
                     <p className="mt-4 max-w-xl text-subtle">
-                        Like the design? Here it is, in the open — the type,
-                        colour, and components this whole site is built from. A
-                        beautifully typeset essay read at night, with a
+                        My design tokens, here in the open. Type, color, and
+                        components this whole site is built from. The aim is an
+                        easy on the eyes typeset essay read at night, with a
                         craftsman&rsquo;s fingerprint at the bottom of the
                         screen.
                     </p>
                 </header>
 
-                {/* Palette */}
                 <section className="mt-16">
                     <h2 className="font-mono text-xs tracking-widest text-subtle uppercase">
                         palette
@@ -88,7 +78,6 @@ export default function StyleGuide() {
                     </div>
                 </section>
 
-                {/* PostCard reference element */}
                 <section className="mt-16">
                     <h2 className="font-mono text-xs tracking-widest text-subtle uppercase">
                         post card
@@ -100,7 +89,6 @@ export default function StyleGuide() {
                     </div>
                 </section>
 
-                {/* Article prose */}
                 <section className="mt-16">
                     <h2 className="font-mono text-xs tracking-widest text-subtle uppercase">
                         article prose
@@ -111,8 +99,8 @@ export default function StyleGuide() {
                             So I&rsquo;ve taken the last month or so to
                             completely rethink my workflow for Laravel
                             development. I&rsquo;ve been a loyal JetBrains
-                            subscriber since 2016 &mdash; but something had to
-                            give, and it turned out to be my{' '}
+                            subscriber since 2016, but something had to give,
+                            and it turned out to be my{' '}
                             <a href="#">entire editor</a>.
                         </p>
                         <blockquote>
@@ -121,7 +109,7 @@ export default function StyleGuide() {
                             confidence.
                         </blockquote>
                         <p>
-                            The trick is to keep the good parts &mdash; a fast{' '}
+                            The trick is to keep the good parts, a fast{' '}
                             <code>artisan</code> loop, real type-checking
                             &mdash; while dropping the ceremony. Here&rsquo;s
                             the shape of it:

@@ -19,29 +19,27 @@ export default function Home({ posts }: HomeProps) {
             </Head>
 
             <div className="mx-auto max-w-3xl px-6 py-16">
-                {/* Hero */}
                 <header>
                     <p className="font-mono text-xs tracking-widest text-subtle uppercase">
                         joey mckenzie
                     </p>
                     <h1 className="mt-4 font-display text-5xl leading-[1.05] font-medium tracking-tight text-prose sm:text-6xl">
-                        Software engineer.
+                        Software developer.
                         <br />
                         <span className="text-subtle">Professional</span>{' '}
-                        <span className="text-subtle">rabbit-hole diver.</span>
+                        <span className="text-subtle">sidequester.</span>
                     </h1>
                     <div className="nocturne-sweep mt-6 w-40 rounded-full" />
                     <p className="mt-6 max-w-xl text-lg text-subtle">
                         I build things with Laravel, PHP, and whatever has my
                         attention this month. Mostly code, occasionally
-                        opinions, perpetually down a wiki trail.
+                        opinions, perpetually down a rabbit-hole.
                     </p>
                     <div className="mt-8">
                         <SocialLinks />
                     </div>
                 </header>
 
-                {/* Recent writing */}
                 {posts.length > 0 && (
                     <section className="mt-20">
                         <div className="flex items-baseline justify-between">

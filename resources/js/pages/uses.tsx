@@ -89,7 +89,7 @@ const sections = [
             },
             { name: 'Claude Code', description: 'Like the rest of the world' },
             {
-                name: 'Zellij',
+                name: 'Herdr',
                 description: 'Most of my success is due to tmux',
             },
         ],
