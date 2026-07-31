@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\PostImageController;
+use App\Http\Controllers\Admin\PostPreviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,4 +27,11 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('posts/{post:id}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('posts/{post:id}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('posts/{post:id}', [PostController::class, 'destroy'])->name('posts.destroy');
+
+    // Editor support endpoints (JOEY-5.2): the preview goes through the same
+    // MarkdownRenderer as publishing; uploads run the R2 + WebP pipeline.
+    Route::post('posts/preview', PostPreviewController::class)->name('posts.preview');
+    Route::post('posts/images', PostImageController::class)
+        ->middleware('throttle:60,1')
+        ->name('posts.images.store');
 });

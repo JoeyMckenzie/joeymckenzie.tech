@@ -1,6 +1,7 @@
 import { Form, Link } from '@inertiajs/react';
 import { useState } from 'react';
 import PostController from '@/actions/App/Http/Controllers/Admin/PostController';
+import { MarkdownEditor } from '@/components/admin/markdown-editor';
 import { InputError } from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -160,25 +161,15 @@ export function PostForm({
                         <InputError message={errors.tag_id} />
                     </div>
 
-                    {/* JOEY-5.2 swaps this single field for CodeMirror. */}
                     <div className="grid gap-2">
-                        <Label htmlFor="content">Content (markdown)</Label>
+                        {/* CodeMirror owns the input, so nothing to point at. */}
+                        <Label>Content (markdown)</Label>
 
-                        <Textarea
-                            id="content"
+                        <MarkdownEditor
                             name="content"
                             defaultValue={post?.content}
-                            required
-                            rows={20}
-                            className="font-mono text-sm"
-                            spellCheck={false}
-                            placeholder="## Heading"
+                            slug={slug}
                         />
-
-                        <p className="text-sm text-muted-foreground">
-                            Plain markdown for now — the rich editor and live
-                            preview arrive with JOEY-5.2.
-                        </p>
 
                         <InputError message={errors.content} />
                     </div>

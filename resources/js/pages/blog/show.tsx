@@ -1,9 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { ArrowLeft, Clock } from 'lucide-react';
-import { useEffect, useRef } from 'react';
 import { Reactions } from '@/components/blog/reactions';
-import { useAppearance } from '@/hooks/use-appearance';
-import { mermaidTheme } from '@/lib/mermaid-theme';
+import { RenderedMarkdown } from '@/components/blog/rendered-markdown';
 import { index } from '@/routes/blog';
 
 interface Article {
@@ -22,60 +20,11 @@ interface Article {
 /**
  * Blog post page (JOEY-4.3, backed by the JOEY-8 show endpoint).
  *
- * Renders the stored Phiki-highlighted `content_html` inside the Nocturne
- * article prose, initialises any Mermaid diagrams client-side, and mounts the
- * anonymous reactions widget (JOEY-9 API).
+ * Renders the stored Phiki-highlighted `content_html` through the shared
+ * article renderer — which also initialises any Mermaid diagrams client-side —
+ * and mounts the anonymous reactions widget (JOEY-9 API).
  */
 export default function BlogShow({ post }: { post: Article }) {
-    const articleRef = useRef<HTMLElement>(null);
-    // Diagram sources, stashed on first render so re-theming can re-run Mermaid
-    // (mermaid.run replaces each node's innerHTML with the rendered SVG).
-    const sources = useRef<Map<Element, string>>(new Map());
-    const { resolvedAppearance } = useAppearance();
-
-    useEffect(() => {
-        const article = articleRef.current;
-
-        if (article === null) {
-            return;
-        }
-
-        const nodes = Array.from(
-            article.querySelectorAll<HTMLElement>('.mermaid'),
-        );
-
-        if (nodes.length === 0) {
-            return;
-        }
-
-        let cancelled = false;
-
-        // Lazy-load Mermaid only when a post actually contains a diagram.
-        void (async () => {
-            const mermaid = (await import('mermaid')).default;
-
-            if (cancelled) {
-                return;
-            }
-
-            nodes.forEach((node) => {
-                if (!sources.current.has(node)) {
-                    sources.current.set(node, node.textContent ?? '');
-                }
-
-                node.innerHTML = sources.current.get(node) ?? '';
-                node.removeAttribute('data-processed');
-            });
-
-            mermaid.initialize(mermaidTheme(resolvedAppearance));
-            await mermaid.run({ nodes });
-        })();
-
-        return () => {
-            cancelled = true;
-        };
-    }, [resolvedAppearance]);
-
     return (
         <>
             <Head title={post.title}>
@@ -118,12 +67,8 @@ export default function BlogShow({ post }: { post: Article }) {
                     />
                 )}
 
-                {/* Server-rendered Phiki HTML; Mermaid blocks are initialised above. */}
-                <article
-                    ref={articleRef}
-                    className="prose-nocturne mt-10"
-                    dangerouslySetInnerHTML={{ __html: post.contentHtml }}
-                />
+                {/* Server-rendered Phiki HTML; Mermaid runs client-side. */}
+                <RenderedMarkdown html={post.contentHtml} className="mt-10" />
 
                 <Reactions postSlug={post.slug} />
             </div>

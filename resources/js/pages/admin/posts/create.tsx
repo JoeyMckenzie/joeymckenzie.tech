@@ -9,7 +9,7 @@ export default function PostsCreate({ tags }: { tags: TagOption[] }) {
         <>
             <Head title="New post" />
 
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 lg:p-6">
                 <Heading
                     variant="small"
                     title="New post"

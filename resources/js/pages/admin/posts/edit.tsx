@@ -17,7 +17,7 @@ export default function PostsEdit({
         <>
             <Head title={`Edit ${post.title}`} />
 
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4 lg:p-6">
                 <div className="flex items-start justify-between gap-4">
                     <Heading
                         variant="small"
