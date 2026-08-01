@@ -230,6 +230,32 @@ final class PostStoreTest extends TestCase
         $this->assertDatabaseCount('posts', 0);
     }
 
+    #[Test]
+    public function it_creates_a_normalized_tag_and_associates_it_with_the_post(): void
+    {
+        $this->actingAs(User::factory()->create())
+            ->post(route('admin.posts.store'), $this->payload(['tag_name' => ' Laravel Tips ']))
+            ->assertSessionHasNoErrors();
+
+        $tag = Tag::query()->sole();
+
+        $this->assertSame('laravel-tips', $tag->name);
+        $this->assertSame($tag->id, $this->storedPost()->tag_id);
+    }
+
+    #[Test]
+    public function it_reuses_an_existing_normalized_tag_name(): void
+    {
+        $tag = Tag::factory()->create(['name' => 'laravel-tips']);
+
+        $this->actingAs(User::factory()->create())
+            ->post(route('admin.posts.store'), $this->payload(['tag_name' => ' Laravel Tips ']))
+            ->assertSessionHasNoErrors();
+
+        $this->assertDatabaseCount('tags', 1);
+        $this->assertSame($tag->id, $this->storedPost()->tag_id);
+    }
+
     /**
      * A browser submits every field as a string, so `tag_id` arrives as "1" rather
      * than 1. Every other test here posts a real int, which is exactly why this
@@ -262,11 +288,15 @@ final class PostStoreTest extends TestCase
      */
     private function payload(array $overrides = []): array
     {
+        $tag = array_key_exists('tag_id', $overrides) || array_key_exists('tag_name', $overrides)
+            ? []
+            : ['tag_id' => Tag::factory()->create()->id];
+
         return [
             'title' => 'Writing Zig In Anger',
             'slug' => 'writing-zig-in-anger',
             'description' => 'A short note about comptime.',
-            'tag_id' => Tag::factory()->create()->id,
+            ...$tag,
             'content' => self::CONTENT,
             'status' => PostStatus::Draft->value,
             ...$overrides,

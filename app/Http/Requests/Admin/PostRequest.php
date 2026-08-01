@@ -35,7 +35,18 @@ final class PostRequest extends FormRequest
                 Rule::unique('posts', 'slug')->ignore($this->boundPost()),
             ],
             'description' => ['required', 'string', 'max:1000'],
-            'tag_id' => ['required', 'integer', Rule::exists(Tag::class, 'id')],
+            'tag_id' => [
+                'nullable',
+                'required_without:tag_name',
+                'integer',
+                Rule::exists(Tag::class, 'id'),
+            ],
+            'tag_name' => [
+                'nullable',
+                'required_without:tag_id',
+                'string',
+                'max:255',
+            ],
             'content' => ['required', 'string'],
             'status' => ['required', Rule::enum(PostStatus::class)],
             'published_at' => [
@@ -88,9 +99,10 @@ final class PostRequest extends FormRequest
      *
      * Slugs are derived from the title unless one was typed, and are normalised
      * either way so the uniqueness check runs against what actually gets stored.
-     * A browser submits every field as a string, so `tag_id` is cast here rather
-     * than in the controller — that keeps a real form post and a test payload
-     * indistinguishable by the time anything reads the validated data.
+     * New tag names use the same URL-safe representation as seeded tags. A
+     * browser submits every field as a string, so a legacy `tag_id` is cast here
+     * rather than in the controller — that keeps real form posts and test
+     * payloads indistinguishable by the time anything reads validated data.
      */
     #[\Override]
     protected function prepareForValidation(): void
@@ -107,6 +119,12 @@ final class PostRequest extends FormRequest
 
         if (is_numeric($tagId)) {
             $this->merge(['tag_id' => (int) $tagId]);
+        }
+
+        if ($this->exists('tag_name')) {
+            $this->merge([
+                'tag_name' => Str::slug($this->string('tag_name')->trim()->toString()),
+            ]);
         }
     }
 }

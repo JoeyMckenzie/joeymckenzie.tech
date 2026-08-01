@@ -9,13 +9,18 @@ import { Label } from '@/components/ui/label';
 import {
     Select,
     SelectContent,
+    SelectGroup,
     SelectItem,
+    SelectLabel,
+    SelectSeparator,
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { index as postsIndex } from '@/routes/admin/posts';
 import type { AdminPostFormValues, PostStatus, TagOption } from '@/types';
+
+const CREATE_NEW_TAG = '__create_new_tag__';
 
 const STATUS_OPTIONS: { value: PostStatus; label: string; hint: string }[] = [
     { value: 'draft', label: 'Draft', hint: 'Hidden from the public blog.' },
@@ -46,6 +51,9 @@ export function PostForm({
     // An existing post starts locked: its URL is already out in the world.
     const [slugLocked, setSlugLocked] = useState(post !== undefined);
     const [status, setStatus] = useState<PostStatus>(post?.status ?? 'draft');
+    const [tagSelection, setTagSelection] = useState(
+        post ? String(post.tagId) : '',
+    );
 
     const handleTitleChange = (value: string) => {
         setTitle(value);
@@ -134,31 +142,83 @@ export function PostForm({
                     </div>
 
                     <div className="grid gap-2">
-                        <Label htmlFor="tag_id">Tag</Label>
+                        <Label htmlFor="tag_selection">Tag</Label>
 
                         <Select
-                            name="tag_id"
-                            defaultValue={post?.tagId}
-                            items={tags.map((tag) => ({
-                                label: tag.name,
-                                value: tag.id,
-                            }))}
+                            name={
+                                tagSelection === CREATE_NEW_TAG
+                                    ? undefined
+                                    : 'tag_id'
+                            }
+                            value={tagSelection || null}
+                            onValueChange={(value) =>
+                                setTagSelection(value ?? '')
+                            }
+                            items={[
+                                ...tags.map((tag) => ({
+                                    label: tag.name,
+                                    value: String(tag.id),
+                                })),
+                                {
+                                    label: 'Create a new tag…',
+                                    value: CREATE_NEW_TAG,
+                                },
+                            ]}
                             required
                         >
-                            <SelectTrigger id="tag_id" className="w-full">
+                            <SelectTrigger
+                                id="tag_selection"
+                                className="w-full"
+                            >
                                 <SelectValue placeholder="Pick a tag" />
                             </SelectTrigger>
 
                             <SelectContent>
-                                {tags.map((tag) => (
-                                    <SelectItem key={tag.id} value={tag.id}>
-                                        {tag.name}
+                                <SelectGroup>
+                                    <SelectLabel>Existing tags</SelectLabel>
+
+                                    {tags.map((tag) => (
+                                        <SelectItem
+                                            key={tag.id}
+                                            value={String(tag.id)}
+                                        >
+                                            {tag.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectGroup>
+
+                                <SelectSeparator />
+
+                                <SelectGroup>
+                                    <SelectItem value={CREATE_NEW_TAG}>
+                                        Create a new tag…
                                     </SelectItem>
-                                ))}
+                                </SelectGroup>
                             </SelectContent>
                         </Select>
 
-                        <InputError message={errors.tag_id} />
+                        {tagSelection === CREATE_NEW_TAG && (
+                            <div className="grid gap-2">
+                                <Label htmlFor="tag_name">New tag name</Label>
+
+                                <Input
+                                    id="tag_name"
+                                    name="tag_name"
+                                    required
+                                    maxLength={255}
+                                    placeholder="laravel-tips"
+                                />
+
+                                <p className="text-sm text-muted-foreground">
+                                    New names are saved as lowercase URL-safe
+                                    slugs.
+                                </p>
+                            </div>
+                        )}
+
+                        <InputError
+                            message={errors.tag_name ?? errors.tag_id}
+                        />
                     </div>
 
                     <div className="grid gap-2">

@@ -162,7 +162,7 @@ final class PostController extends Controller
         $post->title = Arr::string($validated, 'title');
         $post->slug = Arr::string($validated, 'slug');
         $post->description = Arr::string($validated, 'description');
-        $post->tag_id = Arr::integer($validated, 'tag_id');
+        $post->tag_id = $this->tagId($validated);
         $post->content = $content;
         $post->content_html = $this->renderer->render($content);
         $post->reading_time_minutes = ReadingTime::forMarkdown($content);
@@ -176,6 +176,22 @@ final class PostController extends Controller
         if ($cover instanceof UploadedFile) {
             $post->image = $this->images->store($cover, $post->slug, 'cover')['key'];
         }
+    }
+
+    /**
+     * Reuse the selected tag or create the normalized inline name.
+     *
+     * @param  array<string, mixed>  $validated
+     */
+    private function tagId(array $validated): int
+    {
+        if (isset($validated['tag_id'])) {
+            return Arr::integer($validated, 'tag_id');
+        }
+
+        return Tag::query()->firstOrCreate([
+            'name' => Arr::string($validated, 'tag_name'),
+        ])->id;
     }
 
     /**
