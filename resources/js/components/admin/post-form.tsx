@@ -1,5 +1,6 @@
 import { Form, Link } from '@inertiajs/react';
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 import PostController from '@/actions/App/Http/Controllers/Admin/PostController';
 import { MarkdownEditor } from '@/components/admin/markdown-editor';
 import { InputError } from '@/components/input-error';
@@ -17,16 +18,53 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
 import { index as postsIndex } from '@/routes/admin/posts';
 import type { AdminPostFormValues, PostStatus, TagOption } from '@/types';
 
 const CREATE_NEW_TAG = '__create_new_tag__';
+
+const FIELD_LABEL_CLASS =
+    'font-mono text-[0.6875rem] tracking-[0.14em] text-subtle uppercase';
+
+const CONTROL_CLASS =
+    'border-hairline bg-panel text-prose placeholder:text-subtle/70 focus-visible:border-iris focus-visible:ring-iris/20';
 
 const STATUS_OPTIONS: { value: PostStatus; label: string; hint: string }[] = [
     { value: 'draft', label: 'Draft', hint: 'Hidden from the public blog.' },
     { value: 'published', label: 'Published', hint: 'Live immediately.' },
     { value: 'scheduled', label: 'Scheduled', hint: 'Goes live on a date.' },
 ];
+
+function PostFormSection({
+    id,
+    title,
+    children,
+    className,
+}: {
+    id: string;
+    title: string;
+    children: ReactNode;
+    className?: string;
+}) {
+    return (
+        <section
+            aria-labelledby={id}
+            className={cn('flex w-full flex-col gap-8', className)}
+        >
+            <div className="border-b border-hairline pb-3">
+                <h2
+                    id={id}
+                    className="font-mono text-xs tracking-[0.16em] text-subtle uppercase"
+                >
+                    {title}
+                </h2>
+            </div>
+
+            {children}
+        </section>
+    );
+}
 
 /** Mirrors `Str::slug()` closely enough for a live preview of the URL. */
 function slugify(value: string): string {
@@ -48,8 +86,7 @@ export function PostForm({
 }) {
     const [title, setTitle] = useState(post?.title ?? '');
     const [slug, setSlug] = useState(post?.slug ?? '');
-    // An existing post starts locked: its URL is already out in the world.
-    const [slugLocked, setSlugLocked] = useState(post !== undefined);
+    const [slugIsManual, setSlugIsManual] = useState(false);
     const [status, setStatus] = useState<PostStatus>(post?.status ?? 'draft');
     const [tagSelection, setTagSelection] = useState(
         post ? String(post.tagId) : '',
@@ -58,13 +95,13 @@ export function PostForm({
     const handleTitleChange = (value: string) => {
         setTitle(value);
 
-        if (!slugLocked) {
+        if (!slugIsManual) {
             setSlug(slugify(value));
         }
     };
 
     const handleSlugChange = (value: string) => {
-        setSlugLocked(true);
+        setSlugIsManual(true);
         setSlug(value);
     };
 
@@ -77,263 +114,352 @@ export function PostForm({
                 preserveScroll: true,
             }}
             encType="multipart/form-data"
-            className="space-y-6"
+            className="relative flex flex-col gap-12"
         >
             {({ processing, errors }) => (
                 <>
-                    <div className="grid gap-2">
-                        <Label htmlFor="title">Title</Label>
-
-                        <Input
-                            id="title"
-                            name="title"
-                            value={title}
-                            onChange={(event) =>
-                                handleTitleChange(event.target.value)
-                            }
-                            required
-                            maxLength={255}
-                            placeholder="How I stopped worrying about N+1"
-                        />
-
-                        <InputError message={errors.title} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="slug">Slug</Label>
-
-                        <Input
-                            id="slug"
-                            name="slug"
-                            value={slug}
-                            onChange={(event) =>
-                                handleSlugChange(event.target.value)
-                            }
-                            required
-                            maxLength={255}
-                            className="font-mono text-sm"
-                            placeholder="how-i-stopped-worrying-about-n-1"
-                        />
-
-                        <p className="text-sm text-muted-foreground">
-                            Public URL:{' '}
-                            <span className="font-mono">
-                                /blog/{slug || 'your-post'}
-                            </span>
-                        </p>
-
-                        <InputError message={errors.slug} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="description">Description</Label>
-
-                        <Textarea
-                            id="description"
-                            name="description"
-                            defaultValue={post?.description}
-                            required
-                            rows={3}
-                            maxLength={1000}
-                            placeholder="One or two sentences for listings and social cards."
-                        />
-
-                        <InputError message={errors.description} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="tag_selection">Tag</Label>
-
-                        <Select
-                            name={
-                                tagSelection === CREATE_NEW_TAG
-                                    ? undefined
-                                    : 'tag_id'
-                            }
-                            value={tagSelection || null}
-                            onValueChange={(value) =>
-                                setTagSelection(value ?? '')
-                            }
-                            items={[
-                                ...tags.map((tag) => ({
-                                    label: tag.name,
-                                    value: String(tag.id),
-                                })),
-                                {
-                                    label: 'Create a new tag…',
-                                    value: CREATE_NEW_TAG,
-                                },
-                            ]}
-                            required
-                        >
-                            <SelectTrigger
-                                id="tag_selection"
-                                className="w-full"
-                            >
-                                <SelectValue placeholder="Pick a tag" />
-                            </SelectTrigger>
-
-                            <SelectContent>
-                                <SelectGroup>
-                                    <SelectLabel>Existing tags</SelectLabel>
-
-                                    {tags.map((tag) => (
-                                        <SelectItem
-                                            key={tag.id}
-                                            value={String(tag.id)}
-                                        >
-                                            {tag.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectGroup>
-
-                                <SelectSeparator />
-
-                                <SelectGroup>
-                                    <SelectItem value={CREATE_NEW_TAG}>
-                                        Create a new tag…
-                                    </SelectItem>
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-
-                        {tagSelection === CREATE_NEW_TAG && (
-                            <div className="grid gap-2">
-                                <Label htmlFor="tag_name">New tag name</Label>
-
-                                <Input
-                                    id="tag_name"
-                                    name="tag_name"
-                                    required
-                                    maxLength={255}
-                                    placeholder="laravel-tips"
-                                />
-
-                                <p className="text-sm text-muted-foreground">
-                                    New names are saved as lowercase URL-safe
-                                    slugs.
-                                </p>
-                            </div>
-                        )}
-
-                        <InputError
-                            message={errors.tag_name ?? errors.tag_id}
-                        />
-                    </div>
-
-                    <div className="grid gap-2">
-                        {/* CodeMirror owns the input, so nothing to point at. */}
-                        <Label>Content (markdown)</Label>
-
-                        <MarkdownEditor
-                            name="content"
-                            defaultValue={post?.content}
-                            slug={slug}
-                        />
-
-                        <InputError message={errors.content} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="cover">Cover image</Label>
-
-                        {post?.cover && (
-                            <>
-                                <img
-                                    src={post.cover}
-                                    alt={`Current cover for ${post.title}`}
-                                    className="h-32 w-auto rounded-md border border-border object-cover"
-                                />
-
-                                <p className="text-sm text-muted-foreground">
-                                    Uploading a new image replaces this one.
-                                    Leave the field empty to keep it.
-                                </p>
-                            </>
-                        )}
-
-                        <Input
-                            id="cover"
-                            type="file"
-                            name="cover"
-                            accept="image/*"
-                        />
-
-                        <InputError message={errors.cover} />
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label>Status</Label>
-
-                        <div className="grid gap-2 sm:grid-cols-3">
-                            {STATUS_OPTIONS.map((option) => (
-                                <Label
-                                    key={option.value}
-                                    htmlFor={`status-${option.value}`}
-                                    className="flex items-start gap-3 rounded-md border border-border p-3 has-checked:border-ring has-checked:bg-muted"
-                                >
-                                    <input
-                                        id={`status-${option.value}`}
-                                        type="radio"
-                                        name="status"
-                                        value={option.value}
-                                        defaultChecked={
-                                            option.value ===
-                                            (post?.status ?? 'draft')
-                                        }
-                                        onChange={() => setStatus(option.value)}
-                                        className="mt-0.5"
-                                    />
-
-                                    <span className="grid gap-1">
-                                        <span>{option.label}</span>
-
-                                        <span className="text-xs font-normal text-muted-foreground">
-                                            {option.hint}
-                                        </span>
-                                    </span>
-                                </Label>
-                            ))}
-                        </div>
-
-                        <InputError message={errors.status} />
-                    </div>
-
-                    {status === 'scheduled' && (
+                    <PostFormSection
+                        id="story-section"
+                        title="Story"
+                        className="mx-auto max-w-3xl"
+                    >
                         <div className="grid gap-2">
-                            <Label htmlFor="published_at">Publish at</Label>
+                            <Label
+                                htmlFor="title"
+                                className={FIELD_LABEL_CLASS}
+                            >
+                                Title
+                            </Label>
 
                             <Input
-                                id="published_at"
-                                type="datetime-local"
-                                name="published_at"
-                                defaultValue={post?.publishedAt ?? ''}
+                                id="title"
+                                name="title"
+                                value={title}
+                                onChange={(event) =>
+                                    handleTitleChange(event.target.value)
+                                }
                                 required
+                                maxLength={255}
+                                aria-invalid={Boolean(errors.title)}
+                                className="h-auto rounded-none border-0 border-b border-hairline bg-transparent px-0 py-3 font-display text-3xl font-medium tracking-tight text-prose shadow-none placeholder:text-subtle/50 focus-visible:border-iris focus-visible:ring-0 sm:text-4xl md:text-4xl"
+                                placeholder="How I stopped worrying about N+1"
                             />
 
-                            <p className="text-sm text-muted-foreground">
-                                Scheduling requires a date and time in the
-                                future.
+                            <InputError message={errors.title} />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="slug" className={FIELD_LABEL_CLASS}>
+                                Slug
+                            </Label>
+
+                            <Input
+                                id="slug"
+                                name="slug"
+                                value={slug}
+                                onChange={(event) =>
+                                    handleSlugChange(event.target.value)
+                                }
+                                required
+                                maxLength={255}
+                                aria-invalid={Boolean(errors.slug)}
+                                className={cn(
+                                    CONTROL_CLASS,
+                                    'font-mono text-sm',
+                                )}
+                                placeholder="how-i-stopped-worrying-about-n-1"
+                            />
+
+                            <p className="text-xs leading-5 text-subtle">
+                                Public URL:{' '}
+                                <span className="font-mono text-prose">
+                                    /blog/{slug || 'your-post'}
+                                </span>
                             </p>
 
-                            <InputError message={errors.published_at} />
+                            <InputError message={errors.slug} />
                         </div>
-                    )}
 
-                    <div className="flex items-center gap-4">
-                        <Button
-                            type="submit"
-                            disabled={processing}
-                            data-test="save-post-button"
+                        <div className="grid gap-2">
+                            <Label
+                                htmlFor="description"
+                                className={FIELD_LABEL_CLASS}
+                            >
+                                Description
+                            </Label>
+
+                            <Textarea
+                                id="description"
+                                name="description"
+                                defaultValue={post?.description}
+                                required
+                                rows={3}
+                                maxLength={1000}
+                                aria-invalid={Boolean(errors.description)}
+                                className={CONTROL_CLASS}
+                                placeholder="One or two sentences for listings and social cards."
+                            />
+
+                            <InputError message={errors.description} />
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label
+                                htmlFor="tag_selection"
+                                className={FIELD_LABEL_CLASS}
+                            >
+                                Tag
+                            </Label>
+
+                            <Select
+                                name={
+                                    tagSelection === CREATE_NEW_TAG
+                                        ? undefined
+                                        : 'tag_id'
+                                }
+                                value={tagSelection || null}
+                                onValueChange={(value) =>
+                                    setTagSelection(value ?? '')
+                                }
+                                items={[
+                                    ...tags.map((tag) => ({
+                                        label: tag.name,
+                                        value: String(tag.id),
+                                    })),
+                                    {
+                                        label: 'Create a new tag…',
+                                        value: CREATE_NEW_TAG,
+                                    },
+                                ]}
+                                required
+                            >
+                                <SelectTrigger
+                                    id="tag_selection"
+                                    aria-invalid={Boolean(
+                                        errors.tag_name ?? errors.tag_id,
+                                    )}
+                                    className={cn(CONTROL_CLASS, 'w-full')}
+                                >
+                                    <SelectValue placeholder="Pick a tag" />
+                                </SelectTrigger>
+
+                                <SelectContent>
+                                    <SelectGroup>
+                                        <SelectLabel>Existing tags</SelectLabel>
+
+                                        {tags.map((tag) => (
+                                            <SelectItem
+                                                key={tag.id}
+                                                value={String(tag.id)}
+                                            >
+                                                {tag.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectGroup>
+
+                                    <SelectSeparator />
+
+                                    <SelectGroup>
+                                        <SelectItem value={CREATE_NEW_TAG}>
+                                            Create a new tag…
+                                        </SelectItem>
+                                    </SelectGroup>
+                                </SelectContent>
+                            </Select>
+
+                            {tagSelection === CREATE_NEW_TAG && (
+                                <div className="mt-2 grid gap-2 border-l border-iris pl-4">
+                                    <Label
+                                        htmlFor="tag_name"
+                                        className={FIELD_LABEL_CLASS}
+                                    >
+                                        New tag name
+                                    </Label>
+
+                                    <Input
+                                        id="tag_name"
+                                        name="tag_name"
+                                        required
+                                        maxLength={255}
+                                        aria-invalid={Boolean(errors.tag_name)}
+                                        className={CONTROL_CLASS}
+                                        placeholder="laravel-tips"
+                                    />
+
+                                    <p className="text-xs leading-5 text-subtle">
+                                        New names are saved as lowercase
+                                        URL-safe slugs.
+                                    </p>
+                                </div>
+                            )}
+
+                            <InputError
+                                message={errors.tag_name ?? errors.tag_id}
+                            />
+                        </div>
+                    </PostFormSection>
+
+                    <PostFormSection id="content-section" title="Content">
+                        <div className="grid gap-2">
+                            {/* CodeMirror owns the input, so nothing to point at. */}
+                            <Label className={FIELD_LABEL_CLASS}>
+                                Content (markdown)
+                            </Label>
+
+                            <MarkdownEditor
+                                name="content"
+                                defaultValue={post?.content}
+                                slug={slug}
+                            />
+
+                            <InputError message={errors.content} />
+                        </div>
+
+                        <div className="mx-auto grid w-full max-w-3xl gap-2">
+                            <Label
+                                htmlFor="cover"
+                                className={FIELD_LABEL_CLASS}
+                            >
+                                Cover image
+                            </Label>
+
+                            {post?.cover && (
+                                <div className="flex flex-col gap-4 rounded-md border border-hairline bg-panel p-4 sm:flex-row sm:items-center">
+                                    <img
+                                        src={post.cover}
+                                        alt={`Current cover for ${post.title}`}
+                                        className="h-24 w-full rounded-md border border-hairline object-cover sm:w-40"
+                                    />
+
+                                    <p className="text-sm leading-6 text-subtle">
+                                        Current cover. Uploading a new image
+                                        replaces this plate; leave the field
+                                        empty to keep it.
+                                    </p>
+                                </div>
+                            )}
+
+                            <Input
+                                id="cover"
+                                type="file"
+                                name="cover"
+                                accept="image/*"
+                                aria-invalid={Boolean(errors.cover)}
+                                className={CONTROL_CLASS}
+                            />
+
+                            <InputError message={errors.cover} />
+                        </div>
+                    </PostFormSection>
+
+                    <PostFormSection
+                        id="publishing-section"
+                        title="Publishing"
+                        className="mx-auto max-w-3xl"
+                    >
+                        <fieldset className="grid gap-3">
+                            <legend className={FIELD_LABEL_CLASS}>
+                                Status
+                            </legend>
+
+                            <div className="grid gap-2 sm:grid-cols-3">
+                                {STATUS_OPTIONS.map((option) => (
+                                    <Label
+                                        key={option.value}
+                                        htmlFor={`status-${option.value}`}
+                                        className="flex cursor-pointer items-start gap-3 rounded-md border border-hairline bg-panel p-3 text-prose transition-colors focus-within:border-iris focus-within:ring-2 focus-within:ring-iris/20 has-checked:border-iris has-checked:bg-iris/10"
+                                    >
+                                        <input
+                                            id={`status-${option.value}`}
+                                            type="radio"
+                                            name="status"
+                                            value={option.value}
+                                            defaultChecked={
+                                                option.value ===
+                                                (post?.status ?? 'draft')
+                                            }
+                                            onChange={() =>
+                                                setStatus(option.value)
+                                            }
+                                            aria-invalid={Boolean(
+                                                errors.status,
+                                            )}
+                                            className="mt-0.5 size-4 accent-iris"
+                                        />
+
+                                        <span className="grid gap-1">
+                                            <span className="font-mono text-xs tracking-wide uppercase">
+                                                {option.label}
+                                            </span>
+
+                                            <span className="text-xs leading-5 font-normal text-subtle">
+                                                {option.hint}
+                                            </span>
+                                        </span>
+                                    </Label>
+                                ))}
+                            </div>
+
+                            <InputError message={errors.status} />
+                        </fieldset>
+
+                        {status === 'scheduled' && (
+                            <div className="grid gap-2 border-l border-iris pl-4">
+                                <Label
+                                    htmlFor="published_at"
+                                    className={FIELD_LABEL_CLASS}
+                                >
+                                    Publish at
+                                </Label>
+
+                                <Input
+                                    id="published_at"
+                                    type="datetime-local"
+                                    name="published_at"
+                                    defaultValue={post?.publishedAt ?? ''}
+                                    required
+                                    aria-invalid={Boolean(errors.published_at)}
+                                    className={CONTROL_CLASS}
+                                />
+
+                                <p className="text-xs leading-5 text-subtle">
+                                    Scheduling requires a date and time in the
+                                    future.
+                                </p>
+
+                                <InputError message={errors.published_at} />
+                            </div>
+                        )}
+                    </PostFormSection>
+
+                    <div
+                        className="sticky bottom-3 z-10 mx-auto flex w-full max-w-3xl flex-wrap items-center gap-3 rounded-md border border-hairline bg-panel/95 px-3 py-2 shadow-sm backdrop-blur"
+                        aria-label="Post actions"
+                    >
+                        <span
+                            className="rounded-sm border border-iris/20 bg-iris/10 px-2 py-1 font-mono text-[0.6875rem] font-medium tracking-[0.12em] text-iris uppercase"
+                            data-test="post-status-indicator"
                         >
-                            {post ? 'Save changes' : 'Create post'}
-                        </Button>
+                            {status}
+                        </span>
 
-                        <Button
-                            variant="secondary"
-                            nativeButton={false}
-                            render={<Link href={postsIndex()}>Cancel</Link>}
-                        />
+                        <div className="ml-auto flex items-center gap-2">
+                            <Button
+                                type="submit"
+                                disabled={processing}
+                                className="bg-iris text-canvas hover:bg-iris/90"
+                                data-test="save-post-button"
+                            >
+                                {post ? 'Save changes' : 'Create post'}
+                            </Button>
+
+                            <Button
+                                variant="ghost"
+                                className="text-subtle hover:bg-canvas hover:text-prose"
+                                nativeButton={false}
+                                render={<Link href={postsIndex()}>Cancel</Link>}
+                            />
+                        </div>
                     </div>
                 </>
             )}

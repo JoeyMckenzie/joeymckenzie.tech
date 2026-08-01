@@ -391,6 +391,54 @@
     }
 }
 
+/* ── Nocturne authoring desk (JOEY-5.5) ───────────────────────────
+   Structural CodeMirror theming only. Syntax tokens continue to come from
+   CodeMirror's selected light/dark theme. */
+.nocturne-editor .cm-editor {
+    background: var(--panel);
+    color: var(--prose);
+}
+
+.nocturne-editor .cm-scroller {
+    font-family: var(--font-mono);
+    line-height: 1.7;
+}
+
+.nocturne-editor .cm-content {
+    padding-block: 1rem;
+    caret-color: var(--iris);
+}
+
+.nocturne-editor .cm-line {
+    padding-inline: 1rem;
+}
+
+.nocturne-editor .cm-gutters {
+    border-right: 1px solid var(--hairline);
+    background: var(--panel);
+    color: var(--subtle);
+}
+
+.nocturne-editor .cm-cursor,
+.nocturne-editor .cm-dropCursor {
+    border-left-color: var(--iris);
+}
+
+.nocturne-editor .cm-selectionBackground,
+.nocturne-editor .cm-content ::selection {
+    background: color-mix(in oklab, var(--iris) 24%, transparent) !important;
+}
+
+.nocturne-editor .cm-placeholder {
+    color: color-mix(in oklab, var(--subtle) 72%, transparent);
+    font-style: normal;
+}
+
+.nocturne-editor .cm-editor.cm-focused {
+    outline: 2px solid color-mix(in oklab, var(--iris) 35%, transparent);
+    outline-offset: -2px;
+}
+
 /* ── Nocturne motion primitives (respect reduced motion) ─────────── */
 @keyframes nocturne-sweep {
     from {

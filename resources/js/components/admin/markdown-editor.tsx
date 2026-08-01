@@ -1,14 +1,15 @@
 import { markdown } from '@codemirror/lang-markdown';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { ImagePlus } from 'lucide-react';
-import { useRef, useState } from 'react';
-import type { ClipboardEvent, DragEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import type { ClipboardEvent, DragEvent, UIEvent } from 'react';
 import { RenderedMarkdown } from '@/components/blog/rendered-markdown';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { useAppearance } from '@/hooks/use-appearance';
 import { useMarkdownPreview } from '@/hooks/use-markdown-preview';
 import { usePostImageUpload } from '@/hooks/use-post-image-upload';
+import { useSynchronizedScroll } from '@/hooks/use-synchronized-scroll';
 import { cn } from '@/lib/utils';
 
 type Pane = 'write' | 'preview';
@@ -23,6 +24,14 @@ const SETUP = {
     highlightActiveLine: false,
     highlightActiveLineGutter: false,
 };
+
+const EXTENSIONS = [
+    markdown(),
+    EditorView.lineWrapping,
+    EditorView.contentAttributes.of({
+        'aria-label': 'Content (markdown)',
+    }),
+];
 
 /**
  * True when a drag or clipboard payload carries an image. Checked against
@@ -61,9 +70,19 @@ export function MarkdownEditor({
     const [pane, setPane] = useState<Pane>('write');
     const view = useRef<EditorView | null>(null);
     const picker = useRef<HTMLInputElement>(null);
+    const previewScroller = useRef<HTMLDivElement>(null);
     const { resolvedAppearance } = useAppearance();
-    const { html, processing } = useMarkdownPreview(doc);
+    const { html } = useMarkdownPreview(doc);
     const { upload, uploading, progress } = usePostImageUpload(slug);
+    const synchronizeScroll = useSynchronizedScroll();
+
+    useEffect(() => {
+        const sourceScroller = view.current?.scrollDOM;
+
+        if (sourceScroller !== undefined) {
+            synchronizeScroll(sourceScroller, previewScroller.current);
+        }
+    }, [html, synchronizeScroll]);
 
     const insert = async (file: File): Promise<void> => {
         const url = await upload(file);
@@ -121,27 +140,47 @@ export function MarkdownEditor({
         insertFirstImage(event.clipboardData.files);
     };
 
+    const handleSourceScroll = (event: UIEvent<HTMLDivElement>): void => {
+        const sourceScroller = event.target;
+
+        if (
+            !(sourceScroller instanceof HTMLElement) ||
+            !sourceScroller.classList.contains('cm-scroller')
+        ) {
+            return;
+        }
+
+        synchronizeScroll(sourceScroller, previewScroller.current);
+    };
+
+    const handlePreviewScroll = (event: UIEvent<HTMLDivElement>): void => {
+        synchronizeScroll(event.currentTarget, view.current?.scrollDOM ?? null);
+    };
+
     const uploadLabel =
         progress === null ? 'Uploading…' : `Uploading… ${progress}%`;
 
     return (
         <div className="grid gap-3">
-            <div className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-border bg-muted px-2 py-1.5">
-                <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    disabled={uploading}
-                    onClick={() => picker.current?.click()}
-                >
-                    {uploading ? (
-                        <Spinner />
-                    ) : (
-                        <ImagePlus className="size-4" aria-hidden />
-                    )}
+            <div className="flex flex-wrap items-center justify-between gap-2 rounded-md border border-hairline bg-panel px-2 py-1.5 font-mono text-xs text-subtle">
+                <div className="flex min-w-0 items-center gap-1">
+                    <span className="hidden px-2 text-[0.6875rem] tracking-[0.12em] text-iris sm:inline">
+                        MARKDOWN
+                    </span>
 
-                    {uploading ? uploadLabel : 'Insert image'}
-                </Button>
+                    <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        disabled={uploading}
+                        onClick={() => picker.current?.click()}
+                        className="font-mono text-xs text-subtle hover:bg-canvas hover:text-prose"
+                    >
+                        {uploading ? <Spinner /> : <ImagePlus aria-hidden />}
+
+                        {uploading ? uploadLabel : 'Insert image'}
+                    </Button>
+                </div>
 
                 <input
                     ref={picker}
@@ -159,8 +198,16 @@ export function MarkdownEditor({
                     <Button
                         type="button"
                         size="sm"
-                        variant={pane === 'write' ? 'secondary' : 'ghost'}
+                        variant="ghost"
+                        aria-pressed={pane === 'write'}
+                        data-test="markdown-write-toggle"
                         onClick={() => setPane('write')}
+                        className={cn(
+                            'font-mono text-xs',
+                            pane === 'write'
+                                ? 'bg-iris/10 text-iris hover:bg-iris/15 hover:text-iris'
+                                : 'text-subtle hover:bg-canvas hover:text-prose',
+                        )}
                     >
                         Write
                     </Button>
@@ -168,8 +215,16 @@ export function MarkdownEditor({
                     <Button
                         type="button"
                         size="sm"
-                        variant={pane === 'preview' ? 'secondary' : 'ghost'}
+                        variant="ghost"
+                        aria-pressed={pane === 'preview'}
+                        data-test="markdown-preview-toggle"
                         onClick={() => setPane('preview')}
+                        className={cn(
+                            'font-mono text-xs',
+                            pane === 'preview'
+                                ? 'bg-iris/10 text-iris hover:bg-iris/15 hover:text-iris'
+                                : 'text-subtle hover:bg-canvas hover:text-prose',
+                        )}
                     >
                         Preview
                     </Button>
@@ -181,8 +236,9 @@ export function MarkdownEditor({
                     onDragOverCapture={handleDragOver}
                     onDropCapture={handleDrop}
                     onPasteCapture={handlePaste}
+                    onScrollCapture={handleSourceScroll}
                     className={cn(
-                        'min-w-0 overflow-hidden rounded-md border border-border bg-background',
+                        'nocturne-editor min-w-0 overflow-hidden rounded-md border border-hairline bg-panel focus-within:border-iris',
                         pane === 'preview' && 'hidden lg:block',
                     )}
                 >
@@ -190,7 +246,7 @@ export function MarkdownEditor({
                         value={doc}
                         onChange={setDoc}
                         theme={resolvedAppearance}
-                        extensions={[markdown(), EditorView.lineWrapping]}
+                        extensions={EXTENSIONS}
                         basicSetup={SETUP}
                         minHeight="28rem"
                         maxHeight="34rem"
@@ -204,24 +260,18 @@ export function MarkdownEditor({
 
                 <div
                     className={cn(
-                        'flex min-w-0 flex-col overflow-hidden rounded-md border border-border bg-canvas',
+                        'flex min-w-0 flex-col overflow-hidden rounded-md border border-hairline bg-canvas',
                         pane === 'write' && 'hidden lg:flex',
                     )}
+                    data-test="markdown-preview-pane"
                 >
-                    <div className="flex items-center justify-between gap-2 border-b border-border px-3 py-2 font-mono text-xs text-muted-foreground">
-                        <span>Preview — rendered by the server</span>
-
-                        {processing && (
-                            <span className="inline-flex items-center gap-1.5">
-                                <Spinner className="size-3" />
-                                rendering…
-                            </span>
-                        )}
-                    </div>
-
-                    <div className="max-h-[34rem] min-h-[28rem] overflow-y-auto p-6">
+                    <div
+                        ref={previewScroller}
+                        onScroll={handlePreviewScroll}
+                        className="max-h-[34rem] min-h-[28rem] overflow-y-auto p-5 sm:p-6"
+                    >
                         {doc.trim() === '' ? (
-                            <p className="font-mono text-xs text-subtle">
+                            <p className="font-mono text-xs leading-5 text-subtle">
                                 Nothing to preview yet. Whatever you write is
                                 rendered by the same markdown pipeline that
                                 publishes the post.
