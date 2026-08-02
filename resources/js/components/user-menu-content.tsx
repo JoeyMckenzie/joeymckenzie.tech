@@ -51,6 +51,7 @@ export function UserMenuContent({ user }: Props) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
+                nativeButton
                 render={
                     <Link
                         className="block w-full cursor-pointer"

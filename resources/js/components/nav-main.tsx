@@ -14,22 +14,39 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
 
     return (
         <SidebarGroup className="px-2 py-0">
-            <SidebarGroupLabel>Platform</SidebarGroupLabel>
+            <SidebarGroupLabel className="font-mono text-[0.65rem] tracking-[0.18em] text-subtle uppercase">
+                Platform
+            </SidebarGroupLabel>
             <SidebarMenu>
-                {items.map((item) => (
-                    <SidebarMenuItem key={item.title}>
-                        <SidebarMenuButton
-                            isActive={isCurrentOrParentUrl(item.href)}
-                            tooltip={{ children: item.title }}
-                            render={
-                                <Link href={item.href} prefetch>
-                                    {item.icon && <item.icon />}
-                                    <span>{item.title}</span>
-                                </Link>
-                            }
-                        />
-                    </SidebarMenuItem>
-                ))}
+                {items.map((item) => {
+                    const isActive = isCurrentOrParentUrl(item.href);
+
+                    return (
+                        <SidebarMenuItem key={item.title}>
+                            <SidebarMenuButton
+                                isActive={isActive}
+                                className="relative font-mono text-subtle before:absolute before:inset-y-1.5 before:left-0 before:w-px before:rounded-full before:bg-iris before:opacity-0 hover:bg-canvas hover:text-prose focus-visible:ring-iris data-[active=true]:bg-canvas data-[active=true]:text-iris data-[active=true]:before:opacity-100"
+                                tooltip={{
+                                    children: item.title,
+                                    className:
+                                        'border-hairline bg-panel font-mono text-prose',
+                                }}
+                                render={
+                                    <Link
+                                        href={item.href}
+                                        prefetch
+                                        aria-current={
+                                            isActive ? 'location' : undefined
+                                        }
+                                    >
+                                        {item.icon && <item.icon />}
+                                        <span>{item.title}</span>
+                                    </Link>
+                                }
+                            />
+                        </SidebarMenuItem>
+                    );
+                })}
             </SidebarMenu>
         </SidebarGroup>
     );

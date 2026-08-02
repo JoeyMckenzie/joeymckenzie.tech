@@ -32,7 +32,7 @@ export function NavUser() {
                         render={
                             <SidebarMenuButton
                                 size="lg"
-                                className="group text-sidebar-accent-foreground data-[popup-open]:bg-sidebar-accent"
+                                className="group text-prose hover:bg-canvas hover:text-prose focus-visible:ring-iris data-[popup-open]:bg-canvas data-[popup-open]:text-iris"
                                 data-test="sidebar-menu-button"
                             >
                                 <UserInfo user={auth.user} />
@@ -41,7 +41,7 @@ export function NavUser() {
                         }
                     />
                     <DropdownMenuContent
-                        className="w-(--anchor-width) min-w-56 rounded-lg"
+                        className="nocturne-admin-menu w-(--anchor-width) min-w-56 rounded-lg border-hairline bg-panel font-body text-prose shadow-none"
                         align="end"
                         side={
                             isMobile

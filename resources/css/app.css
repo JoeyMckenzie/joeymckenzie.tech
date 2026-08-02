@@ -391,6 +391,45 @@
     }
 }
 
+/* ── Nocturne authenticated admin chrome (JOEY-5.6) ──────────────
+   The shadcn/Base UI semantic adapters stay local to the shell surfaces,
+   keeping the global component theme unchanged. */
+.nocturne-admin-sidebar {
+    --sidebar: var(--panel);
+    --sidebar-foreground: var(--prose);
+    --sidebar-primary: var(--iris);
+    --sidebar-primary-foreground: var(--canvas);
+    --sidebar-accent: color-mix(in oklab, var(--iris) 12%, var(--panel));
+    --sidebar-accent-foreground: var(--prose);
+    --sidebar-border: var(--hairline);
+    --sidebar-ring: var(--iris);
+    --color-sidebar: var(--panel);
+    --color-sidebar-foreground: var(--prose);
+    --color-sidebar-primary: var(--iris);
+    --color-sidebar-primary-foreground: var(--canvas);
+    --color-sidebar-accent: color-mix(in oklab, var(--iris) 12%, var(--panel));
+    --color-sidebar-accent-foreground: var(--prose);
+    --color-sidebar-border: var(--hairline);
+    --color-sidebar-ring: var(--iris);
+}
+
+.nocturne-admin-menu {
+    --popover: var(--panel);
+    --popover-foreground: var(--prose);
+    --accent: color-mix(in oklab, var(--iris) 12%, var(--panel));
+    --accent-foreground: var(--prose);
+    --border: var(--hairline);
+    --muted-foreground: var(--subtle);
+    --ring: var(--iris);
+    --color-popover: var(--panel);
+    --color-popover-foreground: var(--prose);
+    --color-accent: color-mix(in oklab, var(--iris) 12%, var(--panel));
+    --color-accent-foreground: var(--prose);
+    --color-border: var(--hairline);
+    --color-muted-foreground: var(--subtle);
+    --color-ring: var(--iris);
+}
+
 /* ── Nocturne authoring desk (JOEY-5.5) ───────────────────────────
    Structural CodeMirror theming only. Syntax tokens continue to come from
    CodeMirror's selected light/dark theme. */

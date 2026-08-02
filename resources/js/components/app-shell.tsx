@@ -13,9 +13,18 @@ export function AppShell({ children, variant = 'sidebar' }: Props) {
 
     if (variant === 'header') {
         return (
-            <div className="flex min-h-screen w-full flex-col">{children}</div>
+            <div className="nocturne-admin-shell flex min-h-screen w-full flex-col bg-canvas! font-body text-prose">
+                {children}
+            </div>
         );
     }
 
-    return <SidebarProvider defaultOpen={isOpen}>{children}</SidebarProvider>;
+    return (
+        <SidebarProvider
+            defaultOpen={isOpen}
+            className="nocturne-admin-shell bg-canvas! font-body text-prose"
+        >
+            {children}
+        </SidebarProvider>
+    );
 }
