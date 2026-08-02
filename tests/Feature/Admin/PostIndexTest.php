@@ -6,6 +6,7 @@ namespace Tests\Feature\Admin;
 
 use App\Http\Controllers\Admin\PostController;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia;
@@ -17,6 +18,7 @@ use Tests\TestCase;
 
 #[CoversClass(PostController::class)]
 #[UsesClass(Post::class)]
+#[UsesClass(Tag::class)]
 #[UsesClass(User::class)]
 final class PostIndexTest extends TestCase
 {
@@ -33,14 +35,35 @@ final class PostIndexTest extends TestCase
     }
 
     #[Test]
-    public function it_renders_the_admin_post_list_for_an_authenticated_user(): void
+    public function it_renders_every_post_catalog_field_for_an_authenticated_user(): void
     {
+        $this->freezeTime();
+
+        $tag = Tag::factory()->create(['name' => 'Laravel']);
+        $post = Post::factory()->published()->for($tag)->create([
+            'title' => 'A catalogued story',
+            'slug' => 'a-catalogued-story',
+            'reading_time_minutes' => 7,
+            'views_count' => 42,
+            'published_at' => now()->subDay(),
+            'updated_at' => now()->subHour(),
+        ]);
+
         $this->actingAs(User::factory()->create())
             ->get(route('admin.posts.index'))
             ->assertOk()
             ->assertInertia(fn (Assert $page): AssertableInertia => $page
                 ->component('admin/posts/index')
-                ->has('posts', 0));
+                ->has('posts', 1)
+                ->where('posts.0.id', $post->id)
+                ->where('posts.0.title', 'A catalogued story')
+                ->where('posts.0.slug', 'a-catalogued-story')
+                ->where('posts.0.tag', 'Laravel')
+                ->where('posts.0.status', 'published')
+                ->where('posts.0.publishedLabel', now()->subDay()->format('M d, Y'))
+                ->where('posts.0.readingMinutes', 7)
+                ->where('posts.0.views', 42)
+                ->where('posts.0.updatedLabel', '1 hour ago'));
     }
 
     #[Test]

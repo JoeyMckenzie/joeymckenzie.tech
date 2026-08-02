@@ -7,6 +7,7 @@ import {
     DialogContent,
     DialogDescription,
     DialogFooter,
+    DialogHeader,
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
@@ -21,8 +22,10 @@ export function DeletePostDialog({
             <DialogTrigger
                 render={
                     <Button
-                        variant="destructive"
+                        variant="ghost"
                         size="sm"
+                        aria-label={`Delete ${post.title}`}
+                        className="font-mono text-xs text-subtle hover:bg-destructive/10 hover:text-destructive focus-visible:border-destructive focus-visible:ring-destructive/20"
                         data-test="delete-post-button"
                     >
                         Delete
@@ -30,27 +33,36 @@ export function DeletePostDialog({
                 }
             />
 
-            <DialogContent>
-                <DialogTitle>Delete “{post.title}”?</DialogTitle>
+            <DialogContent className="nocturne-admin-dialog border-hairline bg-panel font-body text-prose shadow-2xl shadow-black/20">
+                <DialogHeader className="min-w-0">
+                    <DialogTitle className="font-display text-2xl leading-tight font-medium tracking-tight [overflow-wrap:anywhere] break-words text-prose">
+                        Delete “{post.title}”?
+                    </DialogTitle>
 
-                <DialogDescription>
-                    This permanently deletes “{post.title}”. Its view counts and
-                    reactions go with it, and the public URL stops resolving.
-                    This cannot be undone.
-                </DialogDescription>
+                    <DialogDescription className="leading-6 [overflow-wrap:anywhere] break-words text-subtle">
+                        This permanently deletes “{post.title}”. Its view counts
+                        and reactions go with it, and the public URL stops
+                        resolving. This cannot be undone.
+                    </DialogDescription>
+                </DialogHeader>
 
                 <Form
                     {...PostController.destroy.form({ post: post.id })}
                     options={{
                         preserveScroll: true,
                     }}
-                    className="space-y-6"
+                    className="flex flex-col gap-6"
                 >
                     {({ processing }) => (
                         <DialogFooter className="gap-2">
                             <DialogClose
                                 render={
-                                    <Button variant="secondary">Cancel</Button>
+                                    <Button
+                                        variant="outline"
+                                        className="border-hairline bg-panel font-mono text-xs text-prose shadow-none hover:bg-canvas hover:text-iris focus-visible:border-iris focus-visible:ring-iris/20"
+                                    >
+                                        Cancel
+                                    </Button>
                                 }
                             />
 
@@ -62,7 +74,9 @@ export function DeletePostDialog({
                                         type="submit"
                                         data-test="confirm-delete-post-button"
                                     >
-                                        Delete post
+                                        {processing
+                                            ? 'Deleting…'
+                                            : 'Delete post'}
                                     </button>
                                 }
                             />

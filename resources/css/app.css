@@ -430,6 +430,23 @@
     --color-ring: var(--iris);
 }
 
+.nocturne-admin-dialog {
+    --background: var(--panel);
+    --foreground: var(--prose);
+    --accent: color-mix(in oklab, var(--iris) 12%, var(--panel));
+    --accent-foreground: var(--prose);
+    --border: var(--hairline);
+    --muted-foreground: var(--subtle);
+    --ring: var(--iris);
+    --color-background: var(--panel);
+    --color-foreground: var(--prose);
+    --color-accent: color-mix(in oklab, var(--iris) 12%, var(--panel));
+    --color-accent-foreground: var(--prose);
+    --color-border: var(--hairline);
+    --color-muted-foreground: var(--subtle);
+    --color-ring: var(--iris);
+}
+
 /* ── Nocturne authoring desk (JOEY-5.5) ───────────────────────────
    Structural CodeMirror theming only. Syntax tokens continue to come from
    CodeMirror's selected light/dark theme. */
