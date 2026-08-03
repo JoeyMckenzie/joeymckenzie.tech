@@ -248,8 +248,8 @@ export function MarkdownEditor({
                         theme={resolvedAppearance}
                         extensions={EXTENSIONS}
                         basicSetup={SETUP}
-                        minHeight="28rem"
-                        maxHeight="34rem"
+                        minHeight="40rem"
+                        maxHeight="48rem"
                         placeholder="## Heading"
                         className="font-mono text-sm"
                         onCreateEditor={(editor) => {
@@ -268,7 +268,7 @@ export function MarkdownEditor({
                     <div
                         ref={previewScroller}
                         onScroll={handlePreviewScroll}
-                        className="max-h-[34rem] min-h-[28rem] overflow-y-auto p-5 sm:p-6"
+                        className="max-h-[48rem] min-h-[40rem] overflow-y-auto p-5 sm:p-6"
                     >
                         {doc.trim() === '' ? (
                             <p className="font-mono text-xs leading-5 text-subtle">

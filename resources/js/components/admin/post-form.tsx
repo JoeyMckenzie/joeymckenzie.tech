@@ -114,15 +114,17 @@ export function PostForm({
                 preserveScroll: true,
             }}
             encType="multipart/form-data"
-            className="relative flex flex-col gap-12"
+            className="relative flex flex-col gap-14"
         >
             {({ processing, errors }) => (
                 <>
-                    <PostFormSection
-                        id="story-section"
-                        title="Story"
-                        className="mx-auto max-w-3xl"
-                    >
+                    {/*
+                     * Everything that isn't the writing surface lives up here in
+                     * one consistent-width block: title hero, then a grid that
+                     * fills the column so no field looks stranded. The editor is
+                     * the full-width finale below.
+                     */}
+                    <PostFormSection id="story-section" title="Story">
                         <div className="grid gap-2">
                             <Label
                                 htmlFor="title"
@@ -148,215 +150,205 @@ export function PostForm({
                             <InputError message={errors.title} />
                         </div>
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="slug" className={FIELD_LABEL_CLASS}>
-                                Slug
-                            </Label>
-
-                            <Input
-                                id="slug"
-                                name="slug"
-                                value={slug}
-                                onChange={(event) =>
-                                    handleSlugChange(event.target.value)
-                                }
-                                required
-                                maxLength={255}
-                                aria-invalid={Boolean(errors.slug)}
-                                className={cn(
-                                    CONTROL_CLASS,
-                                    'font-mono text-sm',
-                                )}
-                                placeholder="how-i-stopped-worrying-about-n-1"
-                            />
-
-                            <p className="text-xs leading-5 text-subtle">
-                                Public URL:{' '}
-                                <span className="font-mono text-prose">
-                                    /blog/{slug || 'your-post'}
-                                </span>
-                            </p>
-
-                            <InputError message={errors.slug} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label
-                                htmlFor="description"
-                                className={FIELD_LABEL_CLASS}
-                            >
-                                Description
-                            </Label>
-
-                            <Textarea
-                                id="description"
-                                name="description"
-                                defaultValue={post?.description}
-                                required
-                                rows={3}
-                                maxLength={1000}
-                                aria-invalid={Boolean(errors.description)}
-                                className={CONTROL_CLASS}
-                                placeholder="One or two sentences for listings and social cards."
-                            />
-
-                            <InputError message={errors.description} />
-                        </div>
-
-                        <div className="grid gap-2">
-                            <Label
-                                htmlFor="tag_selection"
-                                className={FIELD_LABEL_CLASS}
-                            >
-                                Tag
-                            </Label>
-
-                            <Select
-                                name={
-                                    tagSelection === CREATE_NEW_TAG
-                                        ? undefined
-                                        : 'tag_id'
-                                }
-                                value={tagSelection || null}
-                                onValueChange={(value) =>
-                                    setTagSelection(value ?? '')
-                                }
-                                items={[
-                                    ...tags.map((tag) => ({
-                                        label: tag.name,
-                                        value: String(tag.id),
-                                    })),
-                                    {
-                                        label: 'Create a new tag…',
-                                        value: CREATE_NEW_TAG,
-                                    },
-                                ]}
-                                required
-                            >
-                                <SelectTrigger
-                                    id="tag_selection"
-                                    aria-invalid={Boolean(
-                                        errors.tag_name ?? errors.tag_id,
-                                    )}
-                                    className={cn(CONTROL_CLASS, 'w-full')}
+                        <div className="grid gap-8 md:grid-cols-2 md:items-start">
+                            <div className="grid gap-2">
+                                <Label
+                                    htmlFor="slug"
+                                    className={FIELD_LABEL_CLASS}
                                 >
-                                    <SelectValue placeholder="Pick a tag" />
-                                </SelectTrigger>
+                                    Slug
+                                </Label>
 
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Existing tags</SelectLabel>
+                                <Input
+                                    id="slug"
+                                    name="slug"
+                                    value={slug}
+                                    onChange={(event) =>
+                                        handleSlugChange(event.target.value)
+                                    }
+                                    required
+                                    maxLength={255}
+                                    aria-invalid={Boolean(errors.slug)}
+                                    className={cn(
+                                        CONTROL_CLASS,
+                                        'font-mono text-sm',
+                                    )}
+                                    placeholder="how-i-stopped-worrying-about-n-1"
+                                />
 
-                                        {tags.map((tag) => (
-                                            <SelectItem
-                                                key={tag.id}
-                                                value={String(tag.id)}
-                                            >
-                                                {tag.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectGroup>
+                                <p className="text-xs leading-5 text-subtle">
+                                    Public URL:{' '}
+                                    <span className="font-mono text-prose">
+                                        /blog/{slug || 'your-post'}
+                                    </span>
+                                </p>
 
-                                    <SelectSeparator />
+                                <InputError message={errors.slug} />
+                            </div>
 
-                                    <SelectGroup>
-                                        <SelectItem value={CREATE_NEW_TAG}>
-                                            Create a new tag…
-                                        </SelectItem>
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
+                            <div className="grid gap-2">
+                                <Label
+                                    htmlFor="tag_selection"
+                                    className={FIELD_LABEL_CLASS}
+                                >
+                                    Tag
+                                </Label>
 
-                            {tagSelection === CREATE_NEW_TAG && (
-                                <div className="mt-2 grid gap-2 border-l border-iris pl-4">
-                                    <Label
-                                        htmlFor="tag_name"
-                                        className={FIELD_LABEL_CLASS}
+                                <Select
+                                    name={
+                                        tagSelection === CREATE_NEW_TAG
+                                            ? undefined
+                                            : 'tag_id'
+                                    }
+                                    value={tagSelection || null}
+                                    onValueChange={(value) =>
+                                        setTagSelection(value ?? '')
+                                    }
+                                    items={[
+                                        ...tags.map((tag) => ({
+                                            label: tag.name,
+                                            value: String(tag.id),
+                                        })),
+                                        {
+                                            label: 'Create a new tag…',
+                                            value: CREATE_NEW_TAG,
+                                        },
+                                    ]}
+                                    required
+                                >
+                                    <SelectTrigger
+                                        id="tag_selection"
+                                        aria-invalid={Boolean(
+                                            errors.tag_name ?? errors.tag_id,
+                                        )}
+                                        className={cn(CONTROL_CLASS, 'w-full')}
                                     >
-                                        New tag name
-                                    </Label>
+                                        <SelectValue placeholder="Pick a tag" />
+                                    </SelectTrigger>
 
-                                    <Input
-                                        id="tag_name"
-                                        name="tag_name"
-                                        required
-                                        maxLength={255}
-                                        aria-invalid={Boolean(errors.tag_name)}
-                                        className={CONTROL_CLASS}
-                                        placeholder="laravel-tips"
-                                    />
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>
+                                                Existing tags
+                                            </SelectLabel>
 
-                                    <p className="text-xs leading-5 text-subtle">
-                                        New names are saved as lowercase
-                                        URL-safe slugs.
-                                    </p>
-                                </div>
-                            )}
+                                            {tags.map((tag) => (
+                                                <SelectItem
+                                                    key={tag.id}
+                                                    value={String(tag.id)}
+                                                >
+                                                    {tag.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectGroup>
 
-                            <InputError
-                                message={errors.tag_name ?? errors.tag_id}
-                            />
+                                        <SelectSeparator />
+
+                                        <SelectGroup>
+                                            <SelectItem value={CREATE_NEW_TAG}>
+                                                Create a new tag…
+                                            </SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+
+                                {tagSelection === CREATE_NEW_TAG && (
+                                    <div className="mt-2 grid gap-2 border-l border-iris pl-4">
+                                        <Label
+                                            htmlFor="tag_name"
+                                            className={FIELD_LABEL_CLASS}
+                                        >
+                                            New tag name
+                                        </Label>
+
+                                        <Input
+                                            id="tag_name"
+                                            name="tag_name"
+                                            required
+                                            maxLength={255}
+                                            aria-invalid={Boolean(
+                                                errors.tag_name,
+                                            )}
+                                            className={CONTROL_CLASS}
+                                            placeholder="laravel-tips"
+                                        />
+
+                                        <p className="text-xs leading-5 text-subtle">
+                                            New names are saved as lowercase
+                                            URL-safe slugs.
+                                        </p>
+                                    </div>
+                                )}
+
+                                <InputError
+                                    message={errors.tag_name ?? errors.tag_id}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="grid gap-8 md:grid-cols-2 md:items-start">
+                            <div className="grid gap-2">
+                                <Label
+                                    htmlFor="description"
+                                    className={FIELD_LABEL_CLASS}
+                                >
+                                    Description
+                                </Label>
+
+                                <Textarea
+                                    id="description"
+                                    name="description"
+                                    defaultValue={post?.description}
+                                    required
+                                    rows={5}
+                                    maxLength={1000}
+                                    aria-invalid={Boolean(errors.description)}
+                                    className={CONTROL_CLASS}
+                                    placeholder="One or two sentences for listings and social cards."
+                                />
+
+                                <InputError message={errors.description} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label
+                                    htmlFor="cover"
+                                    className={FIELD_LABEL_CLASS}
+                                >
+                                    Cover image
+                                </Label>
+
+                                {post?.cover && (
+                                    <div className="flex flex-col gap-4 rounded-md border border-hairline bg-panel p-4 sm:flex-row sm:items-center">
+                                        <img
+                                            src={post.cover}
+                                            alt={`Current cover for ${post.title}`}
+                                            className="h-24 w-full rounded-md border border-hairline object-cover sm:w-40"
+                                        />
+
+                                        <p className="text-sm leading-6 text-subtle">
+                                            Current cover. Uploading a new image
+                                            replaces this plate; leave the field
+                                            empty to keep it.
+                                        </p>
+                                    </div>
+                                )}
+
+                                <Input
+                                    id="cover"
+                                    type="file"
+                                    name="cover"
+                                    accept="image/*"
+                                    aria-invalid={Boolean(errors.cover)}
+                                    className={CONTROL_CLASS}
+                                />
+
+                                <InputError message={errors.cover} />
+                            </div>
                         </div>
                     </PostFormSection>
 
-                    <PostFormSection id="content-section" title="Content">
-                        <div className="grid gap-2">
-                            {/* CodeMirror owns the input, so nothing to point at. */}
-                            <Label className={FIELD_LABEL_CLASS}>
-                                Content (markdown)
-                            </Label>
-
-                            <MarkdownEditor
-                                name="content"
-                                defaultValue={post?.content}
-                                slug={slug}
-                            />
-
-                            <InputError message={errors.content} />
-                        </div>
-
-                        <div className="mx-auto grid w-full max-w-3xl gap-2">
-                            <Label
-                                htmlFor="cover"
-                                className={FIELD_LABEL_CLASS}
-                            >
-                                Cover image
-                            </Label>
-
-                            {post?.cover && (
-                                <div className="flex flex-col gap-4 rounded-md border border-hairline bg-panel p-4 sm:flex-row sm:items-center">
-                                    <img
-                                        src={post.cover}
-                                        alt={`Current cover for ${post.title}`}
-                                        className="h-24 w-full rounded-md border border-hairline object-cover sm:w-40"
-                                    />
-
-                                    <p className="text-sm leading-6 text-subtle">
-                                        Current cover. Uploading a new image
-                                        replaces this plate; leave the field
-                                        empty to keep it.
-                                    </p>
-                                </div>
-                            )}
-
-                            <Input
-                                id="cover"
-                                type="file"
-                                name="cover"
-                                accept="image/*"
-                                aria-invalid={Boolean(errors.cover)}
-                                className={CONTROL_CLASS}
-                            />
-
-                            <InputError message={errors.cover} />
-                        </div>
-                    </PostFormSection>
-
-                    <PostFormSection
-                        id="publishing-section"
-                        title="Publishing"
-                        className="mx-auto max-w-3xl"
-                    >
+                    <PostFormSection id="publishing-section" title="Publishing">
                         <fieldset className="grid gap-3">
                             <legend className={FIELD_LABEL_CLASS}>
                                 Status
@@ -419,7 +411,7 @@ export function PostForm({
                                     defaultValue={post?.publishedAt ?? ''}
                                     required
                                     aria-invalid={Boolean(errors.published_at)}
-                                    className={CONTROL_CLASS}
+                                    className={cn(CONTROL_CLASS, 'sm:max-w-xs')}
                                 />
 
                                 <p className="text-xs leading-5 text-subtle">
@@ -432,8 +424,30 @@ export function PostForm({
                         )}
                     </PostFormSection>
 
+                    {/*
+                     * The writing surface is the finale: full width, taller than
+                     * the fields above, so it reads as the destination rather
+                     * than something wedged between settings.
+                     */}
+                    <PostFormSection id="content-section" title="Content">
+                        <div className="grid gap-2">
+                            {/* CodeMirror owns the input, so nothing to point at. */}
+                            <Label className={FIELD_LABEL_CLASS}>
+                                Content (markdown)
+                            </Label>
+
+                            <MarkdownEditor
+                                name="content"
+                                defaultValue={post?.content}
+                                slug={slug}
+                            />
+
+                            <InputError message={errors.content} />
+                        </div>
+                    </PostFormSection>
+
                     <div
-                        className="sticky bottom-3 z-10 mx-auto flex w-full max-w-3xl flex-wrap items-center gap-3 rounded-md border border-hairline bg-panel/95 px-3 py-2 shadow-sm backdrop-blur"
+                        className="sticky bottom-3 z-10 flex w-full flex-wrap items-center gap-3 rounded-md border border-hairline bg-panel/95 px-3 py-2 shadow-sm backdrop-blur"
                         aria-label="Post actions"
                     >
                         <span
