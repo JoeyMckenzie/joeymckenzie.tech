@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostReactionController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SpotifyNowPlayingController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -20,6 +22,9 @@ Route::get('now-playing', SpotifyNowPlayingController::class)->name('now-playing
 
 // Public style-guide colophon — the site's design system, kept live on purpose.
 Route::get('style-guide', fn () => Inertia::render('style-guide'))->name('style-guide');
+
+Route::get('feed.xml', FeedController::class)->name('feed');
+Route::get('sitemap.xml', SitemapController::class)->name('sitemap');
 
 // Public blog (JOEY-4 / JOEY-8). Read endpoints: index + single post with view tracking.
 Route::get('blog', [BlogController::class, 'index'])->name('blog.index');
