@@ -9,6 +9,8 @@
  */
 export type PostStatus = 'draft' | 'published' | 'scheduled';
 export type PostReviewCategory = 'Clarity' | 'Conciseness' | 'Flow' | 'Tone';
+export type PostReviewStatus =
+    'pending' | 'completed' | 'failed' | 'superseded';
 
 export type PostReviewNote = {
     category: PostReviewCategory;
@@ -18,8 +20,10 @@ export type PostReviewNote = {
 };
 
 export type PostReview = {
+    status: PostReviewStatus | null;
     notes: PostReviewNote[];
-    reviewedAt: string;
+    reviewedAt: string | null;
+    dispatchedAt: string | null;
     isStale: boolean;
 };
 
@@ -46,7 +50,6 @@ export type AdminPostFormValues = {
     status: PostStatus;
     publishedAt: string | null;
     views: number;
-    review: PostReview | null;
 };
 
 export type TagOption = {

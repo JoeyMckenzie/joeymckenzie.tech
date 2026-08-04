@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\PostReviewStatus;
 use App\Enums\PostStatus;
 use App\Http\Controllers\Concerns\HasCoverUrl;
 use App\Http\Controllers\Controller;
@@ -111,11 +112,13 @@ final class PostController extends Controller
                 'status' => PostStatus::fromPublishedAt($post->published_at)->value,
                 'publishedAt' => $post->published_at?->format('Y-m-d\TH:i'),
                 'views' => $post->views_count,
-                'review' => $post->latest_review_at === null ? null : [
-                    'notes' => $post->latest_review ?? [],
-                    'reviewedAt' => $post->latest_review_at->toIso8601String(),
-                    'isStale' => $post->reviewIsStale(),
-                ],
+            ],
+            'review' => [
+                'status' => $post->review_status?->value,
+                'notes' => $post->latest_review ?? [],
+                'reviewedAt' => $post->latest_review_at?->toIso8601String(),
+                'dispatchedAt' => $post->review_dispatched_at?->toIso8601String(),
+                'isStale' => $post->reviewIsStale() || $post->review_status === PostReviewStatus::Superseded,
             ],
             'tags' => $this->tagOptions(),
         ]);

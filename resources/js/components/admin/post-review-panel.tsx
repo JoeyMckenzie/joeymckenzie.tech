@@ -32,13 +32,23 @@ export function PostReviewPanel({
     error,
     onRetry,
 }: {
-    review: PostReview | null;
+    review: PostReview;
     saving: boolean;
     reviewing: boolean;
     error: string | null;
     onRetry: () => void;
 }) {
     const busy = saving || reviewing;
+    const failed = error !== null || review.status === 'failed';
+    const superseded = review.status === 'superseded';
+    const showNotes =
+        !busy &&
+        review.notes.length > 0 &&
+        (review.status === 'completed' || failed || superseded);
+    const showClean =
+        !busy && review.status === 'completed' && review.notes.length === 0;
+    const showNever = !busy && review.status === null;
+    const showRetry = failed || superseded;
 
     return (
         <Card
@@ -58,13 +68,11 @@ export function PostReviewPanel({
                         Line review
                     </h2>
 
-                    {review?.isStale === true && (
-                        <Badge variant="outline">Stale</Badge>
-                    )}
+                    {review.isStale && <Badge variant="outline">Stale</Badge>}
                 </div>
 
                 <CardDescription className="leading-5">
-                    {review === null
+                    {review.reviewedAt === null
                         ? 'Constructive notes on clarity, conciseness, flow, and tone.'
                         : `Reviewed ${reviewedAt(review.reviewedAt)}`}
                 </CardDescription>
@@ -87,27 +95,31 @@ export function PostReviewPanel({
                     </Alert>
                 )}
 
-                {error !== null && (
+                {failed && (
                     <Alert variant="destructive">
                         <TriangleAlertIcon aria-hidden />
                         <AlertTitle>Review failed</AlertTitle>
-                        <AlertDescription>{error}</AlertDescription>
-                    </Alert>
-                )}
-
-                {review?.isStale === true && (
-                    <Alert>
-                        <TriangleAlertIcon aria-hidden />
-                        <AlertTitle>
-                            Content changed since this review
-                        </AlertTitle>
                         <AlertDescription>
-                            Run another review to check the saved revision.
+                            {error ??
+                                'The review could not be completed. Please retry.'}
                         </AlertDescription>
                     </Alert>
                 )}
 
-                {!busy && error === null && review === null && (
+                {superseded && (
+                    <Alert>
+                        <TriangleAlertIcon aria-hidden />
+                        <AlertTitle>
+                            Content changed while this review was running
+                        </AlertTitle>
+                        <AlertDescription>
+                            Save and run another review to check the latest
+                            revision.
+                        </AlertDescription>
+                    </Alert>
+                )}
+
+                {showNever && (
                     <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 text-center">
                         <MessageSquareTextIcon
                             className="size-7 text-subtle"
@@ -125,7 +137,7 @@ export function PostReviewPanel({
                     </div>
                 )}
 
-                {review !== null && review.notes.length === 0 && (
+                {showClean && (
                     <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 text-center">
                         <CircleCheckIcon
                             className="size-8 text-iris"
@@ -142,39 +154,40 @@ export function PostReviewPanel({
                     </div>
                 )}
 
-                {review?.notes.map((note, index) => (
-                    <article
-                        key={`${note.category}-${note.excerpt}-${index}`}
-                        className="grid gap-3 rounded-md border border-hairline bg-canvas p-4"
-                    >
-                        <Badge variant="secondary">{note.category}</Badge>
+                {showNotes &&
+                    review.notes.map((note, index) => (
+                        <article
+                            key={`${note.category}-${note.excerpt}-${index}`}
+                            className="grid gap-3 rounded-md border border-hairline bg-canvas p-4"
+                        >
+                            <Badge variant="secondary">{note.category}</Badge>
 
-                        <blockquote className="border-l-2 border-iris pl-3 text-sm leading-6 text-prose italic">
-                            “{note.excerpt}”
-                        </blockquote>
+                            <blockquote className="border-l-2 border-iris pl-3 text-sm leading-6 text-prose italic">
+                                “{note.excerpt}”
+                            </blockquote>
 
-                        <div className="grid gap-1">
-                            <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-subtle uppercase">
-                                Why
-                            </p>
-                            <p className="text-sm leading-6 text-prose">
-                                {note.comment}
-                            </p>
-                        </div>
+                            <div className="grid gap-1">
+                                <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-subtle uppercase">
+                                    Why
+                                </p>
+                                <p className="text-sm leading-6 text-prose">
+                                    {note.comment}
+                                </p>
+                            </div>
 
-                        <div className="grid gap-1">
-                            <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-iris uppercase">
-                                Try
-                            </p>
-                            <p className="text-sm leading-6 text-prose">
-                                {note.suggestion}
-                            </p>
-                        </div>
-                    </article>
-                ))}
+                            <div className="grid gap-1">
+                                <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-iris uppercase">
+                                    Try
+                                </p>
+                                <p className="text-sm leading-6 text-prose">
+                                    {note.suggestion}
+                                </p>
+                            </div>
+                        </article>
+                    ))}
             </CardContent>
 
-            {error !== null && (
+            {showRetry && (
                 <CardFooter className="border-t border-hairline px-4 py-3">
                     <Button
                         type="button"

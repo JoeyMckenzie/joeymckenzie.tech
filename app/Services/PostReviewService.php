@@ -7,7 +7,6 @@ namespace App\Services;
 use App\Ai\Agents\BlogPostReviewer;
 use App\Enums\PostReviewCategory;
 use App\Exceptions\InvalidPostReview;
-use App\Exceptions\PostReviewRuntimeTimeoutMismatch;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Config;
@@ -32,7 +31,6 @@ final readonly class PostReviewService
         $provider = Config::string('ai.blog_review.provider');
         $model = Config::string('ai.blog_review.model');
         $timeout = Config::integer('ai.blog_review.timeout');
-        $phpMaxExecutionTime = $this->phpMaxExecutionTime();
         $startedAt = (int) hrtime(true);
         $attempt = 0;
         $context = [
@@ -41,19 +39,12 @@ final readonly class PostReviewService
             'provider' => $provider,
             'model' => $model,
             'timeout_seconds' => $timeout,
-            'php_max_execution_time_seconds' => $phpMaxExecutionTime,
             'prompt_characters' => Str::length($markdown),
         ];
 
         Log::info('Blog post review started', $context);
 
         try {
-            if ($phpMaxExecutionTime > 0 && $phpMaxExecutionTime <= $timeout) {
-                throw new PostReviewRuntimeTimeoutMismatch(
-                    'The PHP execution limit must exceed the blog review timeout.',
-                );
-            }
-
             for ($nextAttempt = 1; $nextAttempt <= 2; $nextAttempt++) {
                 $attempt = $nextAttempt;
                 $attemptStartedAt = (int) hrtime(true);
@@ -175,7 +166,6 @@ final readonly class PostReviewService
     {
         $context = [
             'failure_type' => match (true) {
-                $throwable instanceof PostReviewRuntimeTimeoutMismatch => 'runtime_timeout_mismatch',
                 $throwable instanceof ConnectionException => 'connection',
                 $throwable instanceof RequestException => 'provider_http',
                 $throwable instanceof InvalidPostReview => 'invalid_response',
@@ -209,11 +199,6 @@ final readonly class PostReviewService
         }
 
         return null;
-    }
-
-    private function phpMaxExecutionTime(): int
-    {
-        return max(0, (int) ini_get('max_execution_time'));
     }
 
     private function elapsedMilliseconds(int $startedAt): int

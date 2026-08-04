@@ -35,6 +35,7 @@ opencode.jsonc
 _ide_helper.php
 .playwright-mcp
 .codex/mcp-oauth-locks
+.pi-subagents/
 
 # Devenv
 .devenv*

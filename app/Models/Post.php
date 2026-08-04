@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\PostReviewStatus;
 use Carbon\CarbonImmutable;
 use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Attributes\Appends;
@@ -27,8 +28,10 @@ use Illuminate\Support\Facades\Date;
  * @property string $description
  * @property string $content
  * @property string|null $content_html
- * @property list<array{category: string, excerpt: string, comment: string, suggestion: string}>|null $latest_review
+ * @property array<array-key, mixed>|null $latest_review
  * @property CarbonImmutable|null $latest_review_at
+ * @property PostReviewStatus|null $review_status
+ * @property CarbonImmutable|null $review_dispatched_at
  * @property string|null $image
  * @property int $reading_time_minutes
  * @property CarbonImmutable|null $published_at
@@ -56,6 +59,8 @@ use Illuminate\Support\Facades\Date;
  * @method static Builder<static>|Post whereLatestReviewAt($value)
  * @method static Builder<static>|Post wherePublishedAt($value)
  * @method static Builder<static>|Post whereReadingTimeMinutes($value)
+ * @method static Builder<static>|Post whereReviewDispatchedAt($value)
+ * @method static Builder<static>|Post whereReviewStatus($value)
  * @method static Builder<static>|Post whereSlug($value)
  * @method static Builder<static>|Post whereTagId($value)
  * @method static Builder<static>|Post whereTitle($value)
@@ -73,6 +78,8 @@ use Illuminate\Support\Facades\Date;
     'content_html',
     'latest_review',
     'latest_review_at',
+    'review_status',
+    'review_dispatched_at',
     'image',
     'reading_time_minutes',
     'published_at',
@@ -172,6 +179,8 @@ class Post extends Model
         return [
             'latest_review' => 'array',
             'latest_review_at' => 'datetime',
+            'review_status' => PostReviewStatus::class,
+            'review_dispatched_at' => 'datetime',
             'published_at' => 'datetime',
             'reading_time_minutes' => 'integer',
             'views_count' => 'integer',

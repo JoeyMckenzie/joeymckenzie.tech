@@ -218,6 +218,7 @@ in
     app.exec = "php artisan serve --port ${toString phpPort}";
     pail.exec = "php artisan pail --timeout=0";
     vite.exec = "exec pnpm dev --port ${toString vitePort} --strictPort";
+    queue.exec = "php artisan queue:listen --tries=1 --timeout=150";
   };
 
   enterShell = ''

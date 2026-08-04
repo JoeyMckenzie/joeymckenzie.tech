@@ -26,6 +26,7 @@ return [
         'provider' => env('BLOG_REVIEW_AI_PROVIDER', 'anthropic'),
         'model' => env('BLOG_REVIEW_AI_MODEL', 'claude-sonnet-5'),
         'timeout' => (int) env('BLOG_REVIEW_AI_TIMEOUT', 120),
+        'job_timeout' => (int) env('BLOG_REVIEW_JOB_TIMEOUT', 150),
     ],
 
     /*

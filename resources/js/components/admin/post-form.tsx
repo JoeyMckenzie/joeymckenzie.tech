@@ -98,7 +98,7 @@ export function PostForm({
     );
     const form = useRef<FormComponentRef>(null);
     const reviewAfterSave = useRef(false);
-    const postReview = usePostReview(post?.id ?? 0, post?.review ?? null);
+    const postReview = usePostReview(post?.id ?? 0);
 
     const requestReview = (): void => {
         if (post === undefined || form.current === null) {

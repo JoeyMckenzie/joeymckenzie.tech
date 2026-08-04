@@ -6,7 +6,7 @@ namespace App\Exceptions;
 
 use RuntimeException;
 
-final class PostReviewRuntimeTimeoutMismatch extends RuntimeException
+final class PostReviewTimeoutMismatch extends RuntimeException
 {
     //
 }
