@@ -1,10 +1,11 @@
 ---
 id: JOEY-18.3
 title: Apply review suggestions to post content from the review panel
-status: To Do
+status: Done
 assignee:
   - Pi
 created_date: '2026-08-04 23:02'
+updated_date: '2026-08-04 23:42'
 labels:
   - feature
   - ai
@@ -64,16 +65,28 @@ Edit-page only; body markdown only; safe logging (no prompts/notes/bodies); AI f
 
 ## Acceptance Criteria
 <!-- AC:BEGIN -->
-- [ ] #1 A review note that includes a replacement renders a 'Rewrite' block showing the replacement as literal (non-rendered) monospace text, with an Apply button beneath it
-- [ ] #2 A note without a replacement renders as advice-only (Why + Try) with no Rewrite block and no Apply button
-- [ ] #3 Clicking Apply replaces the first exact occurrence of the note's excerpt in the live editor buffer with its replacement, via a CodeMirror transaction (not a page reload or server content write)
-- [ ] #4 After applying, the newly written text is selected and scrolled into view in the editor, and the note shows an affirmative 'Applied' state distinct from the 'passage changed' state
-- [ ] #5 Native CodeMirror undo reverts an applied change
-- [ ] #6 When a note's excerpt is not present in the live editor buffer, its Apply button is disabled with a 'passage has changed / re-review' message
-- [ ] #7 Applied state is client-only (server latest_review is never mutated) and resets when a new review result lands
-- [ ] #8 The BlogPostReviewer schema includes an optional replacement field and instructions direct the agent to provide it only for precise, localized drop-in rewrites and omit it for structural notes
-- [ ] #9 PHPUnit proves a replacement returned by a faked reviewer persists into latest_review and is exposed in the PostController::edit review.notes prop
-- [ ] #10 The excerpt-find/replace logic is a pure framework-free function covered by vitest for match, no-match, first-of-multiple, multi-line excerpt, and empty replacement cases
-- [ ] #11 Legacy persisted notes without a replacement key render as advice-only without error
-- [ ] #12 All existing project gates pass: pint, rector, phpstan/larastan, pnpm types:check/lint:check/fmt:check, existing PostReviewTest + ReviewPostJobTest, and the production Vite build
+- [x] #1 A review note that includes a replacement renders a 'Rewrite' block showing the replacement as literal (non-rendered) monospace text, with an Apply button beneath it
+- [x] #2 A note without a replacement renders as advice-only (Why + Try) with no Rewrite block and no Apply button
+- [x] #3 Clicking Apply replaces the first exact occurrence of the note's excerpt in the live editor buffer with its replacement, via a CodeMirror transaction (not a page reload or server content write)
+- [x] #4 After applying, the newly written text is selected and scrolled into view in the editor, and the note shows an affirmative 'Applied' state distinct from the 'passage changed' state
+- [x] #5 Native CodeMirror undo reverts an applied change
+- [x] #6 When a note's excerpt is not present in the live editor buffer, its Apply button is disabled with a 'passage has changed / re-review' message
+- [x] #7 Applied state is client-only (server latest_review is never mutated) and resets when a new review result lands
+- [x] #8 The BlogPostReviewer schema includes an optional replacement field and instructions direct the agent to provide it only for precise, localized drop-in rewrites and omit it for structural notes
+- [x] #9 PHPUnit proves a replacement returned by a faked reviewer persists into latest_review and is exposed in the PostController::edit review.notes prop
+- [x] #10 The excerpt-find/replace logic is a pure framework-free function covered by vitest for match, no-match, first-of-multiple, multi-line excerpt, and empty replacement cases
+- [x] #11 Legacy persisted notes without a replacement key render as advice-only without error
+- [x] #12 All existing project gates pass: pint, rector, phpstan/larastan, pnpm types:check/lint:check/fmt:check, existing PostReviewTest + ReviewPostJobTest, and the production Vite build
 <!-- AC:END -->
+
+## Final Summary
+
+<!-- SECTION:FINAL_SUMMARY:BEGIN -->
+Implemented per the locked design in two phases; all gates green.
+
+**Phase A (backend):** `BlogPostReviewer` gained an optional `replacement` schema field (not `->required()`) plus instruction tuning directing the agent to emit it only for precise, localized drop-in rewrites and omit it for structural notes. `PostReviewService` carries `replacement` through the note mapping verbatim when the agent supplies a filled string (structural/legacy notes stay advice-only); return-type docblocks updated. `PostController::edit` needed no change — `latest_review` is raw JSON so `review.notes` surfaces `replacement` automatically. Tests: `ReviewPostJobTest` proves a faked reviewer's `replacement` persists into `latest_review`; `PostReviewTest` proves it surfaces in the edit `review.notes` prop.
+
+**Phase B (frontend):** New pure `lib/apply-replacement.ts` (exact substring, first occurrence, returns `{from,to,doc}` or null) with vitest coverage for match / no-match / first-of-multiple / multi-line / empty-replacement — the repo's first JS test runner (added `test` script + `vitest.config.ts` + `vitest` devDependency). Package-3 refactor: `MarkdownEditor` now takes typed `review?: PostReviewPanelProps` and renders `PostReviewPanel` itself, owning `applyReviewReplacement` which dispatches one CodeMirror transaction, selects the new range, and scrolls it into view (native undo reverts). `PostReviewPanel` renders a Rewrite block (literal monospace), Apply → Applied ✓, and a disabled "passage has changed — re-review" state when the excerpt isn't in the live buffer. Applied state is client-only and reset by remounting via a `key` on the review identity (`dispatchedAt|reviewedAt`) — the lint-clean alternative to a reset effect.
+
+**Gates:** pint, rector, phpstan, full PHP suite (175 passed), vitest (5 passed), types:check, lint:check, fmt:check, production build — all pass. Only dependency added: vitest.
+<!-- SECTION:FINAL_SUMMARY:END -->
