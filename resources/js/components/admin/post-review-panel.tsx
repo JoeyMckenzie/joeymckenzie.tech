@@ -4,6 +4,7 @@ import {
     RefreshCwIcon,
     TriangleAlertIcon,
 } from 'lucide-react';
+import { useState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -15,7 +16,7 @@ import {
     CardHeader,
 } from '@/components/ui/card';
 import { Spinner } from '@/components/ui/spinner';
-import type { PostReview } from '@/types';
+import type { PostReviewPanelProps } from '@/types';
 
 const REVIEWED_AT = new Intl.DateTimeFormat(undefined, {
     dateStyle: 'medium',
@@ -31,13 +32,18 @@ export function PostReviewPanel({
     reviewing,
     error,
     onRetry,
-}: {
-    review: PostReview;
-    saving: boolean;
-    reviewing: boolean;
-    error: string | null;
-    onRetry: () => void;
+    doc,
+    onApply,
+}: PostReviewPanelProps & {
+    doc: string;
+    onApply: (excerpt: string, replacement: string) => boolean;
 }) {
+    // Which notes have had their rewrite applied, by index. Purely client-side;
+    // the server's latest_review is never mutated (JOEY-18.3). The parent keys
+    // this component on the review identity, so a fresh result remounts it and
+    // discards these marks — no effect, no server round-trip.
+    const [applied, setApplied] = useState<ReadonlySet<number>>(new Set());
+
     const busy = saving || reviewing;
     const failed = error !== null || review.status === 'failed';
     const superseded = review.status === 'superseded';
@@ -155,36 +161,103 @@ export function PostReviewPanel({
                 )}
 
                 {showNotes &&
-                    review.notes.map((note, index) => (
-                        <article
-                            key={`${note.category}-${note.excerpt}-${index}`}
-                            className="grid gap-3 rounded-md border border-hairline bg-canvas p-4"
-                        >
-                            <Badge variant="secondary">{note.category}</Badge>
+                    review.notes.map((note, index) => {
+                        const isApplied = applied.has(index);
+                        const canApply = doc.includes(note.excerpt);
 
-                            <blockquote className="border-l-2 border-iris pl-3 text-sm leading-6 text-prose italic">
-                                “{note.excerpt}”
-                            </blockquote>
+                        const handleApply = (): void => {
+                            if (note.replacement === undefined) {
+                                return;
+                            }
 
-                            <div className="grid gap-1">
-                                <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-subtle uppercase">
-                                    Why
-                                </p>
-                                <p className="text-sm leading-6 text-prose">
-                                    {note.comment}
-                                </p>
-                            </div>
+                            if (onApply(note.excerpt, note.replacement)) {
+                                setApplied((previous) =>
+                                    new Set(previous).add(index),
+                                );
+                            }
+                        };
 
-                            <div className="grid gap-1">
-                                <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-iris uppercase">
-                                    Try
-                                </p>
-                                <p className="text-sm leading-6 text-prose">
-                                    {note.suggestion}
-                                </p>
-                            </div>
-                        </article>
-                    ))}
+                        return (
+                            <article
+                                key={`${note.category}-${note.excerpt}-${index}`}
+                                className="grid gap-3 rounded-md border border-hairline bg-canvas p-4"
+                            >
+                                <Badge variant="secondary">
+                                    {note.category}
+                                </Badge>
+
+                                <blockquote className="border-l-2 border-iris pl-3 text-sm leading-6 text-prose italic">
+                                    “{note.excerpt}”
+                                </blockquote>
+
+                                <div className="grid gap-1">
+                                    <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-subtle uppercase">
+                                        Why
+                                    </p>
+                                    <p className="text-sm leading-6 text-prose">
+                                        {note.comment}
+                                    </p>
+                                </div>
+
+                                <div className="grid gap-1">
+                                    <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-iris uppercase">
+                                        Try
+                                    </p>
+                                    <p className="text-sm leading-6 text-prose">
+                                        {note.suggestion}
+                                    </p>
+                                </div>
+
+                                {note.replacement !== undefined && (
+                                    <div className="grid gap-2">
+                                        <p className="font-mono text-[0.6875rem] tracking-[0.12em] text-iris uppercase">
+                                            Rewrite
+                                        </p>
+
+                                        <pre className="overflow-x-auto rounded-md border border-hairline bg-panel p-3 font-mono text-xs leading-6 whitespace-pre-wrap text-prose">
+                                            {note.replacement}
+                                        </pre>
+
+                                        {isApplied ? (
+                                            <p className="flex items-center gap-1.5 font-mono text-xs text-iris">
+                                                <CircleCheckIcon
+                                                    className="size-4"
+                                                    aria-hidden
+                                                />
+                                                Applied
+                                            </p>
+                                        ) : canApply ? (
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                className="justify-self-start"
+                                                onClick={handleApply}
+                                            >
+                                                Apply
+                                            </Button>
+                                        ) : (
+                                            <div className="grid gap-1">
+                                                <Button
+                                                    type="button"
+                                                    variant="outline"
+                                                    size="sm"
+                                                    className="justify-self-start"
+                                                    disabled
+                                                >
+                                                    Apply
+                                                </Button>
+                                                <p className="text-xs leading-5 text-subtle">
+                                                    This passage has changed —
+                                                    re-review to apply.
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                            </article>
+                        );
+                    })}
             </CardContent>
 
             {showRetry && (

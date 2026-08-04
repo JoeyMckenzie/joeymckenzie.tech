@@ -17,6 +17,12 @@ export type PostReviewNote = {
     excerpt: string;
     comment: string;
     suggestion: string;
+    /**
+     * A verbatim drop-in rewrite for `excerpt`, present only for precise,
+     * localized notes. Absent notes render advice-only, so legacy persisted
+     * reviews without the key keep working (JOEY-18.3).
+     */
+    replacement?: string;
 };
 
 export type PostReview = {
@@ -25,6 +31,19 @@ export type PostReview = {
     reviewedAt: string | null;
     dispatchedAt: string | null;
     isStale: boolean;
+};
+
+/**
+ * The review data `PostForm` threads down into `MarkdownEditor`, which owns the
+ * `PostReviewPanel` so apply/match-detection sit beside the editor `doc` and
+ * `view` (JOEY-18.3). The editor injects `doc` and `onApply` on top of these.
+ */
+export type PostReviewPanelProps = {
+    review: PostReview;
+    saving: boolean;
+    reviewing: boolean;
+    error: string | null;
+    onRetry: () => void;
 };
 
 export type AdminPostRow = {

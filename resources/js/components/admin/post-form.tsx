@@ -5,7 +5,6 @@ import { useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import PostController from '@/actions/App/Http/Controllers/Admin/PostController';
 import { MarkdownEditor } from '@/components/admin/markdown-editor';
-import { PostReviewPanel } from '@/components/admin/post-review-panel';
 import { InputError } from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -477,19 +476,18 @@ export function PostForm({
                                 name="content"
                                 defaultValue={post?.content}
                                 slug={slug}
-                                reviewPanel={
-                                    post === undefined ? undefined : (
-                                        <PostReviewPanel
-                                            review={postReview.review}
-                                            saving={
-                                                processing &&
-                                                reviewAfterSave.current
-                                            }
-                                            reviewing={postReview.reviewing}
-                                            error={postReview.error}
-                                            onRetry={requestReview}
-                                        />
-                                    )
+                                review={
+                                    post === undefined
+                                        ? undefined
+                                        : {
+                                              review: postReview.review,
+                                              saving:
+                                                  processing &&
+                                                  reviewAfterSave.current,
+                                              reviewing: postReview.reviewing,
+                                              error: postReview.error,
+                                              onRetry: requestReview,
+                                          }
                                 }
                             />
 

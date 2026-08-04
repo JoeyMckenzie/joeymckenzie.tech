@@ -24,7 +24,7 @@ final readonly class PostReviewService
     }
 
     /**
-     * @return list<array{category: string, excerpt: string, comment: string, suggestion: string}>
+     * @return list<array{category: string, excerpt: string, comment: string, suggestion: string, replacement?: string}>
      */
     public function review(string $markdown, int $postId): array
     {
@@ -117,7 +117,7 @@ final readonly class PostReviewService
 
     /**
      * @param  array<mixed>  $structured
-     * @return list<array{category: string, excerpt: string, comment: string, suggestion: string}>
+     * @return list<array{category: string, excerpt: string, comment: string, suggestion: string, replacement?: string}>
      */
     private function notes(array $structured): array
     {
@@ -136,6 +136,7 @@ final readonly class PostReviewService
             $excerpt = $note['excerpt'] ?? null;
             $comment = $note['comment'] ?? null;
             $suggestion = $note['suggestion'] ?? null;
+            $replacement = $note['replacement'] ?? null;
 
             if (
                 ! is_string($category)
@@ -150,12 +151,21 @@ final readonly class PostReviewService
                 throw new InvalidPostReview('A review note did not match the required schema.');
             }
 
-            return [
+            $mapped = [
                 'category' => $category,
                 'excerpt' => $excerpt,
                 'comment' => $comment,
                 'suggestion' => $suggestion,
             ];
+
+            // Optional, localized drop-in rewrite: carried through verbatim only
+            // when the agent supplies a usable one, so structural notes (and
+            // legacy notes with no `replacement` key) stay advice-only.
+            if (is_string($replacement) && filled($replacement)) {
+                $mapped['replacement'] = $replacement;
+            }
+
+            return $mapped;
         }, $notes);
     }
 

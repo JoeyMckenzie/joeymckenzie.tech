@@ -2,7 +2,8 @@ import { markdown } from '@codemirror/lang-markdown';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { ImagePlus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type { ClipboardEvent, DragEvent, ReactNode, UIEvent } from 'react';
+import type { ClipboardEvent, DragEvent, UIEvent } from 'react';
+import { PostReviewPanel } from '@/components/admin/post-review-panel';
 import { RenderedMarkdown } from '@/components/blog/rendered-markdown';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -10,7 +11,9 @@ import { useAppearance } from '@/hooks/use-appearance';
 import { useMarkdownPreview } from '@/hooks/use-markdown-preview';
 import { usePostImageUpload } from '@/hooks/use-post-image-upload';
 import { useSynchronizedScroll } from '@/hooks/use-synchronized-scroll';
+import { applyReplacement } from '@/lib/apply-replacement';
 import { cn } from '@/lib/utils';
+import type { PostReviewPanelProps } from '@/types';
 
 type Pane = 'write' | 'preview';
 
@@ -61,12 +64,12 @@ export function MarkdownEditor({
     name,
     defaultValue,
     slug,
-    reviewPanel,
+    review,
 }: {
     name: string;
     defaultValue?: string;
     slug: string;
-    reviewPanel?: ReactNode;
+    review?: PostReviewPanelProps;
 }) {
     const [doc, setDoc] = useState(defaultValue ?? '');
     const [pane, setPane] = useState<Pane>('write');
@@ -110,6 +113,43 @@ export function MarkdownEditor({
         }
 
         void insert(file);
+    };
+
+    // Apply a review note's verbatim rewrite as one CodeMirror transaction
+    // against the live buffer, then select and reveal the new text. Returns
+    // whether the excerpt was found so the panel can flip the note to its
+    // "Applied" state; native CodeMirror undo reverts the change.
+    const applyReviewReplacement = (
+        excerpt: string,
+        replacement: string,
+    ): boolean => {
+        const editor = view.current;
+
+        if (editor === null) {
+            return false;
+        }
+
+        const result = applyReplacement(
+            editor.state.doc.toString(),
+            excerpt,
+            replacement,
+        );
+
+        if (result === null) {
+            return false;
+        }
+
+        editor.dispatch({
+            changes: { from: result.from, to: result.to, insert: replacement },
+            selection: {
+                anchor: result.from,
+                head: result.from + replacement.length,
+            },
+            scrollIntoView: true,
+        });
+        editor.focus();
+
+        return true;
     };
 
     // Capture phase on purpose: CodeMirror's own drop handler reads dropped
@@ -236,7 +276,7 @@ export function MarkdownEditor({
             <div
                 className={cn(
                     'grid gap-3 lg:grid-cols-2',
-                    reviewPanel !== undefined &&
+                    review !== undefined &&
                         'xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_20rem]',
                 )}
             >
@@ -290,9 +330,14 @@ export function MarkdownEditor({
                     </div>
                 </div>
 
-                {reviewPanel !== undefined && (
+                {review !== undefined && (
                     <div className="min-w-0 lg:col-span-2 xl:col-span-1">
-                        {reviewPanel}
+                        <PostReviewPanel
+                            key={`${review.review.dispatchedAt}|${review.review.reviewedAt}`}
+                            {...review}
+                            doc={doc}
+                            onApply={applyReviewReplacement}
+                        />
                     </div>
                 )}
             </div>

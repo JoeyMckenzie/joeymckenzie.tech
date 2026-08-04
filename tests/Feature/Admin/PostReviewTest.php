@@ -155,6 +155,23 @@ final class PostReviewTest extends TestCase
     }
 
     #[Test]
+    public function edit_page_exposes_a_replacement_in_the_review_notes_prop(): void
+    {
+        $note = self::NOTES[0];
+        $note['replacement'] = 'Name the specific operation instead.';
+
+        $post = Post::factory()->draft()->create();
+        $this->persistReview($post, PostReviewStatus::Completed, [$note], now()->subHour());
+
+        $this->actingAs(User::factory()->create())
+            ->get(route('admin.posts.edit', ['post' => $post->id]))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page): Assert => $page
+                ->component('admin/posts/edit')
+                ->where('review.notes', [$note]));
+    }
+
+    #[Test]
     public function metadata_only_updates_mark_the_existing_review_as_stale(): void
     {
         $this->freezeTime();
@@ -195,7 +212,7 @@ final class PostReviewTest extends TestCase
     }
 
     /**
-     * @param  ?list<array{category: string, excerpt: string, comment: string, suggestion: string}>  $notes
+     * @param  ?list<array{category: string, excerpt: string, comment: string, suggestion: string, replacement?: string}>  $notes
      */
     private function persistReview(
         Post $post,

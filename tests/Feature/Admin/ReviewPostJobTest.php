@@ -78,6 +78,26 @@ final class ReviewPostJobTest extends TestCase
     }
 
     #[Test]
+    public function a_replacement_returned_by_the_reviewer_persists_into_the_latest_review(): void
+    {
+        $post = Post::factory()->draft()->create();
+
+        $note = self::NOTES[0];
+        $note['replacement'] = 'Name the specific operation instead.';
+
+        BlogPostReviewer::fake([
+            ['notes' => [$note]],
+        ])->preventStrayPrompts();
+
+        $this->runJob($this->jobFor($post));
+
+        $post->refresh();
+
+        $this->assertSame(PostReviewStatus::Completed, $post->review_status);
+        $this->assertEquals([$note], $post->latest_review);
+    }
+
+    #[Test]
     public function a_clean_review_persists_an_empty_note_list(): void
     {
         BlogPostReviewer::fake([
