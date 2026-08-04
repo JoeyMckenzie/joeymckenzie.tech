@@ -27,6 +27,8 @@ use Illuminate\Support\Facades\Date;
  * @property string $description
  * @property string $content
  * @property string|null $content_html
+ * @property list<array{category: string, excerpt: string, comment: string, suggestion: string}>|null $latest_review
+ * @property CarbonImmutable|null $latest_review_at
  * @property string|null $image
  * @property int $reading_time_minutes
  * @property CarbonImmutable|null $published_at
@@ -50,6 +52,8 @@ use Illuminate\Support\Facades\Date;
  * @method static Builder<static>|Post whereDescription($value)
  * @method static Builder<static>|Post whereId($value)
  * @method static Builder<static>|Post whereImage($value)
+ * @method static Builder<static>|Post whereLatestReview($value)
+ * @method static Builder<static>|Post whereLatestReviewAt($value)
  * @method static Builder<static>|Post wherePublishedAt($value)
  * @method static Builder<static>|Post whereReadingTimeMinutes($value)
  * @method static Builder<static>|Post whereSlug($value)
@@ -67,6 +71,8 @@ use Illuminate\Support\Facades\Date;
     'description',
     'content',
     'content_html',
+    'latest_review',
+    'latest_review_at',
     'image',
     'reading_time_minutes',
     'published_at',
@@ -109,6 +115,13 @@ class Post extends Model
     public function reactions(): HasMany
     {
         return $this->hasMany(PostReaction::class);
+    }
+
+    public function reviewIsStale(): bool
+    {
+        return $this->latest_review_at !== null
+            && $this->updated_at !== null
+            && $this->updated_at->greaterThan($this->latest_review_at);
     }
 
     #[\Override]
@@ -157,6 +170,8 @@ class Post extends Model
     protected function casts(): array
     {
         return [
+            'latest_review' => 'array',
+            'latest_review_at' => 'datetime',
             'published_at' => 'datetime',
             'reading_time_minutes' => 'integer',
             'views_count' => 'integer',

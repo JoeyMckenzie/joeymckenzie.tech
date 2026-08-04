@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\PostImageController;
 use App\Http\Controllers\Admin\PostPreviewController;
+use App\Http\Controllers\Admin\PostReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,9 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('posts', [PostController::class, 'store'])->name('posts.store');
     Route::get('posts/{post:id}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::patch('posts/{post:id}', [PostController::class, 'update'])->name('posts.update');
+    Route::post('posts/{post:id}/review', PostReviewController::class)
+        ->middleware('throttle:5,1')
+        ->name('posts.review');
     Route::delete('posts/{post:id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
     // Editor support endpoints (JOEY-5.2): the preview goes through the same

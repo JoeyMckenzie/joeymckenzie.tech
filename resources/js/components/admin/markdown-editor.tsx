@@ -2,7 +2,7 @@ import { markdown } from '@codemirror/lang-markdown';
 import CodeMirror, { EditorView } from '@uiw/react-codemirror';
 import { ImagePlus } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import type { ClipboardEvent, DragEvent, UIEvent } from 'react';
+import type { ClipboardEvent, DragEvent, ReactNode, UIEvent } from 'react';
 import { RenderedMarkdown } from '@/components/blog/rendered-markdown';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
@@ -61,10 +61,12 @@ export function MarkdownEditor({
     name,
     defaultValue,
     slug,
+    reviewPanel,
 }: {
     name: string;
     defaultValue?: string;
     slug: string;
+    reviewPanel?: ReactNode;
 }) {
     const [doc, setDoc] = useState(defaultValue ?? '');
     const [pane, setPane] = useState<Pane>('write');
@@ -231,7 +233,13 @@ export function MarkdownEditor({
                 </div>
             </div>
 
-            <div className="grid gap-3 lg:grid-cols-2">
+            <div
+                className={cn(
+                    'grid gap-3 lg:grid-cols-2',
+                    reviewPanel !== undefined &&
+                        'xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_20rem]',
+                )}
+            >
                 <div
                     onDragOverCapture={handleDragOver}
                     onDropCapture={handleDrop}
@@ -281,6 +289,12 @@ export function MarkdownEditor({
                         )}
                     </div>
                 </div>
+
+                {reviewPanel !== undefined && (
+                    <div className="min-w-0 lg:col-span-2 xl:col-span-1">
+                        {reviewPanel}
+                    </div>
+                )}
             </div>
 
             {/* CodeMirror is not a form control; this is what `<Form>` sends. */}

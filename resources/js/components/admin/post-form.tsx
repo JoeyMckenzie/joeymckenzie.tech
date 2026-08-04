@@ -1,8 +1,11 @@
+import type { FormComponentRef } from '@inertiajs/core';
 import { Form, Link } from '@inertiajs/react';
-import { useState } from 'react';
+import { SparklesIcon } from 'lucide-react';
+import { useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import PostController from '@/actions/App/Http/Controllers/Admin/PostController';
 import { MarkdownEditor } from '@/components/admin/markdown-editor';
+import { PostReviewPanel } from '@/components/admin/post-review-panel';
 import { InputError } from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,7 +20,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { Spinner } from '@/components/ui/spinner';
 import { Textarea } from '@/components/ui/textarea';
+import { usePostReview } from '@/hooks/use-post-review';
 import { cn } from '@/lib/utils';
 import { index as postsIndex } from '@/routes/admin/posts';
 import type { AdminPostFormValues, PostStatus, TagOption } from '@/types';
@@ -91,6 +96,33 @@ export function PostForm({
     const [tagSelection, setTagSelection] = useState(
         post ? String(post.tagId) : '',
     );
+    const form = useRef<FormComponentRef>(null);
+    const reviewAfterSave = useRef(false);
+    const postReview = usePostReview(post?.id ?? 0, post?.review ?? null);
+
+    const requestReview = (): void => {
+        if (post === undefined || form.current === null) {
+            reviewAfterSave.current = false;
+
+            return;
+        }
+
+        reviewAfterSave.current = true;
+        form.current.submit();
+    };
+
+    const clearReviewIntent = (): void => {
+        reviewAfterSave.current = false;
+    };
+
+    const reviewAfterSuccessfulSave = (): void => {
+        if (!reviewAfterSave.current) {
+            return;
+        }
+
+        reviewAfterSave.current = false;
+        void postReview.run();
+    };
 
     const handleTitleChange = (value: string) => {
         setTitle(value);
@@ -107,12 +139,17 @@ export function PostForm({
 
     return (
         <Form
+            ref={form}
             {...(post
                 ? PostController.update.form({ post: post.id })
                 : PostController.store.form())}
             options={{
                 preserveScroll: true,
             }}
+            onSuccess={reviewAfterSuccessfulSave}
+            onError={clearReviewIntent}
+            onCancel={clearReviewIntent}
+            onFinish={clearReviewIntent}
             encType="multipart/form-data"
             className="relative flex flex-col gap-14"
         >
@@ -440,6 +477,20 @@ export function PostForm({
                                 name="content"
                                 defaultValue={post?.content}
                                 slug={slug}
+                                reviewPanel={
+                                    post === undefined ? undefined : (
+                                        <PostReviewPanel
+                                            review={postReview.review}
+                                            saving={
+                                                processing &&
+                                                reviewAfterSave.current
+                                            }
+                                            reviewing={postReview.reviewing}
+                                            error={postReview.error}
+                                            onRetry={requestReview}
+                                        />
+                                    )
+                                }
                             />
 
                             <InputError message={errors.content} />
@@ -457,10 +508,36 @@ export function PostForm({
                             {status}
                         </span>
 
-                        <div className="ml-auto flex items-center gap-2">
+                        <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2">
+                            {post !== undefined && (
+                                <Button
+                                    type="button"
+                                    variant="outline"
+                                    disabled={
+                                        processing || postReview.reviewing
+                                    }
+                                    onClick={requestReview}
+                                    data-test="review-post-button"
+                                >
+                                    {postReview.reviewing ? (
+                                        <Spinner data-icon="inline-start" />
+                                    ) : (
+                                        <SparklesIcon
+                                            data-icon="inline-start"
+                                            aria-hidden
+                                        />
+                                    )}
+                                    {postReview.reviewing
+                                        ? 'Reviewing…'
+                                        : processing && reviewAfterSave.current
+                                          ? 'Saving…'
+                                          : 'Review'}
+                                </Button>
+                            )}
+
                             <Button
                                 type="submit"
-                                disabled={processing}
+                                disabled={processing || postReview.reviewing}
                                 className="bg-iris text-canvas hover:bg-iris/90"
                                 data-test="save-post-button"
                             >

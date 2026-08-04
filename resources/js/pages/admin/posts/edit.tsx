@@ -18,7 +18,7 @@ export default function PostsEdit({
             <Head title={`Edit ${post.title}`} />
 
             <div className="min-h-full flex-1 bg-canvas px-4 py-8 font-body text-prose sm:px-6 lg:px-8 lg:py-12">
-                <div className="mx-auto flex w-full max-w-6xl flex-col gap-10">
+                <div className="mx-auto flex w-full max-w-7xl flex-col gap-10">
                     <PostEditorHeader
                         path="admin / posts / edit"
                         title="Edit post"

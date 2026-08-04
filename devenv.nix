@@ -3,6 +3,7 @@
 let
   appName = "joeymckenzie.tech";
   phpPort = 8000;
+  phpMaxExecutionTime = 180;
   vitePort = 5173;
 
   dbName = "website";
@@ -147,6 +148,9 @@ in
   languages.php = {
     enable = true;
     version = "8.5";
+    ini = ''
+      max_execution_time = ${toString phpMaxExecutionTime}
+    '';
     extensions = [
       "bcmath"
       "calendar"
@@ -211,7 +215,7 @@ in
   };
 
   processes = {
-    app.exec = "php artisan serve --port ${toString phpPort} ";
+    app.exec = "php artisan serve --port ${toString phpPort}";
     pail.exec = "php artisan pail --timeout=0";
     vite.exec = "exec pnpm dev --port ${toString vitePort} --strictPort";
   };

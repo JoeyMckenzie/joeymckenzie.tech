@@ -111,6 +111,11 @@ final class PostController extends Controller
                 'status' => PostStatus::fromPublishedAt($post->published_at)->value,
                 'publishedAt' => $post->published_at?->format('Y-m-d\TH:i'),
                 'views' => $post->views_count,
+                'review' => $post->latest_review_at === null ? null : [
+                    'notes' => $post->latest_review ?? [],
+                    'reviewedAt' => $post->latest_review_at->toIso8601String(),
+                    'isStale' => $post->reviewIsStale(),
+                ],
             ],
             'tags' => $this->tagOptions(),
         ]);

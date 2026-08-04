@@ -8,6 +8,20 @@
  * drops straight into an `<input type="datetime-local">`.
  */
 export type PostStatus = 'draft' | 'published' | 'scheduled';
+export type PostReviewCategory = 'Clarity' | 'Conciseness' | 'Flow' | 'Tone';
+
+export type PostReviewNote = {
+    category: PostReviewCategory;
+    excerpt: string;
+    comment: string;
+    suggestion: string;
+};
+
+export type PostReview = {
+    notes: PostReviewNote[];
+    reviewedAt: string;
+    isStale: boolean;
+};
 
 export type AdminPostRow = {
     id: number;
@@ -32,6 +46,7 @@ export type AdminPostFormValues = {
     status: PostStatus;
     publishedAt: string | null;
     views: number;
+    review: PostReview | null;
 };
 
 export type TagOption = {
