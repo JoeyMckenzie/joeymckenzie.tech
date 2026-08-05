@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Blog;
 
 use App\Http\Controllers\BlogController;
+use App\Http\Middleware\HandleInertiaRequests;
 use App\Models\Post;
 use App\Models\PostView;
 use App\Models\User;
@@ -13,9 +14,11 @@ use Illuminate\Support\Facades\Config;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesClass;
 use Tests\TestCase;
 
 #[CoversClass(BlogController::class)]
+#[UsesClass(HandleInertiaRequests::class)]
 final class BlogShowTest extends TestCase
 {
     use RefreshDatabase;
@@ -33,6 +36,36 @@ final class BlogShowTest extends TestCase
                 ->component('blog/show')
                 ->where('post.slug', $post->slug)
                 ->where('post.contentHtml', '<p>hello nocturne</p>'));
+    }
+
+    #[Test]
+    public function it_shares_seo_metadata_for_the_post(): void
+    {
+        $post = Post::factory()->published()->create();
+
+        $this->get(route('blog.show', $post))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page): Assert => $page
+                ->component('blog/show')
+                ->where('seo.url', route('blog.show', $post))
+                ->where('seo.siteName', config('app.name'))
+                ->where('seo.defaultImage', asset('android-chrome-512x512.png'))
+                ->where('post.title', $post->title)
+                ->where('post.description', $post->description)
+                ->where('post.tag', $post->tag->name)
+                ->where('post.publishedAt', $post->published_at?->toDateString())
+                ->has('post.cover'));
+    }
+
+    #[Test]
+    public function the_canonical_seo_url_excludes_query_strings(): void
+    {
+        $post = Post::factory()->published()->create();
+
+        $this->get(route('blog.show', $post).'?utm_source=reddit')
+            ->assertOk()
+            ->assertInertia(fn (Assert $page): Assert => $page
+                ->where('seo.url', route('blog.show', $post)));
     }
 
     #[Test]

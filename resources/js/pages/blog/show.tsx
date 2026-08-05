@@ -1,7 +1,8 @@
-import { Head, Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { ArrowLeft, Clock } from 'lucide-react';
 import { Reactions } from '@/components/blog/reactions';
 import { RenderedMarkdown } from '@/components/blog/rendered-markdown';
+import { Seo } from '@/components/seo';
 import { index } from '@/routes/blog';
 
 interface Article {
@@ -27,9 +28,14 @@ interface Article {
 export default function BlogShow({ post }: { post: Article }) {
     return (
         <>
-            <Head title={post.title}>
-                <meta name="description" content={post.description} />
-            </Head>
+            <Seo
+                title={post.title}
+                description={post.description}
+                image={post.cover}
+                type="article"
+                publishedTime={post.publishedAt}
+                tag={post.tag}
+            />
 
             <div className="mx-auto max-w-3xl px-6 py-16">
                 <Link

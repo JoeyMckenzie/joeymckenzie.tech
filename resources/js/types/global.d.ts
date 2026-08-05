@@ -13,6 +13,11 @@ declare module '@inertiajs/core' {
             name: string;
             auth: Auth;
             sidebarOpen: boolean;
+            seo: {
+                url: string;
+                siteName: string;
+                defaultImage: string;
+            };
             [key: string]: unknown;
         };
     }

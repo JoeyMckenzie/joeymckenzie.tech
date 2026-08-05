@@ -1,5 +1,6 @@
-import { Head, Link } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { PostCard } from '@/components/blog/post-card';
+import { Seo } from '@/components/seo';
 import { SocialLinks } from '@/components/social-links';
 import { index as blogIndex } from '@/routes/blog';
 import type { BlogPost } from '@/types/blog';
@@ -11,12 +12,7 @@ interface HomeProps {
 export default function Home({ posts }: HomeProps) {
     return (
         <>
-            <Head>
-                <meta
-                    name="description"
-                    content="Software engineer, professional rabbit-hole diver. Writing about Laravel, PHP, and whatever has my attention this month."
-                />
-            </Head>
+            <Seo description="Software engineer, professional rabbit-hole diver. Writing about Laravel, PHP, and whatever has my attention this month." />
 
             <div className="mx-auto max-w-3xl px-6 py-16">
                 <header>

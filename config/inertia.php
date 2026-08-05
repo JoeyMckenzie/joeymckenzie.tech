@@ -22,6 +22,11 @@ return [
         'url' => 'http://127.0.0.1:13714',
         // 'bundle' => base_path('bootstrap/ssr/ssr.mjs'),
 
+        // Dev-mode SSR dispatch target. The default (the Vite hot file URL)
+        // points at the HTTPS asset proxy, whose local CA PHP's curl doesn't
+        // trust — so SSR silently fell back to client-side rendering. Talk to
+        // the Vite dev server directly over plain HTTP instead.
+        'hot_url' => env('INERTIA_SSR_HOT_URL', 'http://127.0.0.1:5173'),
     ],
 
     /*

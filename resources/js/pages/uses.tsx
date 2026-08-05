@@ -1,5 +1,5 @@
-import { Head } from '@inertiajs/react';
 import { ScrollFade } from '@/components/scroll-fade';
+import { Seo } from '@/components/seo';
 
 const sections = [
     {
@@ -99,12 +99,10 @@ const sections = [
 export default function Uses() {
     return (
         <>
-            <Head title="Uses">
-                <meta
-                    name="description"
-                    content="The tools, software, and hardware I use for development."
-                />
-            </Head>
+            <Seo
+                title="Uses"
+                description="The tools, software, and hardware I use for development."
+            />
 
             <div className="mx-auto max-w-3xl px-6 py-16">
                 <header>

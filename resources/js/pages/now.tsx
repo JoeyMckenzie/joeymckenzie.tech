@@ -1,5 +1,5 @@
-import { Head } from '@inertiajs/react';
 import { ScrollFade } from '@/components/scroll-fade';
+import { Seo } from '@/components/seo';
 
 const linkClass =
     'text-iris underline decoration-iris/35 underline-offset-4 transition-colors hover:decoration-iris';
@@ -7,12 +7,10 @@ const linkClass =
 export default function Now() {
     return (
         <>
-            <Head title="Now">
-                <meta
-                    name="description"
-                    content="A living changelog of what I'm learning, tinkering with, and thinking about outside of client work."
-                />
-            </Head>
+            <Seo
+                title="Now"
+                description="A living changelog of what I'm learning, tinkering with, and thinking about outside of client work."
+            />
 
             <div className="mx-auto max-w-3xl px-6 py-16">
                 <header>

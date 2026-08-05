@@ -46,6 +46,14 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            // Social/SEO defaults consumed by the shared <Seo> head component.
+            // url() is the absolute current URL without the query string, so it
+            // doubles as the canonical/og:url for every page.
+            'seo' => [
+                'url' => $request->url(),
+                'siteName' => config('app.name'),
+                'defaultImage' => asset('android-chrome-512x512.png'),
+            ],
         ];
     }
 }

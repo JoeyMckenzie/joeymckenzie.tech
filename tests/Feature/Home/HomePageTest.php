@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Home;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Middleware\HandleInertiaRequests;
 use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,9 +13,11 @@ use Inertia\Testing\AssertableInertia;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\UsesClass;
 use Tests\TestCase;
 
 #[CoversClass(HomeController::class)]
+#[UsesClass(HandleInertiaRequests::class)]
 final class HomePageTest extends TestCase
 {
     use RefreshDatabase;
@@ -68,6 +71,17 @@ final class HomePageTest extends TestCase
                 ->has('posts', 2)
                 ->where('posts.0.title', 'Newest')
                 ->where('posts.1.title', 'Oldest'));
+    }
+
+    #[Test]
+    public function it_shares_seo_defaults(): void
+    {
+        $this->get(route('home'))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page): AssertableInertia => $page
+                ->where('seo.url', route('home'))
+                ->where('seo.siteName', config('app.name'))
+                ->where('seo.defaultImage', asset('android-chrome-512x512.png')));
     }
 
     #[Test]

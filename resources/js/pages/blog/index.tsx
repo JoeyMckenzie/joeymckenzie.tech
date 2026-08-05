@@ -1,7 +1,8 @@
-import { Head, router } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { Search, X } from 'lucide-react';
 import { useRef, useState } from 'react';
 import { PostCard } from '@/components/blog/post-card';
+import { Seo } from '@/components/seo';
 import { cn } from '@/lib/utils';
 import { index } from '@/routes/blog';
 import type { BlogPost } from '@/types/blog';
@@ -60,7 +61,10 @@ export default function BlogIndex({ posts, tags, filters }: BlogIndexProps) {
 
     return (
         <>
-            <Head title="Writing" />
+            <Seo
+                title="Writing"
+                description="Writing about Laravel, PHP, and whatever has my attention this month."
+            />
 
             <div className="mx-auto max-w-3xl px-6 py-16">
                 <header>

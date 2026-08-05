@@ -1,5 +1,5 @@
-import { Head } from '@inertiajs/react';
 import { ScrollFade } from '@/components/scroll-fade';
+import { Seo } from '@/components/seo';
 
 const experience = [
     {
@@ -88,12 +88,10 @@ const skills = [
 export default function Cv() {
     return (
         <>
-            <Head title="CV">
-                <meta
-                    name="description"
-                    content="Joey McKenzie's resume and professional experience."
-                />
-            </Head>
+            <Seo
+                title="CV"
+                description="Joey McKenzie's resume and professional experience."
+            />
 
             <div className="mx-auto max-w-3xl px-6 py-16">
                 <header>
