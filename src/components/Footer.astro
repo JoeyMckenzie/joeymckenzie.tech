@@ -1,20 +1,9 @@
 ---
 import SocialLinks from "./SocialLinks.astro";
-import StatusLine from "./StatusLine.astro";
-
-// Forwards to the statusline rather than making every page render two
-// components: only post pages and /blog override the defaults.
-interface Props {
-    filetype?: string;
-    right?: string[];
-}
-
-const { filetype, right } = Astro.props;
 
 const today = new Date();
 ---
 
-<StatusLine {filetype} {right} />
 <footer class="border-hairline bg-canvas-deep border-t">
     <div
         class="mx-auto flex w-[var(--measure-wide)] max-w-[calc(100%-2em)] flex-wrap items-center justify-between gap-4 px-[1em] pt-[2em] pb-[3em]"
