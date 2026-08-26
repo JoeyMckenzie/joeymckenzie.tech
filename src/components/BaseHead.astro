@@ -39,7 +39,7 @@ const { title, description, image = FallbackImage } = Astro.props;
   Theme resolution, inline and blocking so it lands before first paint.
   `<html>` ships with data-theme="dark" already set, so this is a no-op for the
   default and for JS-off readers; it only overrides when the reader has chosen
-  light or their OS asks for it. ~330 bytes.
+  light or their OS asks for it. It also sets `color-scheme`; see below.
 -->
 <script is:inline>
     (function () {
@@ -51,8 +51,16 @@ const { title, description, image = FallbackImage } = Astro.props;
                     ? "light"
                     : "dark");
             document.documentElement.dataset.theme = theme;
+            // `color-scheme` also lives in global.css, but that stylesheet is
+            // linked at the end of <head> and so lands after first paint --
+            // long enough for the browser to flash its default white canvas on
+            // a #1a1b26 site. Setting it here, inline and blocking, means the
+            // canvas is right before anything paints.
+            document.documentElement.style.colorScheme = theme;
         } catch {
-            /* private mode / storage blocked: the markup default stands */
+            /* private mode / storage blocked: the markup default stands, so
+               name its scheme explicitly rather than waiting on the CSS. */
+            document.documentElement.style.colorScheme = "dark";
         }
     })();
 </script>
