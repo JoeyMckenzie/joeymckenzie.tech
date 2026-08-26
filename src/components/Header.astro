@@ -3,12 +3,21 @@ import { SITE_TITLE } from "../consts"
 import HeaderLink from "./HeaderLink.astro"
 import SocialLinks from "./SocialLinks.astro"
 import ThemeToggle from "./ThemeToggle.astro"
+import WinBar from "./WinBar.astro"
+
+// Owns both strips of top chrome: the tabline, and the winbar beneath it.
+// `tag` is only ever set by a post page, and is optional there too.
+interface Props {
+    tag?: string
+}
+
+const { tag } = Astro.props
 ---
 
 <header>
     <nav>
         <a class="brand" href="/">{SITE_TITLE}</a>
-        <div class="internal-links">
+        <div class="tabs">
             <HeaderLink href="/">home</HeaderLink>
             <HeaderLink href="/blog">blog</HeaderLink>
             <HeaderLink href="/now">now</HeaderLink>
@@ -21,10 +30,10 @@ import ThemeToggle from "./ThemeToggle.astro"
         </div>
     </nav>
 </header>
+<WinBar {tag} />
 
 <style>
     header {
-        border-bottom: 1px solid var(--hairline);
         background: var(--canvas);
     }
 
@@ -33,7 +42,7 @@ import ThemeToggle from "./ThemeToggle.astro"
         max-width: calc(100% - 2em);
         margin: auto;
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         justify-content: space-between;
         gap: 1rem;
         padding: 0 1em;
@@ -53,23 +62,45 @@ import ThemeToggle from "./ThemeToggle.astro"
         color: var(--ember);
     }
 
-    .internal-links {
+    /* Buffer tabs sit flush on the baseline so the active tab's filled block
+       meets the winbar border underneath it, the way a real tabline does. */
+    .tabs {
         display: flex;
-        gap: 0.25rem;
+        align-self: flex-end;
+        gap: 0.125rem;
     }
 
     .trailing {
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        padding-bottom: 0.9em;
     }
 
     @media (max-width: 720px) {
         header :global(.social-links) {
             display: none;
         }
+        /* Brand + five tabs + the toggle do not fit at 390px. Tighten the
+           gutters, and let the row wrap rather than scroll the page if it
+           still runs out of room on something narrower. */
+        nav {
+            flex-wrap: wrap;
+            padding: 0 0.5em;
+        }
         .brand {
             font-size: 0.75rem;
+            padding: 1.15em 0.25em;
+        }
+        .tabs {
+            gap: 0;
+        }
+        /* When the row does wrap, keep the toggle on the right edge where it
+           sits on desktop, rather than orphaned under the brand. */
+        .trailing {
+            gap: 0.25rem;
+            margin-left: auto;
+            padding-bottom: 0.6em;
         }
     }
 </style>

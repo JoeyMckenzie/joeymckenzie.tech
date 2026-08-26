@@ -24,7 +24,6 @@ const posts = (await getCollection("blog"))
         <Header />
         <main>
             <header class="intro">
-                <p class="kicker">~/</p>
                 <h1>
                     Software developer.<br />
                     <span class="muted">Professional sidequester.</span>
@@ -61,28 +60,13 @@ const posts = (await getCollection("blog"))
 </html>
 
 <style>
-    .kicker {
-        margin: 0;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        letter-spacing: 0.05em;
-        color: var(--subtle);
-    }
     .intro h1 {
-        margin: 1rem 0 0;
-        font-size: 2.75rem;
-        line-height: 1.05;
-        letter-spacing: -0.02em;
+        margin: 0;
+        font-size: 2rem;
+        line-height: 1.25;
     }
     .intro h1 .muted {
         color: var(--subtle);
-    }
-    .sweep {
-        width: 10rem;
-        height: 3px;
-        margin-top: 1.5rem;
-        border-radius: 999px;
-        background: var(--sweep);
     }
     .blurb {
         max-width: 34rem;
@@ -125,7 +109,7 @@ const posts = (await getCollection("blog"))
     }
     @media (min-width: 600px) {
         .intro h1 {
-            font-size: 3.25rem;
+            font-size: 2.375rem;
         }
     }
 </style>

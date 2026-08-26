@@ -1,0 +1,119 @@
+---
+import { getCollection } from "astro:content"
+import { countWords } from "../lib/reading"
+
+// neovim's statusline. The one place the wink is allowed to be explicit, and
+// every figure in it is real -- nothing here is decorative filler.
+interface Props {
+    filetype?: string
+    right?: string[]
+}
+
+const { filetype = "markdown", right } = Astro.props
+
+// Site-wide totals are the default so the prose pages need no plumbing at all;
+// post pages and /blog pass their own.
+let segments = right
+if (!segments) {
+    const posts = await getCollection("blog")
+    const words = posts.reduce(
+        (total, post) => total + countWords(post.body),
+        0
+    )
+    segments = [
+        `${posts.length} posts`,
+        `${words.toLocaleString("en-US")} words`,
+    ]
+}
+---
+
+<div class="statusline">
+    <div class="inner">
+        <span class="left">
+            <span class="mode">N</span>
+            <span class="branch">
+                <svg
+                    viewBox="0 0 16 16"
+                    width="11"
+                    height="11"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    aria-hidden="true"
+                >
+                    <circle cx="4" cy="3.5" r="1.8"></circle>
+                    <circle cx="4" cy="12.5" r="1.8"></circle>
+                    <circle cx="12" cy="3.5" r="1.8"></circle>
+                    <path d="M4 5.3v5.4M12 5.3v1.2a3 3 0 0 1-3 3H4"></path>
+                </svg>
+                main
+            </span>
+            <span class="filetype">{filetype}</span>
+        </span>
+        <span class="right">
+            {segments.map((segment) => <span>{segment}</span>)}
+        </span>
+    </div>
+</div>
+
+<style>
+    .statusline {
+        margin-top: 4rem;
+        border-top: 1px solid var(--hairline);
+        background: var(--canvas-deep);
+    }
+
+    .inner {
+        width: var(--measure-wide);
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 0.5em 1em;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.03em;
+        /* 4.86:1 dark, 4.54:1 light against --canvas-deep. */
+        color: var(--subtle);
+    }
+
+    .left,
+    .right {
+        display: flex;
+        align-items: center;
+        gap: 1.25rem;
+    }
+
+    /* The only saturated fill in the chrome, so it is the thing your eye lands
+       on -- normal mode is blue in tokyonight. 6.79:1 dark, 4.62:1 light. */
+    .mode {
+        padding: 0.25em 0.6em;
+        margin: -0.25em 0;
+        border-radius: 2px;
+        background: var(--iris);
+        color: var(--canvas);
+        font-weight: 500;
+        letter-spacing: 0.08em;
+    }
+
+    .branch {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+    }
+
+    @media (max-width: 720px) {
+        /* Keep the mode block, the branch, and the rightmost figure. */
+        .filetype,
+        .right span:not(:last-child) {
+            display: none;
+        }
+        .left,
+        .right {
+            gap: 0.85rem;
+        }
+    }
+</style>

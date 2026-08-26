@@ -3,17 +3,17 @@ import BaseHead from "../components/BaseHead.astro"
 import Footer from "../components/Footer.astro"
 import Header from "../components/Header.astro"
 
+// `kicker` is gone: the winbar derives `~/now.md` and friends from the URL.
 interface Props {
     title: string
     description: string
-    kicker: string
     heading: string
     intro?: string
     updated?: string
     updatedLabel?: string
 }
 
-const { title, description, kicker, heading, intro, updated, updatedLabel } =
+const { title, description, heading, intro, updated, updatedLabel } =
     Astro.props
 ---
 
@@ -26,11 +26,14 @@ const { title, description, kicker, heading, intro, updated, updatedLabel } =
         <Header />
         <main>
             <header class="page-header">
-                <div class="kicker">
-                    <span>{kicker}</span>
-                    {updated && <time datetime={updated}>{updatedLabel}</time>}
-                </div>
                 <h1>{heading}</h1>
+                {
+                    updated && (
+                        <time class="updated" datetime={updated}>
+                            {updatedLabel}
+                        </time>
+                    )
+                }
                 <div class="sweep"></div>
                 {intro && <p class="intro">{intro}</p>}
             </header>
@@ -41,27 +44,17 @@ const { title, description, kicker, heading, intro, updated, updatedLabel } =
 </html>
 
 <style>
-    .page-header .kicker {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 0.75rem;
+    .page-header h1 {
+        margin: 0;
+        font-size: 2.125rem;
+    }
+    .updated {
+        display: block;
+        margin-top: 0.5rem;
         font-family: var(--font-mono);
         font-size: 0.75rem;
         letter-spacing: 0.05em;
         color: var(--subtle);
-    }
-    .page-header h1 {
-        margin: 0.5rem 0 0;
-        font-size: 2.75rem;
-        letter-spacing: -0.02em;
-    }
-    .sweep {
-        width: 10rem;
-        height: 3px;
-        margin-top: 1rem;
-        border-radius: 999px;
-        background: var(--sweep);
     }
     .intro {
         max-width: 34rem;
@@ -70,7 +63,7 @@ const { title, description, kicker, heading, intro, updated, updatedLabel } =
     }
     @media (max-width: 720px) {
         .page-header h1 {
-            font-size: 2.25rem;
+            font-size: 1.75rem;
         }
     }
 </style>

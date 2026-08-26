@@ -35,7 +35,6 @@ const tagCounts = Object.fromEntries(
         <Header />
         <main>
             <header class="intro">
-                <p class="kicker">~/blog</p>
                 <h1>Writing</h1>
                 <div class="sweep"></div>
                 <p class="blurb">
@@ -111,7 +110,10 @@ const tagCounts = Object.fromEntries(
                 >
             </div>
         </main>
-        <Footer />
+        <Footer
+            filetype="directory"
+            right={[`${posts.length} posts`, `1:${posts.length}`]}
+        />
     </body>
 </html>
 
@@ -198,24 +200,9 @@ const tagCounts = Object.fromEntries(
 </script>
 
 <style>
-    .kicker {
-        margin: 0;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        letter-spacing: 0.05em;
-        color: var(--subtle);
-    }
     .intro h1 {
-        margin: 0.5rem 0 0;
-        font-size: 2.75rem;
-        letter-spacing: -0.02em;
-    }
-    .sweep {
-        width: 10rem;
-        height: 3px;
-        margin-top: 1rem;
-        border-radius: 999px;
-        background: var(--sweep);
+        margin: 0;
+        font-size: 2.125rem;
     }
     .blurb {
         max-width: 34rem;

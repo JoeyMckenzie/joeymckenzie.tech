@@ -25,16 +25,6 @@ export default defineConfig({
     fonts: [
         {
             provider: fontProviders.google(),
-            name: "Fraunces",
-            cssVariable: "--font-display",
-            weights: [400, 500, 600],
-            styles: ["normal"],
-            subsets: ["latin"],
-            fallbacks: ["Georgia", "Cambria", "serif"],
-            display: "swap",
-        },
-        {
-            provider: fontProviders.google(),
             name: "Geist",
             cssVariable: "--font-body",
             weights: [400, 500, 600],
@@ -47,7 +37,9 @@ export default defineConfig({
             provider: fontProviders.google(),
             name: "JetBrains Mono",
             cssVariable: "--font-mono",
-            weights: [400, 500],
+            // 700 is for headings, which now belong to the mono face -- 500
+            // reads weak at display sizes.
+            weights: [400, 500, 700],
             styles: ["normal"],
             subsets: ["latin"],
             fallbacks: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],

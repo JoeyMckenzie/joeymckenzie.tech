@@ -32,9 +32,8 @@ const { title, description, image = FallbackImage } = Astro.props
 />
 <meta name="generator" content={Astro.generator} />
 
-<Font cssVariable="--font-display" preload />
 <Font cssVariable="--font-body" preload />
-<Font cssVariable="--font-mono" />
+<Font cssVariable="--font-mono" preload />
 
 <!--
   Theme resolution, inline and blocking so it lands before first paint.

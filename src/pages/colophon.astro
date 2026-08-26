@@ -106,7 +106,6 @@ const themes = { light: "catppuccin-latte", dark: "tokyo-night" } as const
 <Page
     title="Colophon"
     description="The design system this site is built from: palette, type, and how it got here."
-    kicker="~/colophon"
     heading="Nocturne"
     intro="The tokens, type, and machinery this whole site is built from. Dark is the canonical design; light exists for daylight. Flip the theme and this page re-renders itself in it."
 >
@@ -164,12 +163,14 @@ const themes = { light: "catppuccin-latte", dark: "tokyo-night" } as const
     <section>
         <h2>type</h2>
         <p class="lede">
-            Three families, three jobs, none doing two. JetBrains Mono is the
-            one actually running in Ghostty.
+            Two families, two jobs, neither doing both. JetBrains Mono owns the
+            chrome, the headings and the code &mdash; it is the one actually
+            running in Ghostty. Geist keeps the prose, because 117,000 words of
+            monospace is a tax on the reader.
         </p>
         <div class="specimen">
             <div class="spec-row">
-                <span class="spec-label">Fraunces &middot; display</span>
+                <span class="spec-label">JetBrains Mono &middot; display</span>
                 <p class="spec-display">Terminally driven, Laravel inspired</p>
             </div>
             <div class="spec-row">
@@ -276,12 +277,12 @@ const themes = { light: "catppuccin-latte", dark: "tokyo-night" } as const
             </div>
             <div>
                 <dt>CSS, whole site</dt>
-                <dd><strong>12.6 KB</strong> — one system, no framework</dd>
+                <dd><strong>14.8 KB</strong> — one system, no framework</dd>
             </div>
             <div>
                 <dt>Fonts</dt>
                 <dd>
-                    <strong>3 files, 95 KB</strong> — self-hosted, latin subset
+                    <strong>2 files, 59 KB</strong> — self-hosted, latin subset
                 </dd>
             </div>
             <div>
@@ -430,7 +431,7 @@ const themes = { light: "catppuccin-latte", dark: "tokyo-night" } as const
     }
     .spec-display {
         margin: 0;
-        font-family: var(--font-display);
+        font-family: var(--font-mono);
         font-size: 2rem;
         font-weight: 500;
         line-height: 1.15;
@@ -538,7 +539,7 @@ const themes = { light: "catppuccin-latte", dark: "tokyo-night" } as const
     }
     .stats dd {
         margin: 0.35rem 0 0;
-        font-family: var(--font-display);
+        font-family: var(--font-mono);
         font-size: 1.5rem;
         color: var(--prose-strong);
     }

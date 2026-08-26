@@ -1,9 +1,20 @@
 ---
 import SocialLinks from "./SocialLinks.astro"
+import StatusLine from "./StatusLine.astro"
+
+// Forwards to the statusline rather than making every page render two
+// components: only post pages and /blog override the defaults.
+interface Props {
+    filetype?: string
+    right?: string[]
+}
+
+const { filetype, right } = Astro.props
 
 const today = new Date()
 ---
 
+<StatusLine {filetype} {right} />
 <footer>
     <div class="inner">
         <p class="line">
@@ -18,8 +29,9 @@ const today = new Date()
 </footer>
 
 <style>
+    /* The gap above now belongs to the statusline, which sits between main and
+       this; the border here divides the two strips. */
     footer {
-        margin-top: 4rem;
         border-top: 1px solid var(--hairline);
         background: var(--canvas-deep);
     }

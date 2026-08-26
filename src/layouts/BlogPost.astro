@@ -5,139 +5,147 @@ import BaseHead from "../components/BaseHead.astro"
 import Footer from "../components/Footer.astro"
 import FormattedDate from "../components/FormattedDate.astro"
 import Header from "../components/Header.astro"
+import { countWords, readingMinutes } from "../lib/reading"
 
-type Props = Omit<CollectionEntry<"blog">["data"], "tags"> & {
-    tags?: string[]
+interface Props {
+    post: CollectionEntry<"blog">
+    index: number
+    total: number
 }
 
-const {
-    title,
-    description,
-    pubDate,
-    updatedDate,
-    heroImage,
-    tags = [],
-} = Astro.props
+const { post, index, total } = Astro.props
+const { title, description, pubDate, updatedDate, heroImage, tags } = post.data
+
+const words = countWords(post.body)
+// Reads like nvim's line:col, and actually means something -- this is post
+// `index` of `total` in reverse-chronological order.
+const position = `${index}:${total}`
 ---
 
 <html lang="en" data-theme="dark">
     <head>
         <BaseHead title={title} description={description} />
-        <style>
-            main {
-                width: calc(100% - 2em);
-                max-width: 100%;
-                margin: 0;
-            }
-            .hero-image {
-                width: 100%;
-            }
-            .hero-image img {
-                display: block;
-                margin: 0 auto;
-                border-radius: 12px;
-                border: 1px solid var(--hairline);
-            }
-            .prose {
-                width: 720px;
-                max-width: calc(100% - 2em);
-                margin: auto;
-                padding: 1em;
-                color: var(--prose);
-            }
-            .title {
-                margin-bottom: 1em;
-                padding: 1em 0;
-                text-align: center;
-                line-height: 1;
-            }
-            .title h1 {
-                margin: 0 0 0.5em 0;
-            }
-            .date {
-                margin-bottom: 0.5em;
-                color: var(--subtle);
-            }
-            .last-updated-on {
-                font-style: italic;
-            }
-            .tags {
-                display: flex;
-                justify-content: center;
-                gap: 0.5em;
-                margin: 0 0 1em 0;
-            }
-            .tag {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.45em;
-                padding: 0.2em 0.7em 0.2em 0.6em;
-                border: 1px solid
-                    color-mix(in oklab, var(--tag) 40%, var(--hairline));
-                border-radius: 999px;
-                background: color-mix(in oklab, var(--tag) 10%, transparent);
-                color: var(--tag);
-                font-family: var(--font-mono);
-                font-size: 0.75rem;
-                letter-spacing: 0.03em;
-            }
-            .tag::before {
-                content: "";
-                width: 0.45em;
-                height: 0.45em;
-                border-radius: 50%;
-                background: var(--tag);
-            }
-        </style>
     </head>
 
     <body>
-        <Header />
+        <Header tag={tags?.[0]} />
         <main>
-            <article>
-                <div class="hero-image">
+            <article class="prose">
+                <header class="post-head">
+                    <h1>{title}</h1>
+                    <div class="meta">
+                        <FormattedDate date={pubDate} />
+                        <span aria-hidden="true">&middot;</span>
+                        <span>{readingMinutes(words)} min read</span>
+                        {
+                            updatedDate && (
+                                <span class="updated">
+                                    updated <FormattedDate date={updatedDate} />
+                                </span>
+                            )
+                        }
+                    </div>
                     {
-                        heroImage && (
+                        tags && tags.length > 0 && (
+                            <p class="tags">
+                                {tags.map((tag) => (
+                                    <span class="tag" data-tag={tag}>
+                                        {tag}
+                                    </span>
+                                ))}
+                            </p>
+                        )
+                    }
+                </header>
+
+                {
+                    heroImage && (
+                        <figure class="figure-frame" data-label="image">
                             <Image
                                 width={1020}
                                 height={510}
                                 src={heroImage}
                                 alt=""
                             />
-                        )
-                    }
-                </div>
-                <div class="prose">
-                    <div class="title">
-                        <div class="date">
-                            <FormattedDate date={pubDate} />
-                            {
-                                updatedDate && (
-                                    <div class="last-updated-on">
-                                        Last updated on{" "}
-                                        <FormattedDate date={updatedDate} />
-                                    </div>
-                                )
-                            }
-                        </div>
-                        <h1>{title}</h1>
-                        {
-                            tags.length > 0 && (
-                                <p class="tags">
-                                    {tags.map((tag) => (
-                                        <span class="tag" data-tag={tag}>
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </p>
-                            )
-                        }
-                        <hr />
-                    </div>
-                    <slot />
-                </div>
+                        </figure>
+                    )
+                }
+
+                <slot />
             </article>
         </main>
-        <Footer />
+        <Footer
+            right={[
+                `${words.toLocaleString("en-US")} words`,
+                `${readingMinutes(words)} min`,
+                position,
+            ]}
+        />
     </body>
 </html>
+
+<style>
+    /* The post is the only page whose main is a bare column: code blocks and
+       the hero break out of it to --measure-wide. */
+    main {
+        width: var(--measure);
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 3em 1em;
+    }
+
+    .post-head {
+        margin-bottom: 2.5rem;
+    }
+
+    .post-head h1 {
+        margin: 0;
+    }
+
+    /* Left-aligned, not centered: the winbar above already establishes where
+       you are, and a centered block fights the buffer reading. */
+    .meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.85rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
+        color: var(--subtle);
+    }
+
+    .updated {
+        font-style: italic;
+    }
+
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5em;
+        margin: 1rem 0 0;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45em;
+        padding: 0.2em 0.7em 0.2em 0.6em;
+        border: 1px solid color-mix(in oklab, var(--tag) 40%, var(--hairline));
+        border-radius: 999px;
+        background: color-mix(in oklab, var(--tag) 10%, transparent);
+        color: var(--tag);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
+    }
+
+    .tag::before {
+        content: "";
+        width: 0.45em;
+        height: 0.45em;
+        border-radius: 50%;
+        background: var(--tag);
+    }
+</style>

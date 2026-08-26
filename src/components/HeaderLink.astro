@@ -21,28 +21,40 @@ const isActive = href === pathname || href === "/" + (subpath?.[0] || "")
 <style>
     a {
         display: inline-block;
-        padding: 1.15em 0.5em;
+        padding: 0.9em 0.85em;
         font-family: var(--font-mono);
         font-size: 0.75rem;
         letter-spacing: 0.05em;
+        /* 4.61:1 dark, 4.62:1 light on --canvas. */
         color: var(--subtle);
         text-decoration: none;
-        border-bottom: 1px solid transparent;
+        border-radius: 4px 4px 0 0;
     }
 
     a:hover {
         color: var(--prose);
+        background: color-mix(in oklab, var(--panel) 45%, transparent);
     }
 
-    /* Active state is the sweep gradient, not an underline — same accent
-       language as the page-header rule. */
+    /* Active state is a filled buffer tab, not an underline. The sweep gradient
+       is not retired — it keeps its job under page headings, it just stops
+       doing double duty as the nav's active state. */
     a.active {
         color: var(--prose-strong);
-        border-bottom-color: transparent;
-        background-image: var(--sweep);
-        background-repeat: no-repeat;
-        background-size: 100% 1px;
-        background-position: 0 100%;
+        background: var(--panel);
+        /* Top and sides only, so the tab stays joined to the winbar beneath it
+           the way a real tabline does. Without this the light theme's --panel
+           is pure white on a #f2f2f6 canvas and the active tab disappears. */
+        box-shadow:
+            inset 1px 1px 0 var(--hairline),
+            inset -1px 0 0 var(--hairline);
+    }
+
+    @media (max-width: 720px) {
+        a {
+            padding: 0.9em 0.4em;
+            letter-spacing: 0.02em;
+        }
     }
 
     a:focus-visible {

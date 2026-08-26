@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets"
 import type { CollectionEntry } from "astro:content"
+import { countWords, readingMinutes } from "../lib/reading"
 import FormattedDate from "./FormattedDate.astro"
 
 interface Props {
@@ -9,12 +10,7 @@ interface Props {
 
 const { post } = Astro.props
 
-// Same formula as the old site's App\Support\ReadingTime: 200 wpm, rounded up,
-// never below one. Counts alphabetic runs rather than whitespace-delimited
-// tokens -- the PHP version used str_word_count, which counts UTF-8 bytes and so
-// inflated posts containing box-drawing characters in terminal output.
-const words = post.body?.match(/[A-Za-z'-]+/g)?.length ?? 0
-const readingMinutes = Math.max(1, Math.ceil(words / 200))
+const minutes = readingMinutes(countWords(post.body))
 const tag = post.data.tags[0]
 ---
 
@@ -44,7 +40,7 @@ const tag = post.data.tags[0]
         </div>
         <h3>{post.data.title}</h3>
         <p class="description">{post.data.description}</p>
-        <div class="meta">{readingMinutes} min read</div>
+        <div class="meta">{minutes} min read</div>
     </div>
 </a>
 
