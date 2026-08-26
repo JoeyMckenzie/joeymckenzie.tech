@@ -1,28 +1,135 @@
 ---
+import { getCollection } from "astro:content"
 import BaseHead from "../components/BaseHead.astro"
 import Footer from "../components/Footer.astro"
 import Header from "../components/Header.astro"
-import PostList from "../components/PostList.astro"
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts"
+import PostCard from "../components/PostCard.astro"
+import SocialLinks from "../components/SocialLinks.astro"
+import { SITE_TITLE } from "../consts"
+
+const posts = (await getCollection("blog"))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3)
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-        <style>
-            main {
-                width: 960px;
-            }
-        </style>
+        <BaseHead
+            title={SITE_TITLE}
+            description="Software engineer, professional rabbit-hole diver. Writing about Laravel, PHP, and whatever has my attention this month."
+        />
     </head>
     <body>
         <Header />
         <main>
-            <section>
-                <PostList />
-            </section>
+            <header class="intro">
+                <p class="kicker">~/</p>
+                <h1>
+                    Software developer.<br />
+                    <span class="muted">Professional sidequester.</span>
+                </h1>
+                <div class="sweep"></div>
+                <p class="blurb">
+                    Hey, I'm Joey. I build things with Laravel, PHP, and
+                    whatever has my attention this month. Mostly code,
+                    occasionally opinions, perpetually down a rabbit-hole.
+                </p>
+                <div class="socials">
+                    <SocialLinks />
+                </div>
+            </header>
+
+            {
+                posts.length > 0 && (
+                    <section class="recent">
+                        <div class="recent-head">
+                            <h2>recent writing</h2>
+                            <a href="/blog">all posts →</a>
+                        </div>
+                        <div class="cards">
+                            {posts.map((post) => (
+                                <PostCard {post} />
+                            ))}
+                        </div>
+                    </section>
+                )
+            }
         </main>
         <Footer />
     </body>
 </html>
+
+<style>
+    .kicker {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        color: rgb(var(--gray));
+    }
+    .intro h1 {
+        margin: 1rem 0 0;
+        font-size: 2.75rem;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+    }
+    .intro h1 .muted {
+        color: rgb(var(--gray));
+    }
+    .sweep {
+        width: 10rem;
+        height: 3px;
+        margin-top: 1.5rem;
+        border-radius: 999px;
+        background: linear-gradient(
+            90deg,
+            var(--accent),
+            rgba(var(--gray), 0.15)
+        );
+    }
+    .blurb {
+        max-width: 34rem;
+        margin: 1.5rem 0 0;
+        color: rgb(var(--gray));
+    }
+    .socials {
+        margin-top: 2rem;
+    }
+    .recent {
+        margin-top: 5rem;
+    }
+    .recent-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    .recent-head h2 {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 400;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgb(var(--gray));
+    }
+    .recent-head a {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        text-decoration: none;
+    }
+    .recent-head a:hover {
+        text-decoration: underline;
+    }
+    .cards {
+        display: grid;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    @media (min-width: 600px) {
+        .intro h1 {
+            font-size: 3.25rem;
+        }
+    }
+</style>

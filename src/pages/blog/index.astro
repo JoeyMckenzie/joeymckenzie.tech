@@ -1,28 +1,321 @@
 ---
+import { getCollection } from "astro:content"
 import BaseHead from "../../components/BaseHead.astro"
 import Footer from "../../components/Footer.astro"
 import Header from "../../components/Header.astro"
-import PostList from "../../components/PostList.astro"
-import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts"
+import PostCard from "../../components/PostCard.astro"
+
+const posts = (await getCollection("blog")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+)
+
+// Only tags that actually have posts, alphabetically -- same set the old
+// Tag::whereHas('posts')->orderBy('name') query produced.
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
 ---
 
 <!doctype html>
 <html lang="en">
     <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-        <style>
-            main {
-                width: 960px;
-            }
-        </style>
+        <BaseHead
+            title="Writing"
+            description="Writing about Laravel, PHP, and whatever has my attention this month."
+        />
     </head>
     <body>
         <Header />
         <main>
-            <section>
-                <PostList />
-            </section>
+            <header class="intro">
+                <p class="kicker">~/blog</p>
+                <h1>Writing</h1>
+                <div class="sweep"></div>
+                <p class="blurb">
+                    Laravel, Rust, .NET, and whatever tooling rabbit hole has me
+                    this month. Mostly code, occasionally opinions.
+                </p>
+            </header>
+
+            <div class="filters">
+                <label class="search">
+                    <svg
+                        viewBox="0 0 24 24"
+                        width="16"
+                        height="16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        aria-hidden="true"
+                    >
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                    <input
+                        type="search"
+                        id="post-search"
+                        placeholder="Search posts…"
+                        aria-label="Search posts"
+                        autocomplete="off"
+                    />
+                </label>
+
+                <div class="chips" id="tag-chips">
+                    <button type="button" data-tag="" aria-pressed="true"
+                        >all</button
+                    >
+                    {
+                        tags.map((tag) => (
+                            <button
+                                type="button"
+                                data-tag={tag}
+                                aria-pressed="false"
+                            >
+                                {tag}
+                            </button>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <div class="results" id="results">
+                {
+                    posts.map((post) => (
+                        <div
+                            class="result"
+                            data-tag={post.data.tags[0] ?? ""}
+                            data-title={post.data.title.toLowerCase()}
+                            data-description={post.data.description.toLowerCase()}
+                        >
+                            <PostCard {post} />
+                        </div>
+                    ))
+                }
+            </div>
+
+            <div class="empty" id="empty" hidden>
+                <p class="empty-title">No matches</p>
+                <p class="empty-note" id="empty-note">
+                    Nothing fits that filter.
+                </p>
+                <button type="button" id="clear-filters">✕ clear filters</button
+                >
+            </div>
         </main>
         <Footer />
     </body>
 </html>
+
+<script>
+    const search = document.getElementById("post-search") as HTMLInputElement
+    const chips = document.getElementById("tag-chips")!
+    const results = Array.from(
+        document.querySelectorAll<HTMLElement>("#results .result")
+    )
+    const empty = document.getElementById("empty")!
+    const emptyNote = document.getElementById("empty-note")!
+    const clear = document.getElementById("clear-filters")!
+
+    let activeTag = ""
+    let query = ""
+
+    function apply() {
+        const q = query.trim().toLowerCase()
+        let visible = 0
+
+        for (const el of results) {
+            const matchesTag = !activeTag || el.dataset.tag === activeTag
+            const matchesQuery =
+                !q ||
+                el.dataset.title!.includes(q) ||
+                el.dataset.description!.includes(q)
+            const show = matchesTag && matchesQuery
+            el.hidden = !show
+            if (show) visible++
+        }
+
+        empty.hidden = visible > 0
+        emptyNote.textContent = activeTag
+            ? `Nothing fits that filter in ${activeTag}.`
+            : "Nothing fits that filter."
+
+        for (const chip of chips.querySelectorAll("button")) {
+            chip.setAttribute(
+                "aria-pressed",
+                String((chip.dataset.tag ?? "") === activeTag)
+            )
+        }
+
+        // Keep ?tag= / ?search= in the URL so filtered views stay linkable,
+        // dropping empty params the way the old toParams() helper did.
+        const params = new URLSearchParams()
+        if (activeTag) params.set("tag", activeTag)
+        if (query) params.set("search", query)
+        const qs = params.toString()
+        history.replaceState(null, "", qs ? `?${qs}` : location.pathname)
+    }
+
+    // Restore state from the URL so deep links keep working.
+    const initial = new URLSearchParams(location.search)
+    activeTag = initial.get("tag") ?? ""
+    query = initial.get("search") ?? ""
+    search.value = query
+
+    let debounce: ReturnType<typeof setTimeout>
+    search.addEventListener("input", () => {
+        clearTimeout(debounce)
+        debounce = setTimeout(() => {
+            query = search.value
+            apply()
+        }, 300)
+    })
+
+    chips.addEventListener("click", (event) => {
+        const button = (event.target as HTMLElement).closest("button")
+        if (!button) return
+        const tag = button.dataset.tag ?? ""
+        activeTag = tag && tag !== activeTag ? tag : ""
+        apply()
+    })
+
+    clear.addEventListener("click", () => {
+        activeTag = ""
+        query = ""
+        search.value = ""
+        apply()
+    })
+
+    apply()
+</script>
+
+<style>
+    .kicker {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        color: rgb(var(--gray));
+    }
+    .intro h1 {
+        margin: 0.5rem 0 0;
+        font-size: 2.75rem;
+        letter-spacing: -0.02em;
+    }
+    .sweep {
+        width: 10rem;
+        height: 3px;
+        margin-top: 1rem;
+        border-radius: 999px;
+        background: linear-gradient(
+            90deg,
+            var(--accent),
+            rgba(var(--gray), 0.15)
+        );
+    }
+    .blurb {
+        max-width: 34rem;
+        margin: 1rem 0 0;
+        color: rgb(var(--gray));
+    }
+    .filters {
+        margin-top: 2.5rem;
+    }
+    .search {
+        position: relative;
+        display: block;
+    }
+    .search svg {
+        position: absolute;
+        top: 50%;
+        left: 0.75rem;
+        transform: translateY(-50%);
+        color: rgb(var(--gray));
+        pointer-events: none;
+    }
+    .search input {
+        width: 100%;
+        padding: 0.625rem 0.75rem 0.625rem 2.5rem;
+        border: 1px solid rgb(var(--gray-light));
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 0.9rem;
+        color: rgb(var(--gray-dark));
+        background: #fff;
+        transition: border-color 0.2s ease;
+    }
+    .search input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px var(--accent);
+    }
+    .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
+    .chips button {
+        padding: 0.25rem 0.75rem;
+        border: 1px solid rgb(var(--gray-light));
+        border-radius: 999px;
+        background: none;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: rgb(var(--gray));
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .chips button:hover {
+        border-color: rgba(var(--accent-rgb), 0.5);
+        color: rgb(var(--gray-dark));
+    }
+    .chips button[aria-pressed="true"] {
+        border-color: var(--accent);
+        background: rgba(var(--accent-rgb), 0.1);
+        color: var(--accent);
+    }
+    .results {
+        display: grid;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    .results .result[hidden] {
+        display: none;
+    }
+    .empty {
+        margin-top: 2rem;
+        padding: 4rem 1.5rem;
+        border: 1px dashed rgb(var(--gray-light));
+        border-radius: 12px;
+        text-align: center;
+    }
+    .empty[hidden] {
+        display: none;
+    }
+    .empty-title {
+        margin: 0;
+        font-size: 1.25rem;
+        color: rgb(var(--black));
+    }
+    .empty-note {
+        margin: 0.5rem 0 0;
+        font-size: 0.9rem;
+        color: rgb(var(--gray));
+    }
+    .empty button {
+        margin-top: 1rem;
+        border: none;
+        background: none;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--accent);
+        cursor: pointer;
+    }
+    .empty button:hover {
+        text-decoration: underline;
+    }
+    @media (min-width: 600px) {
+        .intro h1 {
+            font-size: 3rem;
+        }
+    }
+</style>

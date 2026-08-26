@@ -1,0 +1,142 @@
+---
+import { Image } from "astro:assets"
+import type { CollectionEntry } from "astro:content"
+import FormattedDate from "./FormattedDate.astro"
+
+interface Props {
+    post: CollectionEntry<"blog">
+}
+
+const { post } = Astro.props
+
+// Same formula as the old site's App\Support\ReadingTime: 200 wpm, rounded up,
+// never below one. Counts alphabetic runs rather than whitespace-delimited
+// tokens -- the PHP version used str_word_count, which counts UTF-8 bytes and so
+// inflated posts containing box-drawing characters in terminal output.
+const words = post.body?.match(/[A-Za-z'-]+/g)?.length ?? 0
+const readingMinutes = Math.max(1, Math.ceil(words / 200))
+const tag = post.data.tags[0]
+---
+
+<a class="card" href={`/blog/${post.id}/`}>
+    <div class="cover">
+        {
+            post.data.heroImage ? (
+                <Image
+                    src={post.data.heroImage}
+                    width={192}
+                    height={192}
+                    alt=""
+                />
+            ) : (
+                <div class="fallback">
+                    <span>{tag?.charAt(0).toUpperCase()}</span>
+                </div>
+            )
+        }
+    </div>
+
+    <div class="body">
+        <div class="meta">
+            <FormattedDate date={post.data.pubDate} />
+            {tag && <span aria-hidden="true">·</span>}
+            {tag && <span class="tag">{tag}</span>}
+        </div>
+        <h3>{post.data.title}</h3>
+        <p class="description">{post.data.description}</p>
+        <div class="meta">{readingMinutes} min read</div>
+    </div>
+</a>
+
+<style>
+    .card {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 1.25rem;
+        padding: 1rem;
+        border: 1px solid rgb(var(--gray-light));
+        border-radius: 12px;
+        text-decoration: none;
+        color: inherit;
+        transition:
+            border-color 0.2s ease,
+            background-color 0.2s ease;
+    }
+    .card:hover {
+        border-color: rgba(var(--gray), 0.4);
+        background: rgba(var(--gray-light), 0.35);
+    }
+    .cover {
+        width: 5rem;
+        height: 5rem;
+        overflow: hidden;
+        border-radius: 8px;
+        border: 1px solid rgb(var(--gray-light));
+    }
+    .cover :global(img) {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 0;
+        filter: grayscale(0.35);
+        opacity: 0.85;
+        transition:
+            filter 0.5s ease,
+            opacity 0.5s ease;
+    }
+    .card:hover .cover :global(img) {
+        filter: grayscale(0);
+        opacity: 1;
+    }
+    .fallback {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        color: #fff;
+        font-size: 1.5rem;
+    }
+    .body {
+        min-width: 0;
+    }
+    .meta {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.03em;
+        color: rgb(var(--gray));
+    }
+    .tag {
+        color: var(--accent);
+    }
+    h3 {
+        margin: 0.4rem 0;
+        font-size: 1.25rem;
+        line-height: 1.25;
+    }
+    .card:hover h3 {
+        text-decoration: underline;
+        text-decoration-color: var(--accent);
+        text-underline-offset: 3px;
+    }
+    .description {
+        margin: 0 0 0.75rem;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: rgb(var(--gray));
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    @media (min-width: 600px) {
+        .cover {
+            width: 6rem;
+            height: 6rem;
+        }
+    }
+</style>
