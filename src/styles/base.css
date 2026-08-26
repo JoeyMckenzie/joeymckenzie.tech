@@ -20,6 +20,13 @@
 
 html {
     -webkit-text-size-adjust: 100%;
+    /* The canvas colour has to live on the root, not only on <body>. With it on
+       <body> alone, CSS propagates it to the viewport canvas and <body> paints
+       nothing itself -- and a view transition snapshots the *root element*, not
+       the canvas, so both snapshots come out transparent and the bare canvas
+       shows through mid-navigation. Measured: getComputedStyle(html)
+       .backgroundColor was rgba(0,0,0,0) on every frame of a navigation. */
+    background: var(--canvas);
 }
 
 body {

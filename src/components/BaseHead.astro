@@ -1,6 +1,4 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
 import "../styles/global.css";
 import type { ImageMetadata } from "astro";
 import FallbackImage from "../assets/blog-placeholder-1.jpg";
@@ -35,12 +33,6 @@ const { title, description, image = FallbackImage } = Astro.props;
 <Font cssVariable="--font-body" preload />
 <Font cssVariable="--font-mono" preload />
 
-<!--
-  Theme resolution, inline and blocking so it lands before first paint.
-  `<html>` ships with data-theme="dark" already set, so this is a no-op for the
-  default and for JS-off readers; it only overrides when the reader has chosen
-  light or their OS asks for it. It also sets `color-scheme`; see below.
--->
 <script is:inline>
     (function () {
         try {
@@ -51,16 +43,12 @@ const { title, description, image = FallbackImage } = Astro.props;
                     ? "light"
                     : "dark");
             document.documentElement.dataset.theme = theme;
-            // `color-scheme` also lives in global.css, but that stylesheet is
-            // linked at the end of <head> and so lands after first paint --
-            // long enough for the browser to flash its default white canvas on
-            // a #1a1b26 site. Setting it here, inline and blocking, means the
-            // canvas is right before anything paints.
             document.documentElement.style.colorScheme = theme;
+            document.documentElement.style.backgroundColor =
+                theme === "dark" ? "#1a1b26" : "#f2f2f6";
         } catch {
-            /* private mode / storage blocked: the markup default stands, so
-               name its scheme explicitly rather than waiting on the CSS. */
             document.documentElement.style.colorScheme = "dark";
+            document.documentElement.style.backgroundColor = "#1a1b26";
         }
     })();
 </script>
