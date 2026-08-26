@@ -18,7 +18,7 @@ const readingMinutes = Math.max(1, Math.ceil(words / 200))
 const tag = post.data.tags[0]
 ---
 
-<a class="card" href={`/blog/${post.id}/`}>
+<a class="card" data-tag={tag} href={`/blog/${post.id}/`}>
     <div class="cover">
         {
             post.data.heroImage ? (
@@ -54,7 +54,7 @@ const tag = post.data.tags[0]
         grid-template-columns: auto 1fr;
         gap: 1.25rem;
         padding: 1rem;
-        border: 1px solid rgb(var(--gray-light));
+        border: 1px solid var(--hairline);
         border-radius: 12px;
         text-decoration: none;
         color: inherit;
@@ -63,15 +63,15 @@ const tag = post.data.tags[0]
             background-color 0.2s ease;
     }
     .card:hover {
-        border-color: rgba(var(--gray), 0.4);
-        background: rgba(var(--gray-light), 0.35);
+        border-color: color-mix(in oklab, var(--tag) 45%, var(--hairline));
+        background: var(--panel);
     }
     .cover {
         width: 5rem;
         height: 5rem;
         overflow: hidden;
         border-radius: 8px;
-        border: 1px solid rgb(var(--gray-light));
+        border: 1px solid var(--hairline);
     }
     .cover :global(img) {
         width: 100%;
@@ -94,8 +94,13 @@ const tag = post.data.tags[0]
         justify-content: center;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-        color: #fff;
+        background: linear-gradient(
+            135deg,
+            color-mix(in oklab, var(--tag) 26%, var(--canvas-deep)),
+            color-mix(in oklab, var(--tag) 8%, var(--canvas-deep))
+        );
+        color: var(--tag);
+        font-family: var(--font-mono);
         font-size: 1.5rem;
     }
     .body {
@@ -108,10 +113,20 @@ const tag = post.data.tags[0]
         font-family: var(--font-mono);
         font-size: 0.7rem;
         letter-spacing: 0.03em;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .tag {
-        color: var(--accent);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4em;
+        color: var(--tag);
+    }
+    .tag::before {
+        content: "";
+        width: 0.45em;
+        height: 0.45em;
+        border-radius: 50%;
+        background: var(--tag);
     }
     h3 {
         margin: 0.4rem 0;
@@ -120,14 +135,14 @@ const tag = post.data.tags[0]
     }
     .card:hover h3 {
         text-decoration: underline;
-        text-decoration-color: var(--accent);
+        text-decoration-color: var(--tag);
         text-underline-offset: 3px;
     }
     .description {
         margin: 0 0 0.75rem;
         font-size: 0.9rem;
         line-height: 1.5;
-        color: rgb(var(--gray));
+        color: var(--subtle);
         display: -webkit-box;
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;

@@ -12,10 +12,19 @@ const posts = (await getCollection("blog")).sort(
 // Only tags that actually have posts, alphabetically -- same set the old
 // Tag::whereHas('posts')->orderBy('name') query produced.
 const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
+
+// Post count per tag, shown on the chips. Reading the row top to bottom is the
+// polyglot arc: .NET -> Angular -> Rust -> Laravel.
+const tagCounts = Object.fromEntries(
+    tags.map((tag) => [
+        tag,
+        posts.filter((post) => post.data.tags.includes(tag)).length,
+    ])
+)
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
     <head>
         <BaseHead
             title="Writing"
@@ -71,6 +80,7 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
                                 aria-pressed="false"
                             >
                                 {tag}
+                                <span class="count">{tagCounts[tag]}</span>
                             </button>
                         ))
                     }
@@ -193,7 +203,7 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
         font-family: var(--font-mono);
         font-size: 0.75rem;
         letter-spacing: 0.05em;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .intro h1 {
         margin: 0.5rem 0 0;
@@ -205,16 +215,12 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
         height: 3px;
         margin-top: 1rem;
         border-radius: 999px;
-        background: linear-gradient(
-            90deg,
-            var(--accent),
-            rgba(var(--gray), 0.15)
-        );
+        background: var(--sweep);
     }
     .blurb {
         max-width: 34rem;
         margin: 1rem 0 0;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .filters {
         margin-top: 2.5rem;
@@ -228,24 +234,24 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
         top: 50%;
         left: 0.75rem;
         transform: translateY(-50%);
-        color: rgb(var(--gray));
+        color: var(--subtle);
         pointer-events: none;
     }
     .search input {
         width: 100%;
         padding: 0.625rem 0.75rem 0.625rem 2.5rem;
-        border: 1px solid rgb(var(--gray-light));
+        border: 1px solid var(--hairline);
         border-radius: 8px;
         font-family: inherit;
         font-size: 0.9rem;
-        color: rgb(var(--gray-dark));
+        color: var(--prose);
         background: #fff;
         transition: border-color 0.2s ease;
     }
     .search input:focus {
         outline: none;
-        border-color: var(--accent);
-        box-shadow: 0 0 0 1px var(--accent);
+        border-color: var(--iris);
+        box-shadow: 0 0 0 1px var(--iris);
     }
     .chips {
         display: flex;
@@ -254,24 +260,52 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
         margin-top: 1rem;
     }
     .chips button {
-        padding: 0.25rem 0.75rem;
-        border: 1px solid rgb(var(--gray-light));
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.25rem 0.7rem 0.25rem 0.6rem;
+        border: 1px solid var(--hairline);
         border-radius: 999px;
         background: none;
         font-family: var(--font-mono);
         font-size: 0.75rem;
-        color: rgb(var(--gray));
+        color: var(--subtle);
         cursor: pointer;
         transition: all 0.2s ease;
     }
+    /* The dot is the tag's own colour, so the arc is legible before you read a
+       single label. The "all" chip has no data-tag and so gets no dot. */
+    .chips button[data-tag]:not([data-tag=""])::before {
+        content: "";
+        width: 0.45em;
+        height: 0.45em;
+        border-radius: 50%;
+        background: var(--tag);
+    }
+    .chips .count {
+        font-size: 0.6875rem;
+        color: var(--subtle);
+        opacity: 0.75;
+    }
     .chips button:hover {
-        border-color: rgba(var(--accent-rgb), 0.5);
-        color: rgb(var(--gray-dark));
+        border-color: color-mix(
+            in oklab,
+            var(--tag, var(--iris)) 50%,
+            transparent
+        );
+        color: var(--prose);
     }
     .chips button[aria-pressed="true"] {
-        border-color: var(--accent);
-        background: rgba(var(--accent-rgb), 0.1);
-        color: var(--accent);
+        border-color: var(--tag, var(--iris));
+        background: color-mix(
+            in oklab,
+            var(--tag, var(--iris)) 12%,
+            transparent
+        );
+        color: var(--tag, var(--iris));
+    }
+    .chips button[aria-pressed="true"] .count {
+        color: inherit;
     }
     .results {
         display: grid;
@@ -284,7 +318,7 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
     .empty {
         margin-top: 2rem;
         padding: 4rem 1.5rem;
-        border: 1px dashed rgb(var(--gray-light));
+        border: 1px dashed var(--hairline);
         border-radius: 12px;
         text-align: center;
     }
@@ -294,12 +328,12 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
     .empty-title {
         margin: 0;
         font-size: 1.25rem;
-        color: rgb(var(--black));
+        color: var(--prose-strong);
     }
     .empty-note {
         margin: 0.5rem 0 0;
         font-size: 0.9rem;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .empty button {
         margin-top: 1rem;
@@ -307,7 +341,7 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
         background: none;
         font-family: var(--font-mono);
         font-size: 0.75rem;
-        color: var(--accent);
+        color: var(--iris);
         cursor: pointer;
     }
     .empty button:hover {

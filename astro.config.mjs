@@ -15,28 +15,45 @@ export default defineConfig({
         port: vitePort,
         allowedHosts: [appHost],
     },
+    markdown: {
+        shikiConfig: {
+            themes: {
+                light: "catppuccin-latte",
+                dark: "tokyo-night",
+            },
+            wrap: false,
+        },
+    },
     fonts: [
         {
-            provider: fontProviders.local(),
-            name: "Atkinson",
-            cssVariable: "--font-atkinson",
-            fallbacks: ["sans-serif"],
-            options: {
-                variants: [
-                    {
-                        src: ["./src/assets/fonts/atkinson-regular.woff"],
-                        weight: 400,
-                        style: "normal",
-                        display: "swap",
-                    },
-                    {
-                        src: ["./src/assets/fonts/atkinson-bold.woff"],
-                        weight: 700,
-                        style: "normal",
-                        display: "swap",
-                    },
-                ],
-            },
+            provider: fontProviders.google(),
+            name: "Fraunces",
+            cssVariable: "--font-display",
+            weights: [400, 500, 600],
+            styles: ["normal"],
+            subsets: ["latin"],
+            fallbacks: ["Georgia", "Cambria", "serif"],
+            display: "swap",
+        },
+        {
+            provider: fontProviders.google(),
+            name: "Geist",
+            cssVariable: "--font-body",
+            weights: [400, 500, 600],
+            styles: ["normal"],
+            subsets: ["latin"],
+            fallbacks: ["system-ui", "sans-serif"],
+            display: "swap",
+        },
+        {
+            provider: fontProviders.google(),
+            name: "JetBrains Mono",
+            cssVariable: "--font-mono",
+            weights: [400, 500],
+            styles: ["normal"],
+            subsets: ["latin"],
+            fallbacks: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+            display: "swap",
         },
     ],
 })

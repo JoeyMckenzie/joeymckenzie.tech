@@ -2,55 +2,74 @@
 import { SITE_TITLE } from "../consts"
 import HeaderLink from "./HeaderLink.astro"
 import SocialLinks from "./SocialLinks.astro"
+import ThemeToggle from "./ThemeToggle.astro"
 ---
 
 <header>
     <nav>
-        <h2><a href="/">{SITE_TITLE}</a></h2>
+        <a class="brand" href="/">{SITE_TITLE}</a>
         <div class="internal-links">
-            <HeaderLink href="/">Home</HeaderLink>
-            <HeaderLink href="/blog">Blog</HeaderLink>
-            <HeaderLink href="/now">Now</HeaderLink>
-            <HeaderLink href="/uses">Uses</HeaderLink>
-            <HeaderLink href="/cv">CV</HeaderLink>
+            <HeaderLink href="/">home</HeaderLink>
+            <HeaderLink href="/blog">blog</HeaderLink>
+            <HeaderLink href="/now">now</HeaderLink>
+            <HeaderLink href="/uses">uses</HeaderLink>
+            <HeaderLink href="/cv">cv</HeaderLink>
         </div>
-        <SocialLinks />
+        <div class="trailing">
+            <SocialLinks />
+            <ThemeToggle />
+        </div>
     </nav>
 </header>
+
 <style>
     header {
-        margin: 0;
-        padding: 0 1em;
-        background: white;
-        box-shadow: 0 2px 8px rgba(var(--black), 5%);
-    }
-    h2 {
-        margin: 0;
-        font-size: 1em;
+        border-bottom: 1px solid var(--hairline);
+        background: var(--canvas);
     }
 
-    h2 a,
-    h2 a.active {
-        text-decoration: none;
-    }
     nav {
+        width: var(--measure-wide);
+        max-width: calc(100% - 2em);
+        margin: auto;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 1rem;
+        padding: 0 1em;
     }
-    nav a {
-        padding: 1em 0.5em;
-        color: var(--black);
-        border-bottom: 4px solid transparent;
+
+    .brand {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        letter-spacing: 0.02em;
+        color: var(--prose-strong);
         text-decoration: none;
+        padding: 1.15em 0;
+        white-space: nowrap;
     }
-    nav a.active {
-        text-decoration: none;
-        border-bottom-color: var(--accent);
+
+    .brand:hover {
+        color: var(--ember);
     }
+
+    .internal-links {
+        display: flex;
+        gap: 0.25rem;
+    }
+
+    .trailing {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
     @media (max-width: 720px) {
         header :global(.social-links) {
             display: none;
+        }
+        .brand {
+            font-size: 0.75rem;
         }
     }
 </style>

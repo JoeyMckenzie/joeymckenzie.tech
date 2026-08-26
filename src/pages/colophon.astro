@@ -1,0 +1,598 @@
+---
+import { Code } from "astro:components"
+import { getCollection } from "astro:content"
+import Page from "../layouts/Page.astro"
+import PostCard from "../components/PostCard.astro"
+
+const posts = (await getCollection("blog")).sort(
+    (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+)
+
+// Everything below is computed from the content collection at build time, so
+// it cannot drift from what is actually published. Same word-count formula as
+// PostCard: alphabetic runs, not whitespace-delimited tokens.
+const wordsIn = (post: (typeof posts)[number]) =>
+    post.body?.match(/[A-Za-z'-]+/g)?.length ?? 0
+
+const totalWords = posts.reduce((sum, post) => sum + wordsIn(post), 0)
+const oldest = posts[posts.length - 1]!
+const newest = posts[0]!
+const yearSpan =
+    newest.data.pubDate.getFullYear() - oldest.data.pubDate.getFullYear()
+
+const tagCounts = [
+    ...posts
+        .flatMap((post) => post.data.tags)
+        .reduce(
+            (map, tag) => map.set(tag, (map.get(tag) ?? 0) + 1),
+            new Map<string, number>()
+        ),
+].sort((a, b) => b[1] - a[1])
+
+const maxTag = Math.max(...tagCounts.map(([, count]) => count))
+
+// Short form: the long form wraps to two lines in the four-column stat grid.
+const fmt = (date: Date) =>
+    date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        timeZone: "UTC",
+    })
+
+// Surface + ink + accent tokens. Both hexes travel together and the page shows
+// whichever matches the current theme, so the toggle is part of the exhibit.
+const palette = [
+    { name: "canvas", dark: "#1a1b26", light: "#f2f2f6", note: "page" },
+    { name: "canvas-deep", dark: "#16161e", light: "#e4e5ec", note: "footer" },
+    { name: "panel", dark: "#292e42", light: "#ffffff", note: "raised" },
+    { name: "hairline", dark: "#3b4261", light: "#cfd2e0", note: "borders" },
+    { name: "prose", dark: "#c0caf5", light: "#262a38", note: "body" },
+    {
+        name: "prose-strong",
+        dark: "#ffffff",
+        light: "#1a1b26",
+        note: "headings",
+    },
+    { name: "subtle", dark: "#7c83a8", light: "#586aac", note: "meta" },
+    { name: "iris", dark: "#7aa2f7", light: "#1769da", note: "links" },
+    { name: "ember", dark: "#e0af68", light: "#87683c", note: "hover" },
+]
+
+// Ratios are measured against --canvas in each theme. Every one clears WCAG AA
+// for body text; if a hex changes here, re-measure rather than assume.
+const tagPalette = [
+    { tag: "dotnet", dark: "#bb9af7", light: "#8245f0", why: ".NET purple" },
+    { tag: "laravel", dark: "#f7768e", light: "#da0d33", why: "Laravel coral" },
+    { tag: "rust", dark: "#ff9e64", light: "#bd4700", why: "Rust orange" },
+    { tag: "angular", dark: "#de5959", light: "#d12a2a", why: "red shield" },
+    { tag: "php", dark: "#7aa2f7", light: "#1f62f2", why: "PHP blue-purple" },
+    { tag: "zig", dark: "#e0af68", light: "#93641e", why: "Zig yellow" },
+    { tag: "react", dark: "#7dcfff", light: "#0072b5", why: "React cyan" },
+    { tag: "astro", dark: "#9d7cd8", light: "#7f54cc", why: "Astro purple" },
+    { tag: "design", dark: "#7c83a8", light: "#646b96", why: "not a language" },
+]
+
+// The old hand-built Nocturne palette from the Laravel site, beside the
+// tokyonight values it turned out to be approximating.
+const provenance = [
+    { role: "accent", mine: "#9aa7ff", theirs: "#7aa2f7", label: "blue" },
+    { role: "secondary", mine: "#e0b978", theirs: "#e0af68", label: "yellow" },
+    { role: "canvas", mine: "#0e1016", theirs: "#1a1b26", label: "bg" },
+    { role: "prose", mine: "#e8e6df", theirs: "#c0caf5", label: "fg" },
+]
+
+const nvimConfig = `require("tokyonight").setup({
+    style = "night",
+    styles = { floats = "transparent", sidebars = "transparent" },
+    transparent = true,
+})
+
+vim.cmd([[let $BAT_THEME = 'tokyonight']])
+
+colorscheme tokyonight`
+
+const themes = { light: "catppuccin-latte", dark: "tokyo-night" } as const
+
+// NOTE: the figures in the "how it's built" list are measured from `dist` by
+// hand -- they cannot be computed from inside the build that produces them.
+// Re-measure after any design change:
+//   find dist -name '*.js' -type f | wc -l
+//   find dist -name '*.css' -exec cat {} + | wc -c
+//   find dist -name '*.woff2' -exec cat {} + | wc -c
+//   find dist -name '*.webp' | wc -l
+// Everything in "by the numbers" IS computed above and cannot go stale.
+---
+
+<Page
+    title="Colophon"
+    description="The design system this site is built from: palette, type, and how it got here."
+    kicker="~/colophon"
+    heading="Nocturne"
+    intro="The tokens, type, and machinery this whole site is built from. Dark is the canonical design; light exists for daylight. Flip the theme and this page re-renders itself in it."
+>
+    <section>
+        <h2>palette</h2>
+        <p class="lede">
+            Surfaces, ink, and accents. Hex values follow the theme you are
+            currently reading in.
+        </p>
+        <ul class="swatches">
+            {
+                palette.map((token) => (
+                    <li>
+                        <span
+                            class="chip"
+                            style={`background: var(--${token.name})`}
+                        />
+                        <span class="token">--{token.name}</span>
+                        <span class="hex">
+                            <span class="on-dark">{token.dark}</span>
+                            <span class="on-light">{token.light}</span>
+                        </span>
+                        <span class="note">{token.note}</span>
+                    </li>
+                ))
+            }
+        </ul>
+    </section>
+
+    <section>
+        <h2>tags</h2>
+        <p class="lede">
+            Each tag draws a syntax colour, brand-faithful where that was free.
+            <code>design</code> gets the comment colour on purpose &mdash; it isn&rsquo;t
+            a language, it&rsquo;s a comment on languages. Every value clears 4.5:1
+            against the canvas in both themes.
+        </p>
+        <ul class="swatches">
+            {
+                tagPalette.map((token) => (
+                    <li data-tag={token.tag}>
+                        <span class="chip" style="background: var(--tag)" />
+                        <span class="token">{token.tag}</span>
+                        <span class="hex">
+                            <span class="on-dark">{token.dark}</span>
+                            <span class="on-light">{token.light}</span>
+                        </span>
+                        <span class="note">{token.why}</span>
+                    </li>
+                ))
+            }
+        </ul>
+    </section>
+
+    <section>
+        <h2>type</h2>
+        <p class="lede">
+            Three families, three jobs, none doing two. JetBrains Mono is the
+            one actually running in Ghostty.
+        </p>
+        <div class="specimen">
+            <div class="spec-row">
+                <span class="spec-label">Fraunces &middot; display</span>
+                <p class="spec-display">Terminally driven, Laravel inspired</p>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">Geist &middot; body</span>
+                <p class="spec-body">
+                    So I&rsquo;ve taken the last month or so to completely
+                    rethink my workflow for Laravel development, and it turned
+                    out to be my entire editor.
+                </p>
+            </div>
+            <div class="spec-row">
+                <span class="spec-label">JetBrains Mono &middot; chrome</span>
+                <p class="spec-mono">
+                    ~/blog &middot; 2026-01-22 &middot; 8 min &middot; laravel
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>components</h2>
+        <p class="lede">
+            The post card, in both states the schema allows &mdash; hero image
+            present, and the tag-tinted plate that stands in when it
+            isn&rsquo;t.
+        </p>
+        <div class="cards">
+            {posts.slice(0, 2).map((post) => <PostCard {post} />)}
+        </div>
+
+        <p class="lede">Code blocks read as buffers, labelled by language.</p>
+        <Code
+            code={`test('parses markdown docs', function () {\n    expect($rows)->toHaveCount(1);\n});`}
+            lang="php"
+            {themes}
+        />
+
+        <blockquote>
+            We have Herd at home. The Herd at home: a pile of nix expressions
+            and a suspicious amount of confidence.
+        </blockquote>
+    </section>
+
+    <section>
+        <h2>provenance</h2>
+        <p class="lede">
+            Nocturne started as a hand-built palette on the old Laravel site,
+            picked by eye with no reference. It landed within a couple of hex
+            digits of the <code>tokyonight</code> colorscheme that had been open in
+            the editor the whole time. Left column is what got picked; right is what
+            it was quietly copying.
+        </p>
+        <ul class="provenance">
+            {
+                provenance.map((row) => (
+                    <li>
+                        <span class="prov-role">{row.role}</span>
+                        <span class="prov-pair">
+                            <span
+                                class="prov-chip"
+                                style={`background: ${row.mine}`}
+                            />
+                            <code>{row.mine}</code>
+                        </span>
+                        <span class="prov-vs" aria-hidden="true">
+                            &rarr;
+                        </span>
+                        <span class="prov-pair">
+                            <span
+                                class="prov-chip"
+                                style={`background: ${row.theirs}`}
+                            />
+                            <code>{row.theirs}</code>
+                        </span>
+                        <span class="note">{row.label}</span>
+                    </li>
+                ))
+            }
+        </ul>
+        <p class="lede">The config that made it true:</p>
+        <Code code={nvimConfig} lang="lua" {themes} />
+    </section>
+
+    <section>
+        <h2>how it&rsquo;s built</h2>
+        <p class="lede">
+            Astro, static output, no adapter, deployed to Cloudflare. Content is
+            markdown in git and filenames are slugs. Every number here was
+            measured from <code>dist</code>, not estimated.
+        </p>
+        <dl class="build">
+            <div>
+                <dt>JavaScript bundles</dt>
+                <dd>
+                    <strong>0</strong> — no framework, no external script files
+                </dd>
+            </div>
+            <div>
+                <dt>Inline script, heaviest page</dt>
+                <dd>
+                    <strong>2,586 bytes</strong> — search + tag filter, theme resolution,
+                    theme toggle
+                </dd>
+            </div>
+            <div>
+                <dt>CSS, whole site</dt>
+                <dd><strong>12.6 KB</strong> — one system, no framework</dd>
+            </div>
+            <div>
+                <dt>Fonts</dt>
+                <dd>
+                    <strong>3 files, 95 KB</strong> — self-hosted, latin subset
+                </dd>
+            </div>
+            <div>
+                <dt>Images</dt>
+                <dd>
+                    <strong>92</strong> — sharp-optimised to webp at build time
+                </dd>
+            </div>
+            <div>
+                <dt>Degrades without JS</dt>
+                <dd>
+                    All posts visible, dark theme intact — both scripts are
+                    progressive enhancement
+                </dd>
+            </div>
+        </dl>
+    </section>
+
+    <section>
+        <h2>by the numbers</h2>
+        <dl class="stats">
+            <div>
+                <dt>Posts</dt>
+                <dd>{posts.length}</dd>
+            </div>
+            <div>
+                <dt>Words</dt>
+                <dd>{totalWords.toLocaleString("en-US")}</dd>
+            </div>
+            <div>
+                <dt>Span</dt>
+                <dd>{yearSpan} years</dd>
+            </div>
+            <div>
+                <dt>First</dt>
+                <dd>{fmt(oldest.data.pubDate)}</dd>
+            </div>
+        </dl>
+
+        <p class="lede">
+            The tag breakdown, in the tag colours. Read top to bottom and
+            it&rsquo;s the arc: .NET, then the framework years, then Rust, then
+            Laravel.
+        </p>
+        <ul class="bars">
+            {
+                tagCounts.map(([tag, count]) => (
+                    <li data-tag={tag}>
+                        <span class="bar-label">{tag}</span>
+                        <span class="bar-track">
+                            <span
+                                class="bar-fill"
+                                style={`width: ${(count / maxTag) * 100}%`}
+                            />
+                        </span>
+                        <span class="bar-count">{count}</span>
+                    </li>
+                ))
+            }
+        </ul>
+    </section>
+</Page>
+
+<style>
+    section {
+        margin-top: 4rem;
+    }
+    h2 {
+        margin: 0 0 0.75rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--subtle);
+    }
+    .lede {
+        max-width: 36rem;
+        margin: 0 0 1.5rem;
+        font-size: 0.9375rem;
+        color: var(--subtle);
+    }
+    .lede + .lede {
+        margin-top: 2rem;
+    }
+
+    /* Hex labels follow the active theme, so toggling re-renders the exhibit. */
+    .on-light {
+        display: none;
+    }
+    :global(:root[data-theme="light"]) .on-dark {
+        display: none;
+    }
+    :global(:root[data-theme="light"]) .on-light {
+        display: inline;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .swatches li {
+        display: grid;
+        grid-template-columns: 1.5rem 9.5rem auto 1fr;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 0.4rem 0;
+        border-bottom: 1px solid var(--hairline);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+    }
+    .swatches li:last-child {
+        border-bottom: none;
+    }
+    .chip {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 5px;
+        border: 1px solid var(--hairline);
+    }
+    .token {
+        color: var(--prose-strong);
+    }
+    .hex,
+    .note {
+        color: var(--subtle);
+    }
+    .note {
+        text-align: right;
+    }
+
+    .specimen {
+        display: grid;
+        gap: 1.75rem;
+    }
+    .spec-label {
+        display: block;
+        margin-bottom: 0.4rem;
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--subtle);
+    }
+    .spec-display {
+        margin: 0;
+        font-family: var(--font-display);
+        font-size: 2rem;
+        font-weight: 500;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: var(--prose-strong);
+    }
+    .spec-body {
+        max-width: 34rem;
+        margin: 0;
+    }
+    .spec-mono {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        color: var(--subtle);
+    }
+
+    .cards {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .provenance li {
+        display: grid;
+        grid-template-columns: 6rem auto 1.5rem auto 1fr;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--hairline);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+    }
+    .provenance li:last-child {
+        border-bottom: none;
+    }
+    .prov-role {
+        color: var(--prose-strong);
+    }
+    .prov-pair {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .prov-pair code {
+        padding: 0;
+        background: none;
+        color: var(--subtle);
+        font-size: inherit;
+    }
+    .prov-chip {
+        width: 1.1rem;
+        height: 1.1rem;
+        border-radius: 4px;
+        border: 1px solid var(--hairline);
+    }
+    .prov-vs {
+        color: var(--subtle);
+        text-align: center;
+    }
+
+    .build,
+    .stats {
+        margin: 0;
+    }
+    .build div {
+        display: grid;
+        grid-template-columns: 14rem 1fr;
+        gap: 1rem;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid var(--hairline);
+    }
+    .build div:last-child {
+        border-bottom: none;
+    }
+    .build dt {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--subtle);
+    }
+    .build dd {
+        margin: 0;
+        font-size: 0.875rem;
+        color: var(--subtle);
+    }
+    .build strong {
+        font-family: var(--font-mono);
+        color: var(--prose-strong);
+        font-weight: 500;
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+    }
+    .stats dt {
+        font-family: var(--font-mono);
+        font-size: 0.6875rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--subtle);
+    }
+    .stats dd {
+        margin: 0.35rem 0 0;
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        color: var(--prose-strong);
+    }
+
+    .bars li {
+        display: grid;
+        grid-template-columns: 5.5rem 1fr 2rem;
+        align-items: center;
+        gap: 0.85rem;
+        padding: 0.3rem 0;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+    }
+    .bar-label {
+        color: var(--tag);
+    }
+    .bar-track {
+        height: 0.5rem;
+        border-radius: 999px;
+        background: color-mix(in oklab, var(--hairline) 60%, transparent);
+        overflow: hidden;
+    }
+    .bar-fill {
+        display: block;
+        height: 100%;
+        border-radius: 999px;
+        background: var(--tag);
+    }
+    .bar-count {
+        text-align: right;
+        color: var(--subtle);
+    }
+
+    @media (max-width: 720px) {
+        .swatches li {
+            grid-template-columns: 1.5rem 1fr auto;
+        }
+        .swatches .note {
+            display: none;
+        }
+        .provenance li {
+            grid-template-columns: 1fr auto;
+            gap: 0.5rem;
+        }
+        .provenance .prov-vs,
+        .provenance .note {
+            display: none;
+        }
+        .build div {
+            grid-template-columns: 1fr;
+            gap: 0.2rem;
+        }
+        .stats {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>

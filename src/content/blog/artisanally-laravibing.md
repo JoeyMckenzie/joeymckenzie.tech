@@ -1,5 +1,5 @@
 ---
-title: "Artisanlly Laravibing"
+title: "Artisanally Laravibing"
 description: "Singularity or not, I'm just along for the ride."
 pubDate: 2026-08-05
 heroImage: "../../assets/blog/who-is-json.webp"

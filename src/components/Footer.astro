@@ -5,18 +5,56 @@ const today = new Date()
 ---
 
 <footer>
-    &copy; {today.getFullYear()} Joey McKenzie
-    <SocialLinks />
+    <div class="inner">
+        <p class="line">
+            &copy; {today.getFullYear()} Joey McKenzie
+            <span class="sep" aria-hidden="true">·</span>
+            <a href="/colophon">colophon</a>
+            <span class="sep" aria-hidden="true">·</span>
+            <a href="/rss.xml">rss</a>
+        </p>
+        <SocialLinks />
+    </div>
 </footer>
+
 <style>
     footer {
-        padding: 2em 1em 6em 1em;
-        background: linear-gradient(var(--gray-gradient)) no-repeat;
-        color: rgb(var(--gray));
-        text-align: center;
+        margin-top: 4rem;
+        border-top: 1px solid var(--hairline);
+        background: var(--canvas-deep);
     }
-    footer :global(.social-links) {
-        justify-content: center;
-        margin-top: 1em;
+
+    .inner {
+        width: var(--measure-wide);
+        max-width: calc(100% - 2em);
+        margin: auto;
+        padding: 2em 1em 3em;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .line {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.03em;
+        color: var(--subtle);
+    }
+
+    .line a {
+        color: var(--subtle);
+        text-decoration: none;
+    }
+
+    .line a:hover {
+        color: var(--ember);
+    }
+
+    .sep {
+        opacity: 0.5;
+        padding: 0 0.35em;
     }
 </style>

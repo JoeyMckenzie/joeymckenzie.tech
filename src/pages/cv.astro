@@ -159,12 +159,12 @@ const skills = [
     .summary {
         max-width: 36rem;
         margin-top: 2rem;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .block {
         margin-top: 3.5rem;
         padding-top: 2.5rem;
-        border-top: 1px solid rgb(var(--gray-light));
+        border-top: 1px solid var(--hairline);
     }
     .block > h2 {
         margin-bottom: 1.5rem;
@@ -173,15 +173,15 @@ const skills = [
         font-weight: 400;
         letter-spacing: 0.15em;
         text-transform: uppercase;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .timeline {
-        border-left: 1px solid rgb(var(--gray-light));
+        border-left: 1px solid var(--hairline);
     }
     .timeline article {
         position: relative;
         padding: 1.5rem 0 1.5rem 1.5rem;
-        border-bottom: 1px solid rgb(var(--gray-light));
+        border-bottom: 1px solid var(--hairline);
     }
     .timeline article::before {
         content: "";
@@ -191,7 +191,7 @@ const skills = [
         width: 7px;
         height: 7px;
         border-radius: 999px;
-        background: var(--accent);
+        background: var(--iris);
     }
     .timeline article:first-child {
         padding-top: 0;
@@ -216,20 +216,20 @@ const skills = [
         margin: 0.25rem 0 0;
         font-family: var(--font-mono);
         font-size: 0.75rem;
-        color: var(--accent);
+        color: var(--iris);
     }
     .dates {
         flex-shrink: 0;
         font-family: var(--font-mono);
         font-size: 0.75rem;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .summary-text {
         max-width: 36rem;
         margin: 0.75rem 0 0;
         font-size: 0.9rem;
         line-height: 1.6;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .skills > div + div {
         margin-top: 1.75rem;
@@ -245,11 +245,11 @@ const skills = [
     }
     .pill {
         padding: 0.25rem 0.75rem;
-        border: 1px solid rgb(var(--gray-light));
+        border: 1px solid var(--hairline);
         border-radius: 999px;
         font-family: var(--font-mono);
         font-size: 0.75rem;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     @media (min-width: 600px) {
         .row {

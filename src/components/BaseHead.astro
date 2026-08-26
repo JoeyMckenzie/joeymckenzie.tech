@@ -32,7 +32,31 @@ const { title, description, image = FallbackImage } = Astro.props
 />
 <meta name="generator" content={Astro.generator} />
 
-<Font cssVariable="--font-atkinson" preload />
+<Font cssVariable="--font-display" preload />
+<Font cssVariable="--font-body" preload />
+<Font cssVariable="--font-mono" />
+
+<!--
+  Theme resolution, inline and blocking so it lands before first paint.
+  `<html>` ships with data-theme="dark" already set, so this is a no-op for the
+  default and for JS-off readers; it only overrides when the reader has chosen
+  light or their OS asks for it. ~330 bytes.
+-->
+<script is:inline>
+    ;(function () {
+        try {
+            const stored = localStorage.getItem("theme")
+            const theme =
+                stored ||
+                (window.matchMedia("(prefers-color-scheme: light)").matches
+                    ? "light"
+                    : "dark")
+            document.documentElement.dataset.theme = theme
+        } catch {
+            /* private mode / storage blocked: the markup default stands */
+        }
+    })()
+</script>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />

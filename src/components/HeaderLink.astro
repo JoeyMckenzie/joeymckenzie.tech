@@ -9,16 +9,45 @@ const subpath = pathname.match(/[^/]+/g)
 const isActive = href === pathname || href === "/" + (subpath?.[0] || "")
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
+<a
+    href={href}
+    class:list={[className, { active: isActive }]}
+    aria-current={isActive ? "page" : undefined}
+    {...props}
+>
     <slot />
 </a>
+
 <style>
     a {
         display: inline-block;
+        padding: 1.15em 0.5em;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        color: var(--subtle);
         text-decoration: none;
+        border-bottom: 1px solid transparent;
     }
+
+    a:hover {
+        color: var(--prose);
+    }
+
+    /* Active state is the sweep gradient, not an underline — same accent
+       language as the page-header rule. */
     a.active {
-        font-weight: bolder;
-        text-decoration: underline;
+        color: var(--prose-strong);
+        border-bottom-color: transparent;
+        background-image: var(--sweep);
+        background-repeat: no-repeat;
+        background-size: 100% 1px;
+        background-position: 0 100%;
+    }
+
+    a:focus-visible {
+        outline: 1px solid var(--iris);
+        outline-offset: -2px;
+        border-radius: 2px;
     }
 </style>

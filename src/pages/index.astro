@@ -13,7 +13,7 @@ const posts = (await getCollection("blog"))
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
     <head>
         <BaseHead
             title={SITE_TITLE}
@@ -66,7 +66,7 @@ const posts = (await getCollection("blog"))
         font-family: var(--font-mono);
         font-size: 0.75rem;
         letter-spacing: 0.05em;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .intro h1 {
         margin: 1rem 0 0;
@@ -75,23 +75,19 @@ const posts = (await getCollection("blog"))
         letter-spacing: -0.02em;
     }
     .intro h1 .muted {
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .sweep {
         width: 10rem;
         height: 3px;
         margin-top: 1.5rem;
         border-radius: 999px;
-        background: linear-gradient(
-            90deg,
-            var(--accent),
-            rgba(var(--gray), 0.15)
-        );
+        background: var(--sweep);
     }
     .blurb {
         max-width: 34rem;
         margin: 1.5rem 0 0;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .socials {
         margin-top: 2rem;
@@ -112,7 +108,7 @@ const posts = (await getCollection("blog"))
         font-weight: 400;
         letter-spacing: 0.15em;
         text-transform: uppercase;
-        color: rgb(var(--gray));
+        color: var(--subtle);
     }
     .recent-head a {
         font-family: var(--font-mono);

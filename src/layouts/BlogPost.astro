@@ -20,7 +20,7 @@ const {
 } = Astro.props
 ---
 
-<html lang="en">
+<html lang="en" data-theme="dark">
     <head>
         <BaseHead title={title} description={description} />
         <style>
@@ -36,14 +36,14 @@ const {
                 display: block;
                 margin: 0 auto;
                 border-radius: 12px;
-                box-shadow: var(--box-shadow);
+                border: 1px solid var(--hairline);
             }
             .prose {
                 width: 720px;
                 max-width: calc(100% - 2em);
                 margin: auto;
                 padding: 1em;
-                color: rgb(var(--gray-dark));
+                color: var(--prose);
             }
             .title {
                 margin-bottom: 1em;
@@ -56,7 +56,7 @@ const {
             }
             .date {
                 margin-bottom: 0.5em;
-                color: rgb(var(--gray));
+                color: var(--subtle);
             }
             .last-updated-on {
                 font-style: italic;
@@ -68,11 +68,25 @@ const {
                 margin: 0 0 1em 0;
             }
             .tag {
-                padding: 0.2em 0.6em;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.45em;
+                padding: 0.2em 0.7em 0.2em 0.6em;
+                border: 1px solid
+                    color-mix(in oklab, var(--tag) 40%, var(--hairline));
                 border-radius: 999px;
-                background: rgba(var(--gray-light), 50%);
-                color: rgb(var(--gray));
-                font-size: 0.85em;
+                background: color-mix(in oklab, var(--tag) 10%, transparent);
+                color: var(--tag);
+                font-family: var(--font-mono);
+                font-size: 0.75rem;
+                letter-spacing: 0.03em;
+            }
+            .tag::before {
+                content: "";
+                width: 0.45em;
+                height: 0.45em;
+                border-radius: 50%;
+                background: var(--tag);
             }
         </style>
     </head>
@@ -111,7 +125,9 @@ const {
                             tags.length > 0 && (
                                 <p class="tags">
                                     {tags.map((tag) => (
-                                        <span class="tag">{tag}</span>
+                                        <span class="tag" data-tag={tag}>
+                                            {tag}
+                                        </span>
                                     ))}
                                 </p>
                             )
