@@ -1,6 +1,6 @@
 {
     "$schema": "node_modules/wrangler/config-schema.json",
-    "name": "joeymckenzie-tech",
+    "name": "website",
     "compatibility_date": "2026-08-25",
     "assets": {
         "directory": "./dist",
