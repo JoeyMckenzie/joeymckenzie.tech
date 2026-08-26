@@ -23,30 +23,37 @@ const posts = (await getCollection("blog"))
     <body>
         <Header />
         <main>
-            <header class="intro">
-                <h1>
+            <header>
+                <h1 class="m-0">
                     Software developer.<br />
-                    <span class="muted">Professional sidequester.</span>
+                    <span class="text-subtle">Professional sidequester.</span>
                 </h1>
                 <div class="sweep"></div>
-                <p class="blurb">
+                <p class="text-subtle mt-6 mb-0 max-w-[34rem]">
                     Hey, I'm Joey. I build things with Laravel, PHP, and
                     whatever has my attention this month. Mostly code,
                     occasionally opinions, perpetually down a rabbit-hole.
                 </p>
-                <div class="socials">
+                <div class="mt-8">
                     <SocialLinks />
                 </div>
             </header>
 
             {
                 posts.length > 0 && (
-                    <section class="recent">
-                        <div class="recent-head">
-                            <h2>recent writing</h2>
-                            <a href="/blog">all posts →</a>
+                    <section class="mt-20">
+                        <div class="flex items-baseline justify-between gap-4">
+                            <h2 class="text-subtle m-0 font-mono text-xs font-normal tracking-[0.15em] uppercase">
+                                recent writing
+                            </h2>
+                            <a
+                                href="/blog"
+                                class="font-mono text-xs no-underline hover:underline"
+                            >
+                                all posts →
+                            </a>
                         </div>
-                        <div class="cards">
+                        <div class="mt-6 grid gap-4">
                             {posts.map((post) => (
                                 <PostCard {post} />
                             ))}
@@ -58,51 +65,3 @@ const posts = (await getCollection("blog"))
         <Footer />
     </body>
 </html>
-
-<style>
-    .intro h1 {
-        margin: 0;
-    }
-    .intro h1 .muted {
-        color: var(--subtle);
-    }
-    .blurb {
-        max-width: 34rem;
-        margin: 1.5rem 0 0;
-        color: var(--subtle);
-    }
-    .socials {
-        margin-top: 2rem;
-    }
-    .recent {
-        margin-top: 5rem;
-    }
-    .recent-head {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 1rem;
-    }
-    .recent-head h2 {
-        margin: 0;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        font-weight: 400;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--subtle);
-    }
-    .recent-head a {
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        text-decoration: none;
-    }
-    .recent-head a:hover {
-        text-decoration: underline;
-    }
-    .cards {
-        display: grid;
-        gap: 1rem;
-        margin-top: 1.5rem;
-    }
-</style>

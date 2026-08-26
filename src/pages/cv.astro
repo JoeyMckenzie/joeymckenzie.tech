@@ -91,7 +91,7 @@ const skills = [
     description="Joey McKenzie's resume and professional experience."
     heading="Joey McKenzie"
 >
-    <p class="summary">
+    <p class="text-subtle mt-8 max-w-[36rem]">
         Product engineer with a passion for tinkering, building web
         applications, distributed systems, and the occasional thing I probably
         should not have over-engineered. I started my career analyzing Navy
@@ -100,51 +100,75 @@ const skills = [
         and TypeScript and try to leave codebases better than I found them.
     </p>
 
-    <section class="block">
-        <h2>experience</h2>
-        <div class="timeline">
+    <section class="border-hairline mt-14 border-t pt-10">
+        <h2
+            class="text-subtle mb-6 font-mono text-xs font-normal tracking-[0.15em] uppercase"
+        >
+            experience
+        </h2>
+        <div class="border-hairline border-l">
             {
                 experience.map((job) => (
-                    <article>
-                        <div class="row">
+                    <article class="border-hairline before:bg-iris relative border-b py-6 pl-6 before:absolute before:top-[1.9rem] before:-left-[4px] before:size-[7px] before:rounded-full before:content-[''] first:pt-0 first:before:top-[0.4rem] last:border-b-0 last:pb-0">
+                        <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-5">
                             <div>
-                                <h3>{job.role}</h3>
-                                <p class="company">{job.company}</p>
+                                <h3 class="m-0 text-[1.2rem]">{job.role}</h3>
+                                <p class="text-iris mt-1 mb-0 font-mono text-xs">
+                                    {job.company}
+                                </p>
                             </div>
-                            <span class="dates">{job.dates}</span>
+                            <span class="text-subtle shrink-0 font-mono text-xs">
+                                {job.dates}
+                            </span>
                         </div>
-                        <p class="summary-text">{job.summary}</p>
+                        <p class="text-subtle mt-3 mb-0 max-w-[36rem] text-[0.9rem] leading-[1.6]">
+                            {job.summary}
+                        </p>
                     </article>
                 ))
             }
         </div>
     </section>
 
-    <section class="block">
-        <h2>education</h2>
+    <section class="border-hairline mt-14 border-t pt-10">
+        <h2
+            class="text-subtle mb-6 font-mono text-xs font-normal tracking-[0.15em] uppercase"
+        >
+            education
+        </h2>
         {
             education.map((item) => (
-                <div class="row">
+                <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-5">
                     <div>
-                        <h3>{item.degree}</h3>
-                        <p class="company">{item.school}</p>
+                        <h3 class="m-0 text-[1.2rem]">{item.degree}</h3>
+                        <p class="text-iris mt-1 mb-0 font-mono text-xs">
+                            {item.school}
+                        </p>
                     </div>
-                    <span class="dates">{item.dates}</span>
+                    <span class="text-subtle shrink-0 font-mono text-xs">
+                        {item.dates}
+                    </span>
                 </div>
             ))
         }
     </section>
 
-    <section class="block">
-        <h2>what I vibe with</h2>
-        <div class="skills">
+    <section class="border-hairline mt-14 border-t pt-10">
+        <h2
+            class="text-subtle mb-6 font-mono text-xs font-normal tracking-[0.15em] uppercase"
+        >
+            what I vibe with
+        </h2>
+        <div>
             {
                 skills.map((group) => (
-                    <div>
-                        <h3 class="group">{group.category}</h3>
-                        <div class="pills">
+                    <div class="mt-7 first:mt-0">
+                        <h3 class="m-0 text-[1.05rem]">{group.category}</h3>
+                        <div class="mt-3 flex flex-wrap gap-2">
                             {group.items.map((item) => (
-                                <span class="pill">{item}</span>
+                                <span class="border-hairline text-subtle rounded-full border px-3 py-1 font-mono text-xs">
+                                    {item}
+                                </span>
                             ))}
                         </div>
                     </div>
@@ -153,109 +177,3 @@ const skills = [
         </div>
     </section>
 </Page>
-
-<style>
-    .summary {
-        max-width: 36rem;
-        margin-top: 2rem;
-        color: var(--subtle);
-    }
-    .block {
-        margin-top: 3.5rem;
-        padding-top: 2.5rem;
-        border-top: 1px solid var(--hairline);
-    }
-    .block > h2 {
-        margin-bottom: 1.5rem;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        font-weight: 400;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--subtle);
-    }
-    .timeline {
-        border-left: 1px solid var(--hairline);
-    }
-    .timeline article {
-        position: relative;
-        padding: 1.5rem 0 1.5rem 1.5rem;
-        border-bottom: 1px solid var(--hairline);
-    }
-    .timeline article::before {
-        content: "";
-        position: absolute;
-        left: -4px;
-        top: 1.9rem;
-        width: 7px;
-        height: 7px;
-        border-radius: 999px;
-        background: var(--iris);
-    }
-    .timeline article:first-child {
-        padding-top: 0;
-    }
-    .timeline article:first-child::before {
-        top: 0.4rem;
-    }
-    .timeline article:last-child {
-        padding-bottom: 0;
-        border-bottom: none;
-    }
-    .row {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-    }
-    h3 {
-        margin: 0;
-        font-size: 1.2rem;
-    }
-    .company {
-        margin: 0.25rem 0 0;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--iris);
-    }
-    .dates {
-        flex-shrink: 0;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--subtle);
-    }
-    .summary-text {
-        max-width: 36rem;
-        margin: 0.75rem 0 0;
-        font-size: 0.9rem;
-        line-height: 1.6;
-        color: var(--subtle);
-    }
-    .skills > div + div {
-        margin-top: 1.75rem;
-    }
-    .group {
-        font-size: 1.05rem;
-    }
-    .pills {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 0.75rem;
-    }
-    .pill {
-        padding: 0.25rem 0.75rem;
-        border: 1px solid var(--hairline);
-        border-radius: 999px;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--subtle);
-    }
-    @media (min-width: 600px) {
-        .row {
-            flex-direction: row;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 1.25rem;
-        }
-    }
-</style>

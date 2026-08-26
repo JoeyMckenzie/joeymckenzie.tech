@@ -30,17 +30,21 @@ const position = `${index}:${total}`;
 
     <body>
         <Header />
-        <main>
+        <main
+            class="mx-auto w-[var(--measure)] max-w-[calc(100%-2em)] px-[1em] py-[3em]"
+        >
             <article class="prose">
-                <header class="post-head">
-                    <h1>{title}</h1>
-                    <div class="meta">
+                <header class="mb-10">
+                    <h1 class="m-0">{title}</h1>
+                    <div
+                        class="text-subtle mt-[0.85rem] flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.03em]"
+                    >
                         <FormattedDate date={pubDate} />
                         <span aria-hidden="true">&middot;</span>
                         <span>{readingMinutes(words)} min read</span>
                         {
                             updatedDate && (
-                                <span class="updated">
+                                <span class="italic">
                                     updated <FormattedDate date={updatedDate} />
                                 </span>
                             )
@@ -48,9 +52,12 @@ const position = `${index}:${total}`;
                     </div>
                     {
                         tags && tags.length > 0 && (
-                            <p class="tags">
+                            <p class="mt-4 mb-0 flex flex-wrap gap-[0.5em]">
                                 {tags.map((tag) => (
-                                    <span class="tag" data-tag={tag}>
+                                    <span
+                                        class="tag inline-flex items-center gap-[0.45em] rounded-full py-[0.2em] pr-[0.7em] pl-[0.6em] font-mono text-xs tracking-[0.03em] text-[var(--tag)] before:size-[0.45em] before:rounded-full before:bg-[var(--tag)] before:content-['']"
+                                        data-tag={tag}
+                                    >
                                         {tag}
                                     </span>
                                 ))}
@@ -89,67 +96,11 @@ const position = `${index}:${total}`;
 </html>
 
 <style>
-    /* The post is the only page whose main is a bare column: code blocks and
-       the hero break out of it to --measure-wide. */
-    main {
-        width: var(--measure);
-        max-width: calc(100% - 2em);
-        margin: auto;
-        padding: 3em 1em;
-    }
-
-    .post-head {
-        margin-bottom: 2.5rem;
-    }
-
-    .post-head h1 {
-        margin: 0;
-    }
-
-    /* Left-aligned, not centered: a centered meta block fights the buffer
-       reading the rest of the page is going for. */
-    .meta {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 0.5rem;
-        margin-top: 0.85rem;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        letter-spacing: 0.03em;
-        color: var(--subtle);
-    }
-
-    .updated {
-        font-style: italic;
-    }
-
-    .tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5em;
-        margin: 1rem 0 0;
-    }
-
+    /* Only the two per-tag `color-mix()` tints stay as CSS -- they read the
+       declarative `--tag` from global.css and would each be a single
+       unreadable arbitrary-value token as a utility. */
     .tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45em;
-        padding: 0.2em 0.7em 0.2em 0.6em;
         border: 1px solid color-mix(in oklab, var(--tag) 40%, var(--hairline));
-        border-radius: 999px;
         background: color-mix(in oklab, var(--tag) 10%, transparent);
-        color: var(--tag);
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        letter-spacing: 0.03em;
-    }
-
-    .tag::before {
-        content: "";
-        width: 0.45em;
-        height: 0.45em;
-        border-radius: 50%;
-        background: var(--tag);
     }
 </style>

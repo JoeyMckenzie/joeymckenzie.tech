@@ -24,12 +24,16 @@ const socials = [
 
 interface Props {
     size?: number;
+    class?: string;
 }
 
-const { size = 18 } = Astro.props;
+// Header hides these below 720px; Footer keeps them. That used to be a
+// `header :global(.social-links)` rule, which broke the moment the class went
+// away, so the caller passes it instead.
+const { size = 18, class: className } = Astro.props;
 ---
 
-<div class="social-links">
+<div class:list={["flex items-center gap-3.5", className]}>
     {
         socials.map((social) => (
             <a
@@ -37,6 +41,7 @@ const { size = 18 } = Astro.props;
                 target="_blank"
                 rel="noreferrer"
                 aria-label={social.label}
+                class="text-subtle hover:text-iris flex transition-colors duration-200"
             >
                 <svg
                     viewBox={social.viewBox}
@@ -51,19 +56,3 @@ const { size = 18 } = Astro.props;
         ))
     }
 </div>
-
-<style>
-    .social-links {
-        display: flex;
-        align-items: center;
-        gap: 0.875rem;
-    }
-    .social-links a {
-        display: flex;
-        color: var(--subtle);
-        transition: color 0.2s ease;
-    }
-    .social-links a:hover {
-        color: var(--iris);
-    }
-</style>

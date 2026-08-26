@@ -1,0 +1,237 @@
+/* The element-level defaults, in `@layer base` (see global.css).
+
+   They live in a layer so Tailwind utilities can override them. Unlayered CSS
+   beats layered CSS regardless of specificity, so while these rules sat
+   unlayered a `class="mb-0"` on a <p> computed to 17px, not 0 -- the utility
+   lost to `p { margin-bottom: 1em }` silently. Measured, not assumed.
+
+   Astro's scoped component styles are still unlayered and so still outrank both
+   these defaults and any utility, which is the existing behaviour.
+
+   Deliberately NOT in here, and still unlayered in global.css: the Shiki block,
+   the figure frame, and the `--shiki-dark` overrides. Those must not be
+   overridable by a stray utility. */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--canvas);
+    color: var(--prose);
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    font-feature-settings:
+        "liga" 1,
+        "calt" 1;
+    text-align: left;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
+}
+
+main {
+    width: var(--measure);
+    max-width: calc(100% - 2em);
+    margin: auto;
+    padding: 3em 1em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0 0 0.5rem 0;
+    color: var(--prose-strong);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    line-height: 1.2;
+    /* Mono is already wide, so there is far less to claw back than the -0.02em
+       the serif display face wanted. */
+    letter-spacing: -0.01em;
+}
+
+/* Sizes are down across the board from the serif scale: JetBrains Mono sets
+   appreciably wider per character and would otherwise overflow the measure. */
+h1 {
+    font-size: 1.875rem;
+    line-height: 1.2;
+}
+h2 {
+    font-size: 1.375rem;
+    line-height: 1.3;
+}
+h3 {
+    font-size: 1.125rem;
+    line-height: 1.35;
+}
+h4 {
+    font-size: 1rem;
+}
+h5 {
+    font-size: 0.9375rem;
+}
+
+strong,
+b {
+    font-weight: 600;
+    color: var(--prose-strong);
+}
+
+p {
+    margin-bottom: 1em;
+}
+
+.prose p {
+    margin-bottom: 1.5em;
+}
+
+a {
+    color: var(--iris);
+    text-decoration-color: color-mix(in oklab, var(--iris) 40%, transparent);
+    text-underline-offset: 0.2em;
+}
+
+a:hover {
+    color: var(--ember);
+    text-decoration-color: currentColor;
+}
+
+/* The `~/path` kicker is gone: the bracketed active nav link says it, and
+   without three copies of the same CSS. */
+.sweep {
+    height: 3px;
+    width: 10rem;
+    margin: 1rem 0 0;
+    border-radius: 999px;
+    background: var(--sweep);
+}
+
+[data-tag] {
+    --tag: var(--tag-default);
+}
+[data-tag="dotnet"] {
+    --tag: var(--tag-dotnet);
+}
+[data-tag="laravel"] {
+    --tag: var(--tag-laravel);
+}
+[data-tag="rust"] {
+    --tag: var(--tag-rust);
+}
+[data-tag="angular"] {
+    --tag: var(--tag-angular);
+}
+[data-tag="php"] {
+    --tag: var(--tag-php);
+}
+[data-tag="zig"] {
+    --tag: var(--tag-zig);
+}
+[data-tag="react"] {
+    --tag: var(--tag-react);
+}
+[data-tag="astro"] {
+    --tag: var(--tag-astro);
+}
+[data-tag="design"] {
+    --tag: var(--tag-design);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--hairline);
+    margin: 2.5em 0;
+}
+
+blockquote {
+    border-left: 2px solid var(--ember);
+    padding: 0 0 0 1.25em;
+    margin: 0;
+    font-size: 1.0625rem;
+    color: var(--subtle);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+}
+
+th,
+td {
+    padding: 0.5em 0.75em;
+    border-bottom: 1px solid var(--hairline);
+    text-align: left;
+}
+
+th {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--subtle);
+}
+
+textarea,
+input {
+    font-family: inherit;
+    font-size: 16px;
+}
+
+code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    background: var(--code-tint);
+    color: var(--ember);
+}
+
+pre {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    padding: 1.25em;
+    margin: 0;
+    border-radius: 8px;
+    overflow-x: auto;
+}
+
+pre > code {
+    all: unset;
+    font-family: inherit;
+}
+
+@media (max-width: 720px) {
+    body {
+        font-size: 1rem;
+    }
+    main {
+        padding: 1em;
+    }
+    h1 {
+        font-size: 1.5rem;
+    }
+    h2 {
+        font-size: 1.1875rem;
+    }
+}

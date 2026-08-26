@@ -100,16 +100,18 @@ const sections = [
     heading="Uses"
     intro="The tools, software, and hardware I use on a daily basis."
 >
-    <div class="sections">
+    <div class="mt-14">
         {
             sections.map((section) => (
-                <section>
-                    <h2>{section.title}</h2>
-                    <ul>
+                <section class="border-hairline border-t py-10 first:border-t-0 first:pt-0 last:pb-0">
+                    <h2 class="mb-5 text-2xl">{section.title}</h2>
+                    <ul class="m-0 list-none p-0">
                         {section.items.map((item) => (
-                            <li>
-                                <span class="name">{item.name}</span>
-                                <span class="description">
+                            <li class="mb-4 grid gap-[0.15rem] text-[0.9rem] leading-[1.6] last:mb-0 sm:grid-cols-[11rem_1fr] sm:gap-5">
+                                <span class="text-prose-strong font-mono">
+                                    {item.name}
+                                </span>
+                                <span class="text-subtle">
                                     {item.description}
                                 </span>
                             </li>
@@ -120,52 +122,3 @@ const sections = [
         }
     </div>
 </Page>
-
-<style>
-    .sections {
-        margin-top: 3.5rem;
-    }
-    .sections section {
-        padding: 2.5rem 0;
-        border-top: 1px solid var(--hairline);
-    }
-    .sections section:first-child {
-        padding-top: 0;
-        border-top: none;
-    }
-    .sections section:last-child {
-        padding-bottom: 0;
-    }
-    .sections h2 {
-        margin-bottom: 1.25rem;
-        font-size: 1.5rem;
-    }
-    ul {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-    li {
-        display: grid;
-        gap: 0.15rem;
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-        line-height: 1.6;
-    }
-    li:last-child {
-        margin-bottom: 0;
-    }
-    .name {
-        font-family: var(--font-mono);
-        color: var(--prose-strong);
-    }
-    .description {
-        color: var(--subtle);
-    }
-    @media (min-width: 600px) {
-        li {
-            grid-template-columns: 11rem 1fr;
-            gap: 1.25rem;
-        }
-    }
-</style>

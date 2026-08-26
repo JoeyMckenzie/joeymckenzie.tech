@@ -27,11 +27,19 @@ if (!segments) {
 }
 ---
 
-<div class="statusline">
-    <div class="inner">
-        <span class="left">
-            <span class="mode">N</span>
-            <span class="branch">
+<div class="border-hairline bg-canvas-deep mt-16 border-t">
+    <div
+        class="text-subtle mx-auto flex w-[var(--measure-wide)] max-w-[calc(100%-2em)] items-center justify-between gap-4 px-[1em] py-[0.5em] font-mono text-[0.7rem] tracking-[0.03em]"
+    >
+        <span class="flex items-center gap-5 max-md:gap-[0.85rem]">
+            <!-- The only saturated fill in the chrome, so it is what the eye
+            lands on -- normal mode is blue in tokyonight.
+            6.79:1 dark, 4.62:1 light. -->
+            <span
+                class="bg-iris text-canvas my-[-0.25em] rounded-[2px] px-[0.6em] py-[0.25em] font-medium tracking-[0.08em]"
+                >N</span
+            >
+            <span class="inline-flex items-center gap-[0.4em]">
                 <svg
                     viewBox="0 0 16 16"
                     width="11"
@@ -49,71 +57,23 @@ if (!segments) {
                 </svg>
                 main
             </span>
-            <span class="filetype">{filetype}</span>
+            <span class="max-md:hidden">{filetype}</span>
         </span>
-        <span class="right">
-            {segments.map((segment) => <span>{segment}</span>)}
+        <span class="flex items-center gap-5 max-md:gap-[0.85rem]">
+            {
+                /* Below 720px only the rightmost figure survives. Driven off
+                   the index rather than a `:not(:last-child)` selector, which
+                   says the same thing without one. */
+                segments.map((segment, i) => (
+                    <span
+                        class:list={[
+                            i < segments.length - 1 && "max-md:hidden",
+                        ]}
+                    >
+                        {segment}
+                    </span>
+                ))
+            }
         </span>
     </div>
 </div>
-
-<style>
-    .statusline {
-        margin-top: 4rem;
-        border-top: 1px solid var(--hairline);
-        background: var(--canvas-deep);
-    }
-
-    .inner {
-        width: var(--measure-wide);
-        max-width: calc(100% - 2em);
-        margin: auto;
-        padding: 0.5em 1em;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        font-family: var(--font-mono);
-        font-size: 0.7rem;
-        letter-spacing: 0.03em;
-        /* 4.86:1 dark, 4.54:1 light against --canvas-deep. */
-        color: var(--subtle);
-    }
-
-    .left,
-    .right {
-        display: flex;
-        align-items: center;
-        gap: 1.25rem;
-    }
-
-    /* The only saturated fill in the chrome, so it is the thing your eye lands
-       on -- normal mode is blue in tokyonight. 6.79:1 dark, 4.62:1 light. */
-    .mode {
-        padding: 0.25em 0.6em;
-        margin: -0.25em 0;
-        border-radius: 2px;
-        background: var(--iris);
-        color: var(--canvas);
-        font-weight: 500;
-        letter-spacing: 0.08em;
-    }
-
-    .branch {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4em;
-    }
-
-    @media (max-width: 720px) {
-        /* Keep the mode block, the branch, and the rightmost figure. */
-        .filetype,
-        .right span:not(:last-child) {
-            display: none;
-        }
-        .left,
-        .right {
-            gap: 0.85rem;
-        }
-    }
-</style>

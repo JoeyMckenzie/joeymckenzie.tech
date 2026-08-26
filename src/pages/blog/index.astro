@@ -34,18 +34,19 @@ const tagCounts = Object.fromEntries(
     <body>
         <Header />
         <main>
-            <header class="intro">
-                <h1>Writing</h1>
+            <header>
+                <h1 class="m-0">Writing</h1>
                 <div class="sweep"></div>
-                <p class="blurb">
+                <p class="text-subtle mt-4 mb-0 max-w-[34rem]">
                     Laravel, Rust, .NET, and whatever tooling rabbit hole has me
                     this month. Mostly code, occasionally opinions.
                 </p>
             </header>
 
-            <div class="filters">
-                <label class="search">
+            <div class="mt-10">
+                <label class="relative block">
                     <svg
+                        class="text-subtle pointer-events-none absolute top-1/2 left-3 -translate-y-1/2"
                         viewBox="0 0 24 24"
                         width="16"
                         height="16"
@@ -59,6 +60,7 @@ const tagCounts = Object.fromEntries(
                         <path d="m21 21-4.3-4.3"></path>
                     </svg>
                     <input
+                        class="border-hairline bg-code-bg text-prose placeholder:text-subtle focus:border-iris w-full rounded-lg border py-2.5 pr-3 pl-10 font-[inherit] text-[0.9rem] transition-[border-color] duration-200 placeholder:opacity-100 focus:shadow-[0_0_0_1px_var(--iris)] focus:outline-none"
                         type="search"
                         id="post-search"
                         placeholder="Search posts…"
@@ -67,26 +69,32 @@ const tagCounts = Object.fromEntries(
                     />
                 </label>
 
-                <div class="chips" id="tag-chips">
-                    <button type="button" data-tag="" aria-pressed="true"
-                        >all</button
+                <div class="chips mt-4 flex flex-wrap gap-2" id="tag-chips">
+                    <button
+                        class="border-hairline text-subtle inline-flex cursor-pointer items-center gap-[0.45rem] rounded-full border bg-transparent py-1 pr-[0.7rem] pl-[0.6rem] font-mono text-xs transition-all duration-200"
+                        type="button"
+                        data-tag=""
+                        aria-pressed="true">all</button
                     >
                     {
                         tags.map((tag) => (
                             <button
+                                class="border-hairline text-subtle inline-flex cursor-pointer items-center gap-[0.45rem] rounded-full border bg-transparent py-1 pr-[0.7rem] pl-[0.6rem] font-mono text-xs transition-all duration-200"
                                 type="button"
                                 data-tag={tag}
                                 aria-pressed="false"
                             >
                                 {tag}
-                                <span class="count">{tagCounts[tag]}</span>
+                                <span class="count text-subtle text-[0.6875rem] opacity-75">
+                                    {tagCounts[tag]}
+                                </span>
                             </button>
                         ))
                     }
                 </div>
             </div>
 
-            <div class="results" id="results">
+            <div class="mt-8 grid gap-4" id="results">
                 {
                     posts.map((post) => (
                         <div
@@ -101,12 +109,19 @@ const tagCounts = Object.fromEntries(
                 }
             </div>
 
-            <div class="empty" id="empty" hidden>
-                <p class="empty-title">No matches</p>
-                <p class="empty-note" id="empty-note">
+            <div
+                class="empty border-hairline mt-8 rounded-xl border border-dashed px-6 py-16 text-center"
+                id="empty"
+                hidden
+            >
+                <p class="text-prose-strong m-0 text-xl">No matches</p>
+                <p class="text-subtle mt-2 mb-0 text-[0.9rem]" id="empty-note">
                     Nothing fits that filter.
                 </p>
-                <button type="button" id="clear-filters">✕ clear filters</button
+                <button
+                    class="text-iris mt-4 cursor-pointer border-none bg-transparent font-mono text-xs hover:underline"
+                    type="button"
+                    id="clear-filters">✕ clear filters</button
                 >
             </div>
         </main>
@@ -200,72 +215,10 @@ const tagCounts = Object.fromEntries(
 </script>
 
 <style>
-    .intro h1 {
-        margin: 0;
-    }
-    .blurb {
-        max-width: 34rem;
-        margin: 1rem 0 0;
-        color: var(--subtle);
-    }
-    .filters {
-        margin-top: 2.5rem;
-    }
-    .search {
-        position: relative;
-        display: block;
-    }
-    .search svg {
-        position: absolute;
-        top: 50%;
-        left: 0.75rem;
-        transform: translateY(-50%);
-        color: var(--subtle);
-        pointer-events: none;
-    }
-    /* --code-bg, not a hardcoded #fff: recessed in dark, white in light, and
-       the same surface the code blocks use. Text 11.14:1 dark / 15.31:1 light,
-       placeholder 4.86:1 / 5.71:1. */
-    .search input {
-        width: 100%;
-        padding: 0.625rem 0.75rem 0.625rem 2.5rem;
-        border: 1px solid var(--hairline);
-        border-radius: 8px;
-        font-family: inherit;
-        font-size: 0.9rem;
-        color: var(--prose);
-        background: var(--code-bg);
-        transition: border-color 0.2s ease;
-    }
-    .search input::placeholder {
-        color: var(--subtle);
-        opacity: 1;
-    }
-    .search input:focus {
-        outline: none;
-        border-color: var(--iris);
-        box-shadow: 0 0 0 1px var(--iris);
-    }
-    .chips {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-top: 1rem;
-    }
-    .chips button {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        padding: 0.25rem 0.7rem 0.25rem 0.6rem;
-        border: 1px solid var(--hairline);
-        border-radius: 999px;
-        background: none;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--subtle);
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
+    /* What stays as CSS here, and why: every rule below is either a per-tag
+       `color-mix()` tint keyed off the declarative `--tag`, or an attribute
+       selector that reads far worse as an arbitrary-value variant. */
+
     /* The dot is the tag's own colour, so the arc is legible before you read a
        single label. The "all" chip has no data-tag and so gets no dot. */
     .chips button[data-tag]:not([data-tag=""])::before {
@@ -274,11 +227,6 @@ const tagCounts = Object.fromEntries(
         height: 0.45em;
         border-radius: 50%;
         background: var(--tag);
-    }
-    .chips .count {
-        font-size: 0.6875rem;
-        color: var(--subtle);
-        opacity: 0.75;
     }
     .chips button:hover {
         border-color: color-mix(
@@ -300,44 +248,11 @@ const tagCounts = Object.fromEntries(
     .chips button[aria-pressed="true"] .count {
         color: inherit;
     }
-    .results {
-        display: grid;
-        gap: 1rem;
-        margin-top: 2rem;
-    }
-    .results .result[hidden] {
-        display: none;
-    }
-    .empty {
-        margin-top: 2rem;
-        padding: 4rem 1.5rem;
-        border: 1px dashed var(--hairline);
-        border-radius: 12px;
-        text-align: center;
-    }
+
+    /* PostCard sets `display: grid`, which outranks the UA `[hidden]` rule, so
+       the filter's `el.hidden = true` needs this to actually hide a card. */
+    .result[hidden],
     .empty[hidden] {
         display: none;
-    }
-    .empty-title {
-        margin: 0;
-        font-size: 1.25rem;
-        color: var(--prose-strong);
-    }
-    .empty-note {
-        margin: 0.5rem 0 0;
-        font-size: 0.9rem;
-        color: var(--subtle);
-    }
-    .empty button {
-        margin-top: 1rem;
-        border: none;
-        background: none;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        color: var(--iris);
-        cursor: pointer;
-    }
-    .empty button:hover {
-        text-decoration: underline;
     }
 </style>

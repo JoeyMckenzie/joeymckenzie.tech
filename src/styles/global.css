@@ -1,10 +1,103 @@
-@import "tailwindcss";
+/* Tailwind v4, wired deliberately rather than via the umbrella `@import
+   "tailwindcss"`, for three measured reasons:
+
+   1. Preflight is omitted. It ships `ol,ul,menu{list-style:none}` and
+      `*{margin:0;padding:0}`, and this file defines no ul/ol/li rules at all --
+      the markdown lists in 33 posts rely on UA defaults, so Preflight strips
+      every bullet and indent on the site.
+   2. Sources are scoped away from `src/content/`. Eight posts contain Tailwind
+      class strings inside fenced code samples (one is a Tailwind modal
+      tutorial), which made the scanner emit 165 utilities instead of 24 --
+      ~12KB of CSS for markup that only ever renders inside a <pre>.
+   3. Tailwind's default 200-colour oklch palette is cleared. This site's
+      palette is hand-measured for WCAG AA in both themes; see below. */
+/* Layer order is declared up front and explicitly. It would otherwise be set
+   by order of first appearance, which would put `base` after `utilities` and
+   let the element defaults win again -- the exact bug this structure fixes. */
+@layer theme, base, utilities;
+
+@import "tailwindcss/theme" layer(theme);
+@import "./base.css" layer(base);
+@import "tailwindcss/utilities" layer(utilities) source(none);
+@source "../components";
+@source "../layouts";
+@source "../pages";
+
+@theme {
+    /* Namespaces this site does not use. Clearing them is pure byte savings. */
+    --color-*: initial;
+    --shadow-*: initial;
+    --blur-*: initial;
+    --animate-*: initial;
+
+    /* This design has exactly two breakpoints: `min-width: 600px` and
+       `max-width: 720px`. `md` is 721px on purpose -- Tailwind compiles
+       `max-md:` to `width < 721px`, which reproduces `max-width: 720px`
+       exactly, including at 720px itself. A 720px value would be off by one. */
+    /* Tailwind pairs each `text-*` size with a line-height, but this design
+       sets line-height once on `body` as the unitless number 1.75 and lets it
+       inherit, so a 0.75rem element computes 21px, not Tailwind's 16px.
+       Clearing the pairings makes `text-xs` set font-size only, exactly like
+       the CSS it replaces. Verified: 21px before and after. */
+    --text-xs--line-height: initial;
+    --text-sm--line-height: initial;
+    --text-base--line-height: initial;
+    --text-lg--line-height: initial;
+    --text-xl--line-height: initial;
+    --text-2xl--line-height: initial;
+    --text-3xl--line-height: initial;
+    --text-4xl--line-height: initial;
+
+    /* Every transition in this design is `ease`, not Tailwind's
+       cubic-bezier(0.4, 0, 0.2, 1). Setting it here keeps `transition-colors`
+       exact without an arbitrary value at every call site. */
+    --default-transition-timing-function: ease;
+
+    --breakpoint-*: initial;
+    --breakpoint-sm: 600px;
+    --breakpoint-md: 721px;
+
+    /* The token layer stays in plain CSS below -- these only alias it so
+       utilities can reach it. The light theme redefines all 54 properties
+       wholesale under `:root[data-theme="light"]`, which `@theme` cannot
+       express; aliasing means the swap keeps working untouched. */
+    --color-canvas: var(--canvas);
+    --color-canvas-deep: var(--canvas-deep);
+    --color-code-bg: var(--code-bg);
+    --color-panel: var(--panel);
+    --color-hairline: var(--hairline);
+    --color-prose: var(--prose);
+    --color-prose-strong: var(--prose-strong);
+    --color-subtle: var(--subtle);
+    --color-iris: var(--iris);
+    --color-ember: var(--ember);
+    /* NOTE: there is deliberately no `--color-tag` alias here. `--tag` is
+       defined by `[data-tag="..."]` on individual elements, never on :root, so
+       a `--color-tag: var(--tag)` alias would be substituted at :root where
+       `--tag` is unset -- computing to an invalid value that silently falls
+       back to the inherited colour. Verified: the tag dot rendered --subtle and
+       transparent. Consumers use `text-[var(--tag)]`, which substitutes at the
+       use site where `--tag` actually exists.  */
+}
+
+/* The theme toggle sets data-theme on <html>; Tailwind's stock dark variant
+   keys off prefers-color-scheme, which is the wrong signal here. */
+@custom-variant dark (&:where(:root[data-theme="dark"] *));
+@custom-variant light (&:where(:root[data-theme="light"] *));
 
 :root {
     /* --- surfaces --- */
     --canvas: #1a1b26;
     --canvas-deep: #16161e;
     --code-bg: #16161e; /* recessed against --canvas */
+    /* The inline-code tint, as an opaque value. It was
+       color-mix(in oklab, var(--iris) 12%, transparent), but Lightning CSS
+       (which Tailwind routes the whole sheet through) emits a full-strength
+       `var(--iris)` fallback alongside it, and --ember on solid --iris is
+       1.26:1. Sampled, not computed -- color-mix(in oklab) does not composite
+       like an sRGB lerp, so this is the pixel read back after compositing the
+       computed tint over --canvas on a <canvas>. --ember on it: 7.00:1. */
+    --code-tint: #262b3f;
     --panel: #292e42;
     --hairline: #3b4261;
 
@@ -41,6 +134,7 @@
     --canvas: #f2f2f6;
     --canvas-deep: #e4e5ec;
     --code-bg: #ffffff; /* raised against --canvas */
+    --code-tint: #d8e2f3; /* sampled composite; --ember on it 4.55:1 */
     --panel: #ffffff;
     --hairline: #cfd2e0;
 
@@ -54,9 +148,9 @@
     --subtle: #5263a4; /* 4.54:1 on --canvas-deep, 5.11:1 on --canvas */
 
     --iris: #1769da; /* 4.62:1 */
-    /* Also the inline-code text colour, which sits on a 12% iris tint that
-       composites to #d7e1f3 -- the darkest surface --ember has to clear.
-       4.51:1 there, 4.73:1 on --canvas-deep, 5.32:1 on --canvas. */
+    /* Also the inline-code text colour, which sits on --code-tint -- the
+       darkest surface --ember has to clear.
+       4.55:1 there, 4.73:1 on --canvas-deep, 5.32:1 on --canvas. */
     --ember: #7b5f37;
 
     --tag-dotnet: #8245f0; /* 4.63 */
@@ -70,215 +164,6 @@
     --tag-design: #646b96; /* 4.60 */
 
     color-scheme: light;
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-html {
-    -webkit-text-size-adjust: 100%;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    background: var(--canvas);
-    color: var(--prose);
-    font-family: var(--font-body);
-    font-size: 1.0625rem;
-    line-height: 1.75;
-    font-feature-settings:
-        "liga" 1,
-        "calt" 1;
-    text-align: left;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    -webkit-font-smoothing: antialiased;
-}
-
-main {
-    width: var(--measure);
-    max-width: calc(100% - 2em);
-    margin: auto;
-    padding: 3em 1em;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    margin: 0 0 0.5rem 0;
-    color: var(--prose-strong);
-    font-family: var(--font-mono);
-    font-weight: 700;
-    line-height: 1.2;
-    /* Mono is already wide, so there is far less to claw back than the -0.02em
-       the serif display face wanted. */
-    letter-spacing: -0.01em;
-}
-
-/* Sizes are down across the board from the serif scale: JetBrains Mono sets
-   appreciably wider per character and would otherwise overflow the measure. */
-h1 {
-    font-size: 1.875rem;
-    line-height: 1.2;
-}
-h2 {
-    font-size: 1.375rem;
-    line-height: 1.3;
-}
-h3 {
-    font-size: 1.125rem;
-    line-height: 1.35;
-}
-h4 {
-    font-size: 1rem;
-}
-h5 {
-    font-size: 0.9375rem;
-}
-
-strong,
-b {
-    font-weight: 600;
-    color: var(--prose-strong);
-}
-
-p {
-    margin-bottom: 1em;
-}
-
-.prose p {
-    margin-bottom: 1.5em;
-}
-
-a {
-    color: var(--iris);
-    text-decoration-color: color-mix(in oklab, var(--iris) 40%, transparent);
-    text-underline-offset: 0.2em;
-}
-
-a:hover {
-    color: var(--ember);
-    text-decoration-color: currentColor;
-}
-
-/* The `~/path` kicker is gone: the bracketed active nav link says it, and
-   without three copies of the same CSS. */
-.sweep {
-    height: 3px;
-    width: 10rem;
-    margin: 1rem 0 0;
-    border-radius: 999px;
-    background: var(--sweep);
-}
-
-[data-tag] {
-    --tag: var(--tag-default);
-}
-[data-tag="dotnet"] {
-    --tag: var(--tag-dotnet);
-}
-[data-tag="laravel"] {
-    --tag: var(--tag-laravel);
-}
-[data-tag="rust"] {
-    --tag: var(--tag-rust);
-}
-[data-tag="angular"] {
-    --tag: var(--tag-angular);
-}
-[data-tag="php"] {
-    --tag: var(--tag-php);
-}
-[data-tag="zig"] {
-    --tag: var(--tag-zig);
-}
-[data-tag="react"] {
-    --tag: var(--tag-react);
-}
-[data-tag="astro"] {
-    --tag: var(--tag-astro);
-}
-[data-tag="design"] {
-    --tag: var(--tag-design);
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-}
-
-hr {
-    border: none;
-    border-top: 1px solid var(--hairline);
-    margin: 2.5em 0;
-}
-
-blockquote {
-    border-left: 2px solid var(--ember);
-    padding: 0 0 0 1.25em;
-    margin: 0;
-    font-size: 1.0625rem;
-    color: var(--subtle);
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.9375rem;
-}
-
-th,
-td {
-    padding: 0.5em 0.75em;
-    border-bottom: 1px solid var(--hairline);
-    text-align: left;
-}
-
-th {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--subtle);
-}
-
-textarea,
-input {
-    font-family: inherit;
-    font-size: 16px;
-}
-
-code {
-    font-family: var(--font-mono);
-    font-size: 0.875em;
-    padding: 0.15em 0.4em;
-    border-radius: 3px;
-    background: color-mix(in oklab, var(--iris) 12%, transparent);
-    color: var(--ember);
-}
-
-pre {
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    line-height: 1.7;
-    padding: 1.25em;
-    margin: 0;
-    border-radius: 8px;
-    overflow-x: auto;
-}
-
-pre > code {
-    all: unset;
-    font-family: inherit;
 }
 
 pre.astro-code {
@@ -394,21 +279,6 @@ pre.astro-code .line::before {
     font-style: var(--shiki-dark-font-style) !important;
     font-weight: var(--shiki-dark-font-weight) !important;
     text-decoration: var(--shiki-dark-text-decoration) !important;
-}
-
-@media (max-width: 720px) {
-    body {
-        font-size: 1rem;
-    }
-    main {
-        padding: 1em;
-    }
-    h1 {
-        font-size: 1.5rem;
-    }
-    h2 {
-        font-size: 1.1875rem;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {

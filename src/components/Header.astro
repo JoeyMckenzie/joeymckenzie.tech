@@ -5,104 +5,35 @@ import SocialLinks from "./SocialLinks.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 ---
 
-<header>
-    <nav>
-        <a class="brand" href="/">{SITE_TITLE}</a>
-        <div class="internal-links">
+<!-- Sticky below 720px only, so the chrome floats over the page on small
+screens while desktop keeps it in flow. The opaque --canvas background and the
+bottom hairline make content scroll under it cleanly. -->
+<header
+    class="border-hairline bg-canvas border-b max-md:sticky max-md:top-0 max-md:z-20"
+>
+    <!-- max-md:flex-wrap is a safety net: below 320px the toggle drops to a
+    second row rather than giving the whole page a horizontal scrollbar.
+    max-md:max-w-full recovers the 32px the desktop gutter would otherwise cost,
+    which the tabs need at 320px. -->
+    <nav
+        class="mx-auto flex w-[var(--measure-wide)] max-w-[calc(100%-2em)] items-center justify-between gap-4 px-[1em] max-md:max-w-full max-md:flex-wrap max-md:gap-0 max-md:px-[0.5em] max-md:py-[0.25em]"
+    >
+        <!-- Dropped below 720px: the `home` tab already links to `/`, and the
+        page title carries the identity at that size. -->
+        <a
+            class="text-prose-strong hover:text-ember py-[1.15em] font-mono text-[0.8125rem] tracking-[0.02em] whitespace-nowrap no-underline max-md:hidden"
+            href="/">{SITE_TITLE}</a
+        >
+        <div class="flex gap-0.5 max-md:gap-0">
             <HeaderLink href="/">home</HeaderLink>
             <HeaderLink href="/blog">blog</HeaderLink>
             <HeaderLink href="/now">now</HeaderLink>
             <HeaderLink href="/uses">uses</HeaderLink>
             <HeaderLink href="/cv">cv</HeaderLink>
         </div>
-        <div class="trailing">
-            <SocialLinks />
+        <div class="flex items-center gap-3 max-md:ml-auto max-md:gap-1">
+            <SocialLinks class="max-md:hidden" />
             <ThemeToggle />
         </div>
     </nav>
 </header>
-
-<style>
-    header {
-        border-bottom: 1px solid var(--hairline);
-        background: var(--canvas);
-    }
-
-    nav {
-        width: var(--measure-wide);
-        max-width: calc(100% - 2em);
-        margin: auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        padding: 0 1em;
-    }
-
-    .brand {
-        font-family: var(--font-mono);
-        font-size: 0.8125rem;
-        letter-spacing: 0.02em;
-        color: var(--prose-strong);
-        text-decoration: none;
-        padding: 1.15em 0;
-        white-space: nowrap;
-    }
-
-    .brand:hover {
-        color: var(--ember);
-    }
-
-    .internal-links {
-        display: flex;
-        gap: 0.125rem;
-    }
-
-    .trailing {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    @media (max-width: 720px) {
-        header :global(.social-links) {
-            display: none;
-        }
-
-        /* Floats over the page on small screens only; desktop stays in flow.
-           The opaque --canvas background and the bottom hairline are already
-           set above, so content scrolls under it cleanly. */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-        }
-
-        /* One row: tabs left, theme toggle right. The wordmark is dropped here
-           -- the `home` tab already links to `/`, and the page title carries
-           the identity on a screen this size. */
-        .brand {
-            display: none;
-        }
-        /* flex-wrap stays as a safety net: if a narrower screen than 320px
-           turns up, the toggle drops to a second row instead of giving the
-           whole page a horizontal scrollbar. */
-        nav {
-            flex-wrap: wrap;
-            gap: 0;
-            /* The desktop `calc(100% - 2em)` leaves only 272px of usable width
-               at 320px, which is 18px short of the tabs plus the toggle. On
-               mobile the nav's own padding is the gutter, so the outer margin
-               is redundant. */
-            max-width: 100%;
-            padding: 0.25em 0.5em;
-        }
-        .internal-links {
-            gap: 0;
-        }
-        .trailing {
-            gap: 0.25rem;
-            margin-left: auto;
-        }
-    }
-</style>

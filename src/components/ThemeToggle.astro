@@ -7,6 +7,7 @@
 <button
     id="theme-toggle"
     type="button"
+    class="text-subtle hover:text-ember focus-visible:outline-iris cursor-pointer appearance-none border-none bg-transparent px-[0.4em] py-[0.25em] font-mono text-xs leading-none tracking-wider focus-visible:rounded-[2px] focus-visible:outline-1 focus-visible:outline-offset-2"
     aria-label="Switch to light theme"
     aria-live="polite"
 >
@@ -46,28 +47,3 @@
         });
     })();
 </script>
-
-<style>
-    button {
-        appearance: none;
-        background: none;
-        border: none;
-        padding: 0.25em 0.4em;
-        cursor: pointer;
-        font-family: var(--font-mono);
-        font-size: 0.75rem;
-        letter-spacing: 0.05em;
-        color: var(--subtle);
-        line-height: 1;
-    }
-
-    button:hover {
-        color: var(--ember);
-    }
-
-    button:focus-visible {
-        outline: 1px solid var(--iris);
-        outline-offset: 2px;
-        border-radius: 2px;
-    }
-</style>

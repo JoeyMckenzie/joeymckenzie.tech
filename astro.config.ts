@@ -2,17 +2,21 @@ import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import { defineConfig, fontProviders } from "astro/config";
 
+import tailwindcss from "@tailwindcss/vite";
+
 const appHost = process.env.APP_HOST ?? "joeymckenzie.tech.test";
 const vitePort = Number(process.env.VITE_PORT ?? 4321);
 
 export default defineConfig({
     site: "https://joeymckenzie.tech",
     integrations: [mdx(), sitemap()],
+
     server: {
         host: "127.0.0.1",
         port: vitePort,
         allowedHosts: [appHost],
     },
+
     markdown: {
         shikiConfig: {
             themes: {
@@ -22,6 +26,7 @@ export default defineConfig({
             wrap: false,
         },
     },
+
     fonts: [
         {
             provider: fontProviders.google(),
@@ -46,4 +51,8 @@ export default defineConfig({
             display: "swap",
         },
     ],
+
+    vite: {
+        plugins: [tailwindcss()],
+    },
 });
