@@ -56,6 +56,7 @@ in
   dotenv.disableHint = true;
 
   env = {
+    APP_HOST = "${appHost}";
     ASTRO_DEV_BACKGROUND = 0;
     ASTRO_PREVIEW_BACKGROUND = 0;
   };
