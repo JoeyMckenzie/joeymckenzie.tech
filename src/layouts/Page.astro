@@ -1,20 +1,20 @@
 ---
-import BaseHead from "../components/BaseHead.astro"
-import Footer from "../components/Footer.astro"
-import Header from "../components/Header.astro"
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
 
-// `kicker` is gone: the winbar derives `~/now.md` and friends from the URL.
+// `kicker` is gone: the bracketed active nav link carries the location cue.
 interface Props {
-    title: string
-    description: string
-    heading: string
-    intro?: string
-    updated?: string
-    updatedLabel?: string
+    title: string;
+    description: string;
+    heading: string;
+    intro?: string;
+    updated?: string;
+    updatedLabel?: string;
 }
 
 const { title, description, heading, intro, updated, updatedLabel } =
-    Astro.props
+    Astro.props;
 ---
 
 <!doctype html>
@@ -46,7 +46,6 @@ const { title, description, heading, intro, updated, updatedLabel } =
 <style>
     .page-header h1 {
         margin: 0;
-        font-size: 2.125rem;
     }
     .updated {
         display: block;
@@ -60,10 +59,5 @@ const { title, description, heading, intro, updated, updatedLabel } =
         max-width: 34rem;
         margin: 1.25rem 0 0;
         color: var(--subtle);
-    }
-    @media (max-width: 720px) {
-        .page-header h1 {
-            font-size: 1.75rem;
-        }
     }
 </style>

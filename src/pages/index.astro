@@ -1,15 +1,15 @@
 ---
-import { getCollection } from "astro:content"
-import BaseHead from "../components/BaseHead.astro"
-import Footer from "../components/Footer.astro"
-import Header from "../components/Header.astro"
-import PostCard from "../components/PostCard.astro"
-import SocialLinks from "../components/SocialLinks.astro"
-import { SITE_TITLE } from "../consts"
+import { getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import PostCard from "../components/PostCard.astro";
+import SocialLinks from "../components/SocialLinks.astro";
+import { SITE_TITLE } from "../consts";
 
 const posts = (await getCollection("blog"))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, 3)
+    .slice(0, 3);
 ---
 
 <!doctype html>
@@ -62,8 +62,6 @@ const posts = (await getCollection("blog"))
 <style>
     .intro h1 {
         margin: 0;
-        font-size: 2rem;
-        line-height: 1.25;
     }
     .intro h1 .muted {
         color: var(--subtle);
@@ -106,10 +104,5 @@ const posts = (await getCollection("blog"))
         display: grid;
         gap: 1rem;
         margin-top: 1.5rem;
-    }
-    @media (min-width: 600px) {
-        .intro h1 {
-            font-size: 2.375rem;
-        }
     }
 </style>

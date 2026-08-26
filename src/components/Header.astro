@@ -1,23 +1,14 @@
 ---
-import { SITE_TITLE } from "../consts"
-import HeaderLink from "./HeaderLink.astro"
-import SocialLinks from "./SocialLinks.astro"
-import ThemeToggle from "./ThemeToggle.astro"
-import WinBar from "./WinBar.astro"
-
-// Owns both strips of top chrome: the tabline, and the winbar beneath it.
-// `tag` is only ever set by a post page, and is optional there too.
-interface Props {
-    tag?: string
-}
-
-const { tag } = Astro.props
+import { SITE_TITLE } from "../consts";
+import HeaderLink from "./HeaderLink.astro";
+import SocialLinks from "./SocialLinks.astro";
+import ThemeToggle from "./ThemeToggle.astro";
 ---
 
 <header>
     <nav>
         <a class="brand" href="/">{SITE_TITLE}</a>
-        <div class="tabs">
+        <div class="internal-links">
             <HeaderLink href="/">home</HeaderLink>
             <HeaderLink href="/blog">blog</HeaderLink>
             <HeaderLink href="/now">now</HeaderLink>
@@ -30,10 +21,10 @@ const { tag } = Astro.props
         </div>
     </nav>
 </header>
-<WinBar {tag} />
 
 <style>
     header {
+        border-bottom: 1px solid var(--hairline);
         background: var(--canvas);
     }
 
@@ -42,7 +33,7 @@ const { tag } = Astro.props
         max-width: calc(100% - 2em);
         margin: auto;
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: space-between;
         gap: 1rem;
         padding: 0 1em;
@@ -62,11 +53,8 @@ const { tag } = Astro.props
         color: var(--ember);
     }
 
-    /* Buffer tabs sit flush on the baseline so the active tab's filled block
-       meets the winbar border underneath it, the way a real tabline does. */
-    .tabs {
+    .internal-links {
         display: flex;
-        align-self: flex-end;
         gap: 0.125rem;
     }
 
@@ -74,33 +62,47 @@ const { tag } = Astro.props
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        padding-bottom: 0.9em;
     }
 
     @media (max-width: 720px) {
         header :global(.social-links) {
             display: none;
         }
-        /* Brand + five tabs + the toggle do not fit at 390px. Tighten the
-           gutters, and let the row wrap rather than scroll the page if it
-           still runs out of room on something narrower. */
+
+        /* Floats over the page on small screens only; desktop stays in flow.
+           The opaque --canvas background and the bottom hairline are already
+           set above, so content scrolls under it cleanly. */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+        }
+
+        /* One row: tabs left, theme toggle right. The wordmark is dropped here
+           -- the `home` tab already links to `/`, and the page title carries
+           the identity on a screen this size. */
+        .brand {
+            display: none;
+        }
+        /* flex-wrap stays as a safety net: if a narrower screen than 320px
+           turns up, the toggle drops to a second row instead of giving the
+           whole page a horizontal scrollbar. */
         nav {
             flex-wrap: wrap;
-            padding: 0 0.5em;
+            gap: 0;
+            /* The desktop `calc(100% - 2em)` leaves only 272px of usable width
+               at 320px, which is 18px short of the tabs plus the toggle. On
+               mobile the nav's own padding is the gutter, so the outer margin
+               is redundant. */
+            max-width: 100%;
+            padding: 0.25em 0.5em;
         }
-        .brand {
-            font-size: 0.75rem;
-            padding: 1.15em 0.25em;
-        }
-        .tabs {
+        .internal-links {
             gap: 0;
         }
-        /* When the row does wrap, keep the toggle on the right edge where it
-           sits on desktop, rather than orphaned under the brand. */
         .trailing {
             gap: 0.25rem;
             margin-left: auto;
-            padding-bottom: 0.6em;
         }
     }
 </style>

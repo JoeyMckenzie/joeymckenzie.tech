@@ -1,17 +1,17 @@
 ---
-import SocialLinks from "./SocialLinks.astro"
-import StatusLine from "./StatusLine.astro"
+import SocialLinks from "./SocialLinks.astro";
+import StatusLine from "./StatusLine.astro";
 
 // Forwards to the statusline rather than making every page render two
 // components: only post pages and /blog override the defaults.
 interface Props {
-    filetype?: string
-    right?: string[]
+    filetype?: string;
+    right?: string[];
 }
 
-const { filetype, right } = Astro.props
+const { filetype, right } = Astro.props;
 
-const today = new Date()
+const today = new Date();
 ---
 
 <StatusLine {filetype} {right} />

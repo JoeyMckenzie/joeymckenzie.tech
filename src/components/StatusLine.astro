@@ -1,29 +1,29 @@
 ---
-import { getCollection } from "astro:content"
-import { countWords } from "../lib/reading"
+import { getCollection } from "astro:content";
+import { countWords } from "../lib/reading";
 
 // neovim's statusline. The one place the wink is allowed to be explicit, and
 // every figure in it is real -- nothing here is decorative filler.
 interface Props {
-    filetype?: string
-    right?: string[]
+    filetype?: string;
+    right?: string[];
 }
 
-const { filetype = "markdown", right } = Astro.props
+const { filetype = "markdown", right } = Astro.props;
 
 // Site-wide totals are the default so the prose pages need no plumbing at all;
 // post pages and /blog pass their own.
-let segments = right
+let segments = right;
 if (!segments) {
-    const posts = await getCollection("blog")
+    const posts = await getCollection("blog");
     const words = posts.reduce(
         (total, post) => total + countWords(post.body),
         0
-    )
+    );
     segments = [
         `${posts.length} posts`,
         `${words.toLocaleString("en-US")} words`,
-    ]
+    ];
 }
 ---
 

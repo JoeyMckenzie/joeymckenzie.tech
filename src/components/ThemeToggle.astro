@@ -16,35 +16,35 @@
 </button>
 
 <script is:inline>
-    ;(function () {
-        const btn = document.getElementById("theme-toggle")
-        if (!btn) return
-        const label = btn.querySelector("[data-theme-label]")
+    (function () {
+        const btn = document.getElementById("theme-toggle");
+        if (!btn) return;
+        const label = btn.querySelector("[data-theme-label]");
 
         function render(theme) {
-            label.textContent = theme
+            label.textContent = theme;
             btn.setAttribute(
                 "aria-label",
                 "Switch to " + (theme === "dark" ? "light" : "dark") + " theme"
-            )
+            );
         }
 
-        render(document.documentElement.dataset.theme || "dark")
+        render(document.documentElement.dataset.theme || "dark");
 
         btn.addEventListener("click", function () {
             const next =
                 document.documentElement.dataset.theme === "dark"
                     ? "light"
-                    : "dark"
-            document.documentElement.dataset.theme = next
+                    : "dark";
+            document.documentElement.dataset.theme = next;
             try {
-                localStorage.setItem("theme", next)
+                localStorage.setItem("theme", next);
             } catch {
                 /* storage blocked: the toggle still works for this page view */
             }
-            render(next)
-        })
-    })()
+            render(next);
+        });
+    })();
 </script>
 
 <style>

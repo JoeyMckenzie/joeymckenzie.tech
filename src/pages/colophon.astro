@@ -1,24 +1,24 @@
 ---
-import { Code } from "astro:components"
-import { getCollection } from "astro:content"
-import Page from "../layouts/Page.astro"
-import PostCard from "../components/PostCard.astro"
+import { Code } from "astro:components";
+import { getCollection } from "astro:content";
+import Page from "../layouts/Page.astro";
+import PostCard from "../components/PostCard.astro";
 
 const posts = (await getCollection("blog")).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-)
+);
 
 // Everything below is computed from the content collection at build time, so
 // it cannot drift from what is actually published. Same word-count formula as
 // PostCard: alphabetic runs, not whitespace-delimited tokens.
 const wordsIn = (post: (typeof posts)[number]) =>
-    post.body?.match(/[A-Za-z'-]+/g)?.length ?? 0
+    post.body?.match(/[A-Za-z'-]+/g)?.length ?? 0;
 
-const totalWords = posts.reduce((sum, post) => sum + wordsIn(post), 0)
-const oldest = posts[posts.length - 1]!
-const newest = posts[0]!
+const totalWords = posts.reduce((sum, post) => sum + wordsIn(post), 0);
+const oldest = posts[posts.length - 1]!;
+const newest = posts[0]!;
 const yearSpan =
-    newest.data.pubDate.getFullYear() - oldest.data.pubDate.getFullYear()
+    newest.data.pubDate.getFullYear() - oldest.data.pubDate.getFullYear();
 
 const tagCounts = [
     ...posts
@@ -27,9 +27,9 @@ const tagCounts = [
             (map, tag) => map.set(tag, (map.get(tag) ?? 0) + 1),
             new Map<string, number>()
         ),
-].sort((a, b) => b[1] - a[1])
+].sort((a, b) => b[1] - a[1]);
 
-const maxTag = Math.max(...tagCounts.map(([, count]) => count))
+const maxTag = Math.max(...tagCounts.map(([, count]) => count));
 
 // Short form: the long form wraps to two lines in the four-column stat grid.
 const fmt = (date: Date) =>
@@ -37,7 +37,7 @@ const fmt = (date: Date) =>
         year: "numeric",
         month: "short",
         timeZone: "UTC",
-    })
+    });
 
 // Surface + ink + accent tokens. Both hexes travel together and the page shows
 // whichever matches the current theme, so the toggle is part of the exhibit.
@@ -56,7 +56,7 @@ const palette = [
     { name: "subtle", dark: "#7c83a8", light: "#586aac", note: "meta" },
     { name: "iris", dark: "#7aa2f7", light: "#1769da", note: "links" },
     { name: "ember", dark: "#e0af68", light: "#87683c", note: "hover" },
-]
+];
 
 // Ratios are measured against --canvas in each theme. Every one clears WCAG AA
 // for body text; if a hex changes here, re-measure rather than assume.
@@ -70,7 +70,7 @@ const tagPalette = [
     { tag: "react", dark: "#7dcfff", light: "#0072b5", why: "React cyan" },
     { tag: "astro", dark: "#9d7cd8", light: "#7f54cc", why: "Astro purple" },
     { tag: "design", dark: "#7c83a8", light: "#646b96", why: "not a language" },
-]
+];
 
 // The old hand-built Nocturne palette from the Laravel site, beside the
 // tokyonight values it turned out to be approximating.
@@ -79,7 +79,7 @@ const provenance = [
     { role: "secondary", mine: "#e0b978", theirs: "#e0af68", label: "yellow" },
     { role: "canvas", mine: "#0e1016", theirs: "#1a1b26", label: "bg" },
     { role: "prose", mine: "#e8e6df", theirs: "#c0caf5", label: "fg" },
-]
+];
 
 const nvimConfig = `require("tokyonight").setup({
     style = "night",
@@ -89,9 +89,9 @@ const nvimConfig = `require("tokyonight").setup({
 
 vim.cmd([[let $BAT_THEME = 'tokyonight']])
 
-colorscheme tokyonight`
+colorscheme tokyonight`;
 
-const themes = { light: "catppuccin-latte", dark: "tokyo-night" } as const
+const themes = { light: "catppuccin-latte", dark: "tokyo-night" } as const;
 
 // NOTE: the figures in the "how it's built" list are measured from `dist` by
 // hand -- they cannot be computed from inside the build that produces them.
@@ -271,13 +271,13 @@ const themes = { light: "catppuccin-latte", dark: "tokyo-night" } as const
             <div>
                 <dt>Inline script, heaviest page</dt>
                 <dd>
-                    <strong>2,586 bytes</strong> — search + tag filter, theme resolution,
+                    <strong>2,600 bytes</strong> — search + tag filter, theme resolution,
                     theme toggle
                 </dd>
             </div>
             <div>
                 <dt>CSS, whole site</dt>
-                <dd><strong>14.8 KB</strong> — one system, no framework</dd>
+                <dd><strong>14.6 KB</strong> — one system, no framework</dd>
             </div>
             <div>
                 <dt>Fonts</dt>
@@ -288,7 +288,7 @@ const themes = { light: "catppuccin-latte", dark: "tokyo-night" } as const
             <div>
                 <dt>Images</dt>
                 <dd>
-                    <strong>92</strong> — sharp-optimised to webp at build time
+                    <strong>93</strong> — sharp-optimised to webp at build time
                 </dd>
             </div>
             <div>

@@ -45,8 +45,8 @@
     --prose: #262a38; /* 12.79:1 — NOT tokyonight-day fg #3760bf: that is 5.24:1 but only
                             1.13:1 against the link colour, so every paragraph read as a link. */
     --prose-strong: #1a1b26; /* 15.60:1 */
-    /* Measured against --canvas-deep (#e4e5ec), NOT --canvas: the winbar,
-       statusline and footer all paint these on the deep surface, where the
+    /* Measured against --canvas-deep (#e4e5ec), NOT --canvas: the statusline
+       and footer both paint these on the deep surface, where the
        previous #586aac / #87683c measured 4.11:1 and 4.10:1 and failed AA.
        Hue and saturation preserved; lightness walked down until both clear. */
     --subtle: #5263a4; /* 4.54:1 on --canvas-deep, 5.11:1 on --canvas */
@@ -166,7 +166,7 @@ a:hover {
     text-decoration-color: currentColor;
 }
 
-/* The `~/path` kicker is gone: the winbar says it better, on every page, and
+/* The `~/path` kicker is gone: the bracketed active nav link says it, and
    without three copies of the same CSS. */
 .sweep {
     height: 3px;
@@ -339,10 +339,22 @@ pre.astro-code .line::before {
 /* Hero images and other figures that break out of the measure, framed like a
    buffer so they read as the same object as a code block. */
 .figure-frame {
-    width: min(var(--measure-wide), calc(100vw - 2rem));
-    margin-left: calc(50% - min(var(--measure-wide), calc(100vw - 2rem)) / 2);
-    /* <figure> carries a UA margin-right of 40px that the breakout maths does
-       not account for. */
+    /* The frame is sized from the image's real aspect ratio (set inline as
+       --hero-ar at build time) so it hugs the image: never wider than the
+       breakout, and never so wide that the image would exceed --figure-max-h.
+       Nothing is ever cropped and there is no letterbox mat.
+       One centring formula covers both cases -- 50% is half the prose column,
+       so a wide frame gets a negative margin and a narrow one a positive. */
+    --figure-max-h: 28rem;
+    --figure-w: min(
+        var(--measure-wide),
+        calc(100vw - 2rem),
+        calc(var(--figure-max-h) * var(--hero-ar, 1.9))
+    );
+    width: var(--figure-w);
+    margin-left: calc(50% - var(--figure-w) / 2);
+    /* <figure> carries a UA margin-right of 40px that the maths does not
+       account for. */
     margin-right: 0;
     margin-block: 2rem;
     border: 1px solid var(--hairline);
@@ -365,13 +377,12 @@ pre.astro-code .line::before {
     color: var(--subtle);
 }
 
+/* No object-fit and no max-height: the frame is already sized to the image's
+   ratio, so filling it width-wise reproduces the image exactly. */
 .figure-frame img {
     display: block;
     width: 100%;
-    /* Capped so a tall source cannot reclaim the fold the way the old
-       full-bleed hero did. */
-    max-height: 20rem;
-    object-fit: cover;
+    height: auto;
     border-radius: 0 0 7px 7px;
 }
 

@@ -1,17 +1,17 @@
 ---
-import { Image } from "astro:assets"
-import type { CollectionEntry } from "astro:content"
-import { countWords, readingMinutes } from "../lib/reading"
-import FormattedDate from "./FormattedDate.astro"
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { countWords, readingMinutes } from "../lib/reading";
+import FormattedDate from "./FormattedDate.astro";
 
 interface Props {
-    post: CollectionEntry<"blog">
+    post: CollectionEntry<"blog">;
 }
 
-const { post } = Astro.props
+const { post } = Astro.props;
 
-const minutes = readingMinutes(countWords(post.body))
-const tag = post.data.tags[0]
+const minutes = readingMinutes(countWords(post.body));
+const tag = post.data.tags[0];
 ---
 
 <a class="card" data-tag={tag} href={`/blog/${post.id}/`}>
@@ -144,6 +144,21 @@ const tag = post.data.tags[0]
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
+    /* On a phone the thumbnail squeezes the title and description into a
+       column too narrow to read, so it goes and the text takes the full width.
+       599px rather than the site's usual 720px breakpoint: this component
+       already pivots at 600, and between 600 and 720 there is still room for
+       the image. Hides the tag-tinted fallback plate too, which is what we
+       want -- it is the same slot. */
+    @media (max-width: 599px) {
+        .cover {
+            display: none;
+        }
+        .card {
+            grid-template-columns: 1fr;
+        }
+    }
+
     @media (min-width: 600px) {
         .cover {
             width: 6rem;

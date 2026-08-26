@@ -1,12 +1,12 @@
 ---
-import type { HTMLAttributes } from "astro/types"
+import type { HTMLAttributes } from "astro/types";
 
-type Props = HTMLAttributes<"a">
+type Props = HTMLAttributes<"a">;
 
-const { href, class: className, ...props } = Astro.props
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "")
-const subpath = pathname.match(/[^/]+/g)
-const isActive = href === pathname || href === "/" + (subpath?.[0] || "")
+const { href, class: className, ...props } = Astro.props;
+const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, "");
+const subpath = pathname.match(/[^/]+/g);
+const isActive = href === pathname || href === "/" + (subpath?.[0] || "");
 ---
 
 <a
@@ -21,39 +21,58 @@ const isActive = href === pathname || href === "/" + (subpath?.[0] || "")
 <style>
     a {
         display: inline-block;
-        padding: 0.9em 0.85em;
+        padding: 1.15em 0.5em;
         font-family: var(--font-mono);
         font-size: 0.75rem;
         letter-spacing: 0.05em;
-        /* 4.61:1 dark, 4.62:1 light on --canvas. */
+        /* 4.61:1 dark, 5.11:1 light on --canvas. */
         color: var(--subtle);
         text-decoration: none;
-        border-radius: 4px 4px 0 0;
+    }
+
+    /* Brackets on the active route, the same affordance as the [dark] toggle.
+       They are always in the DOM and only faded in, so switching pages never
+       shifts the tabs sideways. */
+    a::before,
+    a::after {
+        color: var(--iris);
+        opacity: 0;
+        transition: opacity 0.15s ease;
+    }
+
+    a::before {
+        content: "[";
+    }
+
+    a::after {
+        content: "]";
     }
 
     a:hover {
         color: var(--prose);
-        background: color-mix(in oklab, var(--panel) 45%, transparent);
     }
 
-    /* Active state is a filled buffer tab, not an underline. The sweep gradient
-       is not retired — it keeps its job under page headings, it just stops
-       doing double duty as the nav's active state. */
+    a:hover::before,
+    a:hover::after {
+        opacity: 0.45;
+    }
+
     a.active {
         color: var(--prose-strong);
-        background: var(--panel);
-        /* Top and sides only, so the tab stays joined to the winbar beneath it
-           the way a real tabline does. Without this the light theme's --panel
-           is pure white on a #f2f2f6 canvas and the active tab disappears. */
-        box-shadow:
-            inset 1px 1px 0 var(--hairline),
-            inset -1px 0 0 var(--hairline);
+    }
+
+    a.active::before,
+    a.active::after {
+        opacity: 1;
     }
 
     @media (max-width: 720px) {
+        /* The tabs get their own row here, so the tall desktop padding is just
+           dead height in a header that now floats over the page. Vertical
+           padding stays >=0.5em to keep the tap target reasonable. */
         a {
-            padding: 0.9em 0.4em;
-            letter-spacing: 0.02em;
+            padding: 0.55em 0.25em;
+            letter-spacing: 0.01em;
         }
     }
 

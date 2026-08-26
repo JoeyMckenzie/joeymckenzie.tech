@@ -1,17 +1,17 @@
 ---
-import { getCollection } from "astro:content"
-import BaseHead from "../../components/BaseHead.astro"
-import Footer from "../../components/Footer.astro"
-import Header from "../../components/Header.astro"
-import PostCard from "../../components/PostCard.astro"
+import { getCollection } from "astro:content";
+import BaseHead from "../../components/BaseHead.astro";
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+import PostCard from "../../components/PostCard.astro";
 
 const posts = (await getCollection("blog")).sort(
     (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-)
+);
 
 // Only tags that actually have posts, alphabetically -- same set the old
 // Tag::whereHas('posts')->orderBy('name') query produced.
-const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort()
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 
 // Post count per tag, shown on the chips. Reading the row top to bottom is the
 // polyglot arc: .NET -> Angular -> Rust -> Laravel.
@@ -20,7 +20,7 @@ const tagCounts = Object.fromEntries(
         tag,
         posts.filter((post) => post.data.tags.includes(tag)).length,
     ])
-)
+);
 ---
 
 <!doctype html>
@@ -118,91 +118,90 @@ const tagCounts = Object.fromEntries(
 </html>
 
 <script>
-    const search = document.getElementById("post-search") as HTMLInputElement
-    const chips = document.getElementById("tag-chips")!
+    const search = document.getElementById("post-search") as HTMLInputElement;
+    const chips = document.getElementById("tag-chips")!;
     const results = Array.from(
         document.querySelectorAll<HTMLElement>("#results .result")
-    )
-    const empty = document.getElementById("empty")!
-    const emptyNote = document.getElementById("empty-note")!
-    const clear = document.getElementById("clear-filters")!
+    );
+    const empty = document.getElementById("empty")!;
+    const emptyNote = document.getElementById("empty-note")!;
+    const clear = document.getElementById("clear-filters")!;
 
-    let activeTag = ""
-    let query = ""
+    let activeTag = "";
+    let query = "";
 
     function apply() {
-        const q = query.trim().toLowerCase()
-        let visible = 0
+        const q = query.trim().toLowerCase();
+        let visible = 0;
 
         for (const el of results) {
-            const matchesTag = !activeTag || el.dataset.tag === activeTag
+            const matchesTag = !activeTag || el.dataset.tag === activeTag;
             const matchesQuery =
                 !q ||
                 el.dataset.title!.includes(q) ||
-                el.dataset.description!.includes(q)
-            const show = matchesTag && matchesQuery
-            el.hidden = !show
-            if (show) visible++
+                el.dataset.description!.includes(q);
+            const show = matchesTag && matchesQuery;
+            el.hidden = !show;
+            if (show) visible++;
         }
 
-        empty.hidden = visible > 0
+        empty.hidden = visible > 0;
         emptyNote.textContent = activeTag
             ? `Nothing fits that filter in ${activeTag}.`
-            : "Nothing fits that filter."
+            : "Nothing fits that filter.";
 
         for (const chip of chips.querySelectorAll("button")) {
             chip.setAttribute(
                 "aria-pressed",
                 String((chip.dataset.tag ?? "") === activeTag)
-            )
+            );
         }
 
         // Keep ?tag= / ?search= in the URL so filtered views stay linkable,
         // dropping empty params the way the old toParams() helper did.
-        const params = new URLSearchParams()
-        if (activeTag) params.set("tag", activeTag)
-        if (query) params.set("search", query)
-        const qs = params.toString()
-        history.replaceState(null, "", qs ? `?${qs}` : location.pathname)
+        const params = new URLSearchParams();
+        if (activeTag) params.set("tag", activeTag);
+        if (query) params.set("search", query);
+        const qs = params.toString();
+        history.replaceState(null, "", qs ? `?${qs}` : location.pathname);
     }
 
     // Restore state from the URL so deep links keep working.
-    const initial = new URLSearchParams(location.search)
-    activeTag = initial.get("tag") ?? ""
-    query = initial.get("search") ?? ""
-    search.value = query
+    const initial = new URLSearchParams(location.search);
+    activeTag = initial.get("tag") ?? "";
+    query = initial.get("search") ?? "";
+    search.value = query;
 
-    let debounce: ReturnType<typeof setTimeout>
+    let debounce: ReturnType<typeof setTimeout>;
     search.addEventListener("input", () => {
-        clearTimeout(debounce)
+        clearTimeout(debounce);
         debounce = setTimeout(() => {
-            query = search.value
-            apply()
-        }, 300)
-    })
+            query = search.value;
+            apply();
+        }, 300);
+    });
 
     chips.addEventListener("click", (event) => {
-        const button = (event.target as HTMLElement).closest("button")
-        if (!button) return
-        const tag = button.dataset.tag ?? ""
-        activeTag = tag && tag !== activeTag ? tag : ""
-        apply()
-    })
+        const button = (event.target as HTMLElement).closest("button");
+        if (!button) return;
+        const tag = button.dataset.tag ?? "";
+        activeTag = tag && tag !== activeTag ? tag : "";
+        apply();
+    });
 
     clear.addEventListener("click", () => {
-        activeTag = ""
-        query = ""
-        search.value = ""
-        apply()
-    })
+        activeTag = "";
+        query = "";
+        search.value = "";
+        apply();
+    });
 
-    apply()
+    apply();
 </script>
 
 <style>
     .intro h1 {
         margin: 0;
-        font-size: 2.125rem;
     }
     .blurb {
         max-width: 34rem;
@@ -224,6 +223,9 @@ const tagCounts = Object.fromEntries(
         color: var(--subtle);
         pointer-events: none;
     }
+    /* --code-bg, not a hardcoded #fff: recessed in dark, white in light, and
+       the same surface the code blocks use. Text 11.14:1 dark / 15.31:1 light,
+       placeholder 4.86:1 / 5.71:1. */
     .search input {
         width: 100%;
         padding: 0.625rem 0.75rem 0.625rem 2.5rem;
@@ -232,8 +234,12 @@ const tagCounts = Object.fromEntries(
         font-family: inherit;
         font-size: 0.9rem;
         color: var(--prose);
-        background: #fff;
+        background: var(--code-bg);
         transition: border-color 0.2s ease;
+    }
+    .search input::placeholder {
+        color: var(--subtle);
+        opacity: 1;
     }
     .search input:focus {
         outline: none;
@@ -333,10 +339,5 @@ const tagCounts = Object.fromEntries(
     }
     .empty button:hover {
         text-decoration: underline;
-    }
-    @media (min-width: 600px) {
-        .intro h1 {
-            font-size: 3rem;
-        }
     }
 </style>

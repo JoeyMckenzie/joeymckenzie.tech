@@ -1,9 +1,9 @@
-import mdx from "@astrojs/mdx"
-import sitemap from "@astrojs/sitemap"
-import { defineConfig, fontProviders } from "astro/config"
+import mdx from "@astrojs/mdx";
+import sitemap from "@astrojs/sitemap";
+import { defineConfig, fontProviders } from "astro/config";
 
-const appHost = process.env.APP_HOST ?? "joeymckenzie.tech.test"
-const vitePort = Number(process.env.VITE_PORT ?? 4321)
+const appHost = process.env.APP_HOST ?? "joeymckenzie.tech.test";
+const vitePort = Number(process.env.VITE_PORT ?? 4321);
 
 export default defineConfig({
     site: "https://joeymckenzie.tech",
@@ -46,4 +46,4 @@ export default defineConfig({
             display: "swap",
         },
     ],
-})
+});
