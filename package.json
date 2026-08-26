@@ -9,6 +9,8 @@
         "dev": "astro dev",
         "build": "astro build",
         "preview": "astro preview",
+        "deploy": "astro build && wrangler deploy",
+        "cf:preview": "astro build && wrangler dev",
         "astro": "astro",
         "fmt": "prettier --write .",
         "lint": "eslint . --fix",
@@ -36,6 +38,7 @@
         "prettier-plugin-astro": "0.14.1",
         "prettier-plugin-tailwindcss": "0.8.1",
         "typescript": "^6.0.3",
-        "typescript-eslint": "^8.68.0"
+        "typescript-eslint": "^8.68.0",
+        "wrangler": "^4.125.0"
     }
 }

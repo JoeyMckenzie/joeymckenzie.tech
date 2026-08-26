@@ -6,9 +6,18 @@ import Footer from "../components/Footer.astro"
 import FormattedDate from "../components/FormattedDate.astro"
 import Header from "../components/Header.astro"
 
-type Props = CollectionEntry<"blog">["data"]
+type Props = Omit<CollectionEntry<"blog">["data"], "tags"> & {
+    tags?: string[]
+}
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props
+const {
+    title,
+    description,
+    pubDate,
+    updatedDate,
+    heroImage,
+    tags = [],
+} = Astro.props
 ---
 
 <html lang="en">
@@ -52,6 +61,19 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
             .last-updated-on {
                 font-style: italic;
             }
+            .tags {
+                display: flex;
+                justify-content: center;
+                gap: 0.5em;
+                margin: 0 0 1em 0;
+            }
+            .tag {
+                padding: 0.2em 0.6em;
+                border-radius: 999px;
+                background: rgba(var(--gray-light), 50%);
+                color: rgb(var(--gray));
+                font-size: 0.85em;
+            }
         </style>
     </head>
 
@@ -85,6 +107,15 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props
                             }
                         </div>
                         <h1>{title}</h1>
+                        {
+                            tags.length > 0 && (
+                                <p class="tags">
+                                    {tags.map((tag) => (
+                                        <span class="tag">{tag}</span>
+                                    ))}
+                                </p>
+                            )
+                        }
                         <hr />
                     </div>
                     <slot />

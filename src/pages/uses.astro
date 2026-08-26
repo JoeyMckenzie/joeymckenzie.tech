@@ -1,0 +1,172 @@
+---
+import Page from "../layouts/Page.astro"
+
+const sections = [
+    {
+        title: "Stack",
+        items: [
+            { name: "Laravel", description: "As the good Lord intended" },
+            {
+                name: "React + TypeScript",
+                description:
+                    "At some point it's easier to follow the zeitgeist",
+            },
+            { name: "Tailwind", description: "Self-explanatory" },
+            {
+                name: "SQLite / MySQL",
+                description: "I'll get around to Postgres eventually",
+            },
+            { name: "AWS", description: "There's no other options" },
+            {
+                name: "Cloudflare",
+                description: "Can't trust anyone these days",
+            },
+        ],
+    },
+    {
+        title: "Software",
+        items: [
+            {
+                name: "Comet",
+                description:
+                    "FOTM browser of choice (until I go back to Firefox)",
+            },
+            {
+                name: "Linear",
+                description:
+                    "I'm not middle management enough to respect a Jira dashboard",
+            },
+            {
+                name: "Notion",
+                description: "Miss me with those Atlassian products",
+            },
+            { name: "Claude", description: "Truly innovative, I know" },
+            {
+                name: "Monologue",
+                description:
+                    "I work remote, gotta talk to someone (read: Claude)",
+            },
+            {
+                name: "Slack",
+                description: "Teams users are hostages of Microslop",
+            },
+        ],
+    },
+    {
+        title: "Hardware",
+        items: [
+            {
+                name: "MacBook Pro M4",
+                description: "Because I'm not smart enough for Linux",
+            },
+            {
+                name: "Fifine Condenser Mic",
+                description: "I've been told I have a face for radio",
+            },
+            {
+                name: "AirPods Max 2",
+                description: "Sticking to the uninformed consumerist theme",
+            },
+            {
+                name: "ZSA Moonlander",
+                description: "I still hit 'x' instead of 'c' 200 times a day",
+            },
+        ],
+    },
+    {
+        title: "Tools",
+        items: [
+            {
+                name: "Ghostty",
+                description:
+                    "Because I don't want AI in my terminal (looking at you, Warp...)",
+            },
+            { name: "Neovim", description: "btw" },
+            {
+                name: "Nix",
+                description:
+                    "I'm a creature of habit, I can't function if it's not a flake",
+            },
+            { name: "Claude Code", description: "Like the rest of the world" },
+            { name: "Herdr", description: "Most of my success is due to tmux" },
+        ],
+    },
+]
+---
+
+<Page
+    title="Uses"
+    description="The tools, software, and hardware I use for development."
+    kicker="~/uses"
+    heading="Uses"
+    intro="The tools, software, and hardware I use on a daily basis."
+>
+    <div class="sections">
+        {
+            sections.map((section) => (
+                <section>
+                    <h2>{section.title}</h2>
+                    <ul>
+                        {section.items.map((item) => (
+                            <li>
+                                <span class="name">{item.name}</span>
+                                <span class="description">
+                                    {item.description}
+                                </span>
+                            </li>
+                        ))}
+                    </ul>
+                </section>
+            ))
+        }
+    </div>
+</Page>
+
+<style>
+    .sections {
+        margin-top: 3.5rem;
+    }
+    .sections section {
+        padding: 2.5rem 0;
+        border-top: 1px solid rgb(var(--gray-light));
+    }
+    .sections section:first-child {
+        padding-top: 0;
+        border-top: none;
+    }
+    .sections section:last-child {
+        padding-bottom: 0;
+    }
+    .sections h2 {
+        margin-bottom: 1.25rem;
+        font-size: 1.5rem;
+    }
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+    li {
+        display: grid;
+        gap: 0.15rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    li:last-child {
+        margin-bottom: 0;
+    }
+    .name {
+        font-family: var(--font-mono);
+        color: rgb(var(--black));
+    }
+    .description {
+        color: rgb(var(--gray));
+    }
+    @media (min-width: 600px) {
+        li {
+            grid-template-columns: 11rem 1fr;
+            gap: 1.25rem;
+        }
+    }
+</style>

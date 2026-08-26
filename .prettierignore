@@ -1,0 +1,7 @@
+# Blog posts are authored content -- prettier reformats the code samples
+# inside them (quotes, semicolons, trailing commas), rewriting published code.
+src/content/
+
+dist/
+.astro/
+pnpm-lock.yaml

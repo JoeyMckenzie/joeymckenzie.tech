@@ -1,0 +1,80 @@
+---
+import BaseHead from "../components/BaseHead.astro"
+import Footer from "../components/Footer.astro"
+import Header from "../components/Header.astro"
+
+interface Props {
+    title: string
+    description: string
+    kicker: string
+    heading: string
+    intro?: string
+    updated?: string
+    updatedLabel?: string
+}
+
+const { title, description, kicker, heading, intro, updated, updatedLabel } =
+    Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <BaseHead title={title} description={description} />
+    </head>
+    <body>
+        <Header />
+        <main>
+            <header class="page-header">
+                <div class="kicker">
+                    <span>{kicker}</span>
+                    {updated && <time datetime={updated}>{updatedLabel}</time>}
+                </div>
+                <h1>{heading}</h1>
+                <div class="sweep"></div>
+                {intro && <p class="intro">{intro}</p>}
+            </header>
+            <slot />
+        </main>
+        <Footer />
+    </body>
+</html>
+
+<style>
+    .page-header .kicker {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.75rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.05em;
+        color: rgb(var(--gray));
+    }
+    .page-header h1 {
+        margin: 0.5rem 0 0;
+        font-size: 2.75rem;
+        letter-spacing: -0.02em;
+    }
+    .sweep {
+        width: 10rem;
+        height: 3px;
+        margin-top: 1rem;
+        border-radius: 999px;
+        background: linear-gradient(
+            90deg,
+            var(--accent),
+            rgba(var(--gray), 0.15)
+        );
+    }
+    .intro {
+        max-width: 34rem;
+        margin: 1.25rem 0 0;
+        color: rgb(var(--gray));
+    }
+    @media (max-width: 720px) {
+        .page-header h1 {
+            font-size: 2.25rem;
+        }
+    }
+</style>

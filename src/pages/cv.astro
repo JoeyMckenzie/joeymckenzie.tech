@@ -1,0 +1,262 @@
+---
+import Page from "../layouts/Page.astro"
+
+const experience = [
+    {
+        company: "Givebutter",
+        role: "Senior Software Engineer II",
+        dates: "Aug 2025 — Present",
+        summary:
+            "Building things with PHP, Laravel, TypeScript, and React at a nonprofit fundraising platform that genuinely cares about doing good in the world. I love my job and the people I work with, which I understand is a rare and slightly suspicious thing to say.",
+    },
+    {
+        company: "Dayforce",
+        role: "Senior Software Engineer",
+        dates: "Jun 2024 — Aug 2025",
+        summary:
+            "C# and .NET in the HR and workforce management space. Enterprise security at scale is a humbling domain, and I have the threat models to prove it.",
+    },
+    {
+        company: "National Funding",
+        role: "Senior Software Engineer",
+        dates: "Jan 2022 — Jun 2024",
+        summary:
+            "C#, .NET, and AWS in the small business lending space. Serverless, Terraform, and more financial acronyms than any one person should have to know. I now have opinions about loan origination software.",
+    },
+    {
+        company: "MediKeeper",
+        role: "Software Engineer",
+        dates: "Dec 2020 — Jan 2022",
+        summary:
+            "C#, .NET, and Vue in the health and wellness space. Corporate wellness turns out to be a real industry, which I did not fully appreciate until I was neck-deep in it.",
+    },
+    {
+        company: "Sierra Pacific Industries",
+        role: "Applications Developer",
+        dates: "Jan 2020 — Dec 2020",
+        summary:
+            ".NET and Angular in the lumber and manufacturing space. Also some IBM RPG, briefly and involuntarily. I have made my peace with it.",
+    },
+    {
+        company: "VSP Vision Care",
+        role: "Associate Software Engineer",
+        dates: "Jun 2018 — Jan 2020",
+        summary:
+            "Java, Spring Boot, and Angular in the optical insurance space. My first enterprise job, where I learned that healthcare billing is its own entire universe with its own rules, customs, and ancient dialects.",
+    },
+    {
+        company: "SAIC (formerly Engility)",
+        role: "Operations Research Analyst",
+        dates: "Sept 2016 — May 2018",
+        summary:
+            "R, Python, SQL, and .NET in the federal defense contracting space. I started my career building cost models for Navy shipbuilding programs, which is still the most interesting sentence I have ever had to explain at a party.",
+    },
+]
+
+const education = [
+    {
+        school: "San Diego State University",
+        degree: "B.S. Astronomy, Minor in Mathematics",
+        dates: "2011 — 2016",
+    },
+]
+
+const skills = [
+    {
+        category: "Will yap about (and pays my bills)",
+        items: ["PHP", "Laravel", "TypeScript", "React", "Rust", "Inertia.js"],
+    },
+    {
+        category: "What previously paid my bills",
+        items: [
+            "C#",
+            ".NET",
+            "Azure",
+            "Angular",
+            "Vue",
+            "Next.js",
+            "Java",
+            "Spring Boot",
+        ],
+    },
+    {
+        category: "The glue nobody thanks (that also pays my bills)",
+        items: ["AWS", "Docker", "Terraform", "GitHub", "Kubernetes"],
+    },
+]
+---
+
+<Page
+    title="CV"
+    description="Joey McKenzie's resume and professional experience."
+    kicker="~/cv"
+    heading="Joey McKenzie"
+>
+    <p class="summary">
+        Product engineer with a passion for tinkering, building web
+        applications, distributed systems, and the occasional thing I probably
+        should not have over-engineered. I started my career analyzing Navy
+        shipbuilding costs, which is a sentence that still surprises me. I've
+        worked in a lot of language ecosystems. These days I mostly write PHP
+        and TypeScript and try to leave codebases better than I found them.
+    </p>
+
+    <section class="block">
+        <h2>experience</h2>
+        <div class="timeline">
+            {
+                experience.map((job) => (
+                    <article>
+                        <div class="row">
+                            <div>
+                                <h3>{job.role}</h3>
+                                <p class="company">{job.company}</p>
+                            </div>
+                            <span class="dates">{job.dates}</span>
+                        </div>
+                        <p class="summary-text">{job.summary}</p>
+                    </article>
+                ))
+            }
+        </div>
+    </section>
+
+    <section class="block">
+        <h2>education</h2>
+        {
+            education.map((item) => (
+                <div class="row">
+                    <div>
+                        <h3>{item.degree}</h3>
+                        <p class="company">{item.school}</p>
+                    </div>
+                    <span class="dates">{item.dates}</span>
+                </div>
+            ))
+        }
+    </section>
+
+    <section class="block">
+        <h2>what I vibe with</h2>
+        <div class="skills">
+            {
+                skills.map((group) => (
+                    <div>
+                        <h3 class="group">{group.category}</h3>
+                        <div class="pills">
+                            {group.items.map((item) => (
+                                <span class="pill">{item}</span>
+                            ))}
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
+    </section>
+</Page>
+
+<style>
+    .summary {
+        max-width: 36rem;
+        margin-top: 2rem;
+        color: rgb(var(--gray));
+    }
+    .block {
+        margin-top: 3.5rem;
+        padding-top: 2.5rem;
+        border-top: 1px solid rgb(var(--gray-light));
+    }
+    .block > h2 {
+        margin-bottom: 1.5rem;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        font-weight: 400;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgb(var(--gray));
+    }
+    .timeline {
+        border-left: 1px solid rgb(var(--gray-light));
+    }
+    .timeline article {
+        position: relative;
+        padding: 1.5rem 0 1.5rem 1.5rem;
+        border-bottom: 1px solid rgb(var(--gray-light));
+    }
+    .timeline article::before {
+        content: "";
+        position: absolute;
+        left: -4px;
+        top: 1.9rem;
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--accent);
+    }
+    .timeline article:first-child {
+        padding-top: 0;
+    }
+    .timeline article:first-child::before {
+        top: 0.4rem;
+    }
+    .timeline article:last-child {
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    .row {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    h3 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+    .company {
+        margin: 0.25rem 0 0;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: var(--accent);
+    }
+    .dates {
+        flex-shrink: 0;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: rgb(var(--gray));
+    }
+    .summary-text {
+        max-width: 36rem;
+        margin: 0.75rem 0 0;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: rgb(var(--gray));
+    }
+    .skills > div + div {
+        margin-top: 1.75rem;
+    }
+    .group {
+        font-size: 1.05rem;
+    }
+    .pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+    }
+    .pill {
+        padding: 0.25rem 0.75rem;
+        border: 1px solid rgb(var(--gray-light));
+        border-radius: 999px;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        color: rgb(var(--gray));
+    }
+    @media (min-width: 600px) {
+        .row {
+            flex-direction: row;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1.25rem;
+        }
+    }
+</style>

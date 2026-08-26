@@ -1,0 +1,93 @@
+---
+import Page from "../layouts/Page.astro"
+
+const description =
+    "A living changelog of what I'm learning, tinkering with, and thinking about outside of client work."
+---
+
+<Page
+    title="Now"
+    {description}
+    kicker="~/now"
+    heading="Now"
+    intro={description}
+    updated="2026-07"
+    updatedLabel="updated jul 2026"
+>
+    <div class="sections">
+        <section>
+            <h2>Work</h2>
+            <p>
+                I'm currently a Senior Developer at <a
+                    href="https://www.givebutter.com/"
+                    target="_blank"
+                    rel="noreferrer">Givebutter</a
+                > building things with PHP, Laravel, TypeScript, and React. Our goal
+                is to make the world a better place and empower the changemaker in
+                all of us.
+            </p>
+            <p>
+                I work on a lot of things, mainly Laravel and React. I love my
+                job and the people I get to work with. I love working with PHP
+                and TypeScript, and do a lot to build our community and empower
+                our developers to be the best they can be.
+            </p>
+        </section>
+
+        <section>
+            <h2>Online</h2>
+            <p>
+                In my spare time, I write a lot of PHP and enjoy tinkering on
+                ideas with Laravel. I've got quite a few fun projects I've
+                worked on that usually make their way over to the blog. Find me
+                on <a
+                    href="https://github.com/joeymckenzie"
+                    target="_blank"
+                    rel="noreferrer">GitHub</a
+                >.
+            </p>
+        </section>
+
+        <section>
+            <h2>Offline</h2>
+            <p>
+                If I'm not sitting in front of a terminal, I'm chasing around my
+                kid and spending time with my family. I enjoy fishing, grabbing
+                a drink at my local watering hole with friends, and posting mid
+                takes about software on <a
+                    href="https://x.com/_joeyMcKenzie"
+                    target="_blank"
+                    rel="noreferrer">X</a
+                >.
+            </p>
+        </section>
+    </div>
+</Page>
+
+<style>
+    .sections {
+        margin-top: 3.5rem;
+    }
+    .sections section {
+        padding: 2.5rem 0;
+        border-top: 1px solid rgb(var(--gray-light));
+    }
+    .sections section:first-child {
+        padding-top: 0;
+        border-top: none;
+    }
+    .sections section:last-child {
+        padding-bottom: 0;
+    }
+    .sections h2 {
+        margin-bottom: 1rem;
+        font-size: 1.5rem;
+    }
+    .sections p {
+        color: rgb(var(--gray));
+        margin-bottom: 1rem;
+    }
+    .sections p:last-child {
+        margin-bottom: 0;
+    }
+</style>
