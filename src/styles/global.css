@@ -266,11 +266,24 @@ pre.astro-code .line::before {
 
 /* Native cross-document view transitions. This is the browser's own MPA path,
    not Astro's <ClientRouter />: no router ships, no script is re-bound, and
-   navigation stays a real page load -- the browser just cross-fades the old
-   document into the new one. Chromium honours it today; every other browser
-   ignores the rule and navigates exactly as it did before. */
+   navigation stays a real page load. Chromium honours it today; every other
+   browser ignores the rule and navigates exactly as it did before.
+
+   The cross-fade is deliberately off (below). What is wanted here is not the
+   animation but the paint-holding that comes with it: the browser keeps the
+   old document on screen until the new one is ready, so a click swaps in one
+   frame rather than blanking out in between. */
 @view-transition {
     navigation: auto;
+}
+
+/* Instant swap. The UA default animates ::view-transition-old(root) out and
+   ::view-transition-new(root) in; with no animation the new snapshot simply
+   paints at its final state, stacked above the old one. */
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+    animation: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -279,17 +292,6 @@ pre.astro-code .line::before {
     *::after {
         animation-duration: 0.01ms !important;
         transition-duration: 0.01ms !important;
-    }
-}
-
-/* The `*` reset above cannot reach these: ::view-transition builds a separate
-   pseudo-element tree that universal selectors do not match. With no animation
-   the new snapshot paints at its final state, which is an instant swap. */
-@media (prefers-reduced-motion: reduce) {
-    ::view-transition-group(*),
-    ::view-transition-old(*),
-    ::view-transition-new(*) {
-        animation: none !important;
     }
 }
 
