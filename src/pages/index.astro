@@ -4,7 +4,6 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import PostCard from "../components/PostCard.astro";
-import SocialLinks from "../components/SocialLinks.astro";
 import { SITE_TITLE } from "../consts";
 
 const posts = (await getCollection("blog"))
@@ -30,13 +29,10 @@ const posts = (await getCollection("blog"))
                 </h1>
                 <div class="sweep"></div>
                 <p class="text-subtle mt-6 mb-0 max-w-[34rem]">
-                    Hey, I'm Joey. I build things with Laravel, PHP, and
-                    whatever has my attention this month. Mostly code,
-                    occasionally opinions, perpetually down a rabbit-hole.
+                    Hi, I'm Joey. I build things with Laravel, PHP, and whatever
+                    has my attention this month. Mostly code, occasionally
+                    opinions, perpetually down a rabbit-hole.
                 </p>
-                <div class="mt-8">
-                    <SocialLinks />
-                </div>
             </header>
 
             {

@@ -150,8 +150,9 @@
 }
 
 pre.astro-code {
-    width: min(var(--measure-wide), calc(100vw - 2rem));
-    margin-left: calc(50% - min(var(--measure-wide), calc(100vw - 2rem)) / 2);
+    /* No breakout: a code block is a block child of the prose column, so it
+       fills --measure exactly like a paragraph. Long lines scroll inside
+       `> code`, which owns the overflow. */
     margin-block: 2rem;
     padding: 0;
     border: 1px solid var(--hairline);

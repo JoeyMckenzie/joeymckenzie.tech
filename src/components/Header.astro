@@ -1,28 +1,18 @@
 ---
-import { SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
 import SocialLinks from "./SocialLinks.astro";
 import ThemeToggle from "./ThemeToggle.astro";
 ---
 
-<!-- Sticky below 720px only, so the chrome floats over the page on small
-screens while desktop keeps it in flow. The opaque --canvas background and the
-bottom hairline make content scroll under it cleanly. -->
 <header
     class="border-hairline bg-canvas border-b max-md:sticky max-md:top-0 max-md:z-20"
 >
-    <!-- max-md:flex-wrap is a safety net: below 320px the toggle drops to a
-    second row rather than giving the whole page a horizontal scrollbar.
-    max-md:max-w-full recovers the 32px the desktop gutter would otherwise cost,
-    which the tabs need at 320px. -->
     <nav
         class="mx-auto flex w-[var(--measure-wide)] max-w-[calc(100%-2em)] items-center justify-between gap-4 px-[1em] max-md:max-w-full max-md:flex-wrap max-md:gap-0 max-md:px-[0.5em] max-md:py-[0.25em]"
     >
-        <!-- Dropped below 720px: the `home` tab already links to `/`, and the
-        page title carries the identity at that size. -->
         <a
-            class="text-prose-strong hover:text-ember py-[1.15em] font-mono text-[0.8125rem] tracking-[0.02em] whitespace-nowrap no-underline max-md:hidden"
-            href="/">{SITE_TITLE}</a
+            class="text-prose-strong hover:text-ember py-[1.15em] font-mono text-[0.8125rem] font-semibold tracking-[0.02em] whitespace-nowrap no-underline max-md:hidden"
+            href="/">jm</a
         >
         <div class="flex gap-0.5 max-md:gap-0">
             <HeaderLink href="/">home</HeaderLink>
