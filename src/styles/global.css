@@ -281,10 +281,38 @@ pre.astro-code .line::before {
 /* Instant swap. The UA default animates ::view-transition-old(root) out and
    ::view-transition-new(root) in; with no animation the new snapshot simply
    paints at its final state, stacked above the old one. */
-::view-transition-group(*),
-::view-transition-old(*),
-::view-transition-new(*) {
-    animation: none !important;
+::view-transition-group(*) {
+    animation: none;
+}
+
+/* The incoming snapshot needs no animation: with none, it paints at its final
+   state the moment it exists, stacked above the outgoing one. */
+::view-transition-new(root) {
+    animation: none;
+}
+
+/* The outgoing snapshot, however, must NOT be dropped on the same frame.
+   `animation: none` on all three pseudos resolved the transition's `finished`
+   promise ~36ms BEFORE the new document's first contentful paint (measured
+   across four navigations in Vivaldi 8.1 / Chromium 150: finished at 37-73ms,
+   FCP at 69-97ms, gap 20-54ms). The whole ::view-transition tree was torn down
+   inside that window, so neither snapshot was on screen and the browser's own
+   window background showed through -- the flash, measured at 17-66ms in a
+   120fps capture.
+
+   Holding the outgoing frame opaque covers the gap. It sits *under* the
+   incoming snapshot, so it is only ever visible while the new document has
+   nothing painted; the swap still reads as instant. step-end keeps it from
+   fading at any point. */
+::view-transition-old(root) {
+    animation: vt-hold-outgoing 150ms step-end;
+}
+
+@keyframes vt-hold-outgoing {
+    from,
+    to {
+        opacity: 1;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {

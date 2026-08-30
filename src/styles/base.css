@@ -48,7 +48,7 @@ body {
 
 main {
     width: var(--measure);
-    max-width: calc(100% - 2em);
+    max-width: calc(100% - 1em);
     margin: auto;
     padding: 3em 1em;
 }
@@ -162,9 +162,6 @@ img {
     border-radius: 8px;
 }
 
-/* Markdown `![](...)` emits a bare inline <img> as the only child of its own
-   <p>, so an image narrower than --measure sat flush left against the text
-   column. Blocking it lets `margin-inline: auto` centre it. */
 .prose p > img {
     display: block;
     margin-inline: auto;
