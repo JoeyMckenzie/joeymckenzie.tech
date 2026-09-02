@@ -14,9 +14,9 @@ let
       args = [ "mcp" ];
     };
     playwright = {
-      command = "npm";
+      command = "npx";
       args = [
-        "dlx"
+        "-y"
         "@playwright/mcp@latest"
       ];
     };
@@ -25,6 +25,30 @@ let
       args = [
         "mcp"
         "start"
+      ];
+    };
+    next = {
+      command = "npx";
+      args = [
+        "-y"
+        "next-devtools-mcp@latest"
+      ];
+    };
+    shadcn = {
+      command = "npx";
+      args = [
+        "shadcn@latest"
+        "mcp"
+      ];
+    };
+    chrome = {
+      type = "stdio";
+      command = "npx";
+      args = [
+        "-y"
+        "chrome-devtools-mcp@latest"
+        "--slim"
+        "--headless"
       ];
     };
   };
@@ -53,10 +77,6 @@ let
 in
 {
   dotenv.disableHint = true;
-
-  env = {
-    APP_HOST = "${appHost}";
-  };
 
   packages = [
     pkgs.figlet
@@ -110,7 +130,7 @@ in
   };
 
   processes = {
-    dev.exec = "npm dev";
+    dev.exec = "npm run dev";
   };
 
   enterShell = ''

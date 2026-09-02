@@ -4,3 +4,7 @@
 package-lock.json
 skills-lock.json
 .pre-commit-config.yaml
+
+# Post markdown is authored content, not source. Prettier reformats code
+# inside fenced blocks, which rewrites published code samples.
+content/
