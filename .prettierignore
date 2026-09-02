@@ -1,0 +1,6 @@
+.next/
+.direnv/
+.devenv/
+package-lock.json
+skills-lock.json
+.pre-commit-config.yaml
