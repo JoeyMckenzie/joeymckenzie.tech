@@ -4,6 +4,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ViewTransition } from "react";
 
 import { colors } from "@/app/tokens.stylex";
+import { ConsoleSignature } from "@/components/console-signature";
+import { Grain } from "@/components/grain";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { site } from "@/lib/site";
@@ -62,6 +64,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                     <div {...stylex.props(styles.content)}>{children}</div>
                 </ViewTransition>
                 <SiteFooter />
+                <Grain />
+                <ConsoleSignature />
             </body>
         </html>
     );

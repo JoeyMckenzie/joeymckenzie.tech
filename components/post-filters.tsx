@@ -65,6 +65,8 @@ export function PostFilters({
     const [activeTag, setActiveTag] = useState("");
     const [query, setQuery] = useState("");
     const hydrated = useRef(false);
+    const searchRef = useRef<HTMLDivElement>(null);
+    const listRef = useRef<HTMLDivElement>(null);
     const reduceMotion = useReducedMotion();
 
     useEffect(() => {
@@ -74,11 +76,14 @@ export function PostFilters({
         setActiveTag(params.get("tag") ?? "");
         setQuery(params.get("search") ?? "");
         /* eslint-enable react-hooks/set-state-in-effect */
+
         hydrated.current = true;
     }, []);
 
     useEffect(() => {
-        if (!hydrated.current) return;
+        if (!hydrated.current) {
+            return;
+        }
 
         const timer = setTimeout(() => {
             const params = new URLSearchParams();
@@ -97,6 +102,62 @@ export function PostFilters({
 
         return () => clearTimeout(timer);
     }, [activeTag, query]);
+
+    useEffect(() => {
+        function onKeyDown(event: KeyboardEvent) {
+            if (event.metaKey || event.ctrlKey || event.altKey) return;
+
+            // Never steal a key from something being typed into.
+            const target = event.target as HTMLElement | null;
+
+            if (
+                target?.isContentEditable ||
+                ["INPUT", "TEXTAREA", "SELECT"].includes(target?.tagName ?? "")
+            ) {
+                return;
+            }
+
+            if (event.key === "/") {
+                event.preventDefault();
+                searchRef.current?.querySelector("input")?.focus();
+                return;
+            }
+
+            if (event.key !== "j" && event.key !== "k") return;
+
+            const links = [
+                ...(listRef.current?.querySelectorAll<HTMLAnchorElement>(
+                    "[data-post-link]"
+                ) ?? []),
+            ];
+
+            if (links.length === 0) return;
+
+            const current = links.indexOf(
+                document.activeElement as HTMLAnchorElement
+            );
+            // From nothing focused, `k` should enter the list at the bottom
+            // rather than clamp to the row `j` would have picked.
+            const next =
+                current === -1 && event.key === "k"
+                    ? links.length - 1
+                    : Math.min(
+                          Math.max(current + (event.key === "j" ? 1 : -1), 0),
+                          links.length - 1
+                      );
+
+            event.preventDefault();
+            links[next]?.focus({ preventScroll: true });
+            links[next]?.scrollIntoView({
+                block: "center",
+                behavior: reduceMotion ? "auto" : "smooth",
+            });
+        }
+
+        window.addEventListener("keydown", onKeyDown);
+
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [reduceMotion]);
 
     const needle = query.trim().toLowerCase();
     const visible = posts.filter((post) => {
@@ -120,12 +181,13 @@ export function PostFilters({
 
     return (
         <div {...stylex.props(styles.root)}>
-            <div {...stylex.props(reveal(0))}>
+            <div ref={searchRef} {...stylex.props(reveal(0))}>
                 <SearchInput
                     type="search"
                     placeholder="Search posts…"
                     aria-label="Search posts"
                     autoComplete="off"
+                    hint="/"
                     value={query}
                     onChange={(event) => setQuery(event.target.value)}
                 />
@@ -167,7 +229,7 @@ export function PostFilters({
             </div>
 
             {visible.length > 0 ? (
-                <div>
+                <div ref={listRef}>
                     <AnimatePresence initial={false} mode="popLayout">
                         {visible.map((post, index) => (
                             <motion.div

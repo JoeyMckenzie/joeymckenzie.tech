@@ -154,7 +154,11 @@ html {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    *,
+    /* `[data-scroll-driven]` is exempt because its animation is positioned by
+       a scroll timeline rather than by time -- it tracks a gesture the reader
+       is already making, and collapsing its duration would pin it at 100%
+       rather than stop it moving. */
+    *:not([data-scroll-driven]),
     *::before,
     *::after {
         animation-duration: 0.01ms !important;
@@ -211,6 +215,22 @@ html {
 [data-prose] h3 + *,
 [data-prose] h4 + * {
     margin-top: 0.75em;
+}
+
+/* Appended by `rehype-autolink-headings`; the `id` comes from `rehype-slug`.
+   Quiet until the heading is hovered or the link itself is tabbed to. */
+[data-prose] .heading-anchor {
+    margin-inline-start: 0.35em;
+    color: var(--prose-links);
+    font-weight: 400;
+    text-decoration: none;
+    opacity: 0;
+    transition: opacity 150ms;
+}
+
+[data-prose] :is(h1, h2, h3, h4):hover .heading-anchor,
+[data-prose] .heading-anchor:focus-visible {
+    opacity: 1;
 }
 
 [data-prose] strong {
@@ -294,7 +314,10 @@ html {
 [data-prose] pre {
     border: 1px solid var(--prose-rule);
     border-radius: var(--prose-radius);
-    padding: 1rem;
+    /* The extra top padding is the strip `components/code-block.tsx` floats its
+       language label and copy button over. They are positioned against the
+       wrapper, not this element, so they hold still while the code scrolls. */
+    padding: 2.25rem 1rem 1rem;
     overflow-x: auto;
     font-size: 0.875em;
     line-height: 1.7;

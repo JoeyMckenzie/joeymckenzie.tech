@@ -4,7 +4,11 @@ import type { StyleXStyles } from "@stylexjs/stylex";
 
 import { colors, radius } from "@/app/tokens.stylex";
 
-const styles = stylex.create({
+// Exported for the same reason `badgeStyles` is: the look is occasionally
+// wanted on an element that is not a button. `Button` itself stays a button --
+// an anchor rendered through Base UI's `render` prop keeps button semantics and
+// is announced as one, which is wrong for something that navigates.
+export const buttonStyles = stylex.create({
     button: {
         display: "inline-flex",
         flexShrink: 0,
@@ -46,6 +50,9 @@ export function Button({
     style?: StyleXStyles;
 }) {
     return (
-        <ButtonPrimitive {...props} {...stylex.props(styles.button, style)} />
+        <ButtonPrimitive
+            {...props}
+            {...stylex.props(buttonStyles.button, style)}
+        />
     );
 }

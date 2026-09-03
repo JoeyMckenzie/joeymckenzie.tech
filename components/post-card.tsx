@@ -114,6 +114,8 @@ export function PostCard({
                     <h3 {...stylex.props(styles.title)}>
                         <Link
                             href={`/blog/${post.slug}`}
+                            // The handle `post-filters` walks with `j` / `k`.
+                            data-post-link
                             {...stylex.props(styles.titleLink)}
                         >
                             {post.title}

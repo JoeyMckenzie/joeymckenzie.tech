@@ -3,7 +3,7 @@ import * as stylex from "@stylexjs/stylex";
 import type { StyleXStyles } from "@stylexjs/stylex";
 import { SearchIcon } from "lucide-react";
 
-import { colors, radius } from "@/app/tokens.stylex";
+import { colors, fonts, radius, text } from "@/app/tokens.stylex";
 
 const styles = stylex.create({
     group: {
@@ -30,6 +30,27 @@ const styles = stylex.create({
         flexShrink: 0,
         color: colors.mutedForeground,
     },
+    hint: {
+        flexShrink: 0,
+        // Absent, not just invisible, where there is no physical keyboard to
+        // press it on -- an unusable key cap should not take up the space.
+        display: {
+            default: "none",
+            "@media (hover: hover) and (pointer: fine)": "grid",
+        },
+        placeItems: "center",
+        minWidth: 18,
+        height: 18,
+        paddingInline: 4,
+        borderRadius: 4,
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: colors.border,
+        color: colors.mutedForeground,
+        fontFamily: fonts.mono,
+        fontSize: text.label,
+        lineHeight: text.labelLineHeight,
+    },
     input: {
         flex: "1",
         minWidth: 0,
@@ -47,14 +68,21 @@ const styles = stylex.create({
 
 export function SearchInput({
     style,
+    hint,
     ...props
 }: Omit<InputPrimitive.Props, "style"> & {
     style?: StyleXStyles;
+    hint?: string;
 }) {
     return (
         <div {...stylex.props(styles.group, style)}>
             <SearchIcon size={16} {...stylex.props(styles.icon)} />
             <InputPrimitive {...props} {...stylex.props(styles.input)} />
+            {hint && (
+                <kbd aria-hidden="true" {...stylex.props(styles.hint)}>
+                    {hint}
+                </kbd>
+            )}
         </div>
     );
 }

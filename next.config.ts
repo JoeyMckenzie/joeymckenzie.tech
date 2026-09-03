@@ -16,7 +16,38 @@ const withMDX = createMDX({
     options: {
         // Strings, not functions: Turbopack serialises this across the Rust boundary.
         remarkPlugins: ["remark-frontmatter", "remark-gfm"],
-        rehypePlugins: [["@shikijs/rehype", { theme: "tokyo-night" }]],
+        rehypePlugins: [
+            // `addLanguageClass` is the only way `CodeBlock` learns the
+            // language: it is a boolean, so unlike a Shiki transformer it
+            // survives the same Rust boundary the plugin names do.
+            [
+                "@shikijs/rehype",
+                { theme: "tokyo-night", addLanguageClass: true },
+            ],
+            // Slug first -- autolink reads the `id` the previous plugin wrote.
+            "rehype-slug",
+            [
+                "rehype-autolink-headings",
+                {
+                    behavior: "append",
+                    // A hast node rather than a builder function, for the same
+                    // serialisation reason. The `#` is hidden from assistive
+                    // tech and the label carried on the link, so the anchor
+                    // stays keyboard-reachable without every heading being
+                    // read out as "number sign".
+                    content: {
+                        type: "element",
+                        tagName: "span",
+                        properties: { ariaHidden: "true" },
+                        children: [{ type: "text", value: "#" }],
+                    },
+                    properties: {
+                        className: "heading-anchor",
+                        ariaLabel: "Link to this section",
+                    },
+                },
+            ],
+        ],
     },
 });
 

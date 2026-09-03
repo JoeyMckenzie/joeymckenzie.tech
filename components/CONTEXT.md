@@ -22,6 +22,63 @@ Descendant selectors do not exist in StyleX by design, so anything that needs on
 either restructures (`search-input` lets the icon size itself, since the parent
 has no business reaching in) or moves to `globals.css` (`prose`).
 
+## code-block
+
+Replaces the bare `<pre>` Shiki emits, and is the `pre` entry in
+`mdx-components.tsx`. A client component because the copy button needs the
+clipboard; everything visible in it is in the prerendered HTML regardless.
+
+The language label comes from `addLanguageClass: true` in `next.config.ts`,
+which is a **boolean** — the reason it is used at all. Shiki's own
+`transformerNotation*` helpers would do more, but they are functions, and
+Turbopack cannot pass a function across the Rust boundary to the MDX loader.
+That option puts `language-<lang>` on the inner `code`, not on the `pre`, so the
+label is read off `children` rather than off the component's own `className`.
+
+The controls float over the block instead of sitting in a bar above it. A bar
+would need a background, and Shiki writes `tokyo-night`'s own `#1a1b26` inline
+on every `pre` — a bar in any other colour reads as a seam. Floating them means
+the only cost is the top padding `[data-prose] pre` reserves, and because they
+are positioned against the wrapper rather than the `pre`, they hold still while
+long lines scroll underneath.
+
+That inline background is also the reason the `pre` is the one element here with
+a `className` and no `stylex.props()` spread: Shiki owns it.
+
+The copy button is never fully hidden. Revealing it on hover is the common
+pattern and it leaves touch users with no way to reach it, so it sits at 45%
+until the block is hovered.
+
+## post-footer
+
+Older/newer rather than previous/next: the list is date-sorted, so direction is
+the only thing the label can honestly promise. The newer cell is pinned to grid
+column 2, which is what keeps it on the right when a post has no older
+neighbour to fill the cell beside it.
+
+Only the GitHub source link lives here. The raw markdown moved to the "View as
+Markdown" button in the post header, where a reader meets it before deciding to
+read rather than after finishing — two links to the same file on one page is one
+more than the design wants.
+
+## reading-progress
+
+No JavaScript: a `scroll(root block)` timeline drives a `scaleX` keyframe. The
+`@supports` guard is load-bearing rather than politeness — without a scroll
+timeline the same animation runs on time and paints a full amber bar
+immediately, so the element is `display: none` until the feature is confirmed.
+
+It is exempt from the reduced-motion block in `globals.css` via
+`data-scroll-driven`. The animation is positioned by a gesture the reader is
+already making, not by time, and collapsing its duration would pin it at 100%
+rather than stop it moving.
+
+## grain
+
+A fixed `feTurbulence` overlay at under 3%. It sits _above_ the content, which
+only works at that opacity: enough to break up the flat canvas, invisible over
+text. Inline SVG in the stylesheet rather than an image, so it costs no request.
+
 ## badge
 
 Tag chips on the blog index, the post cards and the post pages are the same
@@ -104,6 +161,15 @@ type: every keystroke would start a fresh ~400ms view transition, and they queue
 rather than interrupt. Motion's springs retarget mid-flight, which is what a live
 filter needs. Route changes, which _are_ discrete, still use view transitions.
 
+`/` focuses the search field and `j` / `k` walk the post list, bound on `window`
+rather than on the list so they work before anything in it has focus. The
+handler bails on any modifier and on any event whose target is a field being
+typed into, which is what keeps `/` from being stolen out of the search box it
+just focused. `j` and `k` find their targets by querying `[data-post-link]` — a
+live DOM read rather than component state, because the filter reorders the list
+under them. From nothing focused, `k` enters at the bottom of the list instead
+of clamping to the row `j` would have picked.
+
 First paint is deliberately left to the CSS reveal.
 `<AnimatePresence initial={false}>` is what keeps Motion from writing an
 `opacity: 0` into the prerendered markup, which would blank all 33 posts for
@@ -163,6 +229,11 @@ kill every Motion layout animation after the first paint.
 Replaces shadcn's InputGroup/Input/Textarea trio. Those were a generic slot
 system — addons at four alignments, buttons, textareas, block layouts — and the
 site uses one shape of it: a search field with a leading icon.
+
+`hint` renders a key cap for the `/` shortcut `post-filters` binds. It is
+`display: none` outside `(hover: hover) and (pointer: fine)` rather than merely
+invisible, because a key cap for a key the device has no way to press should not
+hold space either.
 
 ## section-label
 

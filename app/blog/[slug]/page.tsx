@@ -2,6 +2,7 @@ import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { FileTextIcon } from "lucide-react";
 import { ViewTransition } from "react";
 
 import {
@@ -13,14 +14,39 @@ import {
     tracking,
 } from "@/app/tokens.stylex";
 import { Badge, badgeStyles } from "@/components/badge";
+import { buttonStyles } from "@/components/button";
 import { FormattedDate } from "@/components/formatted-date";
 import { Main } from "@/components/main";
+import { PostFooter } from "@/components/post-footer";
 import { Prose } from "@/components/prose";
+import { ReadingProgress } from "@/components/reading-progress";
 import { reveal } from "@/components/reveal";
-import { getPost, getPosts } from "@/lib/posts";
+import { getPost, getPostNeighbors, getPosts } from "@/lib/posts";
 
 const styles = stylex.create({
     header: { marginBottom: 48 },
+    // The meta line and the markdown link share a row and wrap onto separate
+    // ones together, rather than the link being squeezed on a narrow screen.
+    topRow: {
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "space-between",
+        gap: 12,
+    },
+    // Mono and label-sized, so it reads as part of the instrumentation row it
+    // sits in rather than as the one sans-serif control on the page. Passed in
+    // by the caller, which is why `Button` still has exactly one variant.
+    markdownButton: {
+        fontFamily: fonts.mono,
+        fontSize: text.label,
+        lineHeight: text.labelLineHeight,
+        letterSpacing: tracking.label,
+        textTransform: "uppercase",
+        color: { default: colors.mutedForeground, ":hover": colors.primary },
+        borderColor: { default: colors.input, ":hover": colors.ring },
+        textDecoration: "none",
+    },
     meta: {
         display: "flex",
         flexWrap: "wrap",
@@ -92,17 +118,35 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
 
     if (!post) notFound();
 
+    const { older, newer } = getPostNeighbors(slug);
+
     // Relative, not `@/`: the alias does not resolve in the context module.
     const { default: Body } = await import(`../../../content/blog/${slug}.md`);
 
     return (
         <Main>
+            <ReadingProgress />
             <article>
                 <header {...stylex.props(styles.header)}>
-                    <div {...stylex.props(styles.meta, reveal(0))}>
-                        <FormattedDate date={post.pubDate} />
-                        <span aria-hidden="true">&middot;</span>
-                        <span>{post.readingMinutes} min read</span>
+                    <div {...stylex.props(styles.topRow, reveal(0))}>
+                        <div {...stylex.props(styles.meta)}>
+                            <FormattedDate date={post.pubDate} />
+                            <span aria-hidden="true">&middot;</span>
+                            <span>{post.readingMinutes} min read</span>
+                        </div>
+                        {/* A link, not a `Button`: it navigates, so it has to
+                            be announced as a link. It borrows the button's
+                            look rather than its semantics. */}
+                        <a
+                            href={`/blog/${post.slug}/index.md`}
+                            {...stylex.props(
+                                buttonStyles.button,
+                                styles.markdownButton
+                            )}
+                        >
+                            <FileTextIcon size={13} />
+                            View as Markdown
+                        </a>
                     </div>
                     <h1 {...stylex.props(styles.title, reveal(1))}>
                         {post.title}
@@ -145,6 +189,8 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                 <Prose>
                     <Body />
                 </Prose>
+
+                <PostFooter slug={post.slug} older={older} newer={newer} />
             </article>
         </Main>
     );

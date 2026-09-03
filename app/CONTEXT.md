@@ -104,6 +104,12 @@ properties set in StyleX, so this file never hard-codes a colour.
    Layout changes on the blog filter are Motion — reached for the one thing
    neither CSS nor view transitions can do.
 
+The reduced-motion block exempts `[data-scroll-driven]`. Everything else in it
+is time-based and should stop; a scroll-driven animation is positioned by the
+reader's own scrolling, and collapsing its duration would pin it at its end
+frame rather than hold it still. `components/reading-progress.tsx` is the only
+thing carrying that attribute.
+
 `::view-transition` gets `pointer-events: none` because the overlay otherwise
 swallows clicks for its whole duration. Old content leaves fast so it stops
 competing for attention; new content arrives slower and waits out the exit.
@@ -117,6 +123,16 @@ new one while the header stays still.
 
 The post thumbnail → hero morph blurs mid-flight to hide pixel interpolation
 between two very different image sizes.
+
+Heading anchors are appended by `rehype-autolink-headings` off the `id`
+`rehype-slug` writes. The `#` is wrapped in an `aria-hidden` span and the label
+lives on the link, so the anchor stays keyboard-reachable without a screen
+reader announcing "number sign" on every heading in the post.
+
+`[data-prose] pre` carries a deliberately lopsided `2.25rem 1rem 1rem`. The top
+padding is the strip `components/code-block.tsx` floats its language label and
+copy button over — the two are a pair, and changing one without the other either
+overlaps the first line of code or leaves a gap above it.
 
 **Prose.** Post bodies. Everything else on the site is styled in StyleX; this is
 markdown output, so there is no element in `components/prose.tsx` to attach a
@@ -151,3 +167,25 @@ The post route's dynamic `import()` is turned by Turbopack into a context module
 over `content/blog/*.md`, so every post compiles at build time.
 
 `cv/page.tsx` uses a left rule as its structure, same as the hairlines elsewhere.
+
+`archive/page.tsx` is the dense counterpart to `blog/page.tsx`: no search, no
+tags, no thumbnails, every post on one screen grouped by year. Its rows set
+`prefetch={false}` — all 33 are in the viewport at once, and Next would
+otherwise pull every post payload and every hero image for a page that renders
+no images at all. It is linked from the footer rather than the nav; a sixth nav
+item overflows the header on a 390px screen.
+
+`blog/[slug]/index.md/route.ts` serves each post's markdown source verbatim.
+Only a whole segment can be dynamic, so `/blog/<slug>.md` is not expressible and
+the extension lives one level down as a literal segment — the same trick
+`rss.xml` uses. Its `Content-Type` header only applies under `next dev`: a
+static export writes the body to disk and discards the response, so in
+production the type comes from Cloudflare's MIME table via the file extension.
+`llms.txt/route.ts` indexes those files.
+
+The "View as Markdown" button in the post header is what makes that route
+discoverable, and it is the reason `public/_headers` types those files as
+`text/plain`: at `text/markdown` a browser downloads the file instead of showing
+it, which is the wrong outcome for a button whose label promises a view. It
+reuses `Button` with caller-supplied mono styling rather than gaining a variant,
+and renders as an `<a>` through Base UI's `render` prop.

@@ -15,6 +15,7 @@ const styles = stylex.create({
         whiteSpace: "nowrap",
     },
     rule: { flex: "1", height: 1, backgroundColor: colors.border },
+    period: { color: colors.primary },
 });
 
 export function SectionLabel({
@@ -26,7 +27,10 @@ export function SectionLabel({
 }) {
     return (
         <div {...stylex.props(styles.row)}>
-            <h2 {...stylex.props(styles.label)}>{children}</h2>
+            <h2 {...stylex.props(styles.label)}>
+                {children}
+                <span {...stylex.props(styles.period)}>.</span>
+            </h2>
             <span {...stylex.props(styles.rule)} aria-hidden="true" />
             {action}
         </div>

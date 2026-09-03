@@ -1,4 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
+import Link from "next/link";
 
 import { colors, fonts, text, tracking } from "@/app/tokens.stylex";
 import { SocialLinks } from "@/components/social-links";
@@ -30,8 +31,10 @@ const styles = stylex.create({
         letterSpacing: tracking.label,
         textTransform: "uppercase",
     },
-    slash: { paddingInline: 8, opacity: 0.4 },
-    rss: {
+    // Amber, like the punctuation in the display headings -- the separators are
+    // the only mark in the footer, so they are where the motif lands here.
+    slash: { paddingInline: 8, color: colors.primary, opacity: 0.6 },
+    link: {
         color: { default: "inherit", ":hover": colors.primary },
         transitionProperty: "color",
         transitionDuration: "200ms",
@@ -47,9 +50,15 @@ export function SiteFooter() {
                     <span {...stylex.props(styles.slash)} aria-hidden="true">
                         /
                     </span>
-                    <a href="/rss.xml" {...stylex.props(styles.rss)}>
+                    <a href="/rss.xml" {...stylex.props(styles.link)}>
                         rss
                     </a>
+                    <span {...stylex.props(styles.slash)} aria-hidden="true">
+                        /
+                    </span>
+                    <Link href="/archive" {...stylex.props(styles.link)}>
+                        archive
+                    </Link>
                 </p>
                 <SocialLinks size={16} />
             </div>

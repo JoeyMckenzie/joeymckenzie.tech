@@ -49,6 +49,38 @@ export function getPost(slug: string): Post | undefined {
     return getPosts().find((post) => post.slug === slug);
 }
 
+// The file on disk, frontmatter and all. `/blog/<slug>/index.md` serves this
+// verbatim, so a reader who prefers `curl` gets exactly what the post is
+// written from rather than a reconstruction of it.
+export function getPostSource(slug: string): string {
+    return fs.readFileSync(path.join(POSTS_DIR, `${slug}.md`), "utf8");
+}
+
+// `older` / `newer` rather than previous / next: the list is sorted by date, so
+// direction is the only thing a reader can actually predict from the label.
+export function getPostNeighbors(slug: string) {
+    const posts = getPosts();
+    const index = posts.findIndex((post) => post.slug === slug);
+
+    return {
+        newer: index > 0 ? posts[index - 1] : undefined,
+        older: index >= 0 ? posts[index + 1] : undefined,
+    };
+}
+
+// Newest year first, and posts within a year stay in the order `getPosts`
+// already put them in.
+export function getPostsByYear(posts: Post[]) {
+    const years = new Map<string, Post[]>();
+
+    for (const post of posts) {
+        const year = post.pubDate.slice(0, 4);
+        years.set(year, [...(years.get(year) ?? []), post]);
+    }
+
+    return [...years].map(([year, entries]) => ({ year, posts: entries }));
+}
+
 export function getTags(posts: Post[]) {
     const counts = new Map<string, number>();
 

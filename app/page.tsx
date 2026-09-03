@@ -55,9 +55,10 @@ export default function Home() {
                     <span {...stylex.props(styles.accent)}>.</span>
                 </h1>
                 <p {...stylex.props(styles.intro, reveal(2))}>
-                    Hi, I&apos;m Joey. I build things with Laravel, PHP, and
-                    whatever has my attention this month. Mostly code,
-                    occasionally opinions, perpetually down a rabbit-hole.
+                    Software guy. Professional sidequester. Cheap beer enjoyer.
+                    I build things with Laravel, PHP, and whatever has my
+                    attention this month. Mostly code, occasionally opinions,
+                    perpetually down a rabbit-hole.
                 </p>
             </header>
 

@@ -104,6 +104,17 @@ needs no routing config. (Workers static assets would need an explicit
 `not_found_handling` setting to reach it.) Caching and security headers come from
 `public/_headers`, which Next copies into `out/` verbatim.
 
+Every matching block in that file applies, not only the most specific one, and a
+header named by two matching blocks arrives with both values comma-joined. So a
+block should set only what is specific to it. Verified with
+`npx wrangler pages dev out`, which runs the real Pages runtime over a build and
+is the only way to check that file short of deploying. **Two pre-existing blocks
+predate this understanding and still repeat headers the catch-all supplies**, so
+hashed assets currently go out with
+`Cache-Control: public, max-age=31536000, immutable, public, max-age=0, must-revalidate`
+— two conflicting `max-age` values in one header, which may be costing the
+long-lived cache on `_next/static`.
+
 ## CI and devenv
 
 The pipeline lives in `devenv.nix` as `ci-lint` / `ci-build` / `ci-deploy`, not

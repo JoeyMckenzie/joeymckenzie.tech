@@ -1,10 +1,12 @@
 # Cloudflare reads this file from the root of the deployed asset directory.
 # `public/` is copied verbatim into `out/`, so it lands where it needs to be.
 #
-# Rules are matched most-specific first, and only the first matching block
-# applies -- so the catch-all at the bottom cannot be relied on to add headers
-# to paths already matched above it. Anything that should apply everywhere has
-# to be repeated in each block.
+# Every matching block applies, not just the most specific one: a path matched
+# here and by the catch-all below gets the union of both, and a header named in
+# two matching blocks arrives with both values joined by a comma. So a block
+# should set only what is specific to it and let `/*` supply the rest --
+# repeating a common header duplicates its value rather than overriding it.
+# Verified against `npx wrangler pages dev out`, which runs the Pages runtime.
 
 # Everything under `_next/static` carries a content hash in its filename, so a
 # changed file is always a changed URL. That makes it safe to cache forever.
@@ -17,6 +19,15 @@
 /images/*
   Cache-Control: public, max-age=2592000
   X-Content-Type-Options: nosniff
+
+# The raw markdown behind the "View as Markdown" button. Two things make this
+# block necessary. A route handler's own `Content-Type` is discarded by
+# `output: "export"` -- only the body reaches disk -- so the type here is
+# whatever Cloudflare infers from the extension, and `text/markdown` is a type
+# browsers download rather than render. `text/plain` is what makes the button
+# open the source in a tab, and it costs `curl` nothing.
+/blog/*/index.md
+  Content-Type: text/plain; charset=utf-8
 
 # HTML has to stay revalidated or a deploy would not reach anyone still holding
 # a cached page. `must-revalidate` keeps the browser honest about the 0 age.
