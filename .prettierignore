@@ -8,3 +8,8 @@ skills-lock.json
 # Post markdown is authored content, not source. Prettier reformats code
 # inside fenced blocks, which rewrites published code samples.
 content/
+
+# Vendored verbatim from stylexjs.com/docs/llm-resources. Reformatting them
+# makes every re-download a diff against Prettier rather than against upstream.
+.claude/skills/stylex/references/installation.md
+.claude/skills/stylex/references/authoring.md
