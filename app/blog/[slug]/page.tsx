@@ -41,6 +41,12 @@ const styles = stylex.create({
     // sits in rather than as the one sans-serif control on the page. Passed in
     // by the caller, which is why `Button` still has exactly one variant.
     markdownButton: {
+        // `Button`'s own box is sized for its 0.8rem label; this one runs at
+        // `text.label`, so it is trimmed to sit in the same size family as the
+        // tag chips a few lines below it rather than towering over them.
+        height: 22,
+        paddingInline: 8,
+        gap: 5,
         fontFamily: fonts.mono,
         fontSize: text.label,
         lineHeight: text.labelLineHeight,
@@ -159,7 +165,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                                 styles.markdownButton
                             )}
                         >
-                            <FileTextIcon size={13} />
+                            <FileTextIcon size={11} />
                             View as Markdown
                         </a>
                     </div>
