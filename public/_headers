@@ -26,8 +26,15 @@
 # whatever Cloudflare infers from the extension, and `text/markdown` is a type
 # browsers download rather than render. `text/plain` is what makes the button
 # open the source in a tab, and it costs `curl` nothing.
+#
+# `noindex` because each of these is a byte-for-byte duplicate of a post that is
+# already indexed. It is set here rather than as a `Disallow` in robots.txt on
+# purpose: a disallowed URL is never fetched, so the crawler never sees the
+# noindex, and Google can still index a blocked URL it finds linked. The header
+# is the instruction that actually removes them.
 /blog/*/index.md
   Content-Type: text/plain; charset=utf-8
+  X-Robots-Tag: noindex
 
 # HTML has to stay revalidated or a deploy would not reach anyone still holding
 # a cached page. `must-revalidate` keeps the browser honest about the 0 age.

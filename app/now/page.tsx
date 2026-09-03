@@ -5,11 +5,16 @@ import { Main } from "@/components/main";
 import { PageHeader } from "@/components/page-header";
 import { SectionLabel } from "@/components/section-label";
 import { Prose } from "@/components/prose";
+import { alternates } from "@/lib/metadata";
 
 const description =
     "A living changelog of what I'm learning, tinkering with, and thinking about outside of client work.";
 
-export const metadata: Metadata = { title: "Now", description };
+export const metadata: Metadata = {
+    title: "Now",
+    description,
+    alternates: alternates("/now/"),
+};
 
 const sections = [
     {

@@ -3,7 +3,9 @@ import type { StyleXStyles } from "@stylexjs/stylex";
 
 import { colors } from "@/app/tokens.stylex";
 
-const socials = [
+// Exported so `structured-data` can reuse the profile URLs for `sameAs`
+// rather than keeping a second list of them.
+export const socials = [
     {
         label: "GitHub",
         href: "https://github.com/joeymckenzie",

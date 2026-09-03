@@ -41,15 +41,27 @@ export const metadata: Metadata = {
     },
     description: site.description,
     metadataBase: new URL(site.url),
+    authors: [{ name: site.author, url: site.url }],
+    creator: site.author,
+    // Deliberately no `alternates.canonical` here. Metadata merges down, so a
+    // canonical on the layout would declare "/" as the canonical URL of every
+    // page that did not override it -- worse than having none. Each route sets
+    // its own; `alternates.types` is safe because it is the same feed anywhere.
     alternates: {
         types: { "application/rss+xml": "/rss.xml" },
     },
     openGraph: {
         type: "website",
         siteName: site.title,
+        locale: "en_US",
+        url: "/",
         images: ["/images/blog-placeholder-1.jpg"],
     },
-    twitter: { card: "summary_large_image" },
+    twitter: {
+        card: "summary_large_image",
+        site: site.handle,
+        creator: site.handle,
+    },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

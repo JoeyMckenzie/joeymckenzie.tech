@@ -3,6 +3,9 @@ export const site = {
     description: "Writing about software, mostly.",
     url: "https://joeymckenzie.tech",
     author: "Joey McKenzie",
+    // Used for `twitter:creator` / `twitter:site`. The profile URL it belongs
+    // to lives in `components/social-links.tsx`.
+    handle: "@_joeyMcKenzie",
     // Where the "view source" link on each post points. `branch` is separate
     // because the Next rewrite still lives on a branch -- promoting it to
     // `main` is a one-word change here rather than a hunt through the post route.

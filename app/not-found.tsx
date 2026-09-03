@@ -9,6 +9,10 @@ import { reveal } from "@/components/reveal";
 export const metadata: Metadata = {
     title: "Lost",
     description: "That page does not exist.",
+    // Cloudflare serves this with a 404 status, which is already enough for a
+    // crawler -- this is belt and braces for anything that reaches the body
+    // without reading the status line.
+    robots: { index: false, follow: true },
 };
 
 const styles = stylex.create({

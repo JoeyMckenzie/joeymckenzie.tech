@@ -150,6 +150,74 @@ agreeing. The font family is set on `:is(pre, code)` rather than `code` alone
 because a block that ever arrived without a wrapping `code` would fall through to
 the browser's default monospace.
 
+## Icons and manifest
+
+All of these are file conventions, so nothing in `layout.tsx` references them —
+`metadata` deliberately has no `icons` key. Next reads each file's real
+dimensions and writes the `sizes` attribute itself, which is why the names look
+arbitrary:
+
+| File             | From (favicon.io)      | Emits                              |
+| ---------------- | ---------------------- | ---------------------------------- |
+| `favicon.ico`    | `favicon.ico`          | `rel="icon"`, 16/32/48 in one file |
+| `icon0.png`      | `favicon-16x16.png`    | `rel="icon" sizes="16x16"`         |
+| `icon1.png`      | `favicon-32x32.png`    | `rel="icon" sizes="32x32"`         |
+| `apple-icon.png` | `apple-touch-icon.png` | `rel="apple-touch-icon"` 180x180   |
+| `manifest.ts`    | (rewritten, see below) | `rel="manifest"`                   |
+
+The numbered `icon0` / `icon1` names are not cosmetic: multiple icons are only
+possible by suffixing, and the files sort lexically. Next content-hashes each
+one into its `href`, so a replaced icon is a new URL.
+
+The two `android-chrome-*.png` sizes live in `public/` instead, because only the
+manifest points at them and it does so by absolute path. They are never
+`<link>`ed.
+
+`manifest.ts` is hand-written rather than favicon.io's `site.webmanifest`, which
+ships empty `name` / `short_name` and `#ffffff` for both theme colours — an
+Android status bar flashing white above this page. Writing it as a route also
+lets the name and description come from `lib/site.ts` rather than being a third
+copy of them.
+
+`public/favicon.svg` was deleted with this change. It was Astro's own logo,
+left over from the migration, and nothing had linked it since.
+
+The artwork is Twemoji `1f30c` (milky way), **CC-BY 4.0, which requires
+attribution** — the licence and source are in the `about.txt` that came with the
+generated set.
+
+## SEO
+
+Three things here are less obvious than they look.
+
+**Metadata merges per top-level key, not deeply.** A page that sets
+`alternates.canonical` replaces the layout's entire `alternates` object and
+takes the RSS autodiscovery `<link>` with it; a page that sets `openGraph`
+replaces that object and loses `siteName` and `locale`. The first is why every
+route builds its alternates through `lib/metadata.ts` instead of by hand, and
+the second is why the post route repeats `siteName` and `locale` in its own
+`openGraph`. Both were caught by diffing the built `<head>`, not by reading.
+
+**There is no canonical in the root layout, on purpose.** Because metadata
+merges down, one there would declare `/` the canonical URL of every page that
+did not override it — actively worse than having none. Each route sets its own,
+with the trailing slash `trailingSlash: true` makes canonical.
+
+**The markdown twins carry `X-Robots-Tag: noindex`, not a robots.txt
+`Disallow`.** Each is a byte-for-byte duplicate of an indexed post. A disallowed
+URL is never fetched, so a crawler would never see a noindex on it, and Google
+can still index a blocked URL it finds linked — the header is the instruction
+that actually removes them. The rule is in `public/_headers`.
+
+`structured-data.tsx` emits JSON-LD: `Person` + `WebSite` on the home page,
+`BlogPosting` + `BreadcrumbList` on each post. The nodes carry `@id`s and
+reference each other, so a post names its author by id rather than inlining a
+second copy of the Person. It is server-rendered, so it costs no client
+JavaScript.
+
+The sitemap normalises trailing slashes. `nav` stores `/blog`, the site serves
+`/blog/`, and a sitemap listing the pre-redirect URL points crawlers at a 308.
+
 ## Routes
 
 `not-found.tsx` renders to `out/404.html`; see the deploy notes in the root

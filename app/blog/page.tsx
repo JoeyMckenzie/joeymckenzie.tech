@@ -4,12 +4,14 @@ import type { Metadata } from "next";
 import { Main } from "@/components/main";
 import { PageHeader } from "@/components/page-header";
 import { PostFilters } from "@/components/post-filters";
+import { alternates } from "@/lib/metadata";
 import { getPosts, getTags } from "@/lib/posts";
 
 export const metadata: Metadata = {
     title: "Writing",
     description:
         "Writing about Laravel, PHP, and whatever has my attention this month.",
+    alternates: alternates("/blog/"),
 };
 
 const styles = stylex.create({

@@ -1,4 +1,5 @@
 import * as stylex from "@stylexjs/stylex";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 import { colors, fonts, text, tracking } from "@/app/tokens.stylex";
@@ -6,7 +7,12 @@ import { Main } from "@/components/main";
 import { PostCard } from "@/components/post-card";
 import { reveal } from "@/components/reveal";
 import { SectionLabel } from "@/components/section-label";
+import { SiteStructuredData } from "@/components/structured-data";
+import { alternates } from "@/lib/metadata";
 import { getPosts } from "@/lib/posts";
+
+// Title and description stay the layout defaults -- this page is the site.
+export const metadata: Metadata = { alternates: alternates("/") };
 
 const styles = stylex.create({
     heading: {
@@ -48,6 +54,7 @@ export default function Home() {
 
     return (
         <Main>
+            <SiteStructuredData />
             <header>
                 <h1 {...stylex.props(styles.heading, reveal(1))}>
                     Hi<span {...stylex.props(styles.accent)}>,</span> I&apos;m

@@ -8,11 +8,16 @@ import { Main } from "@/components/main";
 import { PageHeader } from "@/components/page-header";
 import { reveal } from "@/components/reveal";
 import { SectionLabel } from "@/components/section-label";
+import { alternates } from "@/lib/metadata";
 import { getPosts, getPostsByYear } from "@/lib/posts";
 
 const description = "Every post, newest first, one line each.";
 
-export const metadata: Metadata = { title: "Archive", description };
+export const metadata: Metadata = {
+    title: "Archive",
+    description,
+    alternates: alternates("/archive/"),
+};
 
 const styles = stylex.create({
     years: { marginTop: 56 },

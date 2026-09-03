@@ -21,7 +21,10 @@ import { PostFooter } from "@/components/post-footer";
 import { Prose } from "@/components/prose";
 import { ReadingProgress } from "@/components/reading-progress";
 import { reveal } from "@/components/reveal";
+import { PostStructuredData } from "@/components/structured-data";
 import { getPost, getPostNeighbors, getPosts } from "@/lib/posts";
+import { site } from "@/lib/site";
+import { alternates } from "@/lib/metadata";
 
 const styles = stylex.create({
     header: { marginBottom: 48 },
@@ -99,14 +102,25 @@ export async function generateMetadata({
 
     if (!post) return {};
 
+    const url = `/blog/${post.slug}/`;
+
     return {
         title: post.title,
         description: post.description,
+        alternates: alternates(url),
+        // Page-level `openGraph` replaces the layout's object outright rather
+        // than merging into it, so `siteName` and `locale` have to be repeated
+        // here or the post cards lose them.
         openGraph: {
             type: "article",
+            siteName: site.title,
+            locale: "en_US",
+            url,
             title: post.title,
             description: post.description,
             publishedTime: post.pubDate,
+            authors: [site.author],
+            tags: [...post.tags],
             images: post.heroImage ? [post.heroImage] : undefined,
         },
     };
@@ -126,6 +140,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
     return (
         <Main>
             <ReadingProgress />
+            <PostStructuredData post={post} />
             <article>
                 <header {...stylex.props(styles.header)}>
                     <div {...stylex.props(styles.topRow, reveal(0))}>

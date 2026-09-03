@@ -6,6 +6,7 @@ import { Badge } from "@/components/badge";
 import { Main } from "@/components/main";
 import { PageHeader } from "@/components/page-header";
 import { SectionLabel } from "@/components/section-label";
+import { alternates } from "@/lib/metadata";
 
 const styles = stylex.create({
     skill: { fontFamily: fonts.mono },
@@ -63,6 +64,7 @@ const styles = stylex.create({
 export const metadata: Metadata = {
     title: "CV",
     description: "Joey McKenzie's resume and professional experience.",
+    alternates: alternates("/cv/"),
 };
 
 const experience = [

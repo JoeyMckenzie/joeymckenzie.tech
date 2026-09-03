@@ -5,10 +5,12 @@ import { breakpoints, colors, fonts } from "@/app/tokens.stylex";
 import { Main } from "@/components/main";
 import { PageHeader } from "@/components/page-header";
 import { SectionLabel } from "@/components/section-label";
+import { alternates } from "@/lib/metadata";
 
 export const metadata: Metadata = {
     title: "Uses",
     description: "The tools, software, and hardware I use for development.",
+    alternates: alternates("/uses/"),
 };
 
 const sections = [
