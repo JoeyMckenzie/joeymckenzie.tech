@@ -1,0 +1,14 @@
+{
+    "$schema": "node_modules/wrangler/config-schema.json",
+    "name": "website",
+    "compatibility_date": "2026-09-02",
+    // A Pages project, not a Worker: `pages_build_output_dir` is the key that
+    // tells wrangler this is Pages, and it points at the directory
+    // `output: "export"` writes to. There is deliberately no `main` -- nothing
+    // here runs server-side.
+    //
+    // Pages serves `out/404.html` for any path it cannot match, so the
+    // not-found page needs no routing config. The caching and security headers
+    // come from `public/_headers`, which Next copies into `out/` verbatim.
+    "pages_build_output_dir": "./out",
+}

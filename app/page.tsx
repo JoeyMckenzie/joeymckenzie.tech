@@ -4,7 +4,6 @@ import { PostCard } from "@/components/post-card";
 import { revealDelay } from "@/components/reveal";
 import { SectionLabel } from "@/components/section-label";
 import { getPosts } from "@/lib/posts";
-import { site } from "@/lib/site";
 
 export default function Home() {
     const posts = getPosts().slice(0, 3);
@@ -12,23 +11,12 @@ export default function Home() {
     return (
         <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
             <header>
-                <p
-                    className="text-muted-foreground text-label tracking-label reveal mb-7 font-mono uppercase"
-                    style={revealDelay(0)}
-                >
-                    {site.title}
-                </p>
                 <h1
                     className="font-heading text-display reveal font-semibold"
                     style={revealDelay(1)}
                 >
-                    Software developer
+                    Hi<span className="text-primary">,</span> I&apos;m Joey
                     <span className="text-primary">.</span>
-                    <br />
-                    <span className="text-muted-foreground">
-                        Professional sidequester
-                        <span className="text-primary">.</span>
-                    </span>
                 </h1>
                 <p
                     className="text-muted-foreground reveal mt-7 max-w-xl leading-relaxed"

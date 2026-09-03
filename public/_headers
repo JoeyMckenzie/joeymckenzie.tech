@@ -1,0 +1,26 @@
+# Cloudflare reads this file from the root of the deployed asset directory.
+# `public/` is copied verbatim into `out/`, so it lands where it needs to be.
+#
+# Rules are matched most-specific first, and only the first matching block
+# applies -- so the catch-all at the bottom cannot be relied on to add headers
+# to paths already matched above it. Anything that should apply everywhere has
+# to be repeated in each block.
+
+# Everything under `_next/static` carries a content hash in its filename, so a
+# changed file is always a changed URL. That makes it safe to cache forever.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+  X-Content-Type-Options: nosniff
+
+# Post images are stable but not content-hashed -- a re-upload reuses the same
+# path -- so this is a month rather than a year.
+/images/*
+  Cache-Control: public, max-age=2592000
+  X-Content-Type-Options: nosniff
+
+# HTML has to stay revalidated or a deploy would not reach anyone still holding
+# a cached page. `must-revalidate` keeps the browser honest about the 0 age.
+/*
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
