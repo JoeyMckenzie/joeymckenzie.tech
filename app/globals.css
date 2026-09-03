@@ -383,9 +383,18 @@ html {
     border-radius: var(--prose-radius);
     padding: 1rem;
     overflow-x: auto;
+    /* Geist Mono reads a size larger than Geist Sans at the same nominal size,
+       so a block left at the body's 1rem looks bigger than the prose around it
+       rather than level with it. The same 0.875em the inline chips below use,
+       which also keeps inline and block code agreeing with each other. */
+    font-size: 0.875em;
+    line-height: 1.7;
 }
 
-[data-prose] code {
+/* `pre` as well as `code`: every shiki block wraps its content in a `code`, so
+   the family reaches the text either way today, but a block that ever arrives
+   without one would fall through to the browser's default monospace. */
+[data-prose] :is(pre, code) {
     font-family: var(--prose-mono);
 }
 
