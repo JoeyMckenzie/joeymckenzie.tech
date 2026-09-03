@@ -1,9 +1,11 @@
 "use client";
 
 import { SearchIcon } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
 import { PostCard } from "@/components/post-card";
+import { revealDelay } from "@/components/reveal";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,6 +30,23 @@ import type { Post } from "@/lib/posts";
 // `?tag=&search=` deep link is applied on mount from `location.search` rather
 // than with `useSearchParams`, because reading search params during render
 // opts the whole list out of prerendering and leaves an empty page behind.
+//
+// This is the one place Motion earns its bundle, and it is the only route that
+// pays for it: +38.9 KB gzipped on `/blog`, measured against the same build
+// with Motion removed. The home page and the post pages are unchanged.
+//
+// A named `<ViewTransition>` per row would do the same re-flow natively for
+// nothing, and that was tried first. It loses here because the search box
+// filters as you type: every keystroke would start a fresh ~400ms view
+// transition, and they queue rather than interrupt. Motion's springs retarget
+// mid-flight, which is the behaviour a live filter needs. Route changes, which
+// *are* discrete, still use view transitions -- see `app/layout.tsx`.
+//
+// First paint is deliberately left to the CSS reveal instead.
+// `<AnimatePresence initial={false}>` is what keeps Motion from writing an
+// `opacity: 0` into the prerendered markup, which would blank all 33 posts for
+// anyone without JS. Verified against `out/blog/index.html` after a build:
+// 33 post links, zero `opacity:0`.
 export function PostFilters({
     posts,
     tags,
@@ -38,6 +57,7 @@ export function PostFilters({
     const [activeTag, setActiveTag] = useState("");
     const [query, setQuery] = useState("");
     const hydrated = useRef(false);
+    const reduceMotion = useReducedMotion();
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -91,26 +111,35 @@ export function PostFilters({
         setQuery("");
     }
 
-    return (
-        <div className="flex flex-col gap-6">
-            <InputGroup>
-                <InputGroupAddon>
-                    <SearchIcon />
-                </InputGroupAddon>
-                <InputGroupInput
-                    type="search"
-                    placeholder="Search posts…"
-                    aria-label="Search posts"
-                    autoComplete="off"
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                />
-            </InputGroup>
+    // `useReducedMotion` reads the same media query the stylesheet does, so
+    // the two motion layers stay in agreement rather than one animating while
+    // the other sits still.
+    const transition = reduceMotion
+        ? { duration: 0 }
+        : { type: "spring" as const, stiffness: 420, damping: 38, mass: 0.9 };
 
-            <div className="flex flex-wrap gap-2">
+    return (
+        <div className="flex flex-col gap-8">
+            <div className="reveal" style={revealDelay(0)}>
+                <InputGroup>
+                    <InputGroupAddon>
+                        <SearchIcon />
+                    </InputGroupAddon>
+                    <InputGroupInput
+                        type="search"
+                        placeholder="Search posts…"
+                        aria-label="Search posts"
+                        autoComplete="off"
+                        value={query}
+                        onChange={(event) => setQuery(event.target.value)}
+                    />
+                </InputGroup>
+            </div>
+
+            <div className="reveal flex flex-wrap gap-2" style={revealDelay(1)}>
                 <Badge
                     variant={activeTag ? "outline" : "default"}
-                    className="cursor-pointer font-mono"
+                    className="text-label tracking-label cursor-pointer font-mono uppercase"
                     render={
                         <button
                             type="button"
@@ -125,7 +154,7 @@ export function PostFilters({
                     <Badge
                         key={tag}
                         variant={activeTag === tag ? "default" : "outline"}
-                        className="cursor-pointer font-mono"
+                        className="text-label tracking-label cursor-pointer font-mono uppercase"
                         render={
                             <button
                                 type="button"
@@ -137,20 +166,46 @@ export function PostFilters({
                         }
                     >
                         {tag}
-                        <span className="opacity-70">{count}</span>
+                        <span className="opacity-60">{count}</span>
                     </Badge>
                 ))}
             </div>
 
             {visible.length > 0 ? (
-                <div className="flex flex-col gap-4">
-                    {visible.map((post) => (
-                        <PostCard
-                            key={post.slug}
-                            post={post}
-                            onTagClick={setActiveTag}
-                        />
-                    ))}
+                <div className="divide-y border-t">
+                    {/* `popLayout` takes a leaving row out of flow immediately,
+                        so the rows below it slide up into the gap rather than
+                        waiting for the fade to finish. */}
+                    <AnimatePresence initial={false} mode="popLayout">
+                        {visible.map((post, index) => (
+                            <motion.div
+                                key={post.slug}
+                                layout
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0, scale: 0.98 }}
+                                transition={transition}
+                            >
+                                {/* The CSS reveal sits on an inner element on
+                                    purpose. A finished `.reveal` keeps its
+                                    end frame (`animation-fill-mode: both`),
+                                    and a CSS animation outranks inline
+                                    styles -- on the same node it would pin
+                                    opacity and transform and silently kill
+                                    every Motion layout animation after the
+                                    first paint. */}
+                                <div
+                                    className="reveal"
+                                    style={revealDelay(index)}
+                                >
+                                    <PostCard
+                                        post={post}
+                                        onTagClick={setActiveTag}
+                                    />
+                                </div>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
                 </div>
             ) : (
                 <Empty className="border">

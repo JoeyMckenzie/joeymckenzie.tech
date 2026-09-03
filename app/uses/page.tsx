@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/page-header";
-import { Separator } from "@/components/ui/separator";
+import { SectionLabel } from "@/components/section-label";
 
 export const metadata: Metadata = {
     title: "Uses",
@@ -108,15 +108,12 @@ export default function Uses() {
                 intro="The tools, software, and hardware I use on a daily basis."
             />
             <div className="mt-12 flex flex-col gap-10">
-                {sections.map((section, index) => (
+                {sections.map((section) => (
                     <section
                         key={section.title}
                         className="flex flex-col gap-5"
                     >
-                        {index > 0 && <Separator className="mb-5" />}
-                        <h2 className="font-heading text-2xl font-medium">
-                            {section.title}
-                        </h2>
+                        <SectionLabel>{section.title}</SectionLabel>
                         <ul className="flex flex-col gap-4">
                             {section.items.map((item) => (
                                 <li

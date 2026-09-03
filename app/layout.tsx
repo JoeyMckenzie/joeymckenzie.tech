@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { ViewTransition } from "react";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
@@ -44,7 +45,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
             <body className="flex min-h-full flex-col">
                 <SiteHeader />
-                <div className="flex-1">{children}</div>
+                {/* Activating a view transition is what makes route changes
+                    animate at all -- React only calls the browser API when a
+                    <ViewTransition> is in the tree during a navigation. This
+                    one wraps the content rather than living in each page.tsx
+                    because the animation wanted here is an update crossfade on
+                    a container that persists, not an enter/exit pair. The
+                    `page` class it assigns is styled in `app/globals.css`. */}
+                <ViewTransition update="page">
+                    <div className="flex-1">{children}</div>
+                </ViewTransition>
                 <SiteFooter />
             </body>
         </html>

@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 
 import { FormattedDate } from "@/components/formatted-date";
 import { Prose } from "@/components/prose";
+import { revealDelay } from "@/components/reveal";
 import { Badge } from "@/components/ui/badge";
 import { getPost, getPosts } from "@/lib/posts";
 
@@ -46,24 +48,41 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
     const { default: Body } = await import(`@/content/blog/${slug}.md`);
 
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 py-16">
+        <main className="mx-auto w-full max-w-3xl px-4 pt-16 pb-24">
             <article>
-                <header className="mb-10">
-                    <h1 className="font-heading text-4xl font-semibold tracking-tight">
-                        {post.title}
-                    </h1>
-                    <div className="text-muted-foreground mt-3 flex flex-wrap items-center gap-2 font-mono text-xs">
+                <header className="mb-12">
+                    <div
+                        className="text-muted-foreground text-label tracking-label reveal flex flex-wrap items-center gap-2 font-mono uppercase"
+                        style={revealDelay(0)}
+                    >
                         <FormattedDate date={post.pubDate} />
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.readingMinutes} min read</span>
                     </div>
+                    <h1
+                        className="font-heading reveal mt-4 text-4xl font-semibold tracking-tight text-balance sm:text-5xl"
+                        style={revealDelay(1)}
+                    >
+                        {post.title}
+                    </h1>
+                    {post.description && (
+                        <p
+                            className="text-muted-foreground reveal mt-5 max-w-2xl text-lg leading-relaxed"
+                            style={revealDelay(2)}
+                        >
+                            {post.description}
+                        </p>
+                    )}
                     {post.tags.length > 0 && (
-                        <div className="mt-4 flex flex-wrap gap-2">
+                        <div
+                            className="reveal mt-6 flex flex-wrap gap-2"
+                            style={revealDelay(3)}
+                        >
                             {post.tags.map((tag) => (
                                 <Badge
                                     key={tag}
                                     variant="outline"
-                                    className="font-mono"
+                                    className="text-label tracking-label font-mono uppercase"
                                     render={<Link href={`/blog/?tag=${tag}`} />}
                                 >
                                     {tag}
@@ -74,13 +93,23 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                 </header>
 
                 {post.heroImage && (
-                    /* eslint-disable-next-line @next/next/no-img-element --
-                       see components/post-card.tsx */
-                    <img
-                        src={post.heroImage}
-                        alt=""
-                        className="mb-10 w-full rounded-xl border"
-                    />
+                    // The other half of the morph started by the thumbnail in
+                    // `components/post-card.tsx` -- the same `name` is what
+                    // tells the browser these are one object, so the row image
+                    // grows into this one instead of the pages swapping.
+                    <ViewTransition
+                        name={`hero-${post.slug}`}
+                        share="morph"
+                        default="none"
+                    >
+                        {/* eslint-disable-next-line @next/next/no-img-element --
+                            see components/post-card.tsx */}
+                        <img
+                            src={post.heroImage}
+                            alt=""
+                            className="mb-12 w-full rounded-lg border"
+                        />
+                    </ViewTransition>
                 )}
 
                 <Prose>

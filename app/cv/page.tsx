@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/page-header";
+import { SectionLabel } from "@/components/section-label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 
@@ -93,14 +94,6 @@ const skills = [
     },
 ];
 
-function SectionHeading({ children }: { children: string }) {
-    return (
-        <h2 className="text-muted-foreground font-mono text-xs tracking-[0.15em] uppercase">
-            {children}
-        </h2>
-    );
-}
-
 export default function Cv() {
     return (
         <main className="mx-auto w-full max-w-3xl px-4 py-16">
@@ -118,7 +111,7 @@ export default function Cv() {
             <Separator className="mt-14" />
 
             <section className="mt-10 flex flex-col gap-6">
-                <SectionHeading>experience</SectionHeading>
+                <SectionLabel>experience</SectionLabel>
                 <div className="flex flex-col gap-6">
                     {experience.map((job) => (
                         <article
@@ -149,7 +142,7 @@ export default function Cv() {
             <Separator className="mt-14" />
 
             <section className="mt-10 flex flex-col gap-6">
-                <SectionHeading>education</SectionHeading>
+                <SectionLabel>education</SectionLabel>
                 {education.map((school) => (
                     <div
                         key={school.school}
@@ -173,7 +166,7 @@ export default function Cv() {
             <Separator className="mt-14" />
 
             <section className="mt-10 flex flex-col gap-6">
-                <SectionHeading>skills</SectionHeading>
+                <SectionLabel>skills</SectionLabel>
                 {skills.map((group) => (
                     <div key={group.category} className="flex flex-col gap-3">
                         <h3 className="text-muted-foreground text-sm">

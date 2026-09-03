@@ -11,6 +11,26 @@
     --font-sans: var(--font-geist-sans);
     --font-mono: var(--font-geist-mono);
     --font-heading: var(--font-sans);
+
+    /* --- type scale ---------------------------------------------------
+       Geist Sans does display work, Geist Mono does instrumentation.
+       The two tracking values below are the whole idea: display type is
+       pulled tight so the counters close up at size, and mono labels are
+       opened right out so they read as machine annotation rather than
+       small prose. Both are used as named utilities (`tracking-display`,
+       `tracking-label`) so the values live here and not at 20 call sites. */
+    --tracking-display: -0.035em;
+    --tracking-label: 0.18em;
+
+    /* Fluid rather than a breakpoint step: at a fixed 3.375rem the hero
+       broke across four lines on a 390px screen. */
+    --text-display: clamp(2.375rem, 7.5vw, 3.375rem);
+    --text-display--line-height: 1.02;
+    --text-display--letter-spacing: -0.035em;
+    --text-title: 1.3125rem;
+    --text-title--line-height: 1.3;
+    --text-label: 0.6875rem;
+    --text-label--line-height: 1;
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -84,38 +104,69 @@
     --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* --- the palette ------------------------------------------------------
+   Warm near-black canvas, one amber accent. Every hex carries its measured
+   WCAG ratio against the surface it is actually painted on, the same way the
+   Astro site's `global.css` did -- the ratios are computed, not eyeballed.
+
+   The site is dark-only today (`<html class="dark">` in `app/layout.tsx`), so
+   this block is the only theme that renders. The stock neutral `:root` above
+   is left untouched: it is unreachable, and inventing a light palette nobody
+   can see would be unverifiable guesswork. A light theme means redefining
+   these fifteen values, not restructuring anything. */
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    /* --- surfaces --- */
+    --background: #0e0d0c; /* canvas */
+    --card: #171614; /* raised one step off the canvas */
+    --popover: #171614;
+    --secondary: #1e1c1a;
+    --muted: #171614;
+    --accent: #1e1c1a; /* hover wash on ghost buttons */
+
+    /* --- ink (ratio vs --background) --- */
+    --foreground: #e9e6e1; /* 18.51:1 */
+    --card-foreground: #e9e6e1; /* 11.34:1 on --card */
+    --popover-foreground: #e9e6e1;
+    --secondary-foreground: #e9e6e1;
+    --accent-foreground: #e9e6e1;
+    /* 8.72:1 on --background, 5.34:1 on --card. Deliberately not the
+       11.19:1 first pass -- muted text that bright competes with the body
+       copy instead of sitting under it. */
+    --muted-foreground: #7d766c;
+
+    /* --- accent --- */
+    /* 8.93:1 on --background, 5.47:1 on --card. This is the whole colour
+       budget: links, active nav, focus rings, rules that need to read as
+       interactive. --primary-foreground is the canvas, not white: white on
+       amber is 2.36:1 and fails outright. */
+    --primary: #f0b46a;
+    --primary-foreground: #0e0d0c; /* 8.93:1 */
+    --ring: #f0b46a;
+
+    /* 3.06:1 vs --background -- clears the 3:1 threshold for a UI boundary,
+       which matters more here than it did before: the design uses rules
+       instead of cards, so hairlines are load-bearing structure. */
+    --border: #2e2a26;
+    --input: #2e2a26;
+
+    --destructive: #e5877a;
+
+    --chart-1: #f0b46a;
+    --chart-2: #c9924c;
+    --chart-3: #8a6a3c;
+    --chart-4: #7d766c;
+    --chart-5: #2e2a26;
+
+    --sidebar: #171614;
+    --sidebar-foreground: #e9e6e1;
+    --sidebar-primary: #f0b46a;
+    --sidebar-primary-foreground: #0e0d0c;
+    --sidebar-accent: #1e1c1a;
+    --sidebar-accent-foreground: #e9e6e1;
+    --sidebar-border: #2e2a26;
+    --sidebar-ring: #f0b46a;
+
+    color-scheme: dark;
 }
 
 @layer base {
@@ -127,5 +178,161 @@
     }
     html {
         @apply font-sans;
+    }
+    /* Geist ships proper tabular figures. Dates and reading times sit in
+       columns down the post list, so turning them on stops the numerals
+       jittering between rows. */
+    :is(time, .tabular) {
+        font-variant-numeric: tabular-nums;
+    }
+    ::selection {
+        background-color: var(--primary);
+        color: var(--primary-foreground);
+    }
+}
+
+/* ======================================================================
+   MOTION
+   ======================================================================
+   Two layers, deliberately split by what each tool is actually good at.
+
+   1. Entrances are CSS keyframes (below). They run from the stylesheet, so
+      the prerendered HTML is never gated on JavaScript -- the blog index
+      ships all 33 posts in the static markup and they must be readable with
+      JS off. A JS-driven reveal starting at `opacity: 0` would leave that
+      page blank; a CSS animation always resolves to the `to` frame whether
+      or not anything hydrates.
+   2. Route changes are React's <ViewTransition> (browser-native, no JS
+      payload) and layout changes on the blog filter are Motion. Motion is
+      only reached for the one thing neither CSS nor view transitions can
+      do: animating 33 rows to new positions when a filter changes.
+   ====================================================================== */
+
+@layer utilities {
+    /* `both` holds the from-frame during `--reveal-delay`, so a staggered
+       item does not flash at full opacity before its turn. */
+    .reveal {
+        animation: reveal-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation-delay: var(--reveal-delay, 0ms);
+    }
+}
+
+@keyframes reveal-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* --- route transitions ---------------------------------------------- */
+
+/* The transition overlay swallows clicks for its whole duration. Letting
+   pointer events through keeps the page usable mid-navigation. */
+::view-transition {
+    pointer-events: none;
+}
+
+/* Old content leaves fast so it stops competing for attention; new content
+   arrives slower and waits out the exit before it starts fading up. */
+::view-transition-old(.page) {
+    animation: 140ms ease-in both vt-fade reverse;
+}
+
+::view-transition-new(.page) {
+    animation:
+        260ms ease-out 120ms both vt-fade,
+        460ms cubic-bezier(0.22, 1, 0.36, 1) both vt-lift;
+}
+
+@keyframes vt-fade {
+    from {
+        opacity: 0;
+        filter: blur(3px);
+    }
+    to {
+        opacity: 1;
+        filter: blur(0);
+    }
+}
+
+@keyframes vt-lift {
+    from {
+        transform: translateY(14px);
+    }
+    to {
+        transform: none;
+    }
+}
+
+/* The header is the spatial anchor: if it slid with the content there would
+   be no fixed reference point telling the reader that the page changed
+   rather than the whole viewport. Hiding the old snapshot avoids a flash of
+   two headers at once. */
+::view-transition-group(site-header) {
+    animation: none;
+    z-index: 100;
+}
+
+::view-transition-old(site-header) {
+    display: none;
+}
+
+::view-transition-new(site-header) {
+    animation: none;
+}
+
+/* The active-nav underline is named separately from the header, which lifts
+   it out of the pinned group so the browser slides it from the old nav item
+   to the new one while the header itself stays still. */
+::view-transition-group(nav-active) {
+    animation-duration: 420ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 101;
+}
+
+/* Post thumbnail -> post hero. The blur mid-flight hides the pixel
+   interpolation between two very different image sizes. */
+::view-transition-group(.morph) {
+    animation-duration: 460ms;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+::view-transition-image-pair(.morph) {
+    animation-name: vt-morph-blur;
+}
+
+@keyframes vt-morph-blur {
+    30% {
+        filter: blur(4px);
+    }
+}
+
+/* --- reduced motion -------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* The reveal has to be removed outright rather than shortened: at 0.01ms
+       with `both` fill, a delayed item can still be caught mid-from-frame. */
+    .reveal {
+        animation: none !important;
+    }
+
+    ::view-transition-old(*),
+    ::view-transition-new(*),
+    ::view-transition-group(*) {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
     }
 }

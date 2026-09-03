@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 import { PageHeader } from "@/components/page-header";
+import { SectionLabel } from "@/components/section-label";
 import { Prose } from "@/components/prose";
-import { Separator } from "@/components/ui/separator";
 
 const description =
     "A living changelog of what I'm learning, tinkering with, and thinking about outside of client work.";
@@ -86,15 +86,12 @@ export default function Now() {
                 updatedLabel="updated jul 2026"
             />
             <div className="mt-12 flex flex-col gap-10">
-                {sections.map((section, index) => (
+                {sections.map((section) => (
                     <section
                         key={section.title}
                         className="flex flex-col gap-4"
                     >
-                        {index > 0 && <Separator className="mb-6" />}
-                        <h2 className="font-heading text-2xl font-medium">
-                            {section.title}
-                        </h2>
+                        <SectionLabel>{section.title}</SectionLabel>
                         <Prose>{section.body}</Prose>
                     </section>
                 ))}

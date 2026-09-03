@@ -14,12 +14,12 @@ export default function BlogIndex() {
     const posts = getPosts();
 
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 py-16">
+        <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
             <PageHeader
                 heading="Writing"
                 intro="Laravel, Rust, .NET, and whatever tooling rabbit hole has me this month. Mostly code, occasionally opinions."
             />
-            <div className="mt-10">
+            <div className="mt-14">
                 <PostFilters posts={posts} tags={getTags(posts)} />
             </div>
         </main>
