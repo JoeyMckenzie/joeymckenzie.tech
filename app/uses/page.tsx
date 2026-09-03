@@ -102,7 +102,7 @@ const sections = [
 
 export default function Uses() {
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 py-16">
+        <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
             <PageHeader
                 heading="Uses"
                 intro="The tools, software, and hardware I use on a daily basis."

@@ -178,6 +178,12 @@
     }
     html {
         @apply font-sans;
+        /* Short routes (/now, /uses) have no scrollbar and long ones (/blog,
+           /cv) do, so the centred column jumped 7px sideways on every
+           navigation between the two. Reserving the gutter on every page
+           holds it still. Measured: nav left edge was 256px without a
+           scrollbar and 249px with one. */
+        scrollbar-gutter: stable;
     }
     /* Geist ships proper tabular figures. Dates and reading times sit in
        columns down the post list, so turning them on stops the numerals

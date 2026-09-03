@@ -78,7 +78,7 @@ const sections = [
 
 export default function Now() {
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 py-16">
+        <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
             <PageHeader
                 heading="Now"
                 intro={description}

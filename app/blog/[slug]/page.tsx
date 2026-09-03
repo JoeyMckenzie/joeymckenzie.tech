@@ -48,7 +48,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
     const { default: Body } = await import(`@/content/blog/${slug}.md`);
 
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 pt-16 pb-24">
+        <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
             <article>
                 <header className="mb-12">
                     <div

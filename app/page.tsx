@@ -49,14 +49,15 @@ export default function Home() {
                                     href="/blog"
                                     className="text-muted-foreground hover:text-primary text-label tracking-label font-mono whitespace-nowrap uppercase transition-colors duration-200"
                                 >
-                                    all posts &rarr;
+                                    all posts
                                 </Link>
                             }
                         >
                             recent writing
                         </SectionLabel>
                     </div>
-                    <div className="mt-2 divide-y border-t">
+                    {/* No `border-t` here: `SectionLabel` already draws the rule. */}
+                    <div className="mt-2 divide-y">
                         {posts.map((post, index) => (
                             <div
                                 key={post.slug}

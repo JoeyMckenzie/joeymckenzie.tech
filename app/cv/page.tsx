@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { PageHeader } from "@/components/page-header";
 import { SectionLabel } from "@/components/section-label";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 
 export const metadata: Metadata = {
     title: "CV",
@@ -96,7 +95,7 @@ const skills = [
 
 export default function Cv() {
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 py-16">
+        <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
             <PageHeader heading="Joey McKenzie" />
             <p className="text-muted-foreground mt-8 max-w-2xl">
                 Product engineer with a passion for tinkering, building web
@@ -108,9 +107,7 @@ export default function Cv() {
                 to leave codebases better than I found them.
             </p>
 
-            <Separator className="mt-14" />
-
-            <section className="mt-10 flex flex-col gap-6">
+            <section className="mt-16 flex flex-col gap-6">
                 <SectionLabel>experience</SectionLabel>
                 <div className="flex flex-col gap-6">
                     {experience.map((job) => (
@@ -139,9 +136,7 @@ export default function Cv() {
                 </div>
             </section>
 
-            <Separator className="mt-14" />
-
-            <section className="mt-10 flex flex-col gap-6">
+            <section className="mt-16 flex flex-col gap-6">
                 <SectionLabel>education</SectionLabel>
                 {education.map((school) => (
                     <div
@@ -163,9 +158,7 @@ export default function Cv() {
                 ))}
             </section>
 
-            <Separator className="mt-14" />
-
-            <section className="mt-10 flex flex-col gap-6">
+            <section className="mt-16 flex flex-col gap-6">
                 <SectionLabel>skills</SectionLabel>
                 {skills.map((group) => (
                     <div key={group.category} className="flex flex-col gap-3">
