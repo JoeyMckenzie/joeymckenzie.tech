@@ -1,5 +1,8 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 
+import { breakpoints, colors, fonts } from "@/app/tokens.stylex";
+import { Main } from "@/components/main";
 import { PageHeader } from "@/components/page-header";
 import { SectionLabel } from "@/components/section-label";
 
@@ -100,30 +103,49 @@ const sections = [
     },
 ];
 
+const styles = stylex.create({
+    sections: {
+        marginTop: 48,
+        display: "flex",
+        flexDirection: "column",
+        gap: 40,
+    },
+    section: { display: "flex", flexDirection: "column", gap: 20 },
+    list: { display: "flex", flexDirection: "column", gap: 16 },
+    row: {
+        display: "grid",
+        gap: { default: 2, [breakpoints.sm]: 20 },
+        gridTemplateColumns: { default: null, [breakpoints.sm]: "11rem 1fr" },
+        fontSize: "0.875rem",
+    },
+    name: { color: colors.foreground, fontFamily: fonts.mono },
+    note: { color: colors.mutedForeground },
+});
+
 export default function Uses() {
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
+        <Main>
             <PageHeader
                 heading="Uses"
                 intro="The tools, software, and hardware I use on a daily basis."
             />
-            <div className="mt-12 flex flex-col gap-10">
+            <div {...stylex.props(styles.sections)}>
                 {sections.map((section) => (
                     <section
                         key={section.title}
-                        className="flex flex-col gap-5"
+                        {...stylex.props(styles.section)}
                     >
                         <SectionLabel>{section.title}</SectionLabel>
-                        <ul className="flex flex-col gap-4">
+                        <ul {...stylex.props(styles.list)}>
                             {section.items.map((item) => (
                                 <li
                                     key={item.name}
-                                    className="grid gap-0.5 text-sm sm:grid-cols-[11rem_1fr] sm:gap-5"
+                                    {...stylex.props(styles.row)}
                                 >
-                                    <span className="text-foreground font-mono">
+                                    <span {...stylex.props(styles.name)}>
                                         {item.name}
                                     </span>
-                                    <span className="text-muted-foreground">
+                                    <span {...stylex.props(styles.note)}>
                                         {item.description}
                                     </span>
                                 </li>
@@ -132,6 +154,6 @@ export default function Uses() {
                     </section>
                 ))}
             </div>
-        </main>
+        </Main>
     );
 }

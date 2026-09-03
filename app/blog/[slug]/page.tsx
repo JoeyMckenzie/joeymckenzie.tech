@@ -1,13 +1,63 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
 
+import {
+    breakpoints,
+    colors,
+    fonts,
+    radius,
+    text,
+    tracking,
+} from "@/app/tokens.stylex";
+import { Badge, badgeStyles } from "@/components/badge";
 import { FormattedDate } from "@/components/formatted-date";
+import { Main } from "@/components/main";
 import { Prose } from "@/components/prose";
-import { revealDelay } from "@/components/reveal";
-import { Badge } from "@/components/ui/badge";
+import { reveal } from "@/components/reveal";
 import { getPost, getPosts } from "@/lib/posts";
+
+const styles = stylex.create({
+    header: { marginBottom: 48 },
+    meta: {
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        gap: 8,
+        color: colors.mutedForeground,
+        fontFamily: fonts.mono,
+        fontSize: text.label,
+        lineHeight: text.labelLineHeight,
+        letterSpacing: tracking.label,
+        textTransform: "uppercase",
+    },
+    title: {
+        marginTop: 16,
+        fontSize: { default: "2.25rem", [breakpoints.sm]: "3rem" },
+        lineHeight: 1.1,
+        fontWeight: 600,
+        letterSpacing: "-0.015em",
+        textWrap: "balance",
+    },
+    description: {
+        marginTop: 20,
+        maxWidth: "42rem",
+        color: colors.mutedForeground,
+        fontSize: "1.125rem",
+        lineHeight: 1.625,
+    },
+    tags: { marginTop: 24, display: "flex", flexWrap: "wrap", gap: 8 },
+    hero: {
+        marginBottom: 48,
+        width: "100%",
+        borderRadius: radius.lg,
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: colors.border,
+    },
+});
 
 export function generateStaticParams() {
     return getPosts().map((post) => ({ slug: post.slug }));
@@ -45,44 +95,37 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
 
     // Turbopack turns this template literal into a context module over
     // `content/blog/*.md`, so every post compiles at build time.
-    const { default: Body } = await import(`@/content/blog/${slug}.md`);
+    //
+    // Relative, not the `@/` alias this file uses everywhere else. Adding
+    // StyleX put a Babel pass in front of Turbopack, and a file that has been
+    // through a loader no longer gets the alias applied when the context
+    // module resolves -- `@/content/blog/` <dynamic> `.md` fails to resolve
+    // and the build dies here. A relative specifier needs no alias.
+    const { default: Body } = await import(`../../../content/blog/${slug}.md`);
 
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
+        <Main>
             <article>
-                <header className="mb-12">
-                    <div
-                        className="text-muted-foreground text-label tracking-label reveal flex flex-wrap items-center gap-2 font-mono uppercase"
-                        style={revealDelay(0)}
-                    >
+                <header {...stylex.props(styles.header)}>
+                    <div {...stylex.props(styles.meta, reveal(0))}>
                         <FormattedDate date={post.pubDate} />
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.readingMinutes} min read</span>
                     </div>
-                    <h1
-                        className="font-heading reveal mt-4 text-4xl font-semibold tracking-tight text-balance sm:text-5xl"
-                        style={revealDelay(1)}
-                    >
+                    <h1 {...stylex.props(styles.title, reveal(1))}>
                         {post.title}
                     </h1>
                     {post.description && (
-                        <p
-                            className="text-muted-foreground reveal mt-5 max-w-2xl text-lg leading-relaxed"
-                            style={revealDelay(2)}
-                        >
+                        <p {...stylex.props(styles.description, reveal(2))}>
                             {post.description}
                         </p>
                     )}
                     {post.tags.length > 0 && (
-                        <div
-                            className="reveal mt-6 flex flex-wrap gap-2"
-                            style={revealDelay(3)}
-                        >
+                        <div {...stylex.props(styles.tags, reveal(3))}>
                             {post.tags.map((tag) => (
                                 <Badge
                                     key={tag}
-                                    variant="outline"
-                                    className="text-label tracking-label font-mono uppercase"
+                                    style={badgeStyles.tag}
                                     render={<Link href={`/blog/?tag=${tag}`} />}
                                 >
                                     {tag}
@@ -107,7 +150,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                         <img
                             src={post.heroImage}
                             alt=""
-                            className="mb-12 w-full rounded-lg border"
+                            {...stylex.props(styles.hero)}
                         />
                     </ViewTransition>
                 )}
@@ -116,6 +159,6 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                     <Body />
                 </Prose>
             </article>
-        </main>
+        </Main>
     );
 }

@@ -1,200 +1,126 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
-@plugin "@tailwindcss/typography";
+/* Where the StyleX compiler writes every extracted style. Everything StyleX
+   generates is a class selector, so it outranks the element-level rules below
+   on specificity regardless of where this sits. */
+@stylex;
 
-@custom-variant dark (&:is(.dark *));
+/* ======================================================================
+   RESET
+   ======================================================================
+   Tailwind's Preflight used to do this. Removing Tailwind put browser
+   defaults back and it showed immediately -- bullets down the nav, underlines
+   under every link, `h1` at browser sizes. This is only the part the site
+   actually depends on, not a full normalize.
+   ====================================================================== */
 
-@theme inline {
-    --color-background: var(--background);
-    --color-foreground: var(--foreground);
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
-    --font-heading: var(--font-sans);
-
-    /* --- type scale ---------------------------------------------------
-       Geist Sans does display work, Geist Mono does instrumentation.
-       The two tracking values below are the whole idea: display type is
-       pulled tight so the counters close up at size, and mono labels are
-       opened right out so they read as machine annotation rather than
-       small prose. Both are used as named utilities (`tracking-display`,
-       `tracking-label`) so the values live here and not at 20 call sites. */
-    --tracking-display: -0.035em;
-    --tracking-label: 0.18em;
-
-    /* Fluid rather than a breakpoint step: at a fixed 3.375rem the hero
-       broke across four lines on a 390px screen. */
-    --text-display: clamp(2.375rem, 7.5vw, 3.375rem);
-    --text-display--line-height: 1.02;
-    --text-display--letter-spacing: -0.035em;
-    --text-title: 1.3125rem;
-    --text-title--line-height: 1.3;
-    --text-label: 0.6875rem;
-    --text-label--line-height: 1;
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
-    --color-sidebar: var(--sidebar);
-    --color-chart-5: var(--chart-5);
-    --color-chart-4: var(--chart-4);
-    --color-chart-3: var(--chart-3);
-    --color-chart-2: var(--chart-2);
-    --color-chart-1: var(--chart-1);
-    --color-ring: var(--ring);
-    --color-input: var(--input);
-    --color-border: var(--border);
-    --color-destructive: var(--destructive);
-    --color-accent-foreground: var(--accent-foreground);
-    --color-accent: var(--accent);
-    --color-muted-foreground: var(--muted-foreground);
-    --color-muted: var(--muted);
-    --color-secondary-foreground: var(--secondary-foreground);
-    --color-secondary: var(--secondary);
-    --color-primary-foreground: var(--primary-foreground);
-    --color-primary: var(--primary);
-    --color-popover-foreground: var(--popover-foreground);
-    --color-popover: var(--popover);
-    --color-card-foreground: var(--card-foreground);
-    --color-card: var(--card);
-    --radius-sm: calc(var(--radius) * 0.6);
-    --radius-md: calc(var(--radius) * 0.8);
-    --radius-lg: var(--radius);
-    --radius-xl: calc(var(--radius) * 1.4);
-    --radius-2xl: calc(var(--radius) * 1.8);
-    --radius-3xl: calc(var(--radius) * 2.2);
-    --radius-4xl: calc(var(--radius) * 2.6);
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
-:root {
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.87 0 0);
-    --chart-2: oklch(0.556 0 0);
-    --chart-3: oklch(0.439 0 0);
-    --chart-4: oklch(0.371 0 0);
-    --chart-5: oklch(0.269 0 0);
-    --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+pre,
+ul,
+ol,
+dl,
+dd {
+    margin: 0;
 }
 
-/* --- the palette ------------------------------------------------------
-   Warm near-black canvas, one amber accent. Every hex carries its measured
-   WCAG ratio against the surface it is actually painted on, the same way the
-   Astro site's `global.css` did -- the ratios are computed, not eyeballed.
+/* Headings size themselves in the component that renders them. Left at
+   browser defaults they would fight every `fontSize` StyleX sets. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: inherit;
+    font-weight: inherit;
+}
 
-   The site is dark-only today (`<html class="dark">` in `app/layout.tsx`), so
-   this block is the only theme that renders. The stock neutral `:root` above
-   is left untouched: it is unreachable, and inventing a light palette nobody
-   can see would be unverifiable guesswork. A light theme means redefining
-   these fifteen values, not restructuring anything. */
-.dark {
-    /* --- surfaces --- */
-    --background: #0e0d0c; /* canvas */
-    --card: #171614; /* raised one step off the canvas */
-    --popover: #171614;
-    --secondary: #1e1c1a;
-    --muted: #171614;
-    --accent: #1e1c1a; /* hover wash on ghost buttons */
+ul,
+ol {
+    list-style: none;
+    padding: 0;
+}
 
-    /* --- ink (ratio vs --background) --- */
-    --foreground: #e9e6e1; /* 18.51:1 */
-    --card-foreground: #e9e6e1; /* 11.34:1 on --card */
-    --popover-foreground: #e9e6e1;
-    --secondary-foreground: #e9e6e1;
-    --accent-foreground: #e9e6e1;
-    /* 8.72:1 on --background, 5.34:1 on --card. Deliberately not the
-       11.19:1 first pass -- muted text that bright competes with the body
-       copy instead of sitting under it. */
-    --muted-foreground: #7d766c;
+a {
+    color: inherit;
+    text-decoration: none;
+}
 
-    /* --- accent --- */
-    /* 8.93:1 on --background, 5.47:1 on --card. This is the whole colour
-       budget: links, active nav, focus rings, rules that need to read as
-       interactive. --primary-foreground is the canvas, not white: white on
-       amber is 2.36:1 and fails outright. */
-    --primary: #f0b46a;
-    --primary-foreground: #0e0d0c; /* 8.93:1 */
-    --ring: #f0b46a;
+/* Post images render at their natural size; `block` is what lets the auto
+   margins in the prose rules centre them. */
+img,
+svg,
+video {
+    display: block;
+    max-width: 100%;
+}
 
-    /* 3.06:1 vs --background -- clears the 3:1 threshold for a UI boundary,
-       which matters more here than it did before: the design uses rules
-       instead of cards, so hairlines are load-bearing structure. */
-    --border: #2e2a26;
-    --input: #2e2a26;
+button,
+input,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    padding: 0;
+}
 
-    --destructive: #e5877a;
+button {
+    cursor: pointer;
+}
 
-    --chart-1: #f0b46a;
-    --chart-2: #c9924c;
-    --chart-3: #8a6a3c;
-    --chart-4: #7d766c;
-    --chart-5: #2e2a26;
+/* ======================================================================
+   ELEMENT DEFAULTS
+   ======================================================================
+   The handful of rules that have no element in a component to hang a
+   `stylex.props()` spread on. Values that need the palette come through as
+   custom properties set in StyleX -- see `app/layout.tsx` -- so this file
+   never hard-codes a colour.
+   ====================================================================== */
 
-    --sidebar: #171614;
-    --sidebar-foreground: #e9e6e1;
-    --sidebar-primary: #f0b46a;
-    --sidebar-primary-foreground: #0e0d0c;
-    --sidebar-accent: #1e1c1a;
-    --sidebar-accent-foreground: #e9e6e1;
-    --sidebar-border: #2e2a26;
-    --sidebar-ring: #f0b46a;
-
+html {
+    /* Was carried by the `.dark` class shadcn put on `<html>`. That class is
+       gone with the rest of Tailwind, and losing this would have handed the
+       page light scrollbars and light form controls on a near-black canvas. */
     color-scheme: dark;
+    height: 100%;
+    font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Short routes (/now, /uses) have no scrollbar and long ones (/blog, /cv)
+       do, so the centred column jumped 7px sideways on every navigation
+       between the two. Reserving the gutter on every page holds it still.
+       Measured: nav left edge was 256px without a scrollbar and 249px with
+       one. */
+    scrollbar-gutter: stable;
 }
 
-@layer base {
-    * {
-        @apply border-border outline-ring/50;
-    }
-    body {
-        @apply bg-background text-foreground;
-    }
-    html {
-        @apply font-sans;
-        /* Short routes (/now, /uses) have no scrollbar and long ones (/blog,
-           /cv) do, so the centred column jumped 7px sideways on every
-           navigation between the two. Reserving the gutter on every page
-           holds it still. Measured: nav left edge was 256px without a
-           scrollbar and 249px with one. */
-        scrollbar-gutter: stable;
-    }
-    /* Geist ships proper tabular figures. Dates and reading times sit in
-       columns down the post list, so turning them on stops the numerals
-       jittering between rows. */
-    :is(time, .tabular) {
-        font-variant-numeric: tabular-nums;
-    }
-    ::selection {
-        background-color: var(--primary);
-        color: var(--primary-foreground);
-    }
+/* Geist ships proper tabular figures. Dates and reading times sit in columns
+   down the post list, so turning them on stops the numerals jittering between
+   rows. */
+:is(time, .tabular) {
+    font-variant-numeric: tabular-nums;
+}
+
+/* Custom properties inherit, so one bare rule reaches every selection on the
+   page while the colours still come from `tokens.stylex.ts`. */
+::selection {
+    background-color: var(--selection-bg);
+    color: var(--selection-fg);
 }
 
 /* ======================================================================
@@ -202,37 +128,14 @@
    ======================================================================
    Two layers, deliberately split by what each tool is actually good at.
 
-   1. Entrances are CSS keyframes (below). They run from the stylesheet, so
-      the prerendered HTML is never gated on JavaScript -- the blog index
-      ships all 33 posts in the static markup and they must be readable with
-      JS off. A JS-driven reveal starting at `opacity: 0` would leave that
-      page blank; a CSS animation always resolves to the `to` frame whether
-      or not anything hydrates.
+   1. Entrances are compiled CSS keyframes, and they live in
+      `components/reveal.tsx` -- StyleX emits them, so the reasoning for why
+      they are CSS rather than JS is documented there.
    2. Route changes are React's <ViewTransition> (browser-native, no JS
       payload) and layout changes on the blog filter are Motion. Motion is
       only reached for the one thing neither CSS nor view transitions can
       do: animating 33 rows to new positions when a filter changes.
    ====================================================================== */
-
-@layer utilities {
-    /* `both` holds the from-frame during `--reveal-delay`, so a staggered
-       item does not flash at full opacity before its turn. */
-    .reveal {
-        animation: reveal-in 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
-        animation-delay: var(--reveal-delay, 0ms);
-    }
-}
-
-@keyframes reveal-in {
-    from {
-        opacity: 0;
-        transform: translateY(12px);
-    }
-    to {
-        opacity: 1;
-        transform: none;
-    }
-}
 
 /* --- route transitions ---------------------------------------------- */
 
@@ -329,16 +232,170 @@
         scroll-behavior: auto !important;
     }
 
-    /* The reveal has to be removed outright rather than shortened: at 0.01ms
-       with `both` fill, a delayed item can still be caught mid-from-frame. */
-    .reveal {
-        animation: none !important;
-    }
-
     ::view-transition-old(*),
     ::view-transition-new(*),
     ::view-transition-group(*) {
         animation-duration: 0s !important;
         animation-delay: 0s !important;
     }
+}
+
+/* ======================================================================
+   PROSE
+   ======================================================================
+   Post bodies. Everything else on the site is styled in StyleX; this is
+   markdown output, so there is no element in `components/prose.tsx` to attach
+   a style to and no way for StyleX to generate a descendant selector.
+
+   The values are not duplicated here. `Prose` sets each `--prose-*` custom
+   property from `app/tokens.stylex.ts`, so this file only decides which
+   element gets which one. Change a colour there, not here.
+   ====================================================================== */
+
+[data-prose] {
+    color: var(--prose-body);
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+[data-prose] > * + * {
+    margin-top: 1.25em;
+}
+
+[data-prose] h1,
+[data-prose] h2,
+[data-prose] h3,
+[data-prose] h4 {
+    color: var(--prose-headings);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    text-wrap: balance;
+}
+
+/* Headings need more air above than below -- the space belongs to the section
+   they open, not to the paragraph they sit on. */
+[data-prose] h2 {
+    margin-top: 2.5em;
+    font-size: 1.5rem;
+}
+
+[data-prose] h3 {
+    margin-top: 2em;
+    font-size: 1.25rem;
+}
+
+[data-prose] h4 {
+    margin-top: 1.75em;
+    font-size: 1.0625rem;
+}
+
+[data-prose] h2 + *,
+[data-prose] h3 + *,
+[data-prose] h4 + * {
+    margin-top: 0.75em;
+}
+
+[data-prose] strong {
+    color: var(--prose-headings);
+    font-weight: 600;
+}
+
+[data-prose] a {
+    color: var(--prose-links);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: color-mix(
+        in oklab,
+        var(--prose-links) 40%,
+        transparent
+    );
+    transition: text-decoration-color 200ms;
+}
+
+[data-prose] a:hover {
+    text-decoration-color: var(--prose-links);
+}
+
+[data-prose] ul,
+[data-prose] ol {
+    padding-inline-start: 1.5em;
+}
+
+[data-prose] ul {
+    list-style: disc;
+}
+
+[data-prose] ol {
+    list-style: decimal;
+}
+
+[data-prose] li::marker {
+    color: var(--prose-muted);
+}
+
+[data-prose] li + li {
+    margin-top: 0.5em;
+}
+
+[data-prose] blockquote {
+    border-inline-start: 2px solid var(--prose-links);
+    padding-inline-start: 1.25em;
+    font-style: italic;
+}
+
+[data-prose] hr {
+    border: 0;
+    border-top: 1px solid var(--prose-rule);
+    margin-block: 2.5em;
+}
+
+[data-prose] table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375em;
+}
+
+[data-prose] th,
+[data-prose] td {
+    border-bottom: 1px solid var(--prose-rule);
+    padding: 0.5em 0.75em;
+    text-align: start;
+}
+
+[data-prose] th {
+    color: var(--prose-headings);
+    font-weight: 600;
+}
+
+/* Post images render at their natural size, so anything narrower than the
+   column sat flush left. Auto margins centre them. */
+[data-prose] img {
+    display: block;
+    margin-inline: auto;
+    border-radius: var(--prose-radius);
+}
+
+/* shiki writes the tokyo-night background inline, so `pre` only needs the frame
+   around it. */
+[data-prose] pre {
+    border: 1px solid var(--prose-rule);
+    border-radius: var(--prose-radius);
+    padding: 1rem;
+    overflow-x: auto;
+}
+
+[data-prose] code {
+    font-family: var(--prose-mono);
+}
+
+/* Deliberately `:not(pre) > code` and not every `code`: the second form would
+   draw a chip around each line of a highlighted block. */
+[data-prose] :not(pre) > code {
+    background-color: var(--prose-code-bg);
+    border: 1px solid var(--prose-rule);
+    border-radius: 0.375rem;
+    padding: 0.125em 0.375em;
+    font-size: 0.875em;
+    font-weight: 400;
 }

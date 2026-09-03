@@ -1,8 +1,65 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 
+import { breakpoints, colors, fonts } from "@/app/tokens.stylex";
+import { Badge } from "@/components/badge";
+import { Main } from "@/components/main";
 import { PageHeader } from "@/components/page-header";
 import { SectionLabel } from "@/components/section-label";
-import { Badge } from "@/components/ui/badge";
+
+const styles = stylex.create({
+    skill: { fontFamily: fonts.mono },
+    intro: {
+        marginTop: 32,
+        maxWidth: "42rem",
+        color: colors.mutedForeground,
+    },
+    section: {
+        marginTop: 64,
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+    },
+    stack: { display: "flex", flexDirection: "column", gap: 24 },
+    // The left rule is the structure here, same as the hairlines elsewhere.
+    entry: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+        borderInlineStartWidth: 1,
+        borderInlineStartStyle: "solid",
+        borderInlineStartColor: colors.border,
+        paddingInlineStart: 24,
+    },
+    entryHead: {
+        display: "flex",
+        flexDirection: { default: "column", [breakpoints.sm]: "row" },
+        alignItems: { default: null, [breakpoints.sm]: "baseline" },
+        justifyContent: { default: null, [breakpoints.sm]: "space-between" },
+        gap: { default: 4, [breakpoints.sm]: 20 },
+    },
+    role: { fontSize: "1.125rem", fontWeight: 500 },
+    org: {
+        marginTop: 2,
+        color: colors.primary,
+        fontFamily: fonts.mono,
+        fontSize: "0.75rem",
+    },
+    dates: {
+        flexShrink: 0,
+        color: colors.mutedForeground,
+        fontFamily: fonts.mono,
+        fontSize: "0.75rem",
+    },
+    summary: {
+        maxWidth: "42rem",
+        color: colors.mutedForeground,
+        fontSize: "0.875rem",
+    },
+    skillGroup: { display: "flex", flexDirection: "column", gap: 12 },
+    skillCategory: { color: colors.mutedForeground, fontSize: "0.875rem" },
+    skillRow: { display: "flex", flexWrap: "wrap", gap: 8 },
+});
 
 export const metadata: Metadata = {
     title: "CV",
@@ -95,9 +152,9 @@ const skills = [
 
 export default function Cv() {
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
+        <Main>
             <PageHeader heading="Joey McKenzie" />
-            <p className="text-muted-foreground mt-8 max-w-2xl">
+            <p {...stylex.props(styles.intro)}>
                 Product engineer with a passion for tinkering, building web
                 applications, distributed systems, and the occasional thing I
                 probably should not have over-engineered. I started my career
@@ -107,28 +164,28 @@ export default function Cv() {
                 to leave codebases better than I found them.
             </p>
 
-            <section className="mt-16 flex flex-col gap-6">
+            <section {...stylex.props(styles.section)}>
                 <SectionLabel>experience</SectionLabel>
-                <div className="flex flex-col gap-6">
+                <div {...stylex.props(styles.stack)}>
                     {experience.map((job) => (
                         <article
                             key={job.company}
-                            className="flex flex-col gap-2 border-l pl-6"
+                            {...stylex.props(styles.entry)}
                         >
-                            <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-5">
+                            <div {...stylex.props(styles.entryHead)}>
                                 <div>
-                                    <h3 className="font-heading text-lg font-medium">
+                                    <h3 {...stylex.props(styles.role)}>
                                         {job.role}
                                     </h3>
-                                    <p className="text-primary mt-0.5 font-mono text-xs">
+                                    <p {...stylex.props(styles.org)}>
                                         {job.company}
                                     </p>
                                 </div>
-                                <span className="text-muted-foreground shrink-0 font-mono text-xs">
+                                <span {...stylex.props(styles.dates)}>
                                     {job.dates}
                                 </span>
                             </div>
-                            <p className="text-muted-foreground max-w-2xl text-sm">
+                            <p {...stylex.props(styles.summary)}>
                                 {job.summary}
                             </p>
                         </article>
@@ -136,42 +193,39 @@ export default function Cv() {
                 </div>
             </section>
 
-            <section className="mt-16 flex flex-col gap-6">
+            <section {...stylex.props(styles.section)}>
                 <SectionLabel>education</SectionLabel>
                 {education.map((school) => (
                     <div
                         key={school.school}
-                        className="flex flex-col gap-1 border-l pl-6 sm:flex-row sm:items-baseline sm:justify-between sm:gap-5"
+                        {...stylex.props(styles.entry, styles.entryHead)}
                     >
                         <div>
-                            <h3 className="font-heading text-lg font-medium">
+                            <h3 {...stylex.props(styles.role)}>
                                 {school.school}
                             </h3>
-                            <p className="text-primary mt-0.5 font-mono text-xs">
-                                {school.degree}
-                            </p>
+                            <p {...stylex.props(styles.org)}>{school.degree}</p>
                         </div>
-                        <span className="text-muted-foreground shrink-0 font-mono text-xs">
+                        <span {...stylex.props(styles.dates)}>
                             {school.dates}
                         </span>
                     </div>
                 ))}
             </section>
 
-            <section className="mt-16 flex flex-col gap-6">
+            <section {...stylex.props(styles.section)}>
                 <SectionLabel>skills</SectionLabel>
                 {skills.map((group) => (
-                    <div key={group.category} className="flex flex-col gap-3">
-                        <h3 className="text-muted-foreground text-sm">
+                    <div
+                        key={group.category}
+                        {...stylex.props(styles.skillGroup)}
+                    >
+                        <h3 {...stylex.props(styles.skillCategory)}>
                             {group.category}
                         </h3>
-                        <div className="flex flex-wrap gap-2">
+                        <div {...stylex.props(styles.skillRow)}>
                             {group.items.map((item) => (
-                                <Badge
-                                    key={item}
-                                    variant="outline"
-                                    className="font-mono"
-                                >
+                                <Badge key={item} style={styles.skill}>
                                     {item}
                                 </Badge>
                             ))}
@@ -179,6 +233,6 @@ export default function Cv() {
                     </div>
                 ))}
             </section>
-        </main>
+        </Main>
     );
 }

@@ -30,21 +30,46 @@ file or in `migration.md`.
 
 ## This repo
 
-Four places where `installation.md`'s generic Next.js advice is wrong here.
+Where `installation.md`'s generic Next.js advice is wrong here. The build is
+already configured — read `babel.config.js` and `postcss.config.mjs`, which
+carry the same reasoning at the point of use. This is the summary.
 
-- **Babel config carries the StyleX plugin only.** This is Next 16 on
-  Turbopack, which auto-detects a Babel config file and runs it _while SWC
-  still handles Next's internal transforms and downleveling_
+- **Babel config carries the StyleX plugin only, plus `parserOpts`.** This is
+  Next 16 on Turbopack, which auto-detects a Babel config file and runs it
+  _while SWC still handles Next's internal transforms and downleveling_
   (`node_modules/next/dist/docs/01-app/03-api-reference/08-turbopack.md`).
   `installation.md`'s `presets: ['next/babel']` is webpack-era advice; under
-  Turbopack it re-runs transforms SWC has already done. Omit it.
+  Turbopack it re-runs work SWC has already done. But dropping the preset also
+  drops Babel's ability to _parse_ TS and JSX, and it fails on the first
+  `import type` — so the config sets `parserOpts` (`typescript` everywhere,
+  `jsx` scoped to `.tsx` via `overrides`) to restore syntax without adding a
+  transform.
+- **A Babel pass in front of Turbopack breaks `@/` aliases in dynamic
+  imports.** A file that has been through a loader no longer gets the alias
+  applied when Turbopack resolves a template-literal `import()` into a context
+  module: `app/blog/[slug]/page.tsx` had to switch to a relative specifier.
+  Static imports are unaffected. If a build fails with
+  `Module not found: Can't resolve '@/… ' <dynamic> '…'`, this is why.
+- **The PostCSS plugin must not be handed the Babel plugin list.** The StyleX
+  docs import `babel.config.js` into `postcss.config.js` and pass
+  `plugins: babelConfig.plugins` through. Turbopack serialises the PostCSS
+  config across its Rust boundary and rewrites every project-root path in it to
+  the literal string `/ROOT/`, so the plugin arrives with
+  `aliases: {"@/*": ["/ROOT/*"]}` and cannot resolve `@/app/tokens.stylex` --
+  `Could not resolve the path to the imported file`, reported against
+  `app/globals.css`. Omitting `plugins` lets Babel load `babel.config.js`
+  itself inside the worker, where `__dirname` is real.
+- **Babel's `ignore` does nothing.** Next's loader hands Babel a placeholder
+  filename when it resolves the config, so path-based `ignore`/`only` entries
+  never match. Do not reach for them to scope what Babel sees.
 - **`postcss.config.mjs` is ESM.** `installation.md` writes CommonJS
   (`require`/`module.exports`). Use `import`/`export default` and keep the
   `.mjs` extension.
-- **Tailwind's PostCSS plugin stays until the last Tailwind class is gone.**
-  Both plugins run side by side through the whole migration. While they
-  coexist, `useCSSLayers: false` so StyleX outranks leftover utilities; flip it
-  to `true` once Tailwind is removed.
+- **`useCSSLayers` stays `false`.** Tailwind is gone, but `app/globals.css`
+  still holds a reset, the element defaults and the prose stylesheet.
+  Unlayered StyleX outranking an element-level rule is the behaviour we want;
+  layering it would invert that and let a stray `body {}` rule beat a
+  component.
 - **Static export.** `output: "export"` means no server runtime, so
   `runtimeInjection` stays `false` — there is nothing to inject styles at
   runtime.

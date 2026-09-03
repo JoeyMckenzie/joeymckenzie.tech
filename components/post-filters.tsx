@@ -1,26 +1,63 @@
 "use client";
 
-import { SearchIcon } from "lucide-react";
+import * as stylex from "@stylexjs/stylex";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
+import { colors, radius } from "@/app/tokens.stylex";
+import { Badge, badgeStyles } from "@/components/badge";
+import { Button } from "@/components/button";
 import { PostCard } from "@/components/post-card";
-import { revealDelay } from "@/components/reveal";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-    Empty,
-    EmptyContent,
-    EmptyDescription,
-    EmptyHeader,
-    EmptyTitle,
-} from "@/components/ui/empty";
-import {
-    InputGroup,
-    InputGroupAddon,
-    InputGroupInput,
-} from "@/components/ui/input-group";
+import { reveal } from "@/components/reveal";
+import { SearchInput } from "@/components/search-input";
 import type { Post } from "@/lib/posts";
+
+const styles = stylex.create({
+    root: { display: "flex", flexDirection: "column", gap: 32 },
+    tagRow: { display: "flex", flexWrap: "wrap", gap: 8 },
+    count: { opacity: 0.6 },
+    // Tailwind's `divide-y border-t` drew a rule above every row including the
+    // first. StyleX generates no `& > * + *` selector, so the rule lives on the
+    // row itself, which produces the same set of hairlines.
+    divided: {
+        borderTopWidth: 1,
+        borderTopStyle: "solid",
+        borderTopColor: colors.border,
+    },
+    // The empty state was six shadcn components deep for one bordered box.
+    empty: {
+        display: "flex",
+        width: "100%",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 16,
+        borderRadius: radius.xl,
+        borderWidth: 1,
+        borderStyle: "dashed",
+        borderColor: colors.border,
+        padding: 24,
+        textAlign: "center",
+        textWrap: "balance",
+    },
+    emptyHeader: {
+        display: "flex",
+        maxWidth: "24rem",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 8,
+    },
+    emptyTitle: {
+        fontSize: "0.875rem",
+        fontWeight: 500,
+        letterSpacing: "-0.015em",
+    },
+    emptyDescription: {
+        color: colors.mutedForeground,
+        fontSize: "0.875rem",
+        lineHeight: 1.625,
+    },
+});
 
 // The whole post list is already in the page, so filtering is a client-side
 // concern -- a static export has no server to read `searchParams` on.
@@ -119,27 +156,22 @@ export function PostFilters({
         : { type: "spring" as const, stiffness: 420, damping: 38, mass: 0.9 };
 
     return (
-        <div className="flex flex-col gap-8">
-            <div className="reveal" style={revealDelay(0)}>
-                <InputGroup>
-                    <InputGroupAddon>
-                        <SearchIcon />
-                    </InputGroupAddon>
-                    <InputGroupInput
-                        type="search"
-                        placeholder="Search posts…"
-                        aria-label="Search posts"
-                        autoComplete="off"
-                        value={query}
-                        onChange={(event) => setQuery(event.target.value)}
-                    />
-                </InputGroup>
+        <div {...stylex.props(styles.root)}>
+            <div {...stylex.props(reveal(0))}>
+                <SearchInput
+                    type="search"
+                    placeholder="Search posts…"
+                    aria-label="Search posts"
+                    autoComplete="off"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                />
             </div>
 
-            <div className="reveal flex flex-wrap gap-2" style={revealDelay(1)}>
+            <div {...stylex.props(styles.tagRow, reveal(1))}>
                 <Badge
-                    variant={activeTag ? "outline" : "default"}
-                    className="text-label tracking-label cursor-pointer font-mono uppercase"
+                    variant={activeTag ? "outline" : "solid"}
+                    style={badgeStyles.tag}
                     render={
                         <button
                             type="button"
@@ -153,8 +185,8 @@ export function PostFilters({
                 {tags.map(({ tag, count }) => (
                     <Badge
                         key={tag}
-                        variant={activeTag === tag ? "default" : "outline"}
-                        className="text-label tracking-label cursor-pointer font-mono uppercase"
+                        variant={activeTag === tag ? "solid" : "outline"}
+                        style={badgeStyles.tag}
                         render={
                             <button
                                 type="button"
@@ -166,13 +198,13 @@ export function PostFilters({
                         }
                     >
                         {tag}
-                        <span className="opacity-60">{count}</span>
+                        <span {...stylex.props(styles.count)}>{count}</span>
                     </Badge>
                 ))}
             </div>
 
             {visible.length > 0 ? (
-                <div className="divide-y border-t">
+                <div>
                     {/* `popLayout` takes a leaving row out of flow immediately,
                         so the rows below it slide up into the gap rather than
                         waiting for the fade to finish. */}
@@ -195,8 +227,10 @@ export function PostFilters({
                                     every Motion layout animation after the
                                     first paint. */}
                                 <div
-                                    className="reveal"
-                                    style={revealDelay(index)}
+                                    {...stylex.props(
+                                        styles.divided,
+                                        reveal(index)
+                                    )}
                                 >
                                     <PostCard
                                         post={post}
@@ -208,21 +242,17 @@ export function PostFilters({
                     </AnimatePresence>
                 </div>
             ) : (
-                <Empty className="border">
-                    <EmptyHeader>
-                        <EmptyTitle>No matches</EmptyTitle>
-                        <EmptyDescription>
+                <div {...stylex.props(styles.empty)}>
+                    <div {...stylex.props(styles.emptyHeader)}>
+                        <p {...stylex.props(styles.emptyTitle)}>No matches</p>
+                        <p {...stylex.props(styles.emptyDescription)}>
                             {activeTag
                                 ? `Nothing fits that filter in ${activeTag}.`
                                 : "Nothing fits that filter."}
-                        </EmptyDescription>
-                    </EmptyHeader>
-                    <EmptyContent>
-                        <Button variant="outline" size="sm" onClick={clear}>
-                            Clear filters
-                        </Button>
-                    </EmptyContent>
-                </Empty>
+                        </p>
+                    </div>
+                    <Button onClick={clear}>Clear filters</Button>
+                </div>
             )}
         </div>
     );

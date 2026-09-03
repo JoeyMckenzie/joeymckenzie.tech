@@ -1,27 +1,63 @@
+import * as stylex from "@stylexjs/stylex";
 import Link from "next/link";
 
+import { colors, fonts, text, tracking } from "@/app/tokens.stylex";
+import { Main } from "@/components/main";
 import { PostCard } from "@/components/post-card";
-import { revealDelay } from "@/components/reveal";
+import { reveal } from "@/components/reveal";
 import { SectionLabel } from "@/components/section-label";
 import { getPosts } from "@/lib/posts";
+
+const styles = stylex.create({
+    heading: {
+        fontSize: text.display,
+        lineHeight: text.displayLineHeight,
+        letterSpacing: tracking.display,
+        fontWeight: 600,
+    },
+    accent: { color: colors.primary },
+    intro: {
+        marginTop: 28,
+        maxWidth: "36rem",
+        color: colors.mutedForeground,
+        lineHeight: 1.625,
+    },
+    section: { marginTop: 96 },
+    allPosts: {
+        color: { default: colors.mutedForeground, ":hover": colors.primary },
+        fontFamily: fonts.mono,
+        fontSize: text.label,
+        lineHeight: text.labelLineHeight,
+        letterSpacing: tracking.label,
+        textTransform: "uppercase",
+        whiteSpace: "nowrap",
+        textDecoration: "none",
+        transitionProperty: "color",
+        transitionDuration: "200ms",
+    },
+    list: { marginTop: 8 },
+    // Tailwind's `divide-y` is a `& > * + *` rule, which StyleX will not
+    // generate. The rule moves onto the row instead, and the first row skips it
+    // because `SectionLabel` has already drawn a hairline directly above.
+    divided: {
+        borderTopWidth: 1,
+        borderTopStyle: "solid",
+        borderTopColor: colors.border,
+    },
+});
 
 export default function Home() {
     const posts = getPosts().slice(0, 3);
 
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
+        <Main>
             <header>
-                <h1
-                    className="font-heading text-display reveal font-semibold"
-                    style={revealDelay(1)}
-                >
-                    Hi<span className="text-primary">,</span> I&apos;m Joey
-                    <span className="text-primary">.</span>
+                <h1 {...stylex.props(styles.heading, reveal(1))}>
+                    Hi<span {...stylex.props(styles.accent)}>,</span> I&apos;m
+                    Joey
+                    <span {...stylex.props(styles.accent)}>.</span>
                 </h1>
-                <p
-                    className="text-muted-foreground reveal mt-7 max-w-xl leading-relaxed"
-                    style={revealDelay(2)}
-                >
+                <p {...stylex.props(styles.intro, reveal(2))}>
                     Hi, I&apos;m Joey. I build things with Laravel, PHP, and
                     whatever has my attention this month. Mostly code,
                     occasionally opinions, perpetually down a rabbit-hole.
@@ -29,13 +65,13 @@ export default function Home() {
             </header>
 
             {posts.length > 0 && (
-                <section className="mt-24">
-                    <div className="reveal" style={revealDelay(3)}>
+                <section {...stylex.props(styles.section)}>
+                    <div {...stylex.props(reveal(3))}>
                         <SectionLabel
                             action={
                                 <Link
                                     href="/blog"
-                                    className="text-muted-foreground hover:text-primary text-label tracking-label font-mono whitespace-nowrap uppercase transition-colors duration-200"
+                                    {...stylex.props(styles.allPosts)}
                                 >
                                     all posts
                                 </Link>
@@ -44,13 +80,14 @@ export default function Home() {
                             recent writing
                         </SectionLabel>
                     </div>
-                    {/* No `border-t` here: `SectionLabel` already draws the rule. */}
-                    <div className="mt-2 divide-y">
+                    <div {...stylex.props(styles.list)}>
                         {posts.map((post, index) => (
                             <div
                                 key={post.slug}
-                                className="reveal"
-                                style={revealDelay(4 + index)}
+                                {...stylex.props(
+                                    index > 0 && styles.divided,
+                                    reveal(4 + index)
+                                )}
                             >
                                 <PostCard post={post} />
                             </div>
@@ -58,6 +95,6 @@ export default function Home() {
                     </div>
                 </section>
             )}
-        </main>
+        </Main>
     );
 }

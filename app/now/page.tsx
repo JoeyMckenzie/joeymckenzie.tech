@@ -1,5 +1,7 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 
+import { Main } from "@/components/main";
 import { PageHeader } from "@/components/page-header";
 import { SectionLabel } from "@/components/section-label";
 import { Prose } from "@/components/prose";
@@ -76,26 +78,36 @@ const sections = [
     },
 ];
 
+const styles = stylex.create({
+    sections: {
+        marginTop: 48,
+        display: "flex",
+        flexDirection: "column",
+        gap: 40,
+    },
+    section: { display: "flex", flexDirection: "column", gap: 16 },
+});
+
 export default function Now() {
     return (
-        <main className="mx-auto w-full max-w-3xl px-4 pt-20 pb-24">
+        <Main>
             <PageHeader
                 heading="Now"
                 intro={description}
                 updated="2026-07"
                 updatedLabel="updated jul 2026"
             />
-            <div className="mt-12 flex flex-col gap-10">
+            <div {...stylex.props(styles.sections)}>
                 {sections.map((section) => (
                     <section
                         key={section.title}
-                        className="flex flex-col gap-4"
+                        {...stylex.props(styles.section)}
                     >
                         <SectionLabel>{section.title}</SectionLabel>
                         <Prose>{section.body}</Prose>
                     </section>
                 ))}
             </div>
-        </main>
+        </Main>
     );
 }

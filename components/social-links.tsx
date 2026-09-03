@@ -1,4 +1,7 @@
-import { cn } from "@/lib/utils";
+import * as stylex from "@stylexjs/stylex";
+import type { StyleXStyles } from "@stylexjs/stylex";
+
+import { colors } from "@/app/tokens.stylex";
 
 // LinkedIn is deliberately not shipped by simple-icons (pulled over a
 // trademark request), so all three stay as raw paths rather than half the row
@@ -24,15 +27,25 @@ const socials = [
     },
 ];
 
+const styles = stylex.create({
+    row: { display: "flex", alignItems: "center", gap: 14 },
+    link: {
+        display: "flex",
+        color: { default: colors.mutedForeground, ":hover": colors.foreground },
+        transitionProperty: "color",
+        transitionDuration: "150ms",
+    },
+});
+
 export function SocialLinks({
     size = 18,
-    className,
+    style,
 }: {
     size?: number;
-    className?: string;
+    style?: StyleXStyles;
 }) {
     return (
-        <div className={cn("flex items-center gap-3.5", className)}>
+        <div {...stylex.props(styles.row, style)}>
             {socials.map((social) => (
                 <a
                     key={social.label}
@@ -40,7 +53,7 @@ export function SocialLinks({
                     target="_blank"
                     rel="noreferrer"
                     aria-label={social.label}
-                    className="text-muted-foreground hover:text-foreground flex transition-colors"
+                    {...stylex.props(styles.link)}
                 >
                     <svg
                         viewBox={social.viewBox}

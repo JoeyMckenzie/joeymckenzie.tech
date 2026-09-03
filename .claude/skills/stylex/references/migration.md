@@ -297,6 +297,17 @@ Four things this shows:
   "no `className` or `style` prop on an element with a `stylex.props()`
   spread" — the props spread is a `className` prop.
 - **Caller styles go last inside `stylex.props()`**, so a caller can override.
+- **A `stylex.props()` spread clobbers a `className` written beside it.** It
+  returns `{ className, style }`, so `<div className="prose" {...stylex.props(x)}>`
+  silently drops `prose` and the stylesheet keyed on it stops matching. When an
+  element needs both a StyleX style and a hook for hand-written CSS, make the
+  hook a data attribute (`data-prose`) -- a spread cannot collide with it.
+- **A `style` prop must `Omit` the DOM one.** Base UI's prop types already
+  carry `style?: CSSProperties`; intersecting a `StyleXStyles` on top produces
+  a type `stylex.props()` will not accept. Write
+  `Omit<ButtonPrimitive.Props, "style"> & { style?: StyleXStyles }`. Shadowing
+  is the point -- an element with a `stylex.props()` spread must not receive a
+  raw `style` at all.
 - **`buttonVariants` cannot be exported.** `cva` returned a class string that
   other components composed. Anything importing `buttonVariants` or
   `badgeVariants` needs the style namespace instead — grep for both before
@@ -315,6 +326,16 @@ props: mergeProps<"span">(stylex.props(styles.base, styles[variant], style), pro
 
 Only after the last Tailwind class is gone:
 
+- **Replace the part of Preflight the site relies on first.** Removing Tailwind
+  restores browser defaults, and it shows immediately: bullets down the nav,
+  underlines under every link, `h1` back at browser sizes, `img` no longer
+  `display: block` so the prose auto-margins stop centring. Write a short reset
+  (box-sizing, zeroed margins, `font-size`/`font-weight: inherit` on headings,
+  list and anchor resets, form controls inheriting font and colour) rather than
+  a full normalize.
+- **Carry `color-scheme: dark` off the `.dark` class.** It lived in the block
+  shadcn generated; losing it hands the page light scrollbars and light form
+  controls on a near-black canvas.
 - Remove deps: `tailwindcss`, `@tailwindcss/postcss`, `@tailwindcss/typography`,
   `tw-animate-css`, `tailwind-merge`, `clsx`, `class-variance-authority`,
   `prettier-plugin-tailwindcss`, and `shadcn` if nothing else pulls it.

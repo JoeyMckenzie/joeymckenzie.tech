@@ -1,4 +1,33 @@
-import { revealDelay } from "@/components/reveal";
+import * as stylex from "@stylexjs/stylex";
+
+import { colors, fonts, text, tracking } from "@/app/tokens.stylex";
+import { reveal } from "@/components/reveal";
+
+const styles = stylex.create({
+    heading: {
+        fontSize: text.display,
+        lineHeight: text.displayLineHeight,
+        letterSpacing: tracking.display,
+        fontWeight: 600,
+    },
+    period: { color: colors.primary },
+    updated: {
+        display: "block",
+        marginTop: 20,
+        color: colors.mutedForeground,
+        fontFamily: fonts.mono,
+        fontSize: text.label,
+        lineHeight: text.labelLineHeight,
+        letterSpacing: tracking.label,
+        textTransform: "uppercase",
+    },
+    intro: {
+        marginTop: 24,
+        maxWidth: "36rem",
+        color: colors.mutedForeground,
+        lineHeight: 1.625,
+    },
+});
 
 export function PageHeader({
     heading,
@@ -13,30 +42,19 @@ export function PageHeader({
 }) {
     return (
         <header>
-            <h1
-                className="font-heading text-display reveal font-semibold"
-                style={revealDelay(0)}
-            >
+            <h1 {...stylex.props(styles.heading, reveal(0))}>
                 {heading}
-                <span className="text-primary">.</span>
+                <span {...stylex.props(styles.period)}>.</span>
             </h1>
             {updated && (
                 <time
-                    className="text-muted-foreground text-label tracking-label reveal mt-5 block font-mono uppercase"
-                    style={revealDelay(1)}
+                    {...stylex.props(styles.updated, reveal(1))}
                     dateTime={updated}
                 >
                     {updatedLabel}
                 </time>
             )}
-            {intro && (
-                <p
-                    className="text-muted-foreground reveal mt-6 max-w-xl leading-relaxed"
-                    style={revealDelay(2)}
-                >
-                    {intro}
-                </p>
-            )}
+            {intro && <p {...stylex.props(styles.intro, reveal(2))}>{intro}</p>}
         </header>
     );
 }

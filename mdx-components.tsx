@@ -1,4 +1,17 @@
+import * as stylex from "@stylexjs/stylex";
 import type { MDXComponents } from "mdx/types";
+
+import { colors, radius } from "@/app/tokens.stylex";
+
+const styles = stylex.create({
+    image: {
+        marginBlock: 24,
+        borderRadius: radius.lg,
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: colors.border,
+    },
+});
 
 const components: MDXComponents = {
     img: ({ alt, ...props }) => (
@@ -10,7 +23,7 @@ const components: MDXComponents = {
             {...props}
             alt={alt ?? ""}
             loading="lazy"
-            className="my-6 rounded-lg border"
+            {...stylex.props(styles.image)}
         />
     ),
 };
