@@ -53,3 +53,8 @@ devenv.local.yaml
 
 # cloudflare
 .wrangler/
+
+# AI files
+.mcp.json
+.codex/config.toml
+opencode.jsonc
