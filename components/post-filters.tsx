@@ -16,15 +16,11 @@ const styles = stylex.create({
     root: { display: "flex", flexDirection: "column", gap: 32 },
     tagRow: { display: "flex", flexWrap: "wrap", gap: 8 },
     count: { opacity: 0.6 },
-    // Tailwind's `divide-y border-t` drew a rule above every row including the
-    // first. StyleX generates no `& > * + *` selector, so the rule lives on the
-    // row itself, which produces the same set of hairlines.
     divided: {
         borderTopWidth: 1,
         borderTopStyle: "solid",
         borderTopColor: colors.border,
     },
-    // The empty state was six shadcn components deep for one bordered box.
     empty: {
         display: "flex",
         width: "100%",
@@ -59,31 +55,6 @@ const styles = stylex.create({
     },
 });
 
-// The whole post list is already in the page, so filtering is a client-side
-// concern -- a static export has no server to read `searchParams` on.
-//
-// Both filters start empty so this component prerenders with every post in the
-// static HTML, which is what crawlers and readers without JS get. A
-// `?tag=&search=` deep link is applied on mount from `location.search` rather
-// than with `useSearchParams`, because reading search params during render
-// opts the whole list out of prerendering and leaves an empty page behind.
-//
-// This is the one place Motion earns its bundle, and it is the only route that
-// pays for it: +38.9 KB gzipped on `/blog`, measured against the same build
-// with Motion removed. The home page and the post pages are unchanged.
-//
-// A named `<ViewTransition>` per row would do the same re-flow natively for
-// nothing, and that was tried first. It loses here because the search box
-// filters as you type: every keystroke would start a fresh ~400ms view
-// transition, and they queue rather than interrupt. Motion's springs retarget
-// mid-flight, which is the behaviour a live filter needs. Route changes, which
-// *are* discrete, still use view transitions -- see `app/layout.tsx`.
-//
-// First paint is deliberately left to the CSS reveal instead.
-// `<AnimatePresence initial={false}>` is what keeps Motion from writing an
-// `opacity: 0` into the prerendered markup, which would blank all 33 posts for
-// anyone without JS. Verified against `out/blog/index.html` after a build:
-// 33 post links, zero `opacity:0`.
 export function PostFilters({
     posts,
     tags,
@@ -99,18 +70,13 @@ export function PostFilters({
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
 
-        /* eslint-disable react-hooks/set-state-in-effect -- seeding state
-           from the URL is the one thing that has to happen after the
-           prerender rather than during it, and it happens exactly once. */
+        /* eslint-disable react-hooks/set-state-in-effect -- seeded from the URL once, after prerender */
         setActiveTag(params.get("tag") ?? "");
         setQuery(params.get("search") ?? "");
         /* eslint-enable react-hooks/set-state-in-effect */
         hydrated.current = true;
     }, []);
 
-    // Mirror the filters back into the URL so a filtered view stays linkable.
-    // `replaceState` rather than a router navigation: the App Router syncs with
-    // it, and there is no payload to refetch.
     useEffect(() => {
         if (!hydrated.current) return;
 
@@ -148,9 +114,6 @@ export function PostFilters({
         setQuery("");
     }
 
-    // `useReducedMotion` reads the same media query the stylesheet does, so
-    // the two motion layers stay in agreement rather than one animating while
-    // the other sits still.
     const transition = reduceMotion
         ? { duration: 0 }
         : { type: "spring" as const, stiffness: 420, damping: 38, mass: 0.9 };
@@ -205,9 +168,6 @@ export function PostFilters({
 
             {visible.length > 0 ? (
                 <div>
-                    {/* `popLayout` takes a leaving row out of flow immediately,
-                        so the rows below it slide up into the gap rather than
-                        waiting for the fade to finish. */}
                     <AnimatePresence initial={false} mode="popLayout">
                         {visible.map((post, index) => (
                             <motion.div
@@ -218,14 +178,9 @@ export function PostFilters({
                                 exit={{ opacity: 0, scale: 0.98 }}
                                 transition={transition}
                             >
-                                {/* The CSS reveal sits on an inner element on
-                                    purpose. A finished `.reveal` keeps its
-                                    end frame (`animation-fill-mode: both`),
-                                    and a CSS animation outranks inline
-                                    styles -- on the same node it would pin
-                                    opacity and transform and silently kill
-                                    every Motion layout animation after the
-                                    first paint. */}
+                                {/* Inner element: a CSS animation outranks
+                                    inline styles and would kill Motion's
+                                    layout animations on the same node. */}
                                 <div
                                     {...stylex.props(
                                         styles.divided,

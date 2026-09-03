@@ -21,7 +21,6 @@ const styles = stylex.create({
         gap: 24,
     },
     stack: { display: "flex", flexDirection: "column", gap: 24 },
-    // The left rule is the structure here, same as the hairlines elsewhere.
     entry: {
         display: "flex",
         flexDirection: "column",

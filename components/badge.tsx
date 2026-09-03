@@ -35,11 +35,6 @@ const styles = stylex.create({
         borderColor: colors.border,
         color: colors.foreground,
     },
-    // Hover belongs to the element the badge renders *as*, not to the badge.
-    // shadcn scoped it with an `[a]:hover:` variant so a plain informational
-    // chip would not light up under the pointer; StyleX cannot generate that
-    // selector, and it does not need to -- a badge is interactive exactly when
-    // a caller hands it something interactive to render as.
     solidInteractive: {
         cursor: "pointer",
         backgroundColor: {
@@ -54,9 +49,6 @@ const styles = stylex.create({
     },
 });
 
-// Tag chips on the blog index, the post cards and the post pages are the same
-// object -- a mono, uppercase, label-sized chip -- so the three call sites
-// share one definition rather than repeating four utilities each.
 export const badgeStyles = stylex.create({
     tag: {
         fontFamily: fonts.mono,
@@ -74,9 +66,6 @@ export function Badge({
     ...props
 }: Omit<useRender.ComponentProps<"span">, "style"> & {
     variant?: "solid" | "outline";
-    // Shadows the DOM `style` prop on purpose. An element carrying a
-    // `stylex.props()` spread must not also receive a `style` or `className`,
-    // so the only styling a caller can pass is StyleX styles.
     style?: StyleXStyles;
 }) {
     const interactive = render != null;

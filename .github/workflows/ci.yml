@@ -1,8 +1,5 @@
 name: ci
 
-# This branch, not `main`: `main` is the Laravel app and carries its own
-# `ci.yml` deploying to Laravel Cloud. Promoting the Next rewrite means
-# changing these three branch references and reconciling with that file.
 on:
     push:
         branches:
@@ -14,8 +11,6 @@ on:
 permissions:
     contents: read
 
-# Every job does the same devenv setup and then calls one script from
-# `devenv.nix`. The pipeline itself lives there so it runs the same way locally.
 jobs:
     lint:
         runs-on: ubuntu-latest
@@ -91,9 +86,6 @@ jobs:
             - name: Install devenv
               run: nix profile install nixpkgs#devenv
 
-            # Wrangler reads both of these from the environment. The Pages project
-            # (`website`) has to exist before the first run -- wrangler will not
-            # create it on deploy.
             - name: Deploy to Cloudflare Pages
               env:
                   CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

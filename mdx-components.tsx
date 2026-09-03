@@ -15,10 +15,7 @@ const styles = stylex.create({
 
 const components: MDXComponents = {
     img: ({ alt, ...props }) => (
-        /* eslint-disable-next-line @next/next/no-img-element -- post images
-           live in `public/` and a static export ships them unoptimized, so
-           next/image would buy nothing while demanding intrinsic dimensions
-           the markdown does not carry. */
+        /* eslint-disable-next-line @next/next/no-img-element -- static export, images ship unoptimized */
         <img
             {...props}
             alt={alt ?? ""}

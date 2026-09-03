@@ -3,7 +3,6 @@ import type { MetadataRoute } from "next";
 import { getPosts } from "@/lib/posts";
 import { nav, site } from "@/lib/site";
 
-// Prerendered to `out/sitemap.xml`, same as the RSS route.
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {

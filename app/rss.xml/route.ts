@@ -1,8 +1,6 @@
 import { getPosts } from "@/lib/posts";
 import { site } from "@/lib/site";
 
-// Prerendered to `out/rss.xml` at build time. A static export has no server to
-// run this on at request time.
 export const dynamic = "force-static";
 
 function escape(value: string) {

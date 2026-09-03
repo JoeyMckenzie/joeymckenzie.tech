@@ -63,7 +63,6 @@ export function generateStaticParams() {
     return getPosts().map((post) => ({ slug: post.slug }));
 }
 
-// A static export cannot render a slug that was not built.
 export const dynamicParams = false;
 
 export async function generateMetadata({
@@ -93,14 +92,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
 
     if (!post) notFound();
 
-    // Turbopack turns this template literal into a context module over
-    // `content/blog/*.md`, so every post compiles at build time.
-    //
-    // Relative, not the `@/` alias this file uses everywhere else. Adding
-    // StyleX put a Babel pass in front of Turbopack, and a file that has been
-    // through a loader no longer gets the alias applied when the context
-    // module resolves -- `@/content/blog/` <dynamic> `.md` fails to resolve
-    // and the build dies here. A relative specifier needs no alias.
+    // Relative, not `@/`: the alias does not resolve in the context module.
     const { default: Body } = await import(`../../../content/blog/${slug}.md`);
 
     return (
@@ -136,17 +128,12 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                 </header>
 
                 {post.heroImage && (
-                    // The other half of the morph started by the thumbnail in
-                    // `components/post-card.tsx` -- the same `name` is what
-                    // tells the browser these are one object, so the row image
-                    // grows into this one instead of the pages swapping.
                     <ViewTransition
                         name={`hero-${post.slug}`}
                         share="morph"
                         default="none"
                     >
-                        {/* eslint-disable-next-line @next/next/no-img-element --
-                            see components/post-card.tsx */}
+                        {/* eslint-disable-next-line @next/next/no-img-element -- static export, images ship unoptimized */}
                         <img
                             src={post.heroImage}
                             alt=""

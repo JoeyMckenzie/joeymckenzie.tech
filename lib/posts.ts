@@ -5,20 +5,15 @@ import matter from "gray-matter";
 const POSTS_DIR = path.join(process.cwd(), "content", "blog");
 
 export type Post = {
-    /** Filename without the extension, which is also the route segment. */
     slug: string;
     title: string;
     description: string;
-    /** `YYYY-MM-DD`. Kept as a string so it survives the RSC boundary intact. */
     pubDate: string;
     heroImage?: string;
     tags: string[];
     readingMinutes: number;
 };
 
-// Same formula the astro site used: 200wpm, rounded up, never below one.
-// Counting alphabetic runs rather than whitespace-delimited tokens keeps posts
-// with box-drawing characters in terminal output from inflating the count.
 function countWords(body: string) {
     return body.match(/[A-Za-z'-]+/g)?.length ?? 0;
 }
@@ -31,8 +26,7 @@ function readPost(filename: string): Post {
         slug: filename.replace(/\.mdx?$/, ""),
         title: data.title,
         description: data.description,
-        // gray-matter's YAML parse turns an unquoted `2026-08-05` into a Date;
-        // a quoted one stays a string. Normalize both to `YYYY-MM-DD`.
+        // gray-matter yields a Date for an unquoted YAML date, a string for a quoted one.
         pubDate:
             data.pubDate instanceof Date
                 ? data.pubDate.toISOString().slice(0, 10)
@@ -43,7 +37,6 @@ function readPost(filename: string): Post {
     };
 }
 
-/** Every post, newest first. */
 export function getPosts(): Post[] {
     return fs
         .readdirSync(POSTS_DIR)
@@ -56,7 +49,6 @@ export function getPost(slug: string): Post | undefined {
     return getPosts().find((post) => post.slug === slug);
 }
 
-/** Tags that actually have posts, alphabetical, with their post counts. */
 export function getTags(posts: Post[]) {
     const counts = new Map<string, number>();
 

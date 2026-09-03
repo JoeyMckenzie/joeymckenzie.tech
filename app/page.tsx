@@ -36,9 +36,6 @@ const styles = stylex.create({
         transitionDuration: "200ms",
     },
     list: { marginTop: 8 },
-    // Tailwind's `divide-y` is a `& > * + *` rule, which StyleX will not
-    // generate. The rule moves onto the row instead, and the first row skips it
-    // because `SectionLabel` has already drawn a hairline directly above.
     divided: {
         borderTopWidth: 1,
         borderTopStyle: "solid",

@@ -1,9 +1,7 @@
 import * as stylex from "@stylexjs/stylex";
 import type { StyleXStyles } from "@stylexjs/stylex";
 
-// `pubDate` is a bare `YYYY-MM-DD`, which `new Date()` reads as UTC midnight.
-// Formatting in UTC keeps a post dated the 5th from rendering as the 4th for
-// anyone west of Greenwich.
+// UTC on purpose: a bare `YYYY-MM-DD` shifts a day west of Greenwich otherwise.
 export function FormattedDate({
     date,
     style,

@@ -26,10 +26,6 @@ const styles = stylex.create({
         flexDirection: "column",
         backgroundColor: colors.background,
         color: colors.foreground,
-        // `::selection` has no component to live on -- it applies to text
-        // everywhere. The rule itself is one line in `app/globals.css`; these
-        // hand it the palette, and custom properties inherit, so the single
-        // bare rule reaches the whole page.
         "--selection-bg": colors.primary,
         "--selection-fg": colors.primaryForeground,
     },
@@ -55,14 +51,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-    // Dark-only for now, matching the astro site's default. The theme toggle
-    // it shipped is not ported yet.
-    //
-    // `<html>` keeps a `className` rather than a `stylex.props()` spread: it
-    // carries nothing but the two font-variable class names next/font
-    // generates at build time, and nothing but a class can carry those. The
-    // element's own styling, `color-scheme` included, lives with the other
-    // element defaults in `app/globals.css`.
     return (
         <html
             lang="en"
@@ -70,13 +58,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         >
             <body {...stylex.props(styles.body)}>
                 <SiteHeader />
-                {/* Activating a view transition is what makes route changes
-                    animate at all -- React only calls the browser API when a
-                    <ViewTransition> is in the tree during a navigation. This
-                    one wraps the content rather than living in each page.tsx
-                    because the animation wanted here is an update crossfade on
-                    a container that persists, not an enter/exit pair. The
-                    `page` class it assigns is styled in `app/globals.css`. */}
                 <ViewTransition update="page">
                     <div {...stylex.props(styles.content)}>{children}</div>
                 </ViewTransition>

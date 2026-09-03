@@ -3,9 +3,6 @@ import type { StyleXStyles } from "@stylexjs/stylex";
 
 import { colors } from "@/app/tokens.stylex";
 
-// LinkedIn is deliberately not shipped by simple-icons (pulled over a
-// trademark request), so all three stay as raw paths rather than half the row
-// coming from an icon package.
 const socials = [
     {
         label: "GitHub",

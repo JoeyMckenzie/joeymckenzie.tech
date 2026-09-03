@@ -1,16 +1,4 @@
-/* Where the StyleX compiler writes every extracted style. Everything StyleX
-   generates is a class selector, so it outranks the element-level rules below
-   on specificity regardless of where this sits. */
 @stylex;
-
-/* ======================================================================
-   RESET
-   ======================================================================
-   Tailwind's Preflight used to do this. Removing Tailwind put browser
-   defaults back and it showed immediately -- bullets down the nav, underlines
-   under every link, `h1` at browser sizes. This is only the part the site
-   actually depends on, not a full normalize.
-   ====================================================================== */
 
 *,
 *::before,
@@ -36,8 +24,6 @@ dd {
     margin: 0;
 }
 
-/* Headings size themselves in the component that renders them. Left at
-   browser defaults they would fight every `fontSize` StyleX sets. */
 h1,
 h2,
 h3,
@@ -59,8 +45,6 @@ a {
     text-decoration: none;
 }
 
-/* Post images render at their natural size; `block` is what lets the auto
-   margins in the prose rules centre them. */
 img,
 svg,
 video {
@@ -83,70 +67,28 @@ button {
     cursor: pointer;
 }
 
-/* ======================================================================
-   ELEMENT DEFAULTS
-   ======================================================================
-   The handful of rules that have no element in a component to hang a
-   `stylex.props()` spread on. Values that need the palette come through as
-   custom properties set in StyleX -- see `app/layout.tsx` -- so this file
-   never hard-codes a colour.
-   ====================================================================== */
-
 html {
-    /* Was carried by the `.dark` class shadcn put on `<html>`. That class is
-       gone with the rest of Tailwind, and losing this would have handed the
-       page light scrollbars and light form controls on a near-black canvas. */
     color-scheme: dark;
     height: 100%;
     font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Short routes (/now, /uses) have no scrollbar and long ones (/blog, /cv)
-       do, so the centred column jumped 7px sideways on every navigation
-       between the two. Reserving the gutter on every page holds it still.
-       Measured: nav left edge was 256px without a scrollbar and 249px with
-       one. */
     scrollbar-gutter: stable;
 }
 
-/* Geist ships proper tabular figures. Dates and reading times sit in columns
-   down the post list, so turning them on stops the numerals jittering between
-   rows. */
 :is(time, .tabular) {
     font-variant-numeric: tabular-nums;
 }
 
-/* Custom properties inherit, so one bare rule reaches every selection on the
-   page while the colours still come from `tokens.stylex.ts`. */
 ::selection {
     background-color: var(--selection-bg);
     color: var(--selection-fg);
 }
 
-/* ======================================================================
-   MOTION
-   ======================================================================
-   Two layers, deliberately split by what each tool is actually good at.
-
-   1. Entrances are compiled CSS keyframes, and they live in
-      `components/reveal.tsx` -- StyleX emits them, so the reasoning for why
-      they are CSS rather than JS is documented there.
-   2. Route changes are React's <ViewTransition> (browser-native, no JS
-      payload) and layout changes on the blog filter are Motion. Motion is
-      only reached for the one thing neither CSS nor view transitions can
-      do: animating 33 rows to new positions when a filter changes.
-   ====================================================================== */
-
-/* --- route transitions ---------------------------------------------- */
-
-/* The transition overlay swallows clicks for its whole duration. Letting
-   pointer events through keeps the page usable mid-navigation. */
 ::view-transition {
     pointer-events: none;
 }
 
-/* Old content leaves fast so it stops competing for attention; new content
-   arrives slower and waits out the exit before it starts fading up. */
 ::view-transition-old(.page) {
     animation: 140ms ease-in both vt-fade reverse;
 }
@@ -177,10 +119,6 @@ html {
     }
 }
 
-/* The header is the spatial anchor: if it slid with the content there would
-   be no fixed reference point telling the reader that the page changed
-   rather than the whole viewport. Hiding the old snapshot avoids a flash of
-   two headers at once. */
 ::view-transition-group(site-header) {
     animation: none;
     z-index: 100;
@@ -194,17 +132,12 @@ html {
     animation: none;
 }
 
-/* The active-nav underline is named separately from the header, which lifts
-   it out of the pinned group so the browser slides it from the old nav item
-   to the new one while the header itself stays still. */
 ::view-transition-group(nav-active) {
     animation-duration: 420ms;
     animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
     z-index: 101;
 }
 
-/* Post thumbnail -> post hero. The blur mid-flight hides the pixel
-   interpolation between two very different image sizes. */
 ::view-transition-group(.morph) {
     animation-duration: 460ms;
     animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
@@ -219,8 +152,6 @@ html {
         filter: blur(4px);
     }
 }
-
-/* --- reduced motion -------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -239,18 +170,6 @@ html {
         animation-delay: 0s !important;
     }
 }
-
-/* ======================================================================
-   PROSE
-   ======================================================================
-   Post bodies. Everything else on the site is styled in StyleX; this is
-   markdown output, so there is no element in `components/prose.tsx` to attach
-   a style to and no way for StyleX to generate a descendant selector.
-
-   The values are not duplicated here. `Prose` sets each `--prose-*` custom
-   property from `app/tokens.stylex.ts`, so this file only decides which
-   element gets which one. Change a colour there, not here.
-   ====================================================================== */
 
 [data-prose] {
     color: var(--prose-body);
@@ -273,8 +192,6 @@ html {
     text-wrap: balance;
 }
 
-/* Headings need more air above than below -- the space belongs to the section
-   they open, not to the paragraph they sit on. */
 [data-prose] h2 {
     margin-top: 2.5em;
     font-size: 1.5rem;
@@ -368,38 +285,25 @@ html {
     font-weight: 600;
 }
 
-/* Post images render at their natural size, so anything narrower than the
-   column sat flush left. Auto margins centre them. */
 [data-prose] img {
     display: block;
     margin-inline: auto;
     border-radius: var(--prose-radius);
 }
 
-/* shiki writes the tokyo-night background inline, so `pre` only needs the frame
-   around it. */
 [data-prose] pre {
     border: 1px solid var(--prose-rule);
     border-radius: var(--prose-radius);
     padding: 1rem;
     overflow-x: auto;
-    /* Geist Mono reads a size larger than Geist Sans at the same nominal size,
-       so a block left at the body's 1rem looks bigger than the prose around it
-       rather than level with it. The same 0.875em the inline chips below use,
-       which also keeps inline and block code agreeing with each other. */
     font-size: 0.875em;
     line-height: 1.7;
 }
 
-/* `pre` as well as `code`: every shiki block wraps its content in a `code`, so
-   the family reaches the text either way today, but a block that ever arrives
-   without one would fall through to the browser's default monospace. */
 [data-prose] :is(pre, code) {
     font-family: var(--prose-mono);
 }
 
-/* Deliberately `:not(pre) > code` and not every `code`: the second form would
-   draw a chip around each line of a highlighted block. */
 [data-prose] :not(pre) > code {
     background-color: var(--prose-code-bg);
     border: 1px solid var(--prose-rule);

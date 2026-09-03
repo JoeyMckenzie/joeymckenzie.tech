@@ -68,17 +68,9 @@ const styles = stylex.create({
     },
 });
 
-// `output: "export"` renders this to `out/404.html`. Cloudflare Pages serves
-// that file automatically for any path it cannot match, so this needs no
-// routing config -- unlike Workers static assets, which would need an explicit
-// `not_found_handling` setting to reach it.
 export default function NotFound() {
     return (
         <Main style={styles.main}>
-            {/* Not `aria-hidden`: with no eyebrow above it, this is the only
-                thing on the page that says 404, so it has to be readable.
-                Each digit reveals on its own beat -- the one bit of showing
-                off on the site. */}
             <p {...stylex.props(styles.digits)}>
                 {["4", "0", "4"].map((digit, index) => (
                     <span key={index} {...stylex.props(reveal(index))}>

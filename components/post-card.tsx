@@ -14,9 +14,7 @@ import { FormattedDate } from "@/components/formatted-date";
 import type { Post } from "@/lib/posts";
 
 const styles = stylex.create({
-    // The `position: relative` is not cosmetic: it is the positioned ancestor
-    // the stretched title link anchors to, and removing it would make the link
-    // cover the whole page.
+    // Positioned ancestor for the stretched link in `titleLink`.
     article: { position: "relative", paddingBlock: 28 },
     row: { display: "flex", alignItems: "flex-start", gap: 20 },
     image: {
@@ -28,9 +26,6 @@ const styles = stylex.create({
         borderStyle: "solid",
         borderColor: `color-mix(in oklab, ${colors.border} 70%, transparent)`,
         objectFit: "cover",
-        // shadcn reached the hover state with a `group-hover:` variant.
-        // `when.ancestor` is StyleX's version of the same relationship, and it
-        // needs the marker that `article` carries below.
         opacity: { default: 0.85, [stylex.when.ancestor(":hover")]: 1 },
         filter: {
             default: "grayscale(0.55)",
@@ -67,11 +62,7 @@ const styles = stylex.create({
         textDecoration: "none",
         transitionProperty: "color",
         transitionDuration: "200ms",
-        // The one pseudo-element worth keeping. It stretches the link over the
-        // whole row so the row is a single click target while the tag below
-        // stays separately clickable -- nesting the tag inside the link would
-        // be invalid HTML and would swallow its clicks. No real element can do
-        // this without becoming the thing that swallows them.
+        // Stretches the link over the whole row.
         "::after": { position: "absolute", inset: 0, content: "" },
     },
     description: {
@@ -83,9 +74,7 @@ const styles = stylex.create({
         WebkitBoxOrient: "vertical",
         overflow: "hidden",
     },
-    // The chip sits below the excerpt and above the stretched link's `::after`
-    // -- `position: relative` is what keeps the tag clickable in its own right
-    // rather than being swallowed by it.
+    // Keeps the tag above the stretched `::after` so it stays clickable.
     postTag: { position: "relative", marginTop: 14 },
 });
 
@@ -94,38 +83,20 @@ export function PostCard({
     onTagClick,
 }: {
     post: Post;
-    /**
-     * Supplied by `PostFilters`, where a tag click has to set filter state
-     * rather than navigate: the blog index is already `/blog`, and a same-route
-     * `<Link>` does not remount the filters, so the URL would change without
-     * the list following. Elsewhere (the home page) the tag is a plain link to
-     * the filtered index, which mounts the filters fresh.
-     */
     onTagClick?: (tag: string) => void;
 }) {
     const tag = post.tags[0];
 
     return (
-        // A row divided by a rule rather than a card. The rule comes from the
-        // list wrapper, not from here -- the reveal animation wraps each row in
-        // its own element, so a `:last-child` rule on the article would never
-        // match.
         <article {...stylex.props(styles.article, stylex.defaultMarker())}>
             <div {...stylex.props(styles.row)}>
                 {post.heroImage && (
-                    // Morphs into the hero on the post page, which is what
-                    // makes a click feel like the same object opening rather
-                    // than one page replacing another. `default="none"` keeps
-                    // it from crossfading on every unrelated navigation.
                     <ViewTransition
                         name={`hero-${post.slug}`}
                         share="morph"
                         default="none"
                     >
-                        {/* eslint-disable-next-line @next/next/no-img-element --
-                            a static export ships images unoptimized, and the
-                            frontmatter carries no intrinsic dimensions for
-                            next/image to require. */}
+                        {/* eslint-disable-next-line @next/next/no-img-element -- static export, images ship unoptimized */}
                         <img
                             src={post.heroImage}
                             alt=""

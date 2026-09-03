@@ -4,10 +4,6 @@ import type { StyleXStyles } from "@stylexjs/stylex";
 
 import { colors, radius } from "@/app/tokens.stylex";
 
-// One button, one look. shadcn shipped six variants and nine sizes; the site
-// renders exactly one of them -- the "clear filters" action in the blog empty
-// state -- so the rest were variants nobody could see and nobody had checked.
-// Add a variant here when a second look actually appears in a design.
 const styles = stylex.create({
     button: {
         display: "inline-flex",
@@ -33,8 +29,6 @@ const styles = stylex.create({
         cursor: { default: "pointer", ":disabled": "not-allowed" },
         transitionProperty: "background-color, border-color, color",
         transitionDuration: "150ms",
-        // Tailwind's `ring` is a box-shadow emulating an outline. This is the
-        // outline it was emulating.
         outlineWidth: { default: 0, ":focus-visible": 3 },
         outlineStyle: "solid",
         outlineOffset: 1,
@@ -49,7 +43,6 @@ export function Button({
     style,
     ...props
 }: Omit<ButtonPrimitive.Props, "style"> & {
-    // Shadows the DOM `style` prop on purpose -- see the note in `badge.tsx`.
     style?: StyleXStyles;
 }) {
     return (

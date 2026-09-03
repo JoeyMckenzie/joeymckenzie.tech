@@ -17,16 +17,11 @@ const styles = stylex.create({
     rule: { flex: "1", height: 1, backgroundColor: colors.border },
 });
 
-// The mono section marker used on every page that has sections. The rule is
-// part of the label rather than a separate element above it: in a design built
-// out of hairlines, one line that carries the heading reads as structure, where
-// a line plus a heading reads as two unrelated things.
 export function SectionLabel({
     children,
     action,
 }: {
     children: ReactNode;
-    /** Optional trailing link, e.g. "all posts →". */
     action?: ReactNode;
 }) {
     return (

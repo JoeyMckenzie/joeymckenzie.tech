@@ -15,9 +15,6 @@ import { SocialLinks } from "@/components/social-links";
 import { nav } from "@/lib/site";
 
 const styles = stylex.create({
-    // `site-header` pins the header during route transitions so it stays a
-    // fixed reference point while the content crossfades under it. The CSS that
-    // suppresses its animation is in `app/globals.css`.
     header: {
         borderBottomWidth: 1,
         borderBottomStyle: "solid",
@@ -51,11 +48,6 @@ const styles = stylex.create({
     linkIdle: {
         color: { default: colors.mutedForeground, ":hover": colors.foreground },
     },
-    // Named separately from the header, which lifts it out of the pinned
-    // snapshot and lets the browser slide it between nav items across a route
-    // change. That is the whole reason this is not a Motion `layoutId`: the
-    // pinned header would freeze a Motion animation mid-flight and snap it when
-    // the transition ended.
     indicator: {
         position: "absolute",
         insetInline: 12,
@@ -67,12 +59,6 @@ const styles = stylex.create({
     socials: { display: { default: "flex", [breakpoints.belowSm]: "none" } },
 });
 
-// A client component only because the active route has to be read on the
-// client -- a static export has no request to read it from on the server.
-//
-// The nav links are plain anchors rather than ghost buttons: a ghost button
-// paints a rounded chip on hover, which fights a design built out of hairline
-// rules. The indicator below does that job instead.
 export function SiteHeader() {
     const pathname = usePathname();
 

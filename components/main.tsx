@@ -2,8 +2,6 @@ import * as stylex from "@stylexjs/stylex";
 import type { StyleXStyles } from "@stylexjs/stylex";
 import type { ReactNode } from "react";
 
-// Every route renders the same column. It was seven copies of the same six
-// utilities; it is one component now.
 const styles = stylex.create({
     main: {
         marginInline: "auto",
