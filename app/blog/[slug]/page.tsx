@@ -166,7 +166,7 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                             )}
                         >
                             <FileTextIcon size={11} />
-                            View as Markdown
+                            Markdown
                         </a>
                     </div>
                     <h1 {...stylex.props(styles.title, reveal(1))}>
