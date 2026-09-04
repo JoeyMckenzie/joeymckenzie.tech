@@ -11,7 +11,6 @@ import { SiteStructuredData } from "@/components/structured-data";
 import { alternates } from "@/lib/metadata";
 import { getPosts } from "@/lib/posts";
 
-// Title and description stay the layout defaults -- this page is the site.
 export const metadata: Metadata = { alternates: alternates("/") };
 
 const styles = stylex.create({
@@ -63,7 +62,7 @@ export default function Home() {
                 </h1>
                 <p {...stylex.props(styles.intro, reveal(2))}>
                     Software guy. Professional sidequester. Cheap beer enjoyer.
-                    I build things with Laravel, PHP, and whatever has my
+                    I build stuff with Laravel, PHP, and whatever has my
                     attention this month. Mostly code, occasionally opinions,
                     perpetually down a rabbit-hole.
                 </p>
