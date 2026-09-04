@@ -36,13 +36,13 @@
         "@stylexjs/babel-plugin": "^0.19.0",
         "@stylexjs/eslint-plugin": "^0.19.0",
         "@stylexjs/postcss-plugin": "^0.19.0",
-        "@types/node": "^20",
+        "@types/node": "^26",
         "@types/react": "^19",
         "@types/react-dom": "^19",
-        "eslint": "^9",
+        "eslint": "^10",
         "eslint-config-next": "16.3.4",
         "prettier": "^3.9.6",
-        "typescript": "^5",
+        "typescript": "^7",
         "wrangler": "^4.125.0"
     }
 }
