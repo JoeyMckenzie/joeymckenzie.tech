@@ -154,6 +154,12 @@ export default async function BlogPost({ params }: PageProps<"/blog/[slug]">) {
                             <FormattedDate date={post.pubDate} />
                             <span aria-hidden="true">&middot;</span>
                             <span>{post.readingMinutes} min read</span>
+                            {/* Dev only, same as on the cards. */}
+                            {post.draft && (
+                                <Badge variant="solid" style={badgeStyles.tag}>
+                                    draft
+                                </Badge>
+                            )}
                         </div>
                         {/* A link, not a `Button`: it navigates, so it has to
                             be announced as a link. It borrows the button's

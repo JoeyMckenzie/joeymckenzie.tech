@@ -1,5 +1,5 @@
 ---
-name: blog-editor
+name: post-review
 description: "Editorial notes on a joeymckenzie.tech draft: voice drift, mechanics, and where the piece can be sharpened. Use when asked to review, edit, critique, proofread, or give feedback on a post in content/blog/ or any draft written in Joey's voice."
 ---
 
@@ -84,5 +84,7 @@ Close with one line naming the single change that would most improve the piece.
 ## Keeping this current
 
 When Joey rejects a note as wrong about his voice, that is new evidence. Append it to `references/voice-evidence.md` under "Corrections" with the date and what he said, and adjust the rule above if it was stated too strongly. Do not delete the corpus counts; they are the baseline.
+
+Running under the `blog-editor` agent, this step is not available: it is read-only and it exits before Joey can reject anything. It returns a `## Proposed corrections` section instead, and the corrections are applied here, in a session where he can push back.
 
 </supporting-info>

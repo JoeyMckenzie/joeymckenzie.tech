@@ -4,6 +4,20 @@ import matter from "gray-matter";
 
 const POSTS_DIR = path.join(process.cwd(), "content", "blog");
 
+// `draft: true` in the frontmatter hides a post everywhere `getPosts` feeds:
+// the index, the archive, the feed, the sitemap, `llms.txt`, and
+// `generateStaticParams`, which is what denies it a route.
+//
+// `next dev` sets NODE_ENV to "development" and `next build` sets it to
+// "production", so a draft is readable at its real URL while it is being
+// written and absent from anything that deploys. Read once at module scope, so
+// there is one place to look when a draft does not show up where expected.
+//
+// The file compiles either way: the post route's dynamic import is a context
+// module over the whole directory. That is a few KB in the bundle rather than a
+// leak, since in production nothing renders it.
+const SHOW_DRAFTS = process.env.NODE_ENV === "development";
+
 export type Post = {
     slug: string;
     title: string;
@@ -12,6 +26,7 @@ export type Post = {
     heroImage?: string;
     tags: string[];
     readingMinutes: number;
+    draft: boolean;
 };
 
 function countWords(body: string) {
@@ -34,6 +49,7 @@ function readPost(filename: string): Post {
         heroImage: data.heroImage,
         tags: data.tags ?? [],
         readingMinutes: Math.max(1, Math.ceil(countWords(content) / 200)),
+        draft: data.draft === true,
     };
 }
 
@@ -42,6 +58,7 @@ export function getPosts(): Post[] {
         .readdirSync(POSTS_DIR)
         .filter((filename) => /\.mdx?$/.test(filename))
         .map(readPost)
+        .filter((post) => SHOW_DRAFTS || !post.draft)
         .sort((a, b) => b.pubDate.localeCompare(a.pubDate));
 }
 

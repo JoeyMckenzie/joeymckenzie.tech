@@ -110,6 +110,13 @@ export function PostCard({
                         <FormattedDate date={post.pubDate} />
                         <span aria-hidden="true">&middot;</span>
                         <span>{post.readingMinutes} min</span>
+                        {/* Only ever true under `next dev`, so this renders
+                            nothing in a production build. */}
+                        {post.draft && (
+                            <Badge variant="solid" style={badgeStyles.tag}>
+                                draft
+                            </Badge>
+                        )}
                     </div>
                     <h3 {...stylex.props(styles.title)}>
                         <Link
