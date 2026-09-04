@@ -58,3 +58,6 @@ devenv.local.yaml
 .mcp.json
 .codex/config.toml
 opencode.jsonc
+
+# playwright
+.playwright-mcp/

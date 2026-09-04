@@ -261,13 +261,22 @@ in `app/globals.css`.
 
 ## site-footer
 
-The copyright line is a flex row, not flowing text. JSX strips the whitespace
-between adjacent elements, so as text this line had no break opportunity except
-the space inside the author's name: it either broke between first and last name
-or, once the name was held together with `nowrap`, overflowed the viewport
-outright. Each separator is also grouped with the link after it, so a wrap never
-strands a slash at the end of a line. All three only became visible at four
-items, which is worth knowing before adding a fifth.
+The copyright line is two units, the attribution and the link row, not one run
+of peers. That is the whole fix for how it behaves narrow.
+
+As flowing text it had no break opportunity at all: JSX strips the whitespace
+between adjacent elements, so the only one was the space inside the author's
+name, and the line broke between first and last name. Holding the name together
+with `nowrap` then overflowed the viewport instead, and letting the pieces wrap
+as peers stranded a single link on a second row behind an indented separator.
+Stacking two units puts the break where the meaning already divides:
+attribution, then links.
+
+So the direction is the responsive property (`column` below `sm`, `row` above),
+and the separator joining the two units is the wide layout's alone -- hence
+`joint`, which is `display: none` until there is one line to join. The
+separators inside the link row need no such care: at 188px it stays on one line
+down to a 320px viewport, so they are plain glyphs.
 
 ## social-links
 

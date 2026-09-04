@@ -1,7 +1,13 @@
 import * as stylex from "@stylexjs/stylex";
 import Link from "next/link";
 
-import { colors, fonts, text, tracking } from "@/app/tokens.stylex";
+import {
+    breakpoints,
+    colors,
+    fonts,
+    text,
+    tracking,
+} from "@/app/tokens.stylex";
 import { SocialLinks } from "@/components/social-links";
 import { site } from "@/lib/site";
 
@@ -23,15 +29,15 @@ const styles = stylex.create({
         paddingInline: 16,
         paddingBlock: 40,
     },
+    // Two units, the attribution and the link row, rather than one run of
+    // peers. Left to wrap as peers the line strands a single link on a second
+    // row behind an indented separator; stacking the two units puts the break
+    // where the meaning already divides.
     line: {
-        // Flex rather than flowing text. JSX strips the whitespace between
-        // adjacent elements, so as plain text this line had no break
-        // opportunity except inside the author's name -- it either broke
-        // between first and last name or, once the name was held together,
-        // overflowed the viewport. As flex items each piece wraps as a unit.
         display: "flex",
-        flexWrap: "wrap",
-        alignItems: "center",
+        flexDirection: { default: "column", [breakpoints.sm]: "row" },
+        alignItems: { default: "flex-start", [breakpoints.sm]: "center" },
+        rowGap: 12,
         color: colors.mutedForeground,
         fontFamily: fonts.mono,
         fontSize: text.label,
@@ -39,15 +45,14 @@ const styles = stylex.create({
         letterSpacing: tracking.label,
         textTransform: "lowercase",
     },
-    // The line wraps on a narrow screen once there are a few links in it, and
-    // without this it breaks between the first and last name.
-    author: { whiteSpace: "nowrap" },
-    // Each separator travels with the link after it, so a wrap never leaves a
-    // stray slash at the end of a line.
-    item: { whiteSpace: "nowrap" },
     // Amber, like the punctuation in the display headings -- the separators are
     // the only mark in the footer, so they are where the motif lands here.
     slash: { paddingInline: 4, color: colors.primary, opacity: 0.6 },
+    // Joins the two units on one line, so it belongs to the wide layout only.
+    joint: { display: { default: "none", [breakpoints.sm]: "inline" } },
+    // Short enough at every width to stay on one line, which is what lets the
+    // separators inside it be plain glyphs with nothing to guard against.
+    links: { display: "flex", alignItems: "center", whiteSpace: "nowrap" },
     link: {
         color: { default: "inherit", ":hover": colors.primary },
         transitionProperty: "color",
@@ -60,21 +65,19 @@ export function SiteFooter() {
         <footer {...stylex.props(styles.footer)}>
             <div {...stylex.props(styles.inner)}>
                 <p {...stylex.props(styles.line)}>
-                    <span {...stylex.props(styles.author)}>
+                    <span>
                         &copy; {new Date().getFullYear()} {site.author}
                     </span>
-                    <span {...stylex.props(styles.item)}>
-                        <span
-                            {...stylex.props(styles.slash)}
-                            aria-hidden="true"
-                        >
-                            /
-                        </span>
+                    <span
+                        {...stylex.props(styles.slash, styles.joint)}
+                        aria-hidden="true"
+                    >
+                        /
+                    </span>
+                    <span {...stylex.props(styles.links)}>
                         <a href="/rss.xml" {...stylex.props(styles.link)}>
                             rss
                         </a>
-                    </span>
-                    <span {...stylex.props(styles.item)}>
                         <span
                             {...stylex.props(styles.slash)}
                             aria-hidden="true"
@@ -84,8 +87,6 @@ export function SiteFooter() {
                         <Link href="/archive" {...stylex.props(styles.link)}>
                             archive
                         </Link>
-                    </span>
-                    <span {...stylex.props(styles.item)}>
                         <span
                             {...stylex.props(styles.slash)}
                             aria-hidden="true"
