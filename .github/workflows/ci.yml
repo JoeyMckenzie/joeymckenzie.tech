@@ -3,10 +3,10 @@ name: ci
 on:
     push:
         branches:
-            - poc/nextjs-again
+            - main
     pull_request:
         branches:
-            - poc/nextjs-again
+            - main
 
 permissions:
     contents: read
