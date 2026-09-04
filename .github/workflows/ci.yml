@@ -67,7 +67,7 @@ jobs:
 
     deploy:
         needs: [lint, build]
-        if: github.event_name == 'push' && github.ref == 'refs/heads/poc/nextjs-again'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
