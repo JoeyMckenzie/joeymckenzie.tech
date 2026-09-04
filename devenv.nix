@@ -81,6 +81,7 @@ in
   packages = [
     pkgs.figlet
     pkgs.agent-browser
+    pkgs.wrangler
   ];
 
   scripts = {
