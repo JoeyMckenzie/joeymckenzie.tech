@@ -259,6 +259,16 @@ reason it is not a Motion `layoutId`: the pinned header would freeze a Motion
 animation mid-flight and snap it when the transition ended. The CSS for both is
 in `app/globals.css`.
 
+## site-footer
+
+The copyright line is a flex row, not flowing text. JSX strips the whitespace
+between adjacent elements, so as text this line had no break opportunity except
+the space inside the author's name: it either broke between first and last name
+or, once the name was held together with `nowrap`, overflowed the viewport
+outright. Each separator is also grouped with the link after it, so a wrap never
+strands a slash at the end of a line. All three only became visible at four
+items, which is worth knowing before adding a fifth.
+
 ## social-links
 
 LinkedIn is deliberately not shipped by simple-icons (pulled over a trademark

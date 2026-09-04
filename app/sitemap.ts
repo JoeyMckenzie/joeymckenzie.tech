@@ -8,7 +8,7 @@ export const dynamic = "force-static";
 // `/archive` is deliberately absent from `nav` (a sixth item overflows the
 // header on a narrow screen) but it is a real indexable page, so the sitemap
 // lists it explicitly rather than deriving everything from the nav.
-const extraRoutes = ["/archive"];
+const extraRoutes = ["/archive", "/colophon"];
 
 export default function sitemap(): MetadataRoute.Sitemap {
     // `trailingSlash: true`, so `/blog` redirects to `/blog/`. A sitemap that

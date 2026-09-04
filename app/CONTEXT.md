@@ -243,6 +243,13 @@ otherwise pull every post payload and every hero image for a page that renders
 no images at all. It is linked from the footer rather than the nav; a sixth nav
 item overflows the header on a 390px screen.
 
+`colophon/page.tsx` is the public version of these notes. It borrows the
+name/description grid from `uses` for its stack list and the `Prose` sections
+from `now` for the narrative. The prose is written to match the voice in
+`content/blog`, which meant em dashes and "rather than" in particular: the
+posts use one em dash across all 33 of them, so a page with eight read as
+written by something else. `color`, never `colour` — the posts are unanimous.
+
 `blog/[slug]/index.md/route.ts` serves each post's markdown source verbatim.
 Only a whole segment can be dynamic, so `/blog/<slug>.md` is not expressible and
 the extension lives one level down as a literal segment — the same trick
