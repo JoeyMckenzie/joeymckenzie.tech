@@ -29,11 +29,11 @@ const styles = stylex.create({
         fontSize: text.label,
         lineHeight: text.labelLineHeight,
         letterSpacing: tracking.label,
-        textTransform: "uppercase",
+        textTransform: "lowercase",
     },
     // Amber, like the punctuation in the display headings -- the separators are
     // the only mark in the footer, so they are where the motif lands here.
-    slash: { paddingInline: 8, color: colors.primary, opacity: 0.6 },
+    slash: { paddingInline: 4, color: colors.primary, opacity: 0.6 },
     link: {
         color: { default: "inherit", ":hover": colors.primary },
         transitionProperty: "color",
