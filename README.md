@@ -1,36 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# joeymckenzie.tech
 
-## Getting Started
+Hey, I'm Joey. This is my little slice of the internet.
 
-First, run the development server:
+Mostly it's a blog. I write about whatever I'm poking at, which lately means
+PHP, Rust, TypeScript, and .NET, plus the occasional thing that isn't software
+at all. There's a [/now](https://joeymckenzie.tech/now) page for what I'm up to,
+[/uses](https://joeymckenzie.tech/uses) for the tools I like, and a
+[/cv](https://joeymckenzie.tech/cv) if you want the professional version.
+
+Built with [Next.js](https://nextjs.org) and [StyleX](https://stylexjs.com).
+Posts are MDX, the whole site exports to static files, and it all lands on
+Cloudflare Pages.
+
+## Running it
+
+[devenv](https://devenv.sh) handles the setup:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+devenv shell
+devenv up
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+That serves it at https://joeymckenzie.tech.test. If you'd rather skip devenv,
+`npm install && npm run dev` works fine.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Elsewhere
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [x.com/_joeyMcKenzie](https://x.com/_joeyMcKenzie)
+- [github.com/joeymckenzie](https://github.com/joeymckenzie)
+- [linkedin.com/in/joeymckenzie](https://linkedin.com/in/joeymckenzie)
+- [RSS](https://joeymckenzie.tech/rss.xml)
