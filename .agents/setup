@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$repo_root"
+SECONDS=0
+
+# Match devenv.nix's Node 24, with a reproducible patch release for orb snapshots.
+node_version=24.22.0
+node_dir="$repo_root/.amp/node"
+echo "[setup] Preparing Node $node_version"
+if [[ ! -x "$node_dir/bin/node" ]] || [[ "$("$node_dir/bin/node" --version)" != "v$node_version" ]]; then
+    case "$(uname -m)" in
+        x86_64) arch=x64 ;;
+        aarch64) arch=arm64 ;;
+        *) echo "Unsupported orb architecture: $(uname -m)" >&2; exit 1 ;;
+    esac
+    archive="node-v$node_version-linux-$arch.tar.xz"
+    download_dir="$(mktemp -d)"
+    trap 'rm -rf "$download_dir"' EXIT
+    curl --fail --silent --show-error --location --retry 3 \
+        "https://nodejs.org/dist/v$node_version/$archive" -o "$download_dir/$archive"
+    curl --fail --silent --show-error --location --retry 3 \
+        "https://nodejs.org/dist/v$node_version/SHASUMS256.txt" -o "$download_dir/SHASUMS256.txt"
+    (cd "$download_dir"; grep "  $archive\$" SHASUMS256.txt | sha256sum --check -)
+    tar -xJf "$download_dir/$archive" -C "$download_dir"
+    mkdir -p "$repo_root/.amp"
+    rm -rf "$node_dir"
+    mv "$download_dir/node-v$node_version-linux-$arch" "$node_dir"
+fi
+export PATH="$node_dir/bin:$PATH"
+
+# Agents and supervised services use separate login shells after setup finishes.
+# Scope this hook to this checkout and avoid duplicating PATH on nested logins.
+profile_marker="# joeymckenzie.tech orb Node"
+if ! grep -Fqx "$profile_marker" "$HOME/.bash_profile" 2>/dev/null; then
+    cat >> "$HOME/.bash_profile" <<EOF
+
+$profile_marker
+if [[ "\$PWD" == "$repo_root" || "\$PWD" == "$repo_root/"* ]]; then
+    case ":\$PATH:" in
+        *":$node_dir/bin:"*) ;;
+        *) export PATH="$node_dir/bin:\$PATH" ;;
+    esac
+fi
+EOF
+fi
+echo "[setup] Toolchain ready in ${SECONDS}s: $(node --version), npm $(npm --version)"
+
+# A warm npm ci still replaces node_modules (about 18s). Only reuse an install
+# completed by this script with the same manifests, setup policy, and toolchain.
+fingerprint="$(
+    { sha256sum package.json package-lock.json .agents/setup; node --version; npm --version; } | sha256sum
+)"
+stamp=node_modules/.amp-setup-fingerprint
+if [[ -x node_modules/.bin/next && -f "$stamp" && "$(cat "$stamp")" == "$fingerprint" ]]; then
+    echo "[setup] Locked dependencies unchanged; reusing node_modules (total ${SECONDS}s)"
+else
+    echo "[setup] Installing locked dependencies"
+    install_started=$SECONDS
+    rm -f "$stamp"
+    npm ci --include=dev --prefer-offline --no-audit --no-fund
+    printf '%s\n' "$fingerprint" > "$stamp"
+    echo "[setup] Dependencies ready in $((SECONDS - install_started))s; total ${SECONDS}s"
+fi

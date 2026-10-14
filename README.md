@@ -24,6 +24,25 @@ devenv up
 That serves it at https://joeymckenzie.tech.test. If you'd rather skip devenv,
 `npm install && npm run dev` works fine.
 
+### Amp orbs
+
+`.agents/setup` installs Node 24 and the locked npm dependencies without Nix
+or the local Caddy configuration. Amp snapshots that environment for reuse;
+exact snapshot matches skip setup. Stale snapshots reuse Node and dependencies
+when the manifests, setup script, and toolchain still match. Otherwise, setup
+runs `npm ci` using the existing npm download cache. Delete
+`node_modules/.amp-setup-fingerprint` to force a clean dependency install.
+
+Node is available in repository-scoped login shells, including supervised
+services. No resume hook is needed: there are no credentials or backing
+services to repair on wake, and dependencies are installed only during setup.
+
+Run `amp orb services ensure` to start the dev server and get its portal URL.
+The service sets `APP_HOST` from that URL so Next.js accepts the portal's HMR
+requests. Run `npm run build`, `npm run lint`, `npm run fmt:check`, and
+`npm run types:check` for the same checks as CI (build before typechecking
+to generate Next.js types).
+
 ## Elsewhere
 
 - [x.com/_joeyMcKenzie](https://x.com/_joeyMcKenzie)
