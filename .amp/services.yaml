@@ -1,0 +1,8 @@
+services:
+    web:
+        command: >-
+            APP_HOST="$(node -p 'new URL(process.env.PUBLIC_URL).hostname')"
+            npm run dev -- --hostname 0.0.0.0 --port "$PORT"
+        health: /
+        portal:
+            title: joeymckenzie.tech

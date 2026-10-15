@@ -61,3 +61,7 @@ opencode.jsonc
 
 # playwright
 .playwright-mcp/
+
+# Orb toolchain and generated state (keep the service declaration)
+/.amp/*
+!/.amp/services.yaml
